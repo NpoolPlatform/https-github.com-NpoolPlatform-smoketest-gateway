@@ -1,4 +1,4 @@
-package detail
+package module
 
 import (
 	"context"
