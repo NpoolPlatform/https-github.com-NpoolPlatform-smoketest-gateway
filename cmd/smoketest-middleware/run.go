@@ -44,8 +44,6 @@ func run(ctx context.Context) error {
 }
 
 func watch(ctx context.Context) error {
-	// go watcher.Watch(ctx)
-	// go feeder.Watch(ctx)
 	return nil
 }
 
