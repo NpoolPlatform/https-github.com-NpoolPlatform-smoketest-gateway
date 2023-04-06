@@ -46,6 +46,26 @@ var (
 		Columns:    ModulesColumns,
 		PrimaryKey: []*schema.Column{ModulesColumns[0]},
 	}
+	// PlanRelatedTestCasesColumns holds the columns for the "plan_related_test_cases" table.
+	PlanRelatedTestCasesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "test_plan_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "test_case_output", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "test_user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "run_duration", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "test_case_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseResult"},
+	}
+	// PlanRelatedTestCasesTable holds the schema information for the "plan_related_test_cases" table.
+	PlanRelatedTestCasesTable = &schema.Table{
+		Name:       "plan_related_test_cases",
+		Columns:    PlanRelatedTestCasesColumns,
+		PrimaryKey: []*schema.Column{PlanRelatedTestCasesColumns[0]},
+	}
 	// RelatedTestCasesColumns holds the columns for the "related_test_cases" table.
 	RelatedTestCasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -112,6 +132,7 @@ var (
 	Tables = []*schema.Table{
 		DetailsTable,
 		ModulesTable,
+		PlanRelatedTestCasesTable,
 		RelatedTestCasesTable,
 		TestCasesTable,
 		TestPlansTable,

@@ -7,6 +7,7 @@ import (
 
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/schema"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
@@ -134,6 +135,66 @@ func init() {
 	moduleDescID := moduleFields[0].Descriptor()
 	// module.DefaultID holds the default value on creation for the id field.
 	module.DefaultID = moduleDescID.Default.(func() uuid.UUID)
+	planrelatedtestcaseMixin := schema.PlanRelatedTestCase{}.Mixin()
+	planrelatedtestcase.Policy = privacy.NewPolicies(planrelatedtestcaseMixin[0], schema.PlanRelatedTestCase{})
+	planrelatedtestcase.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := planrelatedtestcase.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	planrelatedtestcaseMixinFields0 := planrelatedtestcaseMixin[0].Fields()
+	_ = planrelatedtestcaseMixinFields0
+	planrelatedtestcaseFields := schema.PlanRelatedTestCase{}.Fields()
+	_ = planrelatedtestcaseFields
+	// planrelatedtestcaseDescCreatedAt is the schema descriptor for created_at field.
+	planrelatedtestcaseDescCreatedAt := planrelatedtestcaseMixinFields0[0].Descriptor()
+	// planrelatedtestcase.DefaultCreatedAt holds the default value on creation for the created_at field.
+	planrelatedtestcase.DefaultCreatedAt = planrelatedtestcaseDescCreatedAt.Default.(func() uint32)
+	// planrelatedtestcaseDescUpdatedAt is the schema descriptor for updated_at field.
+	planrelatedtestcaseDescUpdatedAt := planrelatedtestcaseMixinFields0[1].Descriptor()
+	// planrelatedtestcase.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	planrelatedtestcase.DefaultUpdatedAt = planrelatedtestcaseDescUpdatedAt.Default.(func() uint32)
+	// planrelatedtestcase.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	planrelatedtestcase.UpdateDefaultUpdatedAt = planrelatedtestcaseDescUpdatedAt.UpdateDefault.(func() uint32)
+	// planrelatedtestcaseDescDeletedAt is the schema descriptor for deleted_at field.
+	planrelatedtestcaseDescDeletedAt := planrelatedtestcaseMixinFields0[2].Descriptor()
+	// planrelatedtestcase.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	planrelatedtestcase.DefaultDeletedAt = planrelatedtestcaseDescDeletedAt.Default.(func() uint32)
+	// planrelatedtestcaseDescTestPlanID is the schema descriptor for test_plan_id field.
+	planrelatedtestcaseDescTestPlanID := planrelatedtestcaseFields[1].Descriptor()
+	// planrelatedtestcase.DefaultTestPlanID holds the default value on creation for the test_plan_id field.
+	planrelatedtestcase.DefaultTestPlanID = planrelatedtestcaseDescTestPlanID.Default.(func() uuid.UUID)
+	// planrelatedtestcaseDescTestCaseID is the schema descriptor for test_case_id field.
+	planrelatedtestcaseDescTestCaseID := planrelatedtestcaseFields[2].Descriptor()
+	// planrelatedtestcase.DefaultTestCaseID holds the default value on creation for the test_case_id field.
+	planrelatedtestcase.DefaultTestCaseID = planrelatedtestcaseDescTestCaseID.Default.(func() uuid.UUID)
+	// planrelatedtestcaseDescTestCaseOutput is the schema descriptor for test_case_output field.
+	planrelatedtestcaseDescTestCaseOutput := planrelatedtestcaseFields[3].Descriptor()
+	// planrelatedtestcase.DefaultTestCaseOutput holds the default value on creation for the test_case_output field.
+	planrelatedtestcase.DefaultTestCaseOutput = planrelatedtestcaseDescTestCaseOutput.Default.(string)
+	// planrelatedtestcaseDescDescription is the schema descriptor for description field.
+	planrelatedtestcaseDescDescription := planrelatedtestcaseFields[4].Descriptor()
+	// planrelatedtestcase.DefaultDescription holds the default value on creation for the description field.
+	planrelatedtestcase.DefaultDescription = planrelatedtestcaseDescDescription.Default.(string)
+	// planrelatedtestcaseDescTestUserID is the schema descriptor for test_user_id field.
+	planrelatedtestcaseDescTestUserID := planrelatedtestcaseFields[5].Descriptor()
+	// planrelatedtestcase.DefaultTestUserID holds the default value on creation for the test_user_id field.
+	planrelatedtestcase.DefaultTestUserID = planrelatedtestcaseDescTestUserID.Default.(func() uuid.UUID)
+	// planrelatedtestcaseDescRunDuration is the schema descriptor for run_duration field.
+	planrelatedtestcaseDescRunDuration := planrelatedtestcaseFields[6].Descriptor()
+	// planrelatedtestcase.DefaultRunDuration holds the default value on creation for the run_duration field.
+	planrelatedtestcase.DefaultRunDuration = planrelatedtestcaseDescRunDuration.Default.(uint32)
+	// planrelatedtestcaseDescTestCaseResult is the schema descriptor for test_case_result field.
+	planrelatedtestcaseDescTestCaseResult := planrelatedtestcaseFields[7].Descriptor()
+	// planrelatedtestcase.DefaultTestCaseResult holds the default value on creation for the test_case_result field.
+	planrelatedtestcase.DefaultTestCaseResult = planrelatedtestcaseDescTestCaseResult.Default.(string)
+	// planrelatedtestcaseDescID is the schema descriptor for id field.
+	planrelatedtestcaseDescID := planrelatedtestcaseFields[0].Descriptor()
+	// planrelatedtestcase.DefaultID holds the default value on creation for the id field.
+	planrelatedtestcase.DefaultID = planrelatedtestcaseDescID.Default.(func() uuid.UUID)
 	relatedtestcaseMixin := schema.RelatedTestCase{}.Mixin()
 	relatedtestcase.Policy = privacy.NewPolicies(relatedtestcaseMixin[0], schema.RelatedTestCase{})
 	relatedtestcase.Hooks[0] = func(next ent.Mutator) ent.Mutator {

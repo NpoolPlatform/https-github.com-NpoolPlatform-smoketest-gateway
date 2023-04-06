@@ -18,6 +18,8 @@ type Tx struct {
 	Detail *DetailClient
 	// Module is the client for interacting with the Module builders.
 	Module *ModuleClient
+	// PlanRelatedTestCase is the client for interacting with the PlanRelatedTestCase builders.
+	PlanRelatedTestCase *PlanRelatedTestCaseClient
 	// RelatedTestCase is the client for interacting with the RelatedTestCase builders.
 	RelatedTestCase *RelatedTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
@@ -161,6 +163,7 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.Detail = NewDetailClient(tx.config)
 	tx.Module = NewModuleClient(tx.config)
+	tx.PlanRelatedTestCase = NewPlanRelatedTestCaseClient(tx.config)
 	tx.RelatedTestCase = NewRelatedTestCaseClient(tx.config)
 	tx.TestCase = NewTestCaseClient(tx.config)
 	tx.TestPlan = NewTestPlanClient(tx.config)

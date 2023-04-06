@@ -5,6 +5,7 @@ package ent
 import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
@@ -17,7 +18,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 5)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 6)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   detail.Table,
@@ -64,6 +65,29 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[2] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
+			Table:   planrelatedtestcase.Table,
+			Columns: planrelatedtestcase.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: planrelatedtestcase.FieldID,
+			},
+		},
+		Type: "PlanRelatedTestCase",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			planrelatedtestcase.FieldCreatedAt:      {Type: field.TypeUint32, Column: planrelatedtestcase.FieldCreatedAt},
+			planrelatedtestcase.FieldUpdatedAt:      {Type: field.TypeUint32, Column: planrelatedtestcase.FieldUpdatedAt},
+			planrelatedtestcase.FieldDeletedAt:      {Type: field.TypeUint32, Column: planrelatedtestcase.FieldDeletedAt},
+			planrelatedtestcase.FieldTestPlanID:     {Type: field.TypeUUID, Column: planrelatedtestcase.FieldTestPlanID},
+			planrelatedtestcase.FieldTestCaseID:     {Type: field.TypeUUID, Column: planrelatedtestcase.FieldTestCaseID},
+			planrelatedtestcase.FieldTestCaseOutput: {Type: field.TypeString, Column: planrelatedtestcase.FieldTestCaseOutput},
+			planrelatedtestcase.FieldDescription:    {Type: field.TypeString, Column: planrelatedtestcase.FieldDescription},
+			planrelatedtestcase.FieldTestUserID:     {Type: field.TypeUUID, Column: planrelatedtestcase.FieldTestUserID},
+			planrelatedtestcase.FieldRunDuration:    {Type: field.TypeUint32, Column: planrelatedtestcase.FieldRunDuration},
+			planrelatedtestcase.FieldTestCaseResult: {Type: field.TypeString, Column: planrelatedtestcase.FieldTestCaseResult},
+		},
+	}
+	graph.Nodes[3] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
 			Table:   relatedtestcase.Table,
 			Columns: relatedtestcase.Columns,
 			ID: &sqlgraph.FieldSpec{
@@ -83,7 +107,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			relatedtestcase.FieldIndex:             {Type: field.TypeUint32, Column: relatedtestcase.FieldIndex},
 		},
 	}
-	graph.Nodes[3] = &sqlgraph.Node{
+	graph.Nodes[4] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
@@ -107,7 +131,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testcase.FieldDeprecated:        {Type: field.TypeBool, Column: testcase.FieldDeprecated},
 		},
 	}
-	graph.Nodes[4] = &sqlgraph.Node{
+	graph.Nodes[5] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
@@ -313,6 +337,96 @@ func (f *ModuleFilter) WhereDescription(p entql.StringP) {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (prtcq *PlanRelatedTestCaseQuery) addPredicate(pred func(s *sql.Selector)) {
+	prtcq.predicates = append(prtcq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the PlanRelatedTestCaseQuery builder.
+func (prtcq *PlanRelatedTestCaseQuery) Filter() *PlanRelatedTestCaseFilter {
+	return &PlanRelatedTestCaseFilter{config: prtcq.config, predicateAdder: prtcq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *PlanRelatedTestCaseMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the PlanRelatedTestCaseMutation builder.
+func (m *PlanRelatedTestCaseMutation) Filter() *PlanRelatedTestCaseFilter {
+	return &PlanRelatedTestCaseFilter{config: m.config, predicateAdder: m}
+}
+
+// PlanRelatedTestCaseFilter provides a generic filtering capability at runtime for PlanRelatedTestCaseQuery.
+type PlanRelatedTestCaseFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *PlanRelatedTestCaseFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *PlanRelatedTestCaseFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(planrelatedtestcase.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *PlanRelatedTestCaseFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(planrelatedtestcase.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *PlanRelatedTestCaseFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(planrelatedtestcase.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *PlanRelatedTestCaseFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(planrelatedtestcase.FieldDeletedAt))
+}
+
+// WhereTestPlanID applies the entql [16]byte predicate on the test_plan_id field.
+func (f *PlanRelatedTestCaseFilter) WhereTestPlanID(p entql.ValueP) {
+	f.Where(p.Field(planrelatedtestcase.FieldTestPlanID))
+}
+
+// WhereTestCaseID applies the entql [16]byte predicate on the test_case_id field.
+func (f *PlanRelatedTestCaseFilter) WhereTestCaseID(p entql.ValueP) {
+	f.Where(p.Field(planrelatedtestcase.FieldTestCaseID))
+}
+
+// WhereTestCaseOutput applies the entql string predicate on the test_case_output field.
+func (f *PlanRelatedTestCaseFilter) WhereTestCaseOutput(p entql.StringP) {
+	f.Where(p.Field(planrelatedtestcase.FieldTestCaseOutput))
+}
+
+// WhereDescription applies the entql string predicate on the description field.
+func (f *PlanRelatedTestCaseFilter) WhereDescription(p entql.StringP) {
+	f.Where(p.Field(planrelatedtestcase.FieldDescription))
+}
+
+// WhereTestUserID applies the entql [16]byte predicate on the test_user_id field.
+func (f *PlanRelatedTestCaseFilter) WhereTestUserID(p entql.ValueP) {
+	f.Where(p.Field(planrelatedtestcase.FieldTestUserID))
+}
+
+// WhereRunDuration applies the entql uint32 predicate on the run_duration field.
+func (f *PlanRelatedTestCaseFilter) WhereRunDuration(p entql.Uint32P) {
+	f.Where(p.Field(planrelatedtestcase.FieldRunDuration))
+}
+
+// WhereTestCaseResult applies the entql string predicate on the test_case_result field.
+func (f *PlanRelatedTestCaseFilter) WhereTestCaseResult(p entql.StringP) {
+	f.Where(p.Field(planrelatedtestcase.FieldTestCaseResult))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (rtcq *RelatedTestCaseQuery) addPredicate(pred func(s *sql.Selector)) {
 	rtcq.predicates = append(rtcq.predicates, pred)
 }
@@ -341,7 +455,7 @@ type RelatedTestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *RelatedTestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -421,7 +535,7 @@ type TestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -516,7 +630,7 @@ type TestPlanFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TestPlanFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

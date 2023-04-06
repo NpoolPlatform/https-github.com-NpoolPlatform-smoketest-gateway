@@ -35,6 +35,19 @@ func (f ModuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
+// The PlanRelatedTestCaseFunc type is an adapter to allow the use of ordinary
+// function as PlanRelatedTestCase mutator.
+type PlanRelatedTestCaseFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f PlanRelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PlanRelatedTestCaseMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanRelatedTestCaseMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The RelatedTestCaseFunc type is an adapter to allow the use of ordinary
 // function as RelatedTestCase mutator.
 type RelatedTestCaseFunc func(context.Context, *ent.RelatedTestCaseMutation) (ent.Value, error)

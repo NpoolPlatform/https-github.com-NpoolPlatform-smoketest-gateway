@@ -12,6 +12,9 @@ type Detail func(*sql.Selector)
 // Module is the predicate function for module builders.
 type Module func(*sql.Selector)
 
+// PlanRelatedTestCase is the predicate function for planrelatedtestcase builders.
+type PlanRelatedTestCase func(*sql.Selector)
+
 // RelatedTestCase is the predicate function for relatedtestcase builders.
 type RelatedTestCase func(*sql.Selector)
 

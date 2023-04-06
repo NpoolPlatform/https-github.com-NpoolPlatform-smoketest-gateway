@@ -198,6 +198,30 @@ func (f ModuleMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ModuleMutation", m)
 }
 
+// The PlanRelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type PlanRelatedTestCaseQueryRuleFunc func(context.Context, *ent.PlanRelatedTestCaseQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f PlanRelatedTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PlanRelatedTestCaseQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlanRelatedTestCaseQuery", q)
+}
+
+// The PlanRelatedTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type PlanRelatedTestCaseMutationRuleFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f PlanRelatedTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PlanRelatedTestCaseMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlanRelatedTestCaseMutation", m)
+}
+
 // The RelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type RelatedTestCaseQueryRuleFunc func(context.Context, *ent.RelatedTestCaseQuery) error
@@ -309,6 +333,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.ModuleQuery:
 		return q.Filter(), nil
+	case *ent.PlanRelatedTestCaseQuery:
+		return q.Filter(), nil
 	case *ent.RelatedTestCaseQuery:
 		return q.Filter(), nil
 	case *ent.TestCaseQuery:
@@ -325,6 +351,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.DetailMutation:
 		return m.Filter(), nil
 	case *ent.ModuleMutation:
+		return m.Filter(), nil
+	case *ent.PlanRelatedTestCaseMutation:
 		return m.Filter(), nil
 	case *ent.RelatedTestCaseMutation:
 		return m.Filter(), nil
