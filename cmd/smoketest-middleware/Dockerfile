@@ -6,6 +6,6 @@ COPY smoketest-middleware /app
 
 ENTRYPOINT ["/app/smoketest-middleware"]
 
-EXPOSE 50330 50331 50332 50333
+EXPOSE 50770 50771 50772 50773 
 
 CMD ["run"]

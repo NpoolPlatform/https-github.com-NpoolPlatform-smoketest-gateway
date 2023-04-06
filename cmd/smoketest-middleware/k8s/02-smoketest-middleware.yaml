@@ -58,16 +58,16 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 50330
-      targetPort: 50330
+      port: 50770
+      targetPort: 50770
     - name: grpc
-      port: 50331
-      targetPort: 50331
+      port: 50771
+      targetPort: 50771
     - name: healthz
-      port: 50332
-      targetPort: 50332
+      port: 50772
+      targetPort: 50772
     - name: prometheus
-      port: 50333
-      targetPort: 50333
+      port: 50773
+      targetPort: 50773
   selector:
     app: smoketest-middleware

@@ -24,7 +24,7 @@ spec:
           - path: /api/smoketest-middleware
             backend:
               serviceName: smoketest-middleware
-              servicePort: 50330
+              servicePort: 50770
     - host: api.procyon.vip
       http: *http_rules
     - host: api.xpool.top
