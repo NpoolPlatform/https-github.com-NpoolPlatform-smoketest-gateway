@@ -15,6 +15,7 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -33,6 +34,8 @@ type Client struct {
 	RelatedTestCase *RelatedTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
 	TestCase *TestCaseClient
+	// TestPlan is the client for interacting with the TestPlan builders.
+	TestPlan *TestPlanClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -50,6 +53,7 @@ func (c *Client) init() {
 	c.Module = NewModuleClient(c.config)
 	c.RelatedTestCase = NewRelatedTestCaseClient(c.config)
 	c.TestCase = NewTestCaseClient(c.config)
+	c.TestPlan = NewTestPlanClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -87,6 +91,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Module:          NewModuleClient(cfg),
 		RelatedTestCase: NewRelatedTestCaseClient(cfg),
 		TestCase:        NewTestCaseClient(cfg),
+		TestPlan:        NewTestPlanClient(cfg),
 	}, nil
 }
 
@@ -110,6 +115,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Module:          NewModuleClient(cfg),
 		RelatedTestCase: NewRelatedTestCaseClient(cfg),
 		TestCase:        NewTestCaseClient(cfg),
+		TestPlan:        NewTestPlanClient(cfg),
 	}, nil
 }
 
@@ -143,6 +149,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Module.Use(hooks...)
 	c.RelatedTestCase.Use(hooks...)
 	c.TestCase.Use(hooks...)
+	c.TestPlan.Use(hooks...)
 }
 
 // DetailClient is a client for the Detail schema.
@@ -507,4 +514,95 @@ func (c *TestCaseClient) GetX(ctx context.Context, id uuid.UUID) *TestCase {
 func (c *TestCaseClient) Hooks() []Hook {
 	hooks := c.hooks.TestCase
 	return append(hooks[:len(hooks):len(hooks)], testcase.Hooks[:]...)
+}
+
+// TestPlanClient is a client for the TestPlan schema.
+type TestPlanClient struct {
+	config
+}
+
+// NewTestPlanClient returns a client for the TestPlan from the given config.
+func NewTestPlanClient(c config) *TestPlanClient {
+	return &TestPlanClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `testplan.Hooks(f(g(h())))`.
+func (c *TestPlanClient) Use(hooks ...Hook) {
+	c.hooks.TestPlan = append(c.hooks.TestPlan, hooks...)
+}
+
+// Create returns a builder for creating a TestPlan entity.
+func (c *TestPlanClient) Create() *TestPlanCreate {
+	mutation := newTestPlanMutation(c.config, OpCreate)
+	return &TestPlanCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TestPlan entities.
+func (c *TestPlanClient) CreateBulk(builders ...*TestPlanCreate) *TestPlanCreateBulk {
+	return &TestPlanCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TestPlan.
+func (c *TestPlanClient) Update() *TestPlanUpdate {
+	mutation := newTestPlanMutation(c.config, OpUpdate)
+	return &TestPlanUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TestPlanClient) UpdateOne(tp *TestPlan) *TestPlanUpdateOne {
+	mutation := newTestPlanMutation(c.config, OpUpdateOne, withTestPlan(tp))
+	return &TestPlanUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TestPlanClient) UpdateOneID(id uuid.UUID) *TestPlanUpdateOne {
+	mutation := newTestPlanMutation(c.config, OpUpdateOne, withTestPlanID(id))
+	return &TestPlanUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TestPlan.
+func (c *TestPlanClient) Delete() *TestPlanDelete {
+	mutation := newTestPlanMutation(c.config, OpDelete)
+	return &TestPlanDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TestPlanClient) DeleteOne(tp *TestPlan) *TestPlanDeleteOne {
+	return c.DeleteOneID(tp.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *TestPlanClient) DeleteOneID(id uuid.UUID) *TestPlanDeleteOne {
+	builder := c.Delete().Where(testplan.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TestPlanDeleteOne{builder}
+}
+
+// Query returns a query builder for TestPlan.
+func (c *TestPlanClient) Query() *TestPlanQuery {
+	return &TestPlanQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a TestPlan entity by its id.
+func (c *TestPlanClient) Get(ctx context.Context, id uuid.UUID) (*TestPlan, error) {
+	return c.Query().Where(testplan.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TestPlanClient) GetX(ctx context.Context, id uuid.UUID) *TestPlan {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TestPlanClient) Hooks() []Hook {
+	hooks := c.hooks.TestPlan
+	return append(hooks[:len(hooks):len(hooks)], testplan.Hooks[:]...)
 }

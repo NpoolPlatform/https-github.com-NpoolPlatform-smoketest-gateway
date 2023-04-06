@@ -14,6 +14,7 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -38,6 +39,7 @@ func columnChecker(table string) func(string) error {
 		module.Table:          module.ValidColumn,
 		relatedtestcase.Table: relatedtestcase.ValidColumn,
 		testcase.Table:        testcase.ValidColumn,
+		testplan.Table:        testplan.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

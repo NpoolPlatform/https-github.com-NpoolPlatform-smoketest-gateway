@@ -61,6 +61,19 @@ func (f TestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, er
 	return f(ctx, mv)
 }
 
+// The TestPlanFunc type is an adapter to allow the use of ordinary
+// function as TestPlan mutator.
+type TestPlanFunc func(context.Context, *ent.TestPlanMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TestPlanFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TestPlanMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TestPlanMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

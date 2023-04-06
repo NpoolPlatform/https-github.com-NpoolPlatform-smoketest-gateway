@@ -17,3 +17,6 @@ type RelatedTestCase func(*sql.Selector)
 
 // TestCase is the predicate function for testcase builders.
 type TestCase func(*sql.Selector)
+
+// TestPlan is the predicate function for testplan builders.
+type TestPlan func(*sql.Selector)

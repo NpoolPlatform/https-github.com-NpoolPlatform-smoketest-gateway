@@ -32,6 +32,7 @@ type hooks struct {
 	Module          []ent.Hook
 	RelatedTestCase []ent.Hook
 	TestCase        []ent.Hook
+	TestPlan        []ent.Hook
 }
 
 // Options applies the options on the config object.

@@ -85,12 +85,36 @@ var (
 		Columns:    TestCasesColumns,
 		PrimaryKey: []*schema.Column{TestCasesColumns[0]},
 	}
+	// TestPlansColumns holds the columns for the "test_plans" table.
+	TestPlansColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "state", Type: field.TypeString, Nullable: true, Default: "DefaultTestPlanState"},
+		{Name: "owner_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "responsible_user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "failed_test_case_count", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "passed_test_case_count", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "skipped_test_case_count", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "run_duration", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "deadline", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "test_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestTestState"},
+	}
+	// TestPlansTable holds the schema information for the "test_plans" table.
+	TestPlansTable = &schema.Table{
+		Name:       "test_plans",
+		Columns:    TestPlansColumns,
+		PrimaryKey: []*schema.Column{TestPlansColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		DetailsTable,
 		ModulesTable,
 		RelatedTestCasesTable,
 		TestCasesTable,
+		TestPlansTable,
 	}
 )
 

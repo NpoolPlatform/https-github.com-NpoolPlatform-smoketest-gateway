@@ -22,6 +22,8 @@ type Tx struct {
 	RelatedTestCase *RelatedTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
 	TestCase *TestCaseClient
+	// TestPlan is the client for interacting with the TestPlan builders.
+	TestPlan *TestPlanClient
 
 	// lazily loaded.
 	client     *Client
@@ -161,6 +163,7 @@ func (tx *Tx) init() {
 	tx.Module = NewModuleClient(tx.config)
 	tx.RelatedTestCase = NewRelatedTestCaseClient(tx.config)
 	tx.TestCase = NewTestCaseClient(tx.config)
+	tx.TestPlan = NewTestPlanClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
