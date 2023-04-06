@@ -7,9 +7,6 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/migrator"
 
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/feeder"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/watcher"
-
 	action "github.com/NpoolPlatform/go-service-framework/pkg/action"
 
 	apicli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
@@ -47,8 +44,8 @@ func run(ctx context.Context) error {
 }
 
 func watch(ctx context.Context) error {
-	go watcher.Watch(ctx)
-	go feeder.Watch(ctx)
+	// go watcher.Watch(ctx)
+	// go feeder.Watch(ctx)
 	return nil
 }
 
