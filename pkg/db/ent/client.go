@@ -12,6 +12,9 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -24,6 +27,12 @@ type Client struct {
 	Schema *migrate.Schema
 	// Detail is the client for interacting with the Detail builders.
 	Detail *DetailClient
+	// Module is the client for interacting with the Module builders.
+	Module *ModuleClient
+	// RelatedTestCase is the client for interacting with the RelatedTestCase builders.
+	RelatedTestCase *RelatedTestCaseClient
+	// TestCase is the client for interacting with the TestCase builders.
+	TestCase *TestCaseClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -38,6 +47,9 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Detail = NewDetailClient(c.config)
+	c.Module = NewModuleClient(c.config)
+	c.RelatedTestCase = NewRelatedTestCaseClient(c.config)
+	c.TestCase = NewTestCaseClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -69,9 +81,12 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Detail: NewDetailClient(cfg),
+		ctx:             ctx,
+		config:          cfg,
+		Detail:          NewDetailClient(cfg),
+		Module:          NewModuleClient(cfg),
+		RelatedTestCase: NewRelatedTestCaseClient(cfg),
+		TestCase:        NewTestCaseClient(cfg),
 	}, nil
 }
 
@@ -89,9 +104,12 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Detail: NewDetailClient(cfg),
+		ctx:             ctx,
+		config:          cfg,
+		Detail:          NewDetailClient(cfg),
+		Module:          NewModuleClient(cfg),
+		RelatedTestCase: NewRelatedTestCaseClient(cfg),
+		TestCase:        NewTestCaseClient(cfg),
 	}, nil
 }
 
@@ -122,6 +140,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Detail.Use(hooks...)
+	c.Module.Use(hooks...)
+	c.RelatedTestCase.Use(hooks...)
+	c.TestCase.Use(hooks...)
 }
 
 // DetailClient is a client for the Detail schema.
@@ -213,4 +234,277 @@ func (c *DetailClient) GetX(ctx context.Context, id uuid.UUID) *Detail {
 func (c *DetailClient) Hooks() []Hook {
 	hooks := c.hooks.Detail
 	return append(hooks[:len(hooks):len(hooks)], detail.Hooks[:]...)
+}
+
+// ModuleClient is a client for the Module schema.
+type ModuleClient struct {
+	config
+}
+
+// NewModuleClient returns a client for the Module from the given config.
+func NewModuleClient(c config) *ModuleClient {
+	return &ModuleClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `module.Hooks(f(g(h())))`.
+func (c *ModuleClient) Use(hooks ...Hook) {
+	c.hooks.Module = append(c.hooks.Module, hooks...)
+}
+
+// Create returns a builder for creating a Module entity.
+func (c *ModuleClient) Create() *ModuleCreate {
+	mutation := newModuleMutation(c.config, OpCreate)
+	return &ModuleCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Module entities.
+func (c *ModuleClient) CreateBulk(builders ...*ModuleCreate) *ModuleCreateBulk {
+	return &ModuleCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Module.
+func (c *ModuleClient) Update() *ModuleUpdate {
+	mutation := newModuleMutation(c.config, OpUpdate)
+	return &ModuleUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ModuleClient) UpdateOne(m *Module) *ModuleUpdateOne {
+	mutation := newModuleMutation(c.config, OpUpdateOne, withModule(m))
+	return &ModuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ModuleClient) UpdateOneID(id uuid.UUID) *ModuleUpdateOne {
+	mutation := newModuleMutation(c.config, OpUpdateOne, withModuleID(id))
+	return &ModuleUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Module.
+func (c *ModuleClient) Delete() *ModuleDelete {
+	mutation := newModuleMutation(c.config, OpDelete)
+	return &ModuleDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ModuleClient) DeleteOne(m *Module) *ModuleDeleteOne {
+	return c.DeleteOneID(m.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *ModuleClient) DeleteOneID(id uuid.UUID) *ModuleDeleteOne {
+	builder := c.Delete().Where(module.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ModuleDeleteOne{builder}
+}
+
+// Query returns a query builder for Module.
+func (c *ModuleClient) Query() *ModuleQuery {
+	return &ModuleQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Module entity by its id.
+func (c *ModuleClient) Get(ctx context.Context, id uuid.UUID) (*Module, error) {
+	return c.Query().Where(module.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ModuleClient) GetX(ctx context.Context, id uuid.UUID) *Module {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ModuleClient) Hooks() []Hook {
+	hooks := c.hooks.Module
+	return append(hooks[:len(hooks):len(hooks)], module.Hooks[:]...)
+}
+
+// RelatedTestCaseClient is a client for the RelatedTestCase schema.
+type RelatedTestCaseClient struct {
+	config
+}
+
+// NewRelatedTestCaseClient returns a client for the RelatedTestCase from the given config.
+func NewRelatedTestCaseClient(c config) *RelatedTestCaseClient {
+	return &RelatedTestCaseClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `relatedtestcase.Hooks(f(g(h())))`.
+func (c *RelatedTestCaseClient) Use(hooks ...Hook) {
+	c.hooks.RelatedTestCase = append(c.hooks.RelatedTestCase, hooks...)
+}
+
+// Create returns a builder for creating a RelatedTestCase entity.
+func (c *RelatedTestCaseClient) Create() *RelatedTestCaseCreate {
+	mutation := newRelatedTestCaseMutation(c.config, OpCreate)
+	return &RelatedTestCaseCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of RelatedTestCase entities.
+func (c *RelatedTestCaseClient) CreateBulk(builders ...*RelatedTestCaseCreate) *RelatedTestCaseCreateBulk {
+	return &RelatedTestCaseCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for RelatedTestCase.
+func (c *RelatedTestCaseClient) Update() *RelatedTestCaseUpdate {
+	mutation := newRelatedTestCaseMutation(c.config, OpUpdate)
+	return &RelatedTestCaseUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *RelatedTestCaseClient) UpdateOne(rtc *RelatedTestCase) *RelatedTestCaseUpdateOne {
+	mutation := newRelatedTestCaseMutation(c.config, OpUpdateOne, withRelatedTestCase(rtc))
+	return &RelatedTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *RelatedTestCaseClient) UpdateOneID(id uuid.UUID) *RelatedTestCaseUpdateOne {
+	mutation := newRelatedTestCaseMutation(c.config, OpUpdateOne, withRelatedTestCaseID(id))
+	return &RelatedTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for RelatedTestCase.
+func (c *RelatedTestCaseClient) Delete() *RelatedTestCaseDelete {
+	mutation := newRelatedTestCaseMutation(c.config, OpDelete)
+	return &RelatedTestCaseDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *RelatedTestCaseClient) DeleteOne(rtc *RelatedTestCase) *RelatedTestCaseDeleteOne {
+	return c.DeleteOneID(rtc.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *RelatedTestCaseClient) DeleteOneID(id uuid.UUID) *RelatedTestCaseDeleteOne {
+	builder := c.Delete().Where(relatedtestcase.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &RelatedTestCaseDeleteOne{builder}
+}
+
+// Query returns a query builder for RelatedTestCase.
+func (c *RelatedTestCaseClient) Query() *RelatedTestCaseQuery {
+	return &RelatedTestCaseQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a RelatedTestCase entity by its id.
+func (c *RelatedTestCaseClient) Get(ctx context.Context, id uuid.UUID) (*RelatedTestCase, error) {
+	return c.Query().Where(relatedtestcase.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *RelatedTestCaseClient) GetX(ctx context.Context, id uuid.UUID) *RelatedTestCase {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *RelatedTestCaseClient) Hooks() []Hook {
+	hooks := c.hooks.RelatedTestCase
+	return append(hooks[:len(hooks):len(hooks)], relatedtestcase.Hooks[:]...)
+}
+
+// TestCaseClient is a client for the TestCase schema.
+type TestCaseClient struct {
+	config
+}
+
+// NewTestCaseClient returns a client for the TestCase from the given config.
+func NewTestCaseClient(c config) *TestCaseClient {
+	return &TestCaseClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `testcase.Hooks(f(g(h())))`.
+func (c *TestCaseClient) Use(hooks ...Hook) {
+	c.hooks.TestCase = append(c.hooks.TestCase, hooks...)
+}
+
+// Create returns a builder for creating a TestCase entity.
+func (c *TestCaseClient) Create() *TestCaseCreate {
+	mutation := newTestCaseMutation(c.config, OpCreate)
+	return &TestCaseCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of TestCase entities.
+func (c *TestCaseClient) CreateBulk(builders ...*TestCaseCreate) *TestCaseCreateBulk {
+	return &TestCaseCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for TestCase.
+func (c *TestCaseClient) Update() *TestCaseUpdate {
+	mutation := newTestCaseMutation(c.config, OpUpdate)
+	return &TestCaseUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *TestCaseClient) UpdateOne(tc *TestCase) *TestCaseUpdateOne {
+	mutation := newTestCaseMutation(c.config, OpUpdateOne, withTestCase(tc))
+	return &TestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *TestCaseClient) UpdateOneID(id uuid.UUID) *TestCaseUpdateOne {
+	mutation := newTestCaseMutation(c.config, OpUpdateOne, withTestCaseID(id))
+	return &TestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for TestCase.
+func (c *TestCaseClient) Delete() *TestCaseDelete {
+	mutation := newTestCaseMutation(c.config, OpDelete)
+	return &TestCaseDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *TestCaseClient) DeleteOne(tc *TestCase) *TestCaseDeleteOne {
+	return c.DeleteOneID(tc.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *TestCaseClient) DeleteOneID(id uuid.UUID) *TestCaseDeleteOne {
+	builder := c.Delete().Where(testcase.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &TestCaseDeleteOne{builder}
+}
+
+// Query returns a query builder for TestCase.
+func (c *TestCaseClient) Query() *TestCaseQuery {
+	return &TestCaseQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a TestCase entity by its id.
+func (c *TestCaseClient) Get(ctx context.Context, id uuid.UUID) (*TestCase, error) {
+	return c.Query().Where(testcase.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *TestCaseClient) GetX(ctx context.Context, id uuid.UUID) *TestCase {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *TestCaseClient) Hooks() []Hook {
+	hooks := c.hooks.TestCase
+	return append(hooks[:len(hooks):len(hooks)], testcase.Hooks[:]...)
 }

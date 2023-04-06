@@ -16,6 +16,12 @@ type Tx struct {
 	config
 	// Detail is the client for interacting with the Detail builders.
 	Detail *DetailClient
+	// Module is the client for interacting with the Module builders.
+	Module *ModuleClient
+	// RelatedTestCase is the client for interacting with the RelatedTestCase builders.
+	RelatedTestCase *RelatedTestCaseClient
+	// TestCase is the client for interacting with the TestCase builders.
+	TestCase *TestCaseClient
 
 	// lazily loaded.
 	client     *Client
@@ -152,6 +158,9 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Detail = NewDetailClient(tx.config)
+	tx.Module = NewModuleClient(tx.config)
+	tx.RelatedTestCase = NewRelatedTestCaseClient(tx.config)
+	tx.TestCase = NewTestCaseClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

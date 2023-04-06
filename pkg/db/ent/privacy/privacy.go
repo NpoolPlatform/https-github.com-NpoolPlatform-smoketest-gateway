@@ -174,6 +174,78 @@ func (f DetailMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.DetailMutation", m)
 }
 
+// The ModuleQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type ModuleQueryRuleFunc func(context.Context, *ent.ModuleQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f ModuleQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.ModuleQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.ModuleQuery", q)
+}
+
+// The ModuleMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type ModuleMutationRuleFunc func(context.Context, *ent.ModuleMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f ModuleMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.ModuleMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ModuleMutation", m)
+}
+
+// The RelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type RelatedTestCaseQueryRuleFunc func(context.Context, *ent.RelatedTestCaseQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f RelatedTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.RelatedTestCaseQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.RelatedTestCaseQuery", q)
+}
+
+// The RelatedTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type RelatedTestCaseMutationRuleFunc func(context.Context, *ent.RelatedTestCaseMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f RelatedTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.RelatedTestCaseMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.RelatedTestCaseMutation", m)
+}
+
+// The TestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type TestCaseQueryRuleFunc func(context.Context, *ent.TestCaseQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f TestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.TestCaseQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.TestCaseQuery", q)
+}
+
+// The TestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type TestCaseMutationRuleFunc func(context.Context, *ent.TestCaseMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f TestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.TestCaseMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.TestCaseMutation", m)
+}
+
 type (
 	// Filter is the interface that wraps the Where function
 	// for filtering nodes in queries and mutations.
@@ -211,6 +283,12 @@ func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
 	case *ent.DetailQuery:
 		return q.Filter(), nil
+	case *ent.ModuleQuery:
+		return q.Filter(), nil
+	case *ent.RelatedTestCaseQuery:
+		return q.Filter(), nil
+	case *ent.TestCaseQuery:
+		return q.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected query type %T for query filter", q)
 	}
@@ -219,6 +297,12 @@ func queryFilter(q ent.Query) (Filter, error) {
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
 	case *ent.DetailMutation:
+		return m.Filter(), nil
+	case *ent.ModuleMutation:
+		return m.Filter(), nil
+	case *ent.RelatedTestCaseMutation:
+		return m.Filter(), nil
+	case *ent.TestCaseMutation:
 		return m.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected mutation type %T for mutation filter", m)

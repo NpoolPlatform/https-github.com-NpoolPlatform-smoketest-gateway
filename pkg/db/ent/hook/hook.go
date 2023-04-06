@@ -22,6 +22,45 @@ func (f DetailFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
+// The ModuleFunc type is an adapter to allow the use of ordinary
+// function as Module mutator.
+type ModuleFunc func(context.Context, *ent.ModuleMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ModuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ModuleMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ModuleMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The RelatedTestCaseFunc type is an adapter to allow the use of ordinary
+// function as RelatedTestCase mutator.
+type RelatedTestCaseFunc func(context.Context, *ent.RelatedTestCaseMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f RelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.RelatedTestCaseMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RelatedTestCaseMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The TestCaseFunc type is an adapter to allow the use of ordinary
+// function as TestCase mutator.
+type TestCaseFunc func(context.Context, *ent.TestCaseMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f TestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.TestCaseMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.TestCaseMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

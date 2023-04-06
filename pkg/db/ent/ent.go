@@ -11,6 +11,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -31,7 +34,10 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		detail.Table: detail.ValidColumn,
+		detail.Table:          detail.ValidColumn,
+		module.Table:          module.ValidColumn,
+		relatedtestcase.Table: relatedtestcase.ValidColumn,
+		testcase.Table:        testcase.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

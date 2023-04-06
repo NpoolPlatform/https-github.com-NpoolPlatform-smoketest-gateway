@@ -6,7 +6,10 @@ import (
 	"context"
 
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/schema"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
@@ -90,6 +93,162 @@ func init() {
 	detailDescID := detailFields[0].Descriptor()
 	// detail.DefaultID holds the default value on creation for the id field.
 	detail.DefaultID = detailDescID.Default.(func() uuid.UUID)
+	moduleMixin := schema.Module{}.Mixin()
+	module.Policy = privacy.NewPolicies(moduleMixin[0], schema.Module{})
+	module.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := module.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	moduleMixinFields0 := moduleMixin[0].Fields()
+	_ = moduleMixinFields0
+	moduleFields := schema.Module{}.Fields()
+	_ = moduleFields
+	// moduleDescCreatedAt is the schema descriptor for created_at field.
+	moduleDescCreatedAt := moduleMixinFields0[0].Descriptor()
+	// module.DefaultCreatedAt holds the default value on creation for the created_at field.
+	module.DefaultCreatedAt = moduleDescCreatedAt.Default.(func() uint32)
+	// moduleDescUpdatedAt is the schema descriptor for updated_at field.
+	moduleDescUpdatedAt := moduleMixinFields0[1].Descriptor()
+	// module.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	module.DefaultUpdatedAt = moduleDescUpdatedAt.Default.(func() uint32)
+	// module.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	module.UpdateDefaultUpdatedAt = moduleDescUpdatedAt.UpdateDefault.(func() uint32)
+	// moduleDescDeletedAt is the schema descriptor for deleted_at field.
+	moduleDescDeletedAt := moduleMixinFields0[2].Descriptor()
+	// module.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	module.DefaultDeletedAt = moduleDescDeletedAt.Default.(func() uint32)
+	// moduleDescName is the schema descriptor for name field.
+	moduleDescName := moduleFields[1].Descriptor()
+	// module.DefaultName holds the default value on creation for the name field.
+	module.DefaultName = moduleDescName.Default.(string)
+	// moduleDescDescription is the schema descriptor for description field.
+	moduleDescDescription := moduleFields[2].Descriptor()
+	// module.DefaultDescription holds the default value on creation for the description field.
+	module.DefaultDescription = moduleDescDescription.Default.(string)
+	// moduleDescID is the schema descriptor for id field.
+	moduleDescID := moduleFields[0].Descriptor()
+	// module.DefaultID holds the default value on creation for the id field.
+	module.DefaultID = moduleDescID.Default.(func() uuid.UUID)
+	relatedtestcaseMixin := schema.RelatedTestCase{}.Mixin()
+	relatedtestcase.Policy = privacy.NewPolicies(relatedtestcaseMixin[0], schema.RelatedTestCase{})
+	relatedtestcase.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := relatedtestcase.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	relatedtestcaseMixinFields0 := relatedtestcaseMixin[0].Fields()
+	_ = relatedtestcaseMixinFields0
+	relatedtestcaseFields := schema.RelatedTestCase{}.Fields()
+	_ = relatedtestcaseFields
+	// relatedtestcaseDescCreatedAt is the schema descriptor for created_at field.
+	relatedtestcaseDescCreatedAt := relatedtestcaseMixinFields0[0].Descriptor()
+	// relatedtestcase.DefaultCreatedAt holds the default value on creation for the created_at field.
+	relatedtestcase.DefaultCreatedAt = relatedtestcaseDescCreatedAt.Default.(func() uint32)
+	// relatedtestcaseDescUpdatedAt is the schema descriptor for updated_at field.
+	relatedtestcaseDescUpdatedAt := relatedtestcaseMixinFields0[1].Descriptor()
+	// relatedtestcase.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	relatedtestcase.DefaultUpdatedAt = relatedtestcaseDescUpdatedAt.Default.(func() uint32)
+	// relatedtestcase.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	relatedtestcase.UpdateDefaultUpdatedAt = relatedtestcaseDescUpdatedAt.UpdateDefault.(func() uint32)
+	// relatedtestcaseDescDeletedAt is the schema descriptor for deleted_at field.
+	relatedtestcaseDescDeletedAt := relatedtestcaseMixinFields0[2].Descriptor()
+	// relatedtestcase.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	relatedtestcase.DefaultDeletedAt = relatedtestcaseDescDeletedAt.Default.(func() uint32)
+	// relatedtestcaseDescCondType is the schema descriptor for cond_type field.
+	relatedtestcaseDescCondType := relatedtestcaseFields[1].Descriptor()
+	// relatedtestcase.DefaultCondType holds the default value on creation for the cond_type field.
+	relatedtestcase.DefaultCondType = relatedtestcaseDescCondType.Default.(string)
+	// relatedtestcaseDescTestCaseID is the schema descriptor for test_case_id field.
+	relatedtestcaseDescTestCaseID := relatedtestcaseFields[2].Descriptor()
+	// relatedtestcase.DefaultTestCaseID holds the default value on creation for the test_case_id field.
+	relatedtestcase.DefaultTestCaseID = relatedtestcaseDescTestCaseID.Default.(func() uuid.UUID)
+	// relatedtestcaseDescRelatedTestCaseID is the schema descriptor for related_test_case_id field.
+	relatedtestcaseDescRelatedTestCaseID := relatedtestcaseFields[3].Descriptor()
+	// relatedtestcase.DefaultRelatedTestCaseID holds the default value on creation for the related_test_case_id field.
+	relatedtestcase.DefaultRelatedTestCaseID = relatedtestcaseDescRelatedTestCaseID.Default.(func() uuid.UUID)
+	// relatedtestcaseDescArgumentsTransfer is the schema descriptor for arguments_transfer field.
+	relatedtestcaseDescArgumentsTransfer := relatedtestcaseFields[4].Descriptor()
+	// relatedtestcase.DefaultArgumentsTransfer holds the default value on creation for the arguments_transfer field.
+	relatedtestcase.DefaultArgumentsTransfer = relatedtestcaseDescArgumentsTransfer.Default.(string)
+	// relatedtestcaseDescIndex is the schema descriptor for index field.
+	relatedtestcaseDescIndex := relatedtestcaseFields[5].Descriptor()
+	// relatedtestcase.DefaultIndex holds the default value on creation for the index field.
+	relatedtestcase.DefaultIndex = relatedtestcaseDescIndex.Default.(uint32)
+	// relatedtestcaseDescID is the schema descriptor for id field.
+	relatedtestcaseDescID := relatedtestcaseFields[0].Descriptor()
+	// relatedtestcase.DefaultID holds the default value on creation for the id field.
+	relatedtestcase.DefaultID = relatedtestcaseDescID.Default.(func() uuid.UUID)
+	testcaseMixin := schema.TestCase{}.Mixin()
+	testcase.Policy = privacy.NewPolicies(testcaseMixin[0], schema.TestCase{})
+	testcase.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := testcase.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	testcaseMixinFields0 := testcaseMixin[0].Fields()
+	_ = testcaseMixinFields0
+	testcaseFields := schema.TestCase{}.Fields()
+	_ = testcaseFields
+	// testcaseDescCreatedAt is the schema descriptor for created_at field.
+	testcaseDescCreatedAt := testcaseMixinFields0[0].Descriptor()
+	// testcase.DefaultCreatedAt holds the default value on creation for the created_at field.
+	testcase.DefaultCreatedAt = testcaseDescCreatedAt.Default.(func() uint32)
+	// testcaseDescUpdatedAt is the schema descriptor for updated_at field.
+	testcaseDescUpdatedAt := testcaseMixinFields0[1].Descriptor()
+	// testcase.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	testcase.DefaultUpdatedAt = testcaseDescUpdatedAt.Default.(func() uint32)
+	// testcase.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	testcase.UpdateDefaultUpdatedAt = testcaseDescUpdatedAt.UpdateDefault.(func() uint32)
+	// testcaseDescDeletedAt is the schema descriptor for deleted_at field.
+	testcaseDescDeletedAt := testcaseMixinFields0[2].Descriptor()
+	// testcase.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	testcase.DefaultDeletedAt = testcaseDescDeletedAt.Default.(func() uint32)
+	// testcaseDescName is the schema descriptor for name field.
+	testcaseDescName := testcaseFields[1].Descriptor()
+	// testcase.DefaultName holds the default value on creation for the name field.
+	testcase.DefaultName = testcaseDescName.Default.(string)
+	// testcaseDescDescription is the schema descriptor for description field.
+	testcaseDescDescription := testcaseFields[2].Descriptor()
+	// testcase.DefaultDescription holds the default value on creation for the description field.
+	testcase.DefaultDescription = testcaseDescDescription.Default.(string)
+	// testcaseDescModuleID is the schema descriptor for module_id field.
+	testcaseDescModuleID := testcaseFields[3].Descriptor()
+	// testcase.DefaultModuleID holds the default value on creation for the module_id field.
+	testcase.DefaultModuleID = testcaseDescModuleID.Default.(func() uuid.UUID)
+	// testcaseDescAPIID is the schema descriptor for api_id field.
+	testcaseDescAPIID := testcaseFields[4].Descriptor()
+	// testcase.DefaultAPIID holds the default value on creation for the api_id field.
+	testcase.DefaultAPIID = testcaseDescAPIID.Default.(func() uuid.UUID)
+	// testcaseDescArguments is the schema descriptor for arguments field.
+	testcaseDescArguments := testcaseFields[5].Descriptor()
+	// testcase.DefaultArguments holds the default value on creation for the arguments field.
+	testcase.DefaultArguments = testcaseDescArguments.Default.(string)
+	// testcaseDescExpectationResult is the schema descriptor for expectation_result field.
+	testcaseDescExpectationResult := testcaseFields[6].Descriptor()
+	// testcase.DefaultExpectationResult holds the default value on creation for the expectation_result field.
+	testcase.DefaultExpectationResult = testcaseDescExpectationResult.Default.(string)
+	// testcaseDescTestCaseType is the schema descriptor for test_case_type field.
+	testcaseDescTestCaseType := testcaseFields[7].Descriptor()
+	// testcase.DefaultTestCaseType holds the default value on creation for the test_case_type field.
+	testcase.DefaultTestCaseType = testcaseDescTestCaseType.Default.(string)
+	// testcaseDescDeprecated is the schema descriptor for deprecated field.
+	testcaseDescDeprecated := testcaseFields[8].Descriptor()
+	// testcase.DefaultDeprecated holds the default value on creation for the deprecated field.
+	testcase.DefaultDeprecated = testcaseDescDeprecated.Default.(bool)
+	// testcaseDescID is the schema descriptor for id field.
+	testcaseDescID := testcaseFields[0].Descriptor()
+	// testcase.DefaultID holds the default value on creation for the id field.
+	testcase.DefaultID = testcaseDescID.Default.(func() uuid.UUID)
 }
 
 const (
