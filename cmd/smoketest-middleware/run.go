@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 
-	"github.com/NpoolPlatform/service-template/api"
-	"github.com/NpoolPlatform/service-template/pkg/db"
-	"github.com/NpoolPlatform/service-template/pkg/migrator"
+	"github.com/NpoolPlatform/smoketest-middleware/api"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/migrator"
 
-	"github.com/NpoolPlatform/service-template/pkg/feeder"
-	"github.com/NpoolPlatform/service-template/pkg/watcher"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/feeder"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/watcher"
 
 	action "github.com/NpoolPlatform/go-service-framework/pkg/action"
 

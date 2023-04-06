@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: service-template-traefik-vpn-ingress
+  name: smoketest-middleware-traefik-vpn-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: service-template-traefik-vpn
-    k8s.kuboard.cn/workload: service-template-traefik-vpn
+    k8s.kuboard.cn/displayName: smoketest-middleware-traefik-vpn
+    k8s.kuboard.cn/workload: smoketest-middleware-traefik-vpn
     kubernetes.io/ingress.class: "traefik-internet-vpn"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares:
-      kube-system-strip-service-template-prefix@kubernetescrd,
+      kube-system-strip-smoketest-middleware-prefix@kubernetescrd,
       kube-system-common-headers@kubernetescrd,
       kube-system-headers-appid-to-body@kubernetescrd,
       kube-system-headers-userid-to-body@kubernetescrd,
@@ -21,9 +21,9 @@ spec:
     - host: api.npool.top
       http: &http_rules
         paths:
-          - path: /api/service-template
+          - path: /api/smoketest-middleware
             backend:
-              serviceName: service-template
+              serviceName: smoketest-middleware
               servicePort: 50330
     - host: api.procyon.vip
       http: *http_rules

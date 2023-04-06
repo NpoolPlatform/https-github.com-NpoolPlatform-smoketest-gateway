@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-template
+  name: smoketest-middleware
   namespace: kube-system
   annotations:
     "sidecar.jaegertracing.io/inject": "true"
@@ -9,19 +9,19 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: service-template
+      app: smoketest-middleware
   template:
     metadata:
       labels:
-        app: service-template
+        app: smoketest-middleware
     spec:
       containers:
-        - name: service-template
-          image: uhub.service.ucloud.cn/entropypool/service-template:latest
+        - name: smoketest-middleware
+          image: uhub.service.ucloud.cn/entropypool/smoketest-middleware:latest
           imagePullPolicy: Always
           volumeMounts:
             - name: service-config
-              mountPath: /etc/ServiceTemplate
+              mountPath: /etc/SmoketestMiddleware
           env:
             - name: ENV_ENVIRONMENT_TARGET
               valueFrom:
@@ -45,15 +45,15 @@ spec:
       volumes:
         - name: service-config
           configMap:
-            name: service-template-config
+            name: smoketest-middleware-config
             items:
               - key: service-conf
-                path: ServiceTemplate.viper.yaml
+                path: SmoketestMiddleware.viper.yaml
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-template
+  name: smoketest-middleware
   namespace: kube-system
 spec:
   ports:
@@ -70,4 +70,4 @@ spec:
       port: 50333
       targetPort: 50333
   selector:
-    app: service-template
+    app: smoketest-middleware

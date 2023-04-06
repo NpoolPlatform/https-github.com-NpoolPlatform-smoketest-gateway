@@ -5,13 +5,13 @@ import (
 	"context"
 	"fmt"
 
-	commontracer "github.com/NpoolPlatform/service-template/pkg/tracer"
+	commontracer "github.com/NpoolPlatform/smoketest-middleware/pkg/tracer"
 
-	converter "github.com/NpoolPlatform/service-template/pkg/mgr/detail/converter"
-	crud "github.com/NpoolPlatform/service-template/pkg/mgr/detail/crud"
-	tracer "github.com/NpoolPlatform/service-template/pkg/mgr/detail/tracer"
+	converter "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/detail/converter"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/detail/crud"
+	tracer "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/detail/tracer"
 
-	constant "github.com/NpoolPlatform/service-template/pkg/message/const"
+	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/message/const"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"

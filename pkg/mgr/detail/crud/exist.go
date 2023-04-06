@@ -3,19 +3,19 @@ package detail
 import (
 	"context"
 
-	constant "github.com/NpoolPlatform/service-template/pkg/message/const"
-	commontracer "github.com/NpoolPlatform/service-template/pkg/tracer"
+	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/message/const"
+	commontracer "github.com/NpoolPlatform/smoketest-middleware/pkg/tracer"
 
-	tracer "github.com/NpoolPlatform/service-template/pkg/mgr/detail/tracer"
+	tracer "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/detail/tracer"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 
 	npool "github.com/NpoolPlatform/message/npool/servicetmpl/mgr/v1/detail"
 
-	"github.com/NpoolPlatform/service-template/pkg/db"
-	"github.com/NpoolPlatform/service-template/pkg/db/ent"
-	"github.com/NpoolPlatform/service-template/pkg/db/ent/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
 
 	"github.com/google/uuid"
 )

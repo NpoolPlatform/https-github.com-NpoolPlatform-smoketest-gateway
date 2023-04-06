@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/NpoolPlatform/service-template/pkg/testinit"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 )
 
 func init() {
