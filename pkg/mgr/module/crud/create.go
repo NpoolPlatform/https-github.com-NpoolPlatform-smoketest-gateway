@@ -3,13 +3,6 @@ package detail
 import (
 	"context"
 
-	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/message/const"
-
-	tracer "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/module/tracer"
-
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/codes"
-
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -37,18 +30,6 @@ func CreateSet(c *ent.ModuleCreate, in *npool.ModuleReq) *ent.ModuleCreate {
 func Create(ctx context.Context, in *npool.ModuleReq) (*ent.Module, error) {
 	var info *ent.Module
 	var err error
-
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Create")
-	defer span.End()
-
-	defer func() {
-		if err != nil {
-			span.SetStatus(codes.Error, "db operation fail")
-			span.RecordError(err)
-		}
-	}()
-
-	span = tracer.Trace(span, in)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		c := CreateSet(cli.Module.Create(), in)
