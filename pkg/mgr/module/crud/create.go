@@ -42,3 +42,21 @@ func Create(ctx context.Context, in *npool.ModuleReq) (*ent.Module, error) {
 
 	return info, nil
 }
+
+func CreateBulk(ctx context.Context, in []*npool.ModuleReq) ([]*ent.Module, error) {
+	var err error
+
+	rows := []*ent.Module{}
+	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		bulk := make([]*ent.ModuleCreate, len(in))
+		for i, info := range in {
+			bulk[i] = CreateSet(cli.Module.Create(), info)
+		}
+		rows, err = cli.Module.CreateBulk(bulk...).Save(_ctx)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
