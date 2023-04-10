@@ -53,6 +53,21 @@ func (h *queryHandler) queryJoin() {
 	})
 }
 
+func (h *queryHandler) queryTestCase(cli *ent.Client) error {
+	if h.ID == nil {
+		return fmt.Errorf("invalid testcase id")
+	}
+	h.selectTestCase(
+		cli.TestCase.
+			Query().
+			Where(
+				enttestcase.ID(uuid.MustParse(*h.ID)),
+				enttestcase.DeletedAt(0),
+			),
+	)
+	return nil
+}
+
 func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client) (err error) {
 	if h.Conds == nil {
 		return fmt.Errorf("invalid conds")
@@ -105,4 +120,24 @@ func (h *Handler) GetTestCases(ctx context.Context, cli *ent.Client) ([]*npool.T
 	}
 
 	return handler.infos, handler.total, nil
+}
+
+func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err error) {
+	handler := &queryHandler{
+		Handler: h,
+	}
+	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		if err := handler.queryTestCase(cli); err != nil {
+			return err
+		}
+		handler.queryJoin()
+		if err := handler.scan(_ctx); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return
+	}
+	return handler.infos[0], nil
 }

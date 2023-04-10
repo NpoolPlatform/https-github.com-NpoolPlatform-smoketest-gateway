@@ -1,14 +1,21 @@
 package testcase
 
 import (
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
+	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 )
 
 type Handler struct {
-	ID         *string
-	ModuleID   *string
-	Deprecated *string
-	Conds      *mgrpb.Conds
-	Offset     *int32
-	Limit      *int32
+	ID                *string
+	Name              *string
+	Description       *string
+	ModuleID          *string
+	ModuleName        *string
+	ApiID             *string
+	Arguments         *string
+	ExpectationResult *string
+	TestCaseType      *testcasemgrpb.TestCaseType
+	Deprecated        *bool
+	Conds             *testcasemgrpb.Conds
+	Offset            *int32
+	Limit             *int32
 }
