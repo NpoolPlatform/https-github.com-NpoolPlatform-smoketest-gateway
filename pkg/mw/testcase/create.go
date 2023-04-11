@@ -2,8 +2,8 @@ package testcase
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
@@ -18,37 +18,40 @@ type createHandler struct {
 }
 
 func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
-	if h.ModuleID == nil {
-		return fmt.Errorf("invalid module id")
-	}
-
-	if _, err := modulecrud.CreateSet(
+	info, err := modulecrud.CreateSet(
 		tx.Module.Create(),
 		&modulemgrpb.ModuleReq{
 			Name: h.ModuleName,
 		},
-	).Save(ctx); err != nil {
+	).Save(ctx)
+	if err != nil {
+		logger.Sugar().Errorw("createModule", "error", err)
 		return err
 	}
 
+	moduleID := info.ID.String()
+	h.ModuleID = &moduleID
 	return nil
 }
 
 func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
-	if _, err := testcasecrud.CreateSet(
+	info, err := testcasecrud.CreateSet(
 		tx.TestCase.Create(),
 		&testcasemgrpb.TestCaseReq{
-			// ModuleID TODO
 			Name:              h.Name,
 			Arguments:         h.Arguments,
+			ModuleID:          h.ModuleID,
 			ApiID:             h.ApiID,
+			Description:       h.Description,
 			ExpectationResult: h.ExpectationResult,
 			TestCaseType:      h.TestCaseType,
 		},
-	).Save(ctx); err != nil {
+	).Save(ctx)
+	if err != nil {
 		return err
 	}
-
+	testCaseID := info.ID.String()
+	h.ID = &testCaseID
 	return nil
 }
 
@@ -77,5 +80,3 @@ func (h *Handler) Create(ctx context.Context) (info *npool.TestCase, err error) 
 	}
 	return h.GetTestCase(ctx)
 }
-
-
