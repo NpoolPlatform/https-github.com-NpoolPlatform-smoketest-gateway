@@ -101,7 +101,7 @@ func (h *queryHandler) scan(ctx context.Context) error {
 	return h.stm.Scan(ctx, &h.infos)
 }
 
-func (h *Handler) GetTestCases(ctx context.Context, cli *ent.Client) ([]*npool.TestCase, uint32, error) {
+func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, error) {
 	handler := &queryHandler{
 		Handler: h,
 	}
