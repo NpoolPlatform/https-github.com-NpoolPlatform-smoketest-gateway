@@ -7,7 +7,7 @@ require (
 	github.com/NpoolPlatform/basal-middleware v0.0.0-20230221094657-688f81366495
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230327065405-91484c9b17ea
 	github.com/NpoolPlatform/libent-cruder v0.0.0-20220621110548-8f3f8049ecc5
-	github.com/NpoolPlatform/message v0.0.0-20230411072204-9f1998551f72
+	github.com/NpoolPlatform/message v0.0.0-20230411103653-bb7a628e394c
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
@@ -19,7 +19,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.8.0
 	google.golang.org/grpc v1.54.0
 	google.golang.org/protobuf v1.28.1
-	grpc.go4.org v0.0.0-20170609214715-11d0a25b4919
 )
 
 require (
