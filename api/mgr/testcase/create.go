@@ -14,7 +14,7 @@ import (
 
 func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseRequest) (*npool.CreateTestCaseResponse, error) {
 	req := in.GetInfo()
-	if *req.ModuleID == "" && *req.ModuleName == "" {
+	if in.Info.GetModuleID() == "" && in.Info.GetModuleName() == "" {
 		logger.Sugar().Errorw("CreateTestCase", "Need ModuleID or ModuleName")
 		return nil, fmt.Errorf("module id or module name needed")
 	}
