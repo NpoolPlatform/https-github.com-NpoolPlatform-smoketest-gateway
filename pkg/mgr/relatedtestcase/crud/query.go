@@ -29,7 +29,7 @@ func Row(ctx context.Context, testCaseID string) (*ent.RelatedTestCase, error) {
 	return info, nil
 }
 
-func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.RelatedTestCaseQuery, error) { //nolint
+func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.RelatedTestCaseQuery, error) {
 	stm := cli.RelatedTestCase.Query()
 	if conds.ID != nil {
 		switch conds.GetID().GetOp() {
