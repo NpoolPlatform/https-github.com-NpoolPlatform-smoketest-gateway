@@ -16,7 +16,7 @@ import (
 )
 
 func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error)) (cruder.Any, error) {
-	_ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	_ctx, cancel := context.WithTimeout(ctx, 10*time.Second) //nolint
 	defer cancel()
 
 	conn, err := grpc2.GetGRPCConn(servicename.ServiceDomain, grpc2.GRPCTAG)
