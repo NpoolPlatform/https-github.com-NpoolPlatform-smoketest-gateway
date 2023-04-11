@@ -6,6 +6,7 @@ import (
 	"github.com/NpoolPlatform/message/npool/servicetmpl"
 
 	"github.com/NpoolPlatform/smoketest-middleware/api/mgr/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/api/mgr/testcase"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -18,6 +19,7 @@ type Server struct {
 func Register(server grpc.ServiceRegistrar) {
 	servicetmpl.RegisterManagerServer(server, &Server{})
 	detail.Register(server)
+	testcase.Register(server)
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
