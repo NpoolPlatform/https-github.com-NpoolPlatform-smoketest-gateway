@@ -46,10 +46,10 @@ func CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq) (*npool.Te
 	return info.(*npool.TestCase), nil
 }
 
-func GetTestCase(ctx context.Context, ID string) (*npool.TestCase, error) {
+func GetTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestCase(ctx, &npool.GetTestCaseRequest{
-			ID: ID,
+			ID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -66,7 +66,7 @@ func GetTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestCases(ctx, &npool.GetTestCasesRequest{
-			Conds: conds,
+			Conds:  conds,
 			Offset: offset,
 			Limit:  limit,
 		})
