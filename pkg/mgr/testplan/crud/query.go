@@ -57,7 +57,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.TestPlanQuery, err
 			return nil, fmt.Errorf("invalid testplan field")
 		}
 	}
-	
+
 	if conds.State != nil {
 		switch conds.GetState().GetOp() {
 		case cruder.EQ:

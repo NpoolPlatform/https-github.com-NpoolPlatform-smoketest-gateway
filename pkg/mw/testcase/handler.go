@@ -15,7 +15,7 @@ type Handler struct {
 	Description       *string
 	ModuleID          *string
 	ModuleName        *string
-	ApiID             *string
+	APIID             *string
 	Arguments         *string
 	ExpectationResult *string
 	TestCaseType      *testcasemgrpb.TestCaseType
@@ -35,12 +35,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithApiID(apiID *string) func(context.Context, *Handler) error {
+func WithAPIID(apiID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _, err := uuid.Parse(*apiID); err != nil {
 			return err
 		}
-		h.ApiID = apiID
+		h.APIID = apiID
 		return nil
 	}
 }

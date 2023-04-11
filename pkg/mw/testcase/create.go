@@ -41,7 +41,7 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 			Name:              h.Name,
 			Arguments:         h.Arguments,
 			ModuleID:          h.ModuleID,
-			ApiID:             h.ApiID,
+			ApiID:             h.APIID,
 			Description:       h.Description,
 			ExpectationResult: h.ExpectationResult,
 			TestCaseType:      h.TestCaseType,
