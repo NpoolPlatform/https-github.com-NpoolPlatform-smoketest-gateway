@@ -48,8 +48,10 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 		},
 	).Save(ctx)
 	if err != nil {
+		logger.Sugar().Errorw("createTestCase", "error", err)
 		return err
 	}
+	
 	testCaseID := info.ID.String()
 	h.ID = &testCaseID
 	return nil

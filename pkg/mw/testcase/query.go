@@ -126,6 +126,9 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 	handler := &queryHandler{
 		Handler: h,
 	}
+
+	fmt.Println("ID: ", handler.ID)
+
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		if err := handler.queryTestCase(cli); err != nil {
 			return err
