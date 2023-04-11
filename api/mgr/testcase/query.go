@@ -5,7 +5,6 @@ import (
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 
-	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
 
@@ -17,7 +16,7 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	handler, err := testcase1.NewHandler(
 		ctx,
 		testcase1.WithConds(
-			&testcasemgrpb.Conds{},
+			in.GetConds(),
 			in.GetOffset(),
 			in.GetLimit(),
 		),
