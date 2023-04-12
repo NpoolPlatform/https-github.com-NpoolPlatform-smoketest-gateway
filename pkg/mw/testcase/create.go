@@ -62,10 +62,7 @@ func (h *Handler) Create(ctx context.Context) (info *npool.TestCase, err error) 
 		Handler: h,
 	}
 	// 根据ApiID查询
-	// TODO
-
-	// 如果传递了ModuleID则根据ModuleID查询Module
-	// TODO
+	// TODO:After
 
 	// 如果未传递ModuleID,传递了ModuleName则创建Module
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
