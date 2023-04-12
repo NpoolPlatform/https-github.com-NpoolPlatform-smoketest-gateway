@@ -23,9 +23,9 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
-			"GetUsers",
+			"GetTestCases",
 			"In", in,
-			"error", err,
+			"Error", err,
 		)
 		return &npool.GetTestCasesResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}

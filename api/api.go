@@ -5,8 +5,8 @@ import (
 
 	"github.com/NpoolPlatform/message/npool/servicetmpl"
 
-	"github.com/NpoolPlatform/smoketest-middleware/api/mgr/detail"
-	"github.com/NpoolPlatform/smoketest-middleware/api/mgr/testcase"
+	"github.com/NpoolPlatform/smoketest-middleware/api/detail"
+	"github.com/NpoolPlatform/smoketest-middleware/api/testcase"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
