@@ -40,6 +40,7 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	}, nil
 }
 
+//nolint
 func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) (*npool.GetTestCaseResponse, error) {
 	handler, err := testcase1.NewHandler(
 		ctx,
@@ -49,7 +50,7 @@ func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) 
 		logger.Sugar().Errorw(
 			"GetTestCase",
 			"In", in,
-			"error", err,
+			"Error", err,
 		)
 		return &npool.GetTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
