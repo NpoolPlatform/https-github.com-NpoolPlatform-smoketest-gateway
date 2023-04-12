@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	commonpb "github.com/NpoolPlatform/message/npool"
 	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
@@ -18,6 +20,26 @@ type createHandler struct {
 }
 
 func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
+	exist, err := modulecrud.Exist(ctx, *h.ModuleName)
+	if err != nil {
+		return err
+	}
+
+	if exist {
+		info, err := modulecrud.RowOnly(ctx, &modulemgrpb.Conds{
+			Name: &commonpb.StringVal{
+				Op:    cruder.EQ,
+				Value: *h.ModuleName,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		moduleID := info.ID.String()
+		h.ModuleID = &moduleID
+		return nil
+	}
+
 	info, err := modulecrud.CreateSet(
 		tx.Module.Create(),
 		&modulemgrpb.ModuleReq{
@@ -61,10 +83,6 @@ func (h *Handler) Create(ctx context.Context) (info *npool.TestCase, err error) 
 	handler := &createHandler{
 		Handler: h,
 	}
-	// 根据ApiID查询
-	// TODO:After
-
-	// 如果未传递ModuleID,传递了ModuleName则创建Module
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
 		if err := handler.createModule(_ctx, tx); err != nil {
 			return err

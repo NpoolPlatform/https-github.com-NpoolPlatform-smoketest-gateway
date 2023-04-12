@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	"github.com/google/uuid"
@@ -41,6 +42,12 @@ func WithApiID(apiID *string) func(context.Context, *Handler) error {
 		if _, err := uuid.Parse(*apiID); err != nil {
 			return err
 		}
+
+		_, err := apimwcli.ExistAPI(ctx, *apiID)
+		if err != nil {
+			return err
+		}
+
 		h.ApiID = apiID
 		return nil
 	}
@@ -55,6 +62,7 @@ func WithID(testCaseID *string) func(context.Context, *Handler) error {
 		return nil
 	}
 }
+
 func WithModuleID(moduleID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _, err := uuid.Parse(*moduleID); err != nil {
