@@ -82,3 +82,19 @@ func GetTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 	}
 	return infos.([]*npool.TestCase), total, nil
 }
+
+func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*npool.TestCase), nil
+}
