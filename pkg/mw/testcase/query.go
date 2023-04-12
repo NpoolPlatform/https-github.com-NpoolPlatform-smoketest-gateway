@@ -80,6 +80,11 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 			enttestcase.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
 		)
 	}
+	if h.Conds.ModuleID != nil {
+		stm = stm.Where(
+			enttestcase.ModuleID(uuid.MustParse(h.Conds.GetModuleID().GetValue())),
+		)
+	}
 
 	if h.Conds.Deprecated != nil {
 		stm = stm.Where(
