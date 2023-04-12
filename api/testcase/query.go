@@ -47,7 +47,7 @@ func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) 
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
-			"GetUsers",
+			"GetTestCase",
 			"In", in,
 			"error", err,
 		)
