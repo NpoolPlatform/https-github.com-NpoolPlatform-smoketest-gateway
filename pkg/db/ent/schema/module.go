@@ -27,8 +27,7 @@ func (Module) Fields() []ent.Field {
 			Unique(),
 		field.
 			String("name").
-			Optional().
-			Default(""),
+			Unique(),
 		field.
 			String("description").
 			Optional().

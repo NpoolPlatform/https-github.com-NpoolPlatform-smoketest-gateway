@@ -123,10 +123,6 @@ func init() {
 	moduleDescDeletedAt := moduleMixinFields0[2].Descriptor()
 	// module.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	module.DefaultDeletedAt = moduleDescDeletedAt.Default.(func() uint32)
-	// moduleDescName is the schema descriptor for name field.
-	moduleDescName := moduleFields[1].Descriptor()
-	// module.DefaultName holds the default value on creation for the name field.
-	module.DefaultName = moduleDescName.Default.(string)
 	// moduleDescDescription is the schema descriptor for description field.
 	moduleDescDescription := moduleFields[2].Descriptor()
 	// module.DefaultDescription holds the default value on creation for the description field.

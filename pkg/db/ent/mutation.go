@@ -1621,22 +1621,9 @@ func (m *ModuleMutation) OldName(ctx context.Context) (v string, err error) {
 	return oldValue.Name, nil
 }
 
-// ClearName clears the value of the "name" field.
-func (m *ModuleMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[module.FieldName] = struct{}{}
-}
-
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *ModuleMutation) NameCleared() bool {
-	_, ok := m.clearedFields[module.FieldName]
-	return ok
-}
-
 // ResetName resets all changes to the "name" field.
 func (m *ModuleMutation) ResetName() {
 	m.name = nil
-	delete(m.clearedFields, module.FieldName)
 }
 
 // SetDescription sets the "description" field.
@@ -1873,9 +1860,6 @@ func (m *ModuleMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ModuleMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(module.FieldName) {
-		fields = append(fields, module.FieldName)
-	}
 	if m.FieldCleared(module.FieldDescription) {
 		fields = append(fields, module.FieldDescription)
 	}
@@ -1893,9 +1877,6 @@ func (m *ModuleMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ModuleMutation) ClearField(name string) error {
 	switch name {
-	case module.FieldName:
-		m.ClearName()
-		return nil
 	case module.FieldDescription:
 		m.ClearDescription()
 		return nil
