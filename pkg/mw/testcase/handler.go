@@ -45,6 +45,15 @@ func WithAPIID(apiID *string) func(context.Context, *Handler) error {
 	}
 }
 
+func WithID(testCaseID *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if _, err := uuid.Parse(*testCaseID); err != nil {
+			return err
+		}
+		h.ID = testCaseID
+		return nil
+	}
+}
 func WithModuleID(moduleID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _, err := uuid.Parse(*moduleID); err != nil {
