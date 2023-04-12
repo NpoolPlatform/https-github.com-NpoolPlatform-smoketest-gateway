@@ -80,7 +80,7 @@ func WithArguments(arguments *string) func(context.Context, *Handler) error {
 		if arguments == nil {
 			return fmt.Errorf("invalid arguments")
 		}
-		h.ModuleID = arguments
+		h.Arguments = arguments
 		return nil
 	}
 }
