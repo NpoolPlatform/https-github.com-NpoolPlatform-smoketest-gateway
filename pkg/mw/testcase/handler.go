@@ -151,3 +151,23 @@ func WithConds(conds *testcasemgrpb.Conds, offset, limit int32) func(context.Con
 		return nil
 	}
 }
+
+func WithDeprecated(deprecated *bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if deprecated == nil {
+			return nil
+		}
+		h.Deprecated = deprecated
+		return nil
+	}
+}
+
+func WithTestCaseType(testCaseType *testcasemgrpb.TestCaseType) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if testCaseType == nil {
+			return nil
+		}
+		h.TestCaseType = testCaseType
+		return nil
+	}
+}
