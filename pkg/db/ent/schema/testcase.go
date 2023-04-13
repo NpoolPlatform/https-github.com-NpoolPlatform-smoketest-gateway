@@ -51,6 +51,10 @@ func (TestCase) Fields() []ent.Field {
 			Optional().
 			Default(""),
 		field.
+			String("arg_type_description").
+			Optional().
+			Default(""),
+		field.
 			String("expectation_result").
 			Optional().
 			Default(""),
