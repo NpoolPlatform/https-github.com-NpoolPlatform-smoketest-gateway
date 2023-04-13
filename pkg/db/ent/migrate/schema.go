@@ -95,6 +95,7 @@ var (
 		{Name: "module_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "api_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "arguments", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "arg_type_description", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "expectation_result", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "test_case_type", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseType"},
 		{Name: "deprecated", Type: field.TypeBool, Nullable: true, Default: false},

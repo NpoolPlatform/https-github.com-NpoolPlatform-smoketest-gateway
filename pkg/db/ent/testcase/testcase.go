@@ -28,6 +28,8 @@ const (
 	FieldAPIID = "api_id"
 	// FieldArguments holds the string denoting the arguments field in the database.
 	FieldArguments = "arguments"
+	// FieldArgTypeDescription holds the string denoting the arg_type_description field in the database.
+	FieldArgTypeDescription = "arg_type_description"
 	// FieldExpectationResult holds the string denoting the expectation_result field in the database.
 	FieldExpectationResult = "expectation_result"
 	// FieldTestCaseType holds the string denoting the test_case_type field in the database.
@@ -49,6 +51,7 @@ var Columns = []string{
 	FieldModuleID,
 	FieldAPIID,
 	FieldArguments,
+	FieldArgTypeDescription,
 	FieldExpectationResult,
 	FieldTestCaseType,
 	FieldDeprecated,
@@ -91,6 +94,8 @@ var (
 	DefaultAPIID func() uuid.UUID
 	// DefaultArguments holds the default value on creation for the "arguments" field.
 	DefaultArguments string
+	// DefaultArgTypeDescription holds the default value on creation for the "arg_type_description" field.
+	DefaultArgTypeDescription string
 	// DefaultExpectationResult holds the default value on creation for the "expectation_result" field.
 	DefaultExpectationResult string
 	// DefaultTestCaseType holds the default value on creation for the "test_case_type" field.
