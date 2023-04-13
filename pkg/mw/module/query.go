@@ -8,7 +8,7 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	entModule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
+	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/google/uuid"
 )
 
@@ -21,11 +21,11 @@ type queryHandler struct {
 
 func (h *queryHandler) selectModule(stm *ent.ModuleQuery) {
 	h.stm = stm.Select(
-		entModule.FieldID,
-		entModule.FieldName,
-		entModule.FieldDescription,
-		entModule.FieldCreatedAt,
-		entModule.FieldUpdatedAt,
+		entmodule.FieldID,
+		entmodule.FieldName,
+		entmodule.FieldDescription,
+		entmodule.FieldCreatedAt,
+		entmodule.FieldUpdatedAt,
 	)
 }
 
@@ -41,8 +41,8 @@ func (h *queryHandler) queryModule(cli *ent.Client) error {
 		cli.Module.
 			Query().
 			Where(
-				entModule.ID(uuid.MustParse(*h.ID)),
-				entModule.DeletedAt(0),
+				entmodule.ID(uuid.MustParse(*h.ID)),
+				entmodule.DeletedAt(0),
 			),
 	)
 	return nil
@@ -56,12 +56,12 @@ func (h *queryHandler) queryModuleByConds(ctx context.Context, cli *ent.Client) 
 	stm := cli.Module.Query()
 	if h.Conds.ID != nil {
 		stm = stm.Where(
-			entModule.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
+			entmodule.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
 		)
 	}
 	if h.Conds.Name != nil {
 		stm = stm.Where(
-			entModule.Name(h.Conds.GetName().GetValue()),
+			entmodule.Name(h.Conds.GetName().GetValue()),
 		)
 	}
 
