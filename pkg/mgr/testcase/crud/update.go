@@ -18,6 +18,9 @@ func UpdateSet(info *ent.TestCaseUpdateOne, in *npool.TestCaseReq) *ent.TestCase
 	if in.Arguments != nil {
 		info.SetArguments(in.GetArguments())
 	}
+	if in.ArgTypeDescription != nil {
+		info.SetArgTypeDescription(in.GetArgTypeDescription())
+	}
 	if in.ExpectationResult != nil {
 		info.SetExpectationResult(in.GetExpectationResult())
 	}

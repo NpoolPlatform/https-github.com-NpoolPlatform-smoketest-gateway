@@ -19,13 +19,14 @@ func (h *updateHandler) updateTestCase(ctx context.Context, tx *ent.Tx) error {
 	if _, err := testcasecrud.UpdateSet(
 		tx.TestCase.UpdateOneID(uuid.MustParse(*h.ID)),
 		&testmgrpb.TestCaseReq{
-			ID:                h.ID,
-			Name:              h.Name,
-			Description:       h.Description,
-			Arguments:         h.Arguments,
-			ExpectationResult: h.ExpectationResult,
-			TestCaseType:      h.TestCaseType,
-			Deprecated:        h.Deprecated,
+			ID:                 h.ID,
+			Name:               h.Name,
+			Description:        h.Description,
+			Arguments:          h.Arguments,
+			ArgTypeDescription: h.ArgTypeDescription,
+			ExpectationResult:  h.ExpectationResult,
+			TestCaseType:       h.TestCaseType,
+			Deprecated:         h.Deprecated,
 		}).Save(ctx); err != nil {
 		return err
 	}
