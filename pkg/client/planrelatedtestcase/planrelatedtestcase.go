@@ -5,8 +5,6 @@ import (
 	"context"
 	"time"
 
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/planrelatedtestcase"
-
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -60,7 +58,7 @@ func GetPlanRelatedTestCase(ctx context.Context, id string) (*npool.PlanRelatedT
 	return info.(*npool.PlanRelatedTestCase), nil
 }
 
-func GetPlanRelatedTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.PlanRelatedTestCase, uint32, error) {
+func GetPlanRelatedTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.PlanRelatedTestCase, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetPlanRelatedTestCases(ctx, &npool.GetPlanRelatedTestCasesRequest{
