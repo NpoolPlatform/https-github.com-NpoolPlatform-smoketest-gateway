@@ -28,6 +28,7 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
 		enttestcase.FieldArguments,
+		enttestcase.FieldArgTypeDescription,
 		enttestcase.FieldExpectationResult,
 		enttestcase.FieldDeprecated,
 		enttestcase.FieldCreatedAt,
