@@ -15,7 +15,7 @@ type Handler struct {
 	State             *string
 	OwnerID           *string
 	ResponsibleUserID *string
-	Deadline          *int32
+	Deadline          *uint32
 	Conds             *testplanmgrpb.Conds
 	Offset            *int32
 	Limit             *int32
@@ -61,7 +61,7 @@ func WithOwnerID(ownerID *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithDeadline(deadline *int32) func(context.Context, *Handler) error {
+func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if deadline == nil {
 			return nil
