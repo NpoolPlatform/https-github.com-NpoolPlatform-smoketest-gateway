@@ -36,9 +36,6 @@ func CreateSet(c *ent.PlanRelatedTestCaseCreate, in *npool.PlanRelatedTestCaseRe
 	if in.TestCaseResult != nil {
 		c.SetTestCaseResult(in.GetTestCaseResult().Enum().String())
 	}
-	if in.CreatedAt != nil {
-		c.SetCreatedAt(in.GetCreatedAt())
-	}
 	return c
 }
 
