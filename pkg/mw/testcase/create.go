@@ -60,13 +60,14 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 	info, err := testcasecrud.CreateSet(
 		tx.TestCase.Create(),
 		&testcasemgrpb.TestCaseReq{
-			Name:              h.Name,
-			Arguments:         h.Arguments,
-			ModuleID:          h.ModuleID,
-			ApiID:             h.ApiID,
-			Description:       h.Description,
-			ExpectationResult: h.ExpectationResult,
-			TestCaseType:      h.TestCaseType,
+			Name:               h.Name,
+			Arguments:          h.Arguments,
+			ArgTypeDescription: h.ArgTypeDescription,
+			ModuleID:           h.ModuleID,
+			ApiID:              h.ApiID,
+			Description:        h.Description,
+			ExpectationResult:  h.ExpectationResult,
+			TestCaseType:       h.TestCaseType,
 		},
 	).Save(ctx)
 	if err != nil {
@@ -79,7 +80,7 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 	return nil
 }
 
-func (h *Handler) Create(ctx context.Context) (info *npool.TestCase, err error) {
+func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err error) {
 	handler := &createHandler{
 		Handler: h,
 	}

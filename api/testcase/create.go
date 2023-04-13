@@ -24,7 +24,7 @@ func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq
 		testcase1.WithName(req.Name),
 		testcase1.WithApiID(req.ApiID),
 		testcase1.WithModuleName(req.ModuleName),
-		testcase1.WithExpectationResult(req.ExpectationResult),
+		testcase1.WithArgTypeDescription(req.ArgTypeDescription),
 		testcase1.WithExpectationResult(req.ExpectationResult),
 		testcase1.WithArguments(req.Arguments),
 	)
@@ -37,7 +37,7 @@ func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq
 		return &npool.CreateTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	info, err := handler.Create(ctx)
+	info, err := handler.CreateTestCase(ctx)
 	if err != nil {
 		return &npool.CreateTestCaseResponse{}, status.Error(codes.Aborted, err.Error())
 	}
