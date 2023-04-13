@@ -1,5 +1,5 @@
 //nolint:nolintlint,dupl
-package user
+package testcase
 
 import (
 	"context"

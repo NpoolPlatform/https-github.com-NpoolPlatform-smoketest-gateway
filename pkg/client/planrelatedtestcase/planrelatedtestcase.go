@@ -1,16 +1,16 @@
 //nolint:nolintlint,dupl
-package module
+package planrelatedtestcase
 
 import (
 	"context"
 	"time"
 
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/planrelatedtestcase"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/planrelatedtestcase"
 
 	servicename "github.com/NpoolPlatform/smoketest-middleware/pkg/servicename"
 )
@@ -30,12 +30,9 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.Module, error) {
+func CreatePlanRelatedTestCase(ctx context.Context, in *npool.CreatePlanRelatedTestCaseRequest) (*npool.PlanRelatedTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.CreateModule(ctx, &npool.CreateModuleRequest{
-			Name:        in.Name,
-			Description: in.Description,
-		})
+		resp, err := cli.CreatePlanRelatedTestCase(ctx, &npool.CreatePlanRelatedTestCaseRequest{Info: in.GetInfo()})
 		if err != nil {
 			return nil, err
 		}
@@ -44,12 +41,12 @@ func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.Mo
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.Module), nil
+	return info.(*npool.PlanRelatedTestCase), nil
 }
 
-func GetModule(ctx context.Context, id string) (*npool.Module, error) {
+func GetPlanRelatedTestCase(ctx context.Context, id string) (*npool.PlanRelatedTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.GetModule(ctx, &npool.GetModuleRequest{
+		resp, err := cli.GetPlanRelatedTestCase(ctx, &npool.GetPlanRelatedTestCaseRequest{
 			ID: id,
 		})
 		if err != nil {
@@ -60,16 +57,16 @@ func GetModule(ctx context.Context, id string) (*npool.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.Module), nil
+	return info.(*npool.PlanRelatedTestCase), nil
 }
 
-func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.Module, uint32, error) {
+func GetPlanRelatedTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.PlanRelatedTestCase, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.GetModules(ctx, &npool.GetModulesRequest{
+		resp, err := cli.GetPlanRelatedTestCases(ctx, &npool.GetPlanRelatedTestCasesRequest{
 			Conds:  conds,
-			Offset: &offset,
-			Limit:  &limit,
+			Offset: offset,
+			Limit:  limit,
 		})
 		if err != nil {
 			return nil, err
@@ -81,5 +78,5 @@ func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*npool.Module), total, nil
+	return infos.([]*npool.PlanRelatedTestCase), total, nil
 }
