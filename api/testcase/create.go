@@ -21,12 +21,12 @@ func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq
 
 	handler, err := testcase1.NewHandler(
 		ctx,
-		testcase1.WithName(&req.Name),
-		testcase1.WithApiID(&req.ApiID),
+		testcase1.WithName(req.Name),
+		testcase1.WithApiID(req.ApiID),
 		testcase1.WithModuleName(req.ModuleName),
-		testcase1.WithExpectationResult(&req.ExpectationResult),
-		testcase1.WithExpectationResult(&req.ExpectationResult),
-		testcase1.WithArguments(&req.Arguments),
+		testcase1.WithExpectationResult(req.ExpectationResult),
+		testcase1.WithExpectationResult(req.ExpectationResult),
+		testcase1.WithArguments(req.Arguments),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

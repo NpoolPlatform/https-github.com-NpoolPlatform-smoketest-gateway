@@ -15,12 +15,12 @@ func (s *Server) UpdateTestCase(ctx context.Context, in *npool.UpdateTestCaseReq
 	req := in.GetInfo()
 	handler, err := testcase1.NewHandler(
 		ctx,
-		testcase1.WithID(&req.ID),
-		testcase1.WithName(&req.Name),
+		testcase1.WithID(req.ID),
+		testcase1.WithName(req.Name),
 		testcase1.WithDescription(req.Description),
-		testcase1.WithArguments(&req.Arguments),
-		testcase1.WithExpectationResult(&req.ExpectationResult),
-		testcase1.WithDeprecated(&req.Deprecated),
+		testcase1.WithArguments(req.Arguments),
+		testcase1.WithExpectationResult(req.ExpectationResult),
+		testcase1.WithDeprecated(req.Deprecated),
 		testcase1.WithTestCaseType(req.TestCaseType),
 	)
 	if err != nil {
