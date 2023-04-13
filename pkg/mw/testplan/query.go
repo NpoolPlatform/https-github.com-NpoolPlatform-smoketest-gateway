@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
-  npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	enttestplan "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"

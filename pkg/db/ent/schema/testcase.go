@@ -51,7 +51,7 @@ func (TestCase) Fields() []ent.Field {
 			Optional().
 			Default(""),
 		field.
-			String("arg_type_description").
+			Text("arg_type_description").
 			Optional().
 			Default(""),
 		field.
