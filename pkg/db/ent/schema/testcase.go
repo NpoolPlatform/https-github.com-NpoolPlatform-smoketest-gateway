@@ -47,7 +47,7 @@ func (TestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			String("arguments").
+			Text("arguments").
 			Optional().
 			Default(""),
 		field.
@@ -55,7 +55,7 @@ func (TestCase) Fields() []ent.Field {
 			Optional().
 			Default(""),
 		field.
-			String("expectation_result").
+			Text("expectation_result").
 			Optional().
 			Default(""),
 		field.
