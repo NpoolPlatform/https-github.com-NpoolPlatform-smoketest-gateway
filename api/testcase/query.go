@@ -23,9 +23,9 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
-			"GetUsers",
+			"GetTestCases",
 			"In", in,
-			"error", err,
+			"Error", err,
 		)
 		return &npool.GetTestCasesResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
@@ -37,5 +37,30 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	return &npool.GetTestCasesResponse{
 		Infos: infos,
 		Total: total,
+	}, nil
+}
+
+//nolint
+func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) (*npool.GetTestCaseResponse, error) {
+	handler, err := testcase1.NewHandler(
+		ctx,
+		testcase1.WithID(&in.ID),
+	)
+	if err != nil {
+		logger.Sugar().Errorw(
+			"GetTestCase",
+			"In", in,
+			"Error", err,
+		)
+		return &npool.GetTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	info, err := handler.GetTestCase(ctx)
+	if err != nil {
+		return &npool.GetTestCaseResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.GetTestCaseResponse{
+		Info: info,
 	}, nil
 }

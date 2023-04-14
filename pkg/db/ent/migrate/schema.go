@@ -37,7 +37,7 @@ var (
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
-		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 	}
 	// ModulesTable holds the schema information for the "modules" table.
@@ -94,8 +94,9 @@ var (
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "module_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "api_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "arguments", Type: field.TypeString, Nullable: true, Default: ""},
-		{Name: "expectation_result", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "arguments", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
+		{Name: "arg_type_description", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
+		{Name: "expectation_result", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "test_case_type", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseType"},
 		{Name: "deprecated", Type: field.TypeBool, Nullable: true, Default: false},
 	}

@@ -123,10 +123,6 @@ func init() {
 	moduleDescDeletedAt := moduleMixinFields0[2].Descriptor()
 	// module.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	module.DefaultDeletedAt = moduleDescDeletedAt.Default.(func() uint32)
-	// moduleDescName is the schema descriptor for name field.
-	moduleDescName := moduleFields[1].Descriptor()
-	// module.DefaultName holds the default value on creation for the name field.
-	module.DefaultName = moduleDescName.Default.(string)
 	// moduleDescDescription is the schema descriptor for description field.
 	moduleDescDescription := moduleFields[2].Descriptor()
 	// module.DefaultDescription holds the default value on creation for the description field.
@@ -295,16 +291,20 @@ func init() {
 	testcaseDescArguments := testcaseFields[5].Descriptor()
 	// testcase.DefaultArguments holds the default value on creation for the arguments field.
 	testcase.DefaultArguments = testcaseDescArguments.Default.(string)
+	// testcaseDescArgTypeDescription is the schema descriptor for arg_type_description field.
+	testcaseDescArgTypeDescription := testcaseFields[6].Descriptor()
+	// testcase.DefaultArgTypeDescription holds the default value on creation for the arg_type_description field.
+	testcase.DefaultArgTypeDescription = testcaseDescArgTypeDescription.Default.(string)
 	// testcaseDescExpectationResult is the schema descriptor for expectation_result field.
-	testcaseDescExpectationResult := testcaseFields[6].Descriptor()
+	testcaseDescExpectationResult := testcaseFields[7].Descriptor()
 	// testcase.DefaultExpectationResult holds the default value on creation for the expectation_result field.
 	testcase.DefaultExpectationResult = testcaseDescExpectationResult.Default.(string)
 	// testcaseDescTestCaseType is the schema descriptor for test_case_type field.
-	testcaseDescTestCaseType := testcaseFields[7].Descriptor()
+	testcaseDescTestCaseType := testcaseFields[8].Descriptor()
 	// testcase.DefaultTestCaseType holds the default value on creation for the test_case_type field.
 	testcase.DefaultTestCaseType = testcaseDescTestCaseType.Default.(string)
 	// testcaseDescDeprecated is the schema descriptor for deprecated field.
-	testcaseDescDeprecated := testcaseFields[8].Descriptor()
+	testcaseDescDeprecated := testcaseFields[9].Descriptor()
 	// testcase.DefaultDeprecated holds the default value on creation for the deprecated field.
 	testcase.DefaultDeprecated = testcaseDescDeprecated.Default.(bool)
 	// testcaseDescID is the schema descriptor for id field.

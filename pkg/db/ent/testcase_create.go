@@ -135,6 +135,20 @@ func (tcc *TestCaseCreate) SetNillableArguments(s *string) *TestCaseCreate {
 	return tcc
 }
 
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (tcc *TestCaseCreate) SetArgTypeDescription(s string) *TestCaseCreate {
+	tcc.mutation.SetArgTypeDescription(s)
+	return tcc
+}
+
+// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableArgTypeDescription(s *string) *TestCaseCreate {
+	if s != nil {
+		tcc.SetArgTypeDescription(*s)
+	}
+	return tcc
+}
+
 // SetExpectationResult sets the "expectation_result" field.
 func (tcc *TestCaseCreate) SetExpectationResult(s string) *TestCaseCreate {
 	tcc.mutation.SetExpectationResult(s)
@@ -317,6 +331,10 @@ func (tcc *TestCaseCreate) defaults() error {
 		v := testcase.DefaultArguments
 		tcc.mutation.SetArguments(v)
 	}
+	if _, ok := tcc.mutation.ArgTypeDescription(); !ok {
+		v := testcase.DefaultArgTypeDescription
+		tcc.mutation.SetArgTypeDescription(v)
+	}
 	if _, ok := tcc.mutation.ExpectationResult(); !ok {
 		v := testcase.DefaultExpectationResult
 		tcc.mutation.SetExpectationResult(v)
@@ -450,6 +468,14 @@ func (tcc *TestCaseCreate) createSpec() (*TestCase, *sqlgraph.CreateSpec) {
 			Column: testcase.FieldArguments,
 		})
 		_node.Arguments = value
+	}
+	if value, ok := tcc.mutation.ArgTypeDescription(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldArgTypeDescription,
+		})
+		_node.ArgTypeDescription = value
 	}
 	if value, ok := tcc.mutation.ExpectationResult(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -670,6 +696,24 @@ func (u *TestCaseUpsert) UpdateArguments() *TestCaseUpsert {
 // ClearArguments clears the value of the "arguments" field.
 func (u *TestCaseUpsert) ClearArguments() *TestCaseUpsert {
 	u.SetNull(testcase.FieldArguments)
+	return u
+}
+
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (u *TestCaseUpsert) SetArgTypeDescription(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldArgTypeDescription, v)
+	return u
+}
+
+// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateArgTypeDescription() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldArgTypeDescription)
+	return u
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (u *TestCaseUpsert) ClearArgTypeDescription() *TestCaseUpsert {
+	u.SetNull(testcase.FieldArgTypeDescription)
 	return u
 }
 
@@ -942,6 +986,27 @@ func (u *TestCaseUpsertOne) UpdateArguments() *TestCaseUpsertOne {
 func (u *TestCaseUpsertOne) ClearArguments() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearArguments()
+	})
+}
+
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (u *TestCaseUpsertOne) SetArgTypeDescription(v string) *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetArgTypeDescription(v)
+	})
+}
+
+// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateArgTypeDescription() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateArgTypeDescription()
+	})
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (u *TestCaseUpsertOne) ClearArgTypeDescription() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearArgTypeDescription()
 	})
 }
 
@@ -1389,6 +1454,27 @@ func (u *TestCaseUpsertBulk) UpdateArguments() *TestCaseUpsertBulk {
 func (u *TestCaseUpsertBulk) ClearArguments() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearArguments()
+	})
+}
+
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (u *TestCaseUpsertBulk) SetArgTypeDescription(v string) *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetArgTypeDescription(v)
+	})
+}
+
+// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateArgTypeDescription() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateArgTypeDescription()
+	})
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (u *TestCaseUpsertBulk) ClearArgTypeDescription() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearArgTypeDescription()
 	})
 }
 

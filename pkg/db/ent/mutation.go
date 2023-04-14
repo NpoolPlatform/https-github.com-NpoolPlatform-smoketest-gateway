@@ -1621,22 +1621,9 @@ func (m *ModuleMutation) OldName(ctx context.Context) (v string, err error) {
 	return oldValue.Name, nil
 }
 
-// ClearName clears the value of the "name" field.
-func (m *ModuleMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[module.FieldName] = struct{}{}
-}
-
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *ModuleMutation) NameCleared() bool {
-	_, ok := m.clearedFields[module.FieldName]
-	return ok
-}
-
 // ResetName resets all changes to the "name" field.
 func (m *ModuleMutation) ResetName() {
 	m.name = nil
-	delete(m.clearedFields, module.FieldName)
 }
 
 // SetDescription sets the "description" field.
@@ -1873,9 +1860,6 @@ func (m *ModuleMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *ModuleMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(module.FieldName) {
-		fields = append(fields, module.FieldName)
-	}
 	if m.FieldCleared(module.FieldDescription) {
 		fields = append(fields, module.FieldDescription)
 	}
@@ -1893,9 +1877,6 @@ func (m *ModuleMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *ModuleMutation) ClearField(name string) error {
 	switch name {
-	case module.FieldName:
-		m.ClearName()
-		return nil
 	case module.FieldDescription:
 		m.ClearDescription()
 		return nil
@@ -3981,27 +3962,28 @@ func (m *RelatedTestCaseMutation) ResetEdge(name string) error {
 // TestCaseMutation represents an operation that mutates the TestCase nodes in the graph.
 type TestCaseMutation struct {
 	config
-	op                 Op
-	typ                string
-	id                 *uuid.UUID
-	created_at         *uint32
-	addcreated_at      *int32
-	updated_at         *uint32
-	addupdated_at      *int32
-	deleted_at         *uint32
-	adddeleted_at      *int32
-	name               *string
-	description        *string
-	module_id          *uuid.UUID
-	api_id             *uuid.UUID
-	arguments          *string
-	expectation_result *string
-	test_case_type     *string
-	deprecated         *bool
-	clearedFields      map[string]struct{}
-	done               bool
-	oldValue           func(context.Context) (*TestCase, error)
-	predicates         []predicate.TestCase
+	op                   Op
+	typ                  string
+	id                   *uuid.UUID
+	created_at           *uint32
+	addcreated_at        *int32
+	updated_at           *uint32
+	addupdated_at        *int32
+	deleted_at           *uint32
+	adddeleted_at        *int32
+	name                 *string
+	description          *string
+	module_id            *uuid.UUID
+	api_id               *uuid.UUID
+	arguments            *string
+	arg_type_description *string
+	expectation_result   *string
+	test_case_type       *string
+	deprecated           *bool
+	clearedFields        map[string]struct{}
+	done                 bool
+	oldValue             func(context.Context) (*TestCase, error)
+	predicates           []predicate.TestCase
 }
 
 var _ ent.Mutation = (*TestCaseMutation)(nil)
@@ -4521,6 +4503,55 @@ func (m *TestCaseMutation) ResetArguments() {
 	delete(m.clearedFields, testcase.FieldArguments)
 }
 
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (m *TestCaseMutation) SetArgTypeDescription(s string) {
+	m.arg_type_description = &s
+}
+
+// ArgTypeDescription returns the value of the "arg_type_description" field in the mutation.
+func (m *TestCaseMutation) ArgTypeDescription() (r string, exists bool) {
+	v := m.arg_type_description
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldArgTypeDescription returns the old "arg_type_description" field's value of the TestCase entity.
+// If the TestCase object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestCaseMutation) OldArgTypeDescription(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldArgTypeDescription is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldArgTypeDescription requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldArgTypeDescription: %w", err)
+	}
+	return oldValue.ArgTypeDescription, nil
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (m *TestCaseMutation) ClearArgTypeDescription() {
+	m.arg_type_description = nil
+	m.clearedFields[testcase.FieldArgTypeDescription] = struct{}{}
+}
+
+// ArgTypeDescriptionCleared returns if the "arg_type_description" field was cleared in this mutation.
+func (m *TestCaseMutation) ArgTypeDescriptionCleared() bool {
+	_, ok := m.clearedFields[testcase.FieldArgTypeDescription]
+	return ok
+}
+
+// ResetArgTypeDescription resets all changes to the "arg_type_description" field.
+func (m *TestCaseMutation) ResetArgTypeDescription() {
+	m.arg_type_description = nil
+	delete(m.clearedFields, testcase.FieldArgTypeDescription)
+}
+
 // SetExpectationResult sets the "expectation_result" field.
 func (m *TestCaseMutation) SetExpectationResult(s string) {
 	m.expectation_result = &s
@@ -4687,7 +4718,7 @@ func (m *TestCaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestCaseMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, testcase.FieldCreatedAt)
 	}
@@ -4711,6 +4742,9 @@ func (m *TestCaseMutation) Fields() []string {
 	}
 	if m.arguments != nil {
 		fields = append(fields, testcase.FieldArguments)
+	}
+	if m.arg_type_description != nil {
+		fields = append(fields, testcase.FieldArgTypeDescription)
 	}
 	if m.expectation_result != nil {
 		fields = append(fields, testcase.FieldExpectationResult)
@@ -4745,6 +4779,8 @@ func (m *TestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.APIID()
 	case testcase.FieldArguments:
 		return m.Arguments()
+	case testcase.FieldArgTypeDescription:
+		return m.ArgTypeDescription()
 	case testcase.FieldExpectationResult:
 		return m.ExpectationResult()
 	case testcase.FieldTestCaseType:
@@ -4776,6 +4812,8 @@ func (m *TestCaseMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldAPIID(ctx)
 	case testcase.FieldArguments:
 		return m.OldArguments(ctx)
+	case testcase.FieldArgTypeDescription:
+		return m.OldArgTypeDescription(ctx)
 	case testcase.FieldExpectationResult:
 		return m.OldExpectationResult(ctx)
 	case testcase.FieldTestCaseType:
@@ -4846,6 +4884,13 @@ func (m *TestCaseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetArguments(v)
+		return nil
+	case testcase.FieldArgTypeDescription:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetArgTypeDescription(v)
 		return nil
 	case testcase.FieldExpectationResult:
 		v, ok := value.(string)
@@ -4952,6 +4997,9 @@ func (m *TestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(testcase.FieldArguments) {
 		fields = append(fields, testcase.FieldArguments)
 	}
+	if m.FieldCleared(testcase.FieldArgTypeDescription) {
+		fields = append(fields, testcase.FieldArgTypeDescription)
+	}
 	if m.FieldCleared(testcase.FieldExpectationResult) {
 		fields = append(fields, testcase.FieldExpectationResult)
 	}
@@ -4989,6 +5037,9 @@ func (m *TestCaseMutation) ClearField(name string) error {
 		return nil
 	case testcase.FieldArguments:
 		m.ClearArguments()
+		return nil
+	case testcase.FieldArgTypeDescription:
+		m.ClearArgTypeDescription()
 		return nil
 	case testcase.FieldExpectationResult:
 		m.ClearExpectationResult()
@@ -5030,6 +5081,9 @@ func (m *TestCaseMutation) ResetField(name string) error {
 		return nil
 	case testcase.FieldArguments:
 		m.ResetArguments()
+		return nil
+	case testcase.FieldArgTypeDescription:
+		m.ResetArgTypeDescription()
 		return nil
 	case testcase.FieldExpectationResult:
 		m.ResetExpectationResult()

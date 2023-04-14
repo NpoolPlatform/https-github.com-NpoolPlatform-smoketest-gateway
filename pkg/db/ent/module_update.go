@@ -89,20 +89,6 @@ func (mu *ModuleUpdate) SetName(s string) *ModuleUpdate {
 	return mu
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (mu *ModuleUpdate) SetNillableName(s *string) *ModuleUpdate {
-	if s != nil {
-		mu.SetName(*s)
-	}
-	return mu
-}
-
-// ClearName clears the value of the "name" field.
-func (mu *ModuleUpdate) ClearName() *ModuleUpdate {
-	mu.mutation.ClearName()
-	return mu
-}
-
 // SetDescription sets the "description" field.
 func (mu *ModuleUpdate) SetDescription(s string) *ModuleUpdate {
 	mu.mutation.SetDescription(s)
@@ -270,12 +256,6 @@ func (mu *ModuleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: module.FieldName,
 		})
 	}
-	if mu.mutation.NameCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: module.FieldName,
-		})
-	}
 	if value, ok := mu.mutation.Description(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -368,20 +348,6 @@ func (muo *ModuleUpdateOne) AddDeletedAt(u int32) *ModuleUpdateOne {
 // SetName sets the "name" field.
 func (muo *ModuleUpdateOne) SetName(s string) *ModuleUpdateOne {
 	muo.mutation.SetName(s)
-	return muo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (muo *ModuleUpdateOne) SetNillableName(s *string) *ModuleUpdateOne {
-	if s != nil {
-		muo.SetName(*s)
-	}
-	return muo
-}
-
-// ClearName clears the value of the "name" field.
-func (muo *ModuleUpdateOne) ClearName() *ModuleUpdateOne {
-	muo.mutation.ClearName()
 	return muo
 }
 
@@ -579,12 +545,6 @@ func (muo *ModuleUpdateOne) sqlSave(ctx context.Context) (_node *Module, err err
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: module.FieldName,
-		})
-	}
-	if muo.mutation.NameCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
 			Column: module.FieldName,
 		})
 	}

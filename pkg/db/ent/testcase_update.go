@@ -184,6 +184,26 @@ func (tcu *TestCaseUpdate) ClearArguments() *TestCaseUpdate {
 	return tcu
 }
 
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (tcu *TestCaseUpdate) SetArgTypeDescription(s string) *TestCaseUpdate {
+	tcu.mutation.SetArgTypeDescription(s)
+	return tcu
+}
+
+// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableArgTypeDescription(s *string) *TestCaseUpdate {
+	if s != nil {
+		tcu.SetArgTypeDescription(*s)
+	}
+	return tcu
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (tcu *TestCaseUpdate) ClearArgTypeDescription() *TestCaseUpdate {
+	tcu.mutation.ClearArgTypeDescription()
+	return tcu
+}
+
 // SetExpectationResult sets the "expectation_result" field.
 func (tcu *TestCaseUpdate) SetExpectationResult(s string) *TestCaseUpdate {
 	tcu.mutation.SetExpectationResult(s)
@@ -449,6 +469,19 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: testcase.FieldArguments,
 		})
 	}
+	if value, ok := tcu.mutation.ArgTypeDescription(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldArgTypeDescription,
+		})
+	}
+	if tcu.mutation.ArgTypeDescriptionCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldArgTypeDescription,
+		})
+	}
 	if value, ok := tcu.mutation.ExpectationResult(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -661,6 +694,26 @@ func (tcuo *TestCaseUpdateOne) SetNillableArguments(s *string) *TestCaseUpdateOn
 // ClearArguments clears the value of the "arguments" field.
 func (tcuo *TestCaseUpdateOne) ClearArguments() *TestCaseUpdateOne {
 	tcuo.mutation.ClearArguments()
+	return tcuo
+}
+
+// SetArgTypeDescription sets the "arg_type_description" field.
+func (tcuo *TestCaseUpdateOne) SetArgTypeDescription(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetArgTypeDescription(s)
+	return tcuo
+}
+
+// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableArgTypeDescription(s *string) *TestCaseUpdateOne {
+	if s != nil {
+		tcuo.SetArgTypeDescription(*s)
+	}
+	return tcuo
+}
+
+// ClearArgTypeDescription clears the value of the "arg_type_description" field.
+func (tcuo *TestCaseUpdateOne) ClearArgTypeDescription() *TestCaseUpdateOne {
+	tcuo.mutation.ClearArgTypeDescription()
 	return tcuo
 }
 
@@ -957,6 +1010,19 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testcase.FieldArguments,
+		})
+	}
+	if value, ok := tcuo.mutation.ArgTypeDescription(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldArgTypeDescription,
+		})
+	}
+	if tcuo.mutation.ArgTypeDescriptionCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldArgTypeDescription,
 		})
 	}
 	if value, ok := tcuo.mutation.ExpectationResult(); ok {

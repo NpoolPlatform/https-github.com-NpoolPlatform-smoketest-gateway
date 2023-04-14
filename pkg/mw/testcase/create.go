@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	commonpb "github.com/NpoolPlatform/message/npool"
 	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
@@ -18,6 +20,26 @@ type createHandler struct {
 }
 
 func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
+	exist, err := modulecrud.Exist(ctx, *h.ModuleName)
+	if err != nil {
+		return err
+	}
+
+	if exist {
+		info, err := modulecrud.RowOnly(ctx, &modulemgrpb.Conds{
+			Name: &commonpb.StringVal{
+				Op:    cruder.EQ,
+				Value: *h.ModuleName,
+			},
+		})
+		if err != nil {
+			return err
+		}
+		moduleID := info.ID.String()
+		h.ModuleID = &moduleID
+		return nil
+	}
+
 	info, err := modulecrud.CreateSet(
 		tx.Module.Create(),
 		&modulemgrpb.ModuleReq{
@@ -38,13 +60,14 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 	info, err := testcasecrud.CreateSet(
 		tx.TestCase.Create(),
 		&testcasemgrpb.TestCaseReq{
-			Name:              h.Name,
-			Arguments:         h.Arguments,
-			ModuleID:          h.ModuleID,
-			ApiID:             h.APIID,
-			Description:       h.Description,
-			ExpectationResult: h.ExpectationResult,
-			TestCaseType:      h.TestCaseType,
+			Name:               h.Name,
+			Arguments:          h.Arguments,
+			ArgTypeDescription: h.ArgTypeDescription,
+			ModuleID:           h.ModuleID,
+			ApiID:              h.ApiID,
+			Description:        h.Description,
+			ExpectationResult:  h.ExpectationResult,
+			TestCaseType:       h.TestCaseType,
 		},
 	).Save(ctx)
 	if err != nil {
@@ -57,17 +80,10 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 	return nil
 }
 
-func (h *Handler) Create(ctx context.Context) (info *npool.TestCase, err error) {
+func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err error) {
 	handler := &createHandler{
 		Handler: h,
 	}
-	// 根据ApiID查询
-	// TODO
-
-	// 如果传递了ModuleID则根据ModuleID查询Module
-	// TODO
-
-	// 如果未传递ModuleID,传递了ModuleName则创建Module
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
 		if err := handler.createModule(_ctx, tx); err != nil {
 			return err

@@ -28,6 +28,7 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
 		enttestcase.FieldArguments,
+		enttestcase.FieldArgTypeDescription,
 		enttestcase.FieldExpectationResult,
 		enttestcase.FieldDeprecated,
 		enttestcase.FieldCreatedAt,
@@ -80,11 +81,24 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 			enttestcase.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
 		)
 	}
+	if h.Conds.ModuleID != nil {
+		stm = stm.Where(
+			enttestcase.ModuleID(uuid.MustParse(h.Conds.GetModuleID().GetValue())),
+		)
+	}
 
 	if h.Conds.Deprecated != nil {
 		stm = stm.Where(
 			enttestcase.Deprecated(h.Conds.GetDeprecated().GetValue()),
 		)
+	}
+
+	if h.Offset != nil {
+		stm = stm.Offset(int(*h.Offset))
+	}
+
+	if h.Limit != nil {
+		stm = stm.Limit(int(*h.Limit))
 	}
 
 	total, err := stm.Count(ctx)
@@ -127,8 +141,6 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 	handler := &queryHandler{
 		Handler: h,
 	}
-
-	fmt.Println("ID: ", *handler.ID)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		if err := handler.queryTestCase(cli); err != nil {

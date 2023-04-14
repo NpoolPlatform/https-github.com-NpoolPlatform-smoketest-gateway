@@ -21,9 +21,6 @@ func CreateSet(c *ent.RelatedTestCaseCreate, in *npool.RelatedTestCaseReq) *ent.
 	if in.RelatedTestCaseID != nil {
 		c.SetRelatedTestCaseID(uuid.MustParse(in.GetRelatedTestCaseID()))
 	}
-	if in.ArgumentsTransfer != nil {
-		c.SetArgumentsTransfer(in.GetArgumentsTransfer())
-	}
 	if in.Index != nil {
 		c.SetIndex(in.GetIndex())
 	}

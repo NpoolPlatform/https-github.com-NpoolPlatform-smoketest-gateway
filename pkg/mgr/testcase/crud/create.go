@@ -30,6 +30,9 @@ func CreateSet(c *ent.TestCaseCreate, in *npool.TestCaseReq) *ent.TestCaseCreate
 	if in.Arguments != nil {
 		c.SetArguments(in.GetArguments())
 	}
+	if in.ArgTypeDescription != nil {
+		c.SetArgTypeDescription(in.GetArgTypeDescription())
+	}
 	if in.ExpectationResult != nil {
 		c.SetExpectationResult(in.GetExpectationResult())
 	}

@@ -135,6 +135,13 @@ func Arguments(v string) predicate.TestCase {
 	})
 }
 
+// ArgTypeDescription applies equality check predicate on the "arg_type_description" field. It's identical to ArgTypeDescriptionEQ.
+func ArgTypeDescription(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldArgTypeDescription), v))
+	})
+}
+
 // ExpectationResult applies equality check predicate on the "expectation_result" field. It's identical to ExpectationResultEQ.
 func ExpectationResult(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
@@ -840,6 +847,119 @@ func ArgumentsEqualFold(v string) predicate.TestCase {
 func ArgumentsContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldArguments), v))
+	})
+}
+
+// ArgTypeDescriptionEQ applies the EQ predicate on the "arg_type_description" field.
+func ArgTypeDescriptionEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionNEQ applies the NEQ predicate on the "arg_type_description" field.
+func ArgTypeDescriptionNEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionIn applies the In predicate on the "arg_type_description" field.
+func ArgTypeDescriptionIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldArgTypeDescription), v...))
+	})
+}
+
+// ArgTypeDescriptionNotIn applies the NotIn predicate on the "arg_type_description" field.
+func ArgTypeDescriptionNotIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldArgTypeDescription), v...))
+	})
+}
+
+// ArgTypeDescriptionGT applies the GT predicate on the "arg_type_description" field.
+func ArgTypeDescriptionGT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionGTE applies the GTE predicate on the "arg_type_description" field.
+func ArgTypeDescriptionGTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionLT applies the LT predicate on the "arg_type_description" field.
+func ArgTypeDescriptionLT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionLTE applies the LTE predicate on the "arg_type_description" field.
+func ArgTypeDescriptionLTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionContains applies the Contains predicate on the "arg_type_description" field.
+func ArgTypeDescriptionContains(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionHasPrefix applies the HasPrefix predicate on the "arg_type_description" field.
+func ArgTypeDescriptionHasPrefix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionHasSuffix applies the HasSuffix predicate on the "arg_type_description" field.
+func ArgTypeDescriptionHasSuffix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionIsNil applies the IsNil predicate on the "arg_type_description" field.
+func ArgTypeDescriptionIsNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldArgTypeDescription)))
+	})
+}
+
+// ArgTypeDescriptionNotNil applies the NotNil predicate on the "arg_type_description" field.
+func ArgTypeDescriptionNotNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldArgTypeDescription)))
+	})
+}
+
+// ArgTypeDescriptionEqualFold applies the EqualFold predicate on the "arg_type_description" field.
+func ArgTypeDescriptionEqualFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldArgTypeDescription), v))
+	})
+}
+
+// ArgTypeDescriptionContainsFold applies the ContainsFold predicate on the "arg_type_description" field.
+func ArgTypeDescriptionContainsFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldArgTypeDescription), v))
 	})
 }
 

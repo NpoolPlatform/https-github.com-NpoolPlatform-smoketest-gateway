@@ -8,10 +8,31 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
 
-func UpdateSet(info *ent.Module, in *npool.TestCaseReq) *ent.ModuleUpdateOne {
-	return info.Update()
+func UpdateSet(info *ent.TestCaseUpdateOne, in *npool.TestCaseReq) *ent.TestCaseUpdateOne {
+	if in.Name != nil {
+		info.SetName(in.GetName())
+	}
+	if in.Description != nil {
+		info.SetDescription(in.GetDescription())
+	}
+	if in.Arguments != nil {
+		info.SetArguments(in.GetArguments())
+	}
+	if in.ArgTypeDescription != nil {
+		info.SetArgTypeDescription(in.GetArgTypeDescription())
+	}
+	if in.ExpectationResult != nil {
+		info.SetExpectationResult(in.GetExpectationResult())
+	}
+	if in.TestCaseType != nil {
+		info.SetTestCaseType(in.GetTestCaseType().String())
+	}
+	if in.Deprecated != nil {
+		info.SetDeprecated(in.GetDeprecated())
+	}
+	return info
 }
 
-func Update(ctx context.Context, in *npool.TestCaseReq) (*ent.Module, error) {
+func Update(ctx context.Context, in *npool.TestCaseReq) (*ent.TestCaseUpdateOne, error) {
 	return nil, nil
 }
