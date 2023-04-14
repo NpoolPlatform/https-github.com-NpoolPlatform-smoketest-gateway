@@ -3,7 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	"github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/mixin"
 	"github.com/google/uuid"
 )
@@ -69,7 +69,7 @@ func (TestPlan) Fields() []ent.Field {
 		field.
 			String("test_result").
 			Optional().
-			Default(testplan.TestResultState_DefaultTestResultState.String()),
+			Default(testplan.TestResultState_DefaultTestTestState.String()),
 	}
 }
 
