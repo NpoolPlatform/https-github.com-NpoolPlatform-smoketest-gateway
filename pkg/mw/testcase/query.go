@@ -101,7 +101,6 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 	h.total = uint32(total)
 
 	_, err = stm.Offset(int(*h.Offset)).Limit(int(*h.Limit)).All(ctx)
-
 	if err != nil {
 		return nil
 	}
