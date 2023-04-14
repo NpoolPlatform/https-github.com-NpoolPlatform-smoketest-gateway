@@ -93,20 +93,18 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 		)
 	}
 
-	if h.Offset != nil {
-		stm = stm.Offset(int(*h.Offset))
-	}
-
-	if h.Limit != nil {
-		stm = stm.Limit(int(*h.Limit))
-	}
-
 	total, err := stm.Count(ctx)
 	if err != nil {
 		return err
 	}
 
 	h.total = uint32(total)
+
+	_, err = stm.Offset(int(*h.Offset)).Limit(int(*h.Limit)).All(ctx)
+
+	if err != nil {
+		return nil
+	}
 
 	h.selectTestCase(stm)
 	return nil
