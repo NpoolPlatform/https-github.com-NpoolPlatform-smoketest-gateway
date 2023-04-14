@@ -7,7 +7,9 @@ import (
 
 	"github.com/NpoolPlatform/smoketest-middleware/api/detail"
 	"github.com/NpoolPlatform/smoketest-middleware/api/module"
+	"github.com/NpoolPlatform/smoketest-middleware/api/planrelatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testcase"
+	"github.com/NpoolPlatform/smoketest-middleware/api/testplan"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -22,6 +24,8 @@ func Register(server grpc.ServiceRegistrar) {
 	detail.Register(server)
 	testcase.Register(server)
 	module.Register(server)
+	testplan.Register(server)
+	planrelatedtestcase.Register(server)
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
