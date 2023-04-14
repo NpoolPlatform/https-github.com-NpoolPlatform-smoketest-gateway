@@ -26,12 +26,12 @@ const (
 	FieldOwnerID = "owner_id"
 	// FieldResponsibleUserID holds the string denoting the responsible_user_id field in the database.
 	FieldResponsibleUserID = "responsible_user_id"
-	// FieldFailedTestCaseCount holds the string denoting the failed_test_case_count field in the database.
-	FieldFailedTestCaseCount = "failed_test_case_count"
-	// FieldPassedTestCaseCount holds the string denoting the passed_test_case_count field in the database.
-	FieldPassedTestCaseCount = "passed_test_case_count"
-	// FieldSkippedTestCaseCount holds the string denoting the skipped_test_case_count field in the database.
-	FieldSkippedTestCaseCount = "skipped_test_case_count"
+	// FieldFailedTestCasesCount holds the string denoting the failed_test_cases_count field in the database.
+	FieldFailedTestCasesCount = "failed_test_cases_count"
+	// FieldPassedTestCasesCount holds the string denoting the passed_test_cases_count field in the database.
+	FieldPassedTestCasesCount = "passed_test_cases_count"
+	// FieldSkippedTestCasesCount holds the string denoting the skipped_test_cases_count field in the database.
+	FieldSkippedTestCasesCount = "skipped_test_cases_count"
 	// FieldRunDuration holds the string denoting the run_duration field in the database.
 	FieldRunDuration = "run_duration"
 	// FieldDeadline holds the string denoting the deadline field in the database.
@@ -52,9 +52,9 @@ var Columns = []string{
 	FieldState,
 	FieldOwnerID,
 	FieldResponsibleUserID,
-	FieldFailedTestCaseCount,
-	FieldPassedTestCaseCount,
-	FieldSkippedTestCaseCount,
+	FieldFailedTestCasesCount,
+	FieldPassedTestCasesCount,
+	FieldSkippedTestCasesCount,
 	FieldRunDuration,
 	FieldDeadline,
 	FieldTestResult,
@@ -95,12 +95,12 @@ var (
 	DefaultOwnerID func() uuid.UUID
 	// DefaultResponsibleUserID holds the default value on creation for the "responsible_user_id" field.
 	DefaultResponsibleUserID func() uuid.UUID
-	// DefaultFailedTestCaseCount holds the default value on creation for the "failed_test_case_count" field.
-	DefaultFailedTestCaseCount uint32
-	// DefaultPassedTestCaseCount holds the default value on creation for the "passed_test_case_count" field.
-	DefaultPassedTestCaseCount uint32
-	// DefaultSkippedTestCaseCount holds the default value on creation for the "skipped_test_case_count" field.
-	DefaultSkippedTestCaseCount uint32
+	// DefaultFailedTestCasesCount holds the default value on creation for the "failed_test_cases_count" field.
+	DefaultFailedTestCasesCount uint32
+	// DefaultPassedTestCasesCount holds the default value on creation for the "passed_test_cases_count" field.
+	DefaultPassedTestCasesCount uint32
+	// DefaultSkippedTestCasesCount holds the default value on creation for the "skipped_test_cases_count" field.
+	DefaultSkippedTestCasesCount uint32
 	// DefaultRunDuration holds the default value on creation for the "run_duration" field.
 	DefaultRunDuration uint32
 	// DefaultDeadline holds the default value on creation for the "deadline" field.

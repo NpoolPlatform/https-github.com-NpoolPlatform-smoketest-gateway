@@ -30,12 +30,12 @@ type TestPlan struct {
 	OwnerID uuid.UUID `json:"owner_id,omitempty"`
 	// ResponsibleUserID holds the value of the "responsible_user_id" field.
 	ResponsibleUserID uuid.UUID `json:"responsible_user_id,omitempty"`
-	// FailedTestCaseCount holds the value of the "failed_test_case_count" field.
-	FailedTestCaseCount uint32 `json:"failed_test_case_count,omitempty"`
-	// PassedTestCaseCount holds the value of the "passed_test_case_count" field.
-	PassedTestCaseCount uint32 `json:"passed_test_case_count,omitempty"`
-	// SkippedTestCaseCount holds the value of the "skipped_test_case_count" field.
-	SkippedTestCaseCount uint32 `json:"skipped_test_case_count,omitempty"`
+	// FailedTestCasesCount holds the value of the "failed_test_cases_count" field.
+	FailedTestCasesCount uint32 `json:"failed_test_cases_count,omitempty"`
+	// PassedTestCasesCount holds the value of the "passed_test_cases_count" field.
+	PassedTestCasesCount uint32 `json:"passed_test_cases_count,omitempty"`
+	// SkippedTestCasesCount holds the value of the "skipped_test_cases_count" field.
+	SkippedTestCasesCount uint32 `json:"skipped_test_cases_count,omitempty"`
 	// RunDuration holds the value of the "run_duration" field.
 	RunDuration uint32 `json:"run_duration,omitempty"`
 	// Deadline holds the value of the "deadline" field.
@@ -49,7 +49,7 @@ func (*TestPlan) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case testplan.FieldCreatedAt, testplan.FieldUpdatedAt, testplan.FieldDeletedAt, testplan.FieldFailedTestCaseCount, testplan.FieldPassedTestCaseCount, testplan.FieldSkippedTestCaseCount, testplan.FieldRunDuration, testplan.FieldDeadline:
+		case testplan.FieldCreatedAt, testplan.FieldUpdatedAt, testplan.FieldDeletedAt, testplan.FieldFailedTestCasesCount, testplan.FieldPassedTestCasesCount, testplan.FieldSkippedTestCasesCount, testplan.FieldRunDuration, testplan.FieldDeadline:
 			values[i] = new(sql.NullInt64)
 		case testplan.FieldName, testplan.FieldState, testplan.FieldTestResult:
 			values[i] = new(sql.NullString)
@@ -118,23 +118,23 @@ func (tp *TestPlan) assignValues(columns []string, values []interface{}) error {
 			} else if value != nil {
 				tp.ResponsibleUserID = *value
 			}
-		case testplan.FieldFailedTestCaseCount:
+		case testplan.FieldFailedTestCasesCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field failed_test_case_count", values[i])
+				return fmt.Errorf("unexpected type %T for field failed_test_cases_count", values[i])
 			} else if value.Valid {
-				tp.FailedTestCaseCount = uint32(value.Int64)
+				tp.FailedTestCasesCount = uint32(value.Int64)
 			}
-		case testplan.FieldPassedTestCaseCount:
+		case testplan.FieldPassedTestCasesCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field passed_test_case_count", values[i])
+				return fmt.Errorf("unexpected type %T for field passed_test_cases_count", values[i])
 			} else if value.Valid {
-				tp.PassedTestCaseCount = uint32(value.Int64)
+				tp.PassedTestCasesCount = uint32(value.Int64)
 			}
-		case testplan.FieldSkippedTestCaseCount:
+		case testplan.FieldSkippedTestCasesCount:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field skipped_test_case_count", values[i])
+				return fmt.Errorf("unexpected type %T for field skipped_test_cases_count", values[i])
 			} else if value.Valid {
-				tp.SkippedTestCaseCount = uint32(value.Int64)
+				tp.SkippedTestCasesCount = uint32(value.Int64)
 			}
 		case testplan.FieldRunDuration:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -203,14 +203,14 @@ func (tp *TestPlan) String() string {
 	builder.WriteString("responsible_user_id=")
 	builder.WriteString(fmt.Sprintf("%v", tp.ResponsibleUserID))
 	builder.WriteString(", ")
-	builder.WriteString("failed_test_case_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.FailedTestCaseCount))
+	builder.WriteString("failed_test_cases_count=")
+	builder.WriteString(fmt.Sprintf("%v", tp.FailedTestCasesCount))
 	builder.WriteString(", ")
-	builder.WriteString("passed_test_case_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.PassedTestCaseCount))
+	builder.WriteString("passed_test_cases_count=")
+	builder.WriteString(fmt.Sprintf("%v", tp.PassedTestCasesCount))
 	builder.WriteString(", ")
-	builder.WriteString("skipped_test_case_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.SkippedTestCaseCount))
+	builder.WriteString("skipped_test_cases_count=")
+	builder.WriteString(fmt.Sprintf("%v", tp.SkippedTestCasesCount))
 	builder.WriteString(", ")
 	builder.WriteString("run_duration=")
 	builder.WriteString(fmt.Sprintf("%v", tp.RunDuration))

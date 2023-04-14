@@ -164,84 +164,84 @@ func (tpu *TestPlanUpdate) ClearResponsibleUserID() *TestPlanUpdate {
 	return tpu
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (tpu *TestPlanUpdate) SetFailedTestCaseCount(u uint32) *TestPlanUpdate {
-	tpu.mutation.ResetFailedTestCaseCount()
-	tpu.mutation.SetFailedTestCaseCount(u)
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (tpu *TestPlanUpdate) SetFailedTestCasesCount(u uint32) *TestPlanUpdate {
+	tpu.mutation.ResetFailedTestCasesCount()
+	tpu.mutation.SetFailedTestCasesCount(u)
 	return tpu
 }
 
-// SetNillableFailedTestCaseCount sets the "failed_test_case_count" field if the given value is not nil.
-func (tpu *TestPlanUpdate) SetNillableFailedTestCaseCount(u *uint32) *TestPlanUpdate {
+// SetNillableFailedTestCasesCount sets the "failed_test_cases_count" field if the given value is not nil.
+func (tpu *TestPlanUpdate) SetNillableFailedTestCasesCount(u *uint32) *TestPlanUpdate {
 	if u != nil {
-		tpu.SetFailedTestCaseCount(*u)
+		tpu.SetFailedTestCasesCount(*u)
 	}
 	return tpu
 }
 
-// AddFailedTestCaseCount adds u to the "failed_test_case_count" field.
-func (tpu *TestPlanUpdate) AddFailedTestCaseCount(u int32) *TestPlanUpdate {
-	tpu.mutation.AddFailedTestCaseCount(u)
+// AddFailedTestCasesCount adds u to the "failed_test_cases_count" field.
+func (tpu *TestPlanUpdate) AddFailedTestCasesCount(u int32) *TestPlanUpdate {
+	tpu.mutation.AddFailedTestCasesCount(u)
 	return tpu
 }
 
-// ClearFailedTestCaseCount clears the value of the "failed_test_case_count" field.
-func (tpu *TestPlanUpdate) ClearFailedTestCaseCount() *TestPlanUpdate {
-	tpu.mutation.ClearFailedTestCaseCount()
+// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
+func (tpu *TestPlanUpdate) ClearFailedTestCasesCount() *TestPlanUpdate {
+	tpu.mutation.ClearFailedTestCasesCount()
 	return tpu
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (tpu *TestPlanUpdate) SetPassedTestCaseCount(u uint32) *TestPlanUpdate {
-	tpu.mutation.ResetPassedTestCaseCount()
-	tpu.mutation.SetPassedTestCaseCount(u)
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (tpu *TestPlanUpdate) SetPassedTestCasesCount(u uint32) *TestPlanUpdate {
+	tpu.mutation.ResetPassedTestCasesCount()
+	tpu.mutation.SetPassedTestCasesCount(u)
 	return tpu
 }
 
-// SetNillablePassedTestCaseCount sets the "passed_test_case_count" field if the given value is not nil.
-func (tpu *TestPlanUpdate) SetNillablePassedTestCaseCount(u *uint32) *TestPlanUpdate {
+// SetNillablePassedTestCasesCount sets the "passed_test_cases_count" field if the given value is not nil.
+func (tpu *TestPlanUpdate) SetNillablePassedTestCasesCount(u *uint32) *TestPlanUpdate {
 	if u != nil {
-		tpu.SetPassedTestCaseCount(*u)
+		tpu.SetPassedTestCasesCount(*u)
 	}
 	return tpu
 }
 
-// AddPassedTestCaseCount adds u to the "passed_test_case_count" field.
-func (tpu *TestPlanUpdate) AddPassedTestCaseCount(u int32) *TestPlanUpdate {
-	tpu.mutation.AddPassedTestCaseCount(u)
+// AddPassedTestCasesCount adds u to the "passed_test_cases_count" field.
+func (tpu *TestPlanUpdate) AddPassedTestCasesCount(u int32) *TestPlanUpdate {
+	tpu.mutation.AddPassedTestCasesCount(u)
 	return tpu
 }
 
-// ClearPassedTestCaseCount clears the value of the "passed_test_case_count" field.
-func (tpu *TestPlanUpdate) ClearPassedTestCaseCount() *TestPlanUpdate {
-	tpu.mutation.ClearPassedTestCaseCount()
+// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
+func (tpu *TestPlanUpdate) ClearPassedTestCasesCount() *TestPlanUpdate {
+	tpu.mutation.ClearPassedTestCasesCount()
 	return tpu
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (tpu *TestPlanUpdate) SetSkippedTestCaseCount(u uint32) *TestPlanUpdate {
-	tpu.mutation.ResetSkippedTestCaseCount()
-	tpu.mutation.SetSkippedTestCaseCount(u)
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (tpu *TestPlanUpdate) SetSkippedTestCasesCount(u uint32) *TestPlanUpdate {
+	tpu.mutation.ResetSkippedTestCasesCount()
+	tpu.mutation.SetSkippedTestCasesCount(u)
 	return tpu
 }
 
-// SetNillableSkippedTestCaseCount sets the "skipped_test_case_count" field if the given value is not nil.
-func (tpu *TestPlanUpdate) SetNillableSkippedTestCaseCount(u *uint32) *TestPlanUpdate {
+// SetNillableSkippedTestCasesCount sets the "skipped_test_cases_count" field if the given value is not nil.
+func (tpu *TestPlanUpdate) SetNillableSkippedTestCasesCount(u *uint32) *TestPlanUpdate {
 	if u != nil {
-		tpu.SetSkippedTestCaseCount(*u)
+		tpu.SetSkippedTestCasesCount(*u)
 	}
 	return tpu
 }
 
-// AddSkippedTestCaseCount adds u to the "skipped_test_case_count" field.
-func (tpu *TestPlanUpdate) AddSkippedTestCaseCount(u int32) *TestPlanUpdate {
-	tpu.mutation.AddSkippedTestCaseCount(u)
+// AddSkippedTestCasesCount adds u to the "skipped_test_cases_count" field.
+func (tpu *TestPlanUpdate) AddSkippedTestCasesCount(u int32) *TestPlanUpdate {
+	tpu.mutation.AddSkippedTestCasesCount(u)
 	return tpu
 }
 
-// ClearSkippedTestCaseCount clears the value of the "skipped_test_case_count" field.
-func (tpu *TestPlanUpdate) ClearSkippedTestCaseCount() *TestPlanUpdate {
-	tpu.mutation.ClearSkippedTestCaseCount()
+// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
+func (tpu *TestPlanUpdate) ClearSkippedTestCasesCount() *TestPlanUpdate {
+	tpu.mutation.ClearSkippedTestCasesCount()
 	return tpu
 }
 
@@ -511,64 +511,64 @@ func (tpu *TestPlanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: testplan.FieldResponsibleUserID,
 		})
 	}
-	if value, ok := tpu.mutation.FailedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.FailedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if value, ok := tpu.mutation.AddedFailedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.AddedFailedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if tpu.mutation.FailedTestCaseCountCleared() {
+	if tpu.mutation.FailedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if value, ok := tpu.mutation.PassedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.PassedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if value, ok := tpu.mutation.AddedPassedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.AddedPassedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if tpu.mutation.PassedTestCaseCountCleared() {
+	if tpu.mutation.PassedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if value, ok := tpu.mutation.SkippedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.SkippedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
-	if value, ok := tpu.mutation.AddedSkippedTestCaseCount(); ok {
+	if value, ok := tpu.mutation.AddedSkippedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
-	if tpu.mutation.SkippedTestCaseCountCleared() {
+	if tpu.mutation.SkippedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
 	if value, ok := tpu.mutation.RunDuration(); ok {
@@ -780,84 +780,84 @@ func (tpuo *TestPlanUpdateOne) ClearResponsibleUserID() *TestPlanUpdateOne {
 	return tpuo
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) SetFailedTestCaseCount(u uint32) *TestPlanUpdateOne {
-	tpuo.mutation.ResetFailedTestCaseCount()
-	tpuo.mutation.SetFailedTestCaseCount(u)
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) SetFailedTestCasesCount(u uint32) *TestPlanUpdateOne {
+	tpuo.mutation.ResetFailedTestCasesCount()
+	tpuo.mutation.SetFailedTestCasesCount(u)
 	return tpuo
 }
 
-// SetNillableFailedTestCaseCount sets the "failed_test_case_count" field if the given value is not nil.
-func (tpuo *TestPlanUpdateOne) SetNillableFailedTestCaseCount(u *uint32) *TestPlanUpdateOne {
+// SetNillableFailedTestCasesCount sets the "failed_test_cases_count" field if the given value is not nil.
+func (tpuo *TestPlanUpdateOne) SetNillableFailedTestCasesCount(u *uint32) *TestPlanUpdateOne {
 	if u != nil {
-		tpuo.SetFailedTestCaseCount(*u)
+		tpuo.SetFailedTestCasesCount(*u)
 	}
 	return tpuo
 }
 
-// AddFailedTestCaseCount adds u to the "failed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) AddFailedTestCaseCount(u int32) *TestPlanUpdateOne {
-	tpuo.mutation.AddFailedTestCaseCount(u)
+// AddFailedTestCasesCount adds u to the "failed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) AddFailedTestCasesCount(u int32) *TestPlanUpdateOne {
+	tpuo.mutation.AddFailedTestCasesCount(u)
 	return tpuo
 }
 
-// ClearFailedTestCaseCount clears the value of the "failed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) ClearFailedTestCaseCount() *TestPlanUpdateOne {
-	tpuo.mutation.ClearFailedTestCaseCount()
+// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) ClearFailedTestCasesCount() *TestPlanUpdateOne {
+	tpuo.mutation.ClearFailedTestCasesCount()
 	return tpuo
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) SetPassedTestCaseCount(u uint32) *TestPlanUpdateOne {
-	tpuo.mutation.ResetPassedTestCaseCount()
-	tpuo.mutation.SetPassedTestCaseCount(u)
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) SetPassedTestCasesCount(u uint32) *TestPlanUpdateOne {
+	tpuo.mutation.ResetPassedTestCasesCount()
+	tpuo.mutation.SetPassedTestCasesCount(u)
 	return tpuo
 }
 
-// SetNillablePassedTestCaseCount sets the "passed_test_case_count" field if the given value is not nil.
-func (tpuo *TestPlanUpdateOne) SetNillablePassedTestCaseCount(u *uint32) *TestPlanUpdateOne {
+// SetNillablePassedTestCasesCount sets the "passed_test_cases_count" field if the given value is not nil.
+func (tpuo *TestPlanUpdateOne) SetNillablePassedTestCasesCount(u *uint32) *TestPlanUpdateOne {
 	if u != nil {
-		tpuo.SetPassedTestCaseCount(*u)
+		tpuo.SetPassedTestCasesCount(*u)
 	}
 	return tpuo
 }
 
-// AddPassedTestCaseCount adds u to the "passed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) AddPassedTestCaseCount(u int32) *TestPlanUpdateOne {
-	tpuo.mutation.AddPassedTestCaseCount(u)
+// AddPassedTestCasesCount adds u to the "passed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) AddPassedTestCasesCount(u int32) *TestPlanUpdateOne {
+	tpuo.mutation.AddPassedTestCasesCount(u)
 	return tpuo
 }
 
-// ClearPassedTestCaseCount clears the value of the "passed_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) ClearPassedTestCaseCount() *TestPlanUpdateOne {
-	tpuo.mutation.ClearPassedTestCaseCount()
+// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) ClearPassedTestCasesCount() *TestPlanUpdateOne {
+	tpuo.mutation.ClearPassedTestCasesCount()
 	return tpuo
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) SetSkippedTestCaseCount(u uint32) *TestPlanUpdateOne {
-	tpuo.mutation.ResetSkippedTestCaseCount()
-	tpuo.mutation.SetSkippedTestCaseCount(u)
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) SetSkippedTestCasesCount(u uint32) *TestPlanUpdateOne {
+	tpuo.mutation.ResetSkippedTestCasesCount()
+	tpuo.mutation.SetSkippedTestCasesCount(u)
 	return tpuo
 }
 
-// SetNillableSkippedTestCaseCount sets the "skipped_test_case_count" field if the given value is not nil.
-func (tpuo *TestPlanUpdateOne) SetNillableSkippedTestCaseCount(u *uint32) *TestPlanUpdateOne {
+// SetNillableSkippedTestCasesCount sets the "skipped_test_cases_count" field if the given value is not nil.
+func (tpuo *TestPlanUpdateOne) SetNillableSkippedTestCasesCount(u *uint32) *TestPlanUpdateOne {
 	if u != nil {
-		tpuo.SetSkippedTestCaseCount(*u)
+		tpuo.SetSkippedTestCasesCount(*u)
 	}
 	return tpuo
 }
 
-// AddSkippedTestCaseCount adds u to the "skipped_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) AddSkippedTestCaseCount(u int32) *TestPlanUpdateOne {
-	tpuo.mutation.AddSkippedTestCaseCount(u)
+// AddSkippedTestCasesCount adds u to the "skipped_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) AddSkippedTestCasesCount(u int32) *TestPlanUpdateOne {
+	tpuo.mutation.AddSkippedTestCasesCount(u)
 	return tpuo
 }
 
-// ClearSkippedTestCaseCount clears the value of the "skipped_test_case_count" field.
-func (tpuo *TestPlanUpdateOne) ClearSkippedTestCaseCount() *TestPlanUpdateOne {
-	tpuo.mutation.ClearSkippedTestCaseCount()
+// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
+func (tpuo *TestPlanUpdateOne) ClearSkippedTestCasesCount() *TestPlanUpdateOne {
+	tpuo.mutation.ClearSkippedTestCasesCount()
 	return tpuo
 }
 
@@ -1157,64 +1157,64 @@ func (tpuo *TestPlanUpdateOne) sqlSave(ctx context.Context) (_node *TestPlan, er
 			Column: testplan.FieldResponsibleUserID,
 		})
 	}
-	if value, ok := tpuo.mutation.FailedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.FailedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if value, ok := tpuo.mutation.AddedFailedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.AddedFailedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if tpuo.mutation.FailedTestCaseCountCleared() {
+	if tpuo.mutation.FailedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
 	}
-	if value, ok := tpuo.mutation.PassedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.PassedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if value, ok := tpuo.mutation.AddedPassedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.AddedPassedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if tpuo.mutation.PassedTestCaseCountCleared() {
+	if tpuo.mutation.PassedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
 	}
-	if value, ok := tpuo.mutation.SkippedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.SkippedTestCasesCount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
-	if value, ok := tpuo.mutation.AddedSkippedTestCaseCount(); ok {
+	if value, ok := tpuo.mutation.AddedSkippedTestCasesCount(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
-	if tpuo.mutation.SkippedTestCaseCountCleared() {
+	if tpuo.mutation.SkippedTestCasesCountCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
 	}
 	if value, ok := tpuo.mutation.RunDuration(); ok {
