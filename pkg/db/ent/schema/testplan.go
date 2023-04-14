@@ -69,7 +69,7 @@ func (TestPlan) Fields() []ent.Field {
 		field.
 			String("test_result").
 			Optional().
-			Default(testplan.TestResultState_DefaultTestTestState.String()),
+			Default(testplan.TestResultState_DefaultTestResultState.String()),
 	}
 }
 
