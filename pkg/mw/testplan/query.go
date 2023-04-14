@@ -23,7 +23,7 @@ func (h *queryHandler) selectTestPlan(stm *ent.TestPlanQuery) {
 	h.stm = stm.Select(
 		enttestplan.FieldID,
 		enttestplan.FieldName,
-		enttestplan.FieldState,
+		// enttestplan.FieldState,
 		enttestplan.FieldOwnerID,
 		enttestplan.FieldResponsibleUserID,
 		enttestplan.FieldFailedTestCasesCount,
@@ -31,7 +31,7 @@ func (h *queryHandler) selectTestPlan(stm *ent.TestPlanQuery) {
 		enttestplan.FieldSkippedTestCasesCount,
 		enttestplan.FieldRunDuration,
 		enttestplan.FieldDeadline,
-		enttestplan.FieldTestResult,
+		// enttestplan.FieldTestResult,
 		enttestplan.FieldDeadline,
 		enttestplan.FieldCreatedAt,
 		enttestplan.FieldUpdatedAt,
