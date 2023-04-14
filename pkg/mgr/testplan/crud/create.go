@@ -28,13 +28,13 @@ func CreateSet(c *ent.TestPlanCreate, in *npool.TestPlanReq) *ent.TestPlanCreate
 		c.SetResponsibleUserID(uuid.MustParse(in.GetResponsibleUserID()))
 	}
 	if in.FailedTestCasesCount != nil {
-		c.SetFailedTestCaseCount(in.GetFailedTestCasesCount())
+		c.SetFailedTestCasesCount(in.GetFailedTestCasesCount())
 	}
 	if in.PassedTestCasesCount != nil {
-		c.SetPassedTestCaseCount(in.GetPassedTestCasesCount())
+		c.SetPassedTestCasesCount(in.GetPassedTestCasesCount())
 	}
 	if in.SkippedTestCasesCount != nil {
-		c.SetSkippedTestCaseCount(in.GetSkippedTestCasesCount())
+		c.SetSkippedTestCasesCount(in.GetSkippedTestCasesCount())
 	}
 	if in.RunDuration != nil {
 		c.SetRunDuration(in.GetRunDuration())
