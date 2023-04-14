@@ -2,7 +2,6 @@ package planrelatedtestcase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/planrelatedtestcase"
@@ -15,17 +14,13 @@ import (
 //nolint
 func (s *Server) CreatePlanRelatedTestCase(ctx context.Context, in *npool.CreatePlanRelatedTestCaseRequest) (*npool.CreatePlanRelatedTestCaseResponse, error) {
 	req := in.GetInfo()
-	if req.TestCaseResult == nil {
-		return nil, fmt.Errorf("need TestCaseResult")
-	}
-	result := req.TestCaseResult.String()
 	handler, err := planrelatedtestcase1.NewHandler(
 		ctx,
 		planrelatedtestcase1.WithTestPlanID(req.TestPlanID),
 		planrelatedtestcase1.WithTestCaseID(req.TestCaseID),
 		planrelatedtestcase1.WithTestUserID(req.TestUserID),
 		planrelatedtestcase1.WithTestCaseOutput(req.TestCaseOutput),
-		planrelatedtestcase1.WithTestCaseResult(&result),
+		planrelatedtestcase1.WithTestCaseResult(req.TestCaseResult),
 		planrelatedtestcase1.WithIndex(req.Index),
 		planrelatedtestcase1.WithRunDuration(req.RunDuration),
 	)

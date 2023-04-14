@@ -22,7 +22,13 @@ func (h *createHandler) createPlanRelatedTestCase(ctx context.Context, tx *ent.T
 	info, err := planrelatedtestcasecrud.CreateSet(
 		tx.PlanRelatedTestCase.Create(),
 		&planrelatedtestcase.PlanRelatedTestCaseReq{
-			Description: h.Description,
+			TestPlanID:     h.TestCaseID,
+			TestCaseID:     h.TestCaseID,
+			TestCaseOutput: h.TestCaseOutput,
+			TestCaseResult: (*planrelatedtestcase.TestCaseResult)(h.TestCaseResult),
+			TestUserID:     h.TestUserID,
+			RunDuration:    h.RunDuration,
+			Description:    h.Description,
 		},
 	).Save(ctx)
 	if err != nil {
