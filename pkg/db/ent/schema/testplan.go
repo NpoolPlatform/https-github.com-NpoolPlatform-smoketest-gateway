@@ -47,15 +47,15 @@ func (TestPlan) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			Uint32("failed_test_case_count").
+			Uint32("failed_test_cases_count").
 			Optional().
 			Default(0),
 		field.
-			Uint32("passed_test_case_count").
+			Uint32("passed_test_cases_count").
 			Optional().
 			Default(0),
 		field.
-			Uint32("skipped_test_case_count").
+			Uint32("skipped_test_cases_count").
 			Optional().
 			Default(0),
 		field.

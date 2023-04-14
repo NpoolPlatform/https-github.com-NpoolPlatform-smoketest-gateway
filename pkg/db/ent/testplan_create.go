@@ -121,44 +121,44 @@ func (tpc *TestPlanCreate) SetNillableResponsibleUserID(u *uuid.UUID) *TestPlanC
 	return tpc
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (tpc *TestPlanCreate) SetFailedTestCaseCount(u uint32) *TestPlanCreate {
-	tpc.mutation.SetFailedTestCaseCount(u)
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (tpc *TestPlanCreate) SetFailedTestCasesCount(u uint32) *TestPlanCreate {
+	tpc.mutation.SetFailedTestCasesCount(u)
 	return tpc
 }
 
-// SetNillableFailedTestCaseCount sets the "failed_test_case_count" field if the given value is not nil.
-func (tpc *TestPlanCreate) SetNillableFailedTestCaseCount(u *uint32) *TestPlanCreate {
+// SetNillableFailedTestCasesCount sets the "failed_test_cases_count" field if the given value is not nil.
+func (tpc *TestPlanCreate) SetNillableFailedTestCasesCount(u *uint32) *TestPlanCreate {
 	if u != nil {
-		tpc.SetFailedTestCaseCount(*u)
+		tpc.SetFailedTestCasesCount(*u)
 	}
 	return tpc
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (tpc *TestPlanCreate) SetPassedTestCaseCount(u uint32) *TestPlanCreate {
-	tpc.mutation.SetPassedTestCaseCount(u)
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (tpc *TestPlanCreate) SetPassedTestCasesCount(u uint32) *TestPlanCreate {
+	tpc.mutation.SetPassedTestCasesCount(u)
 	return tpc
 }
 
-// SetNillablePassedTestCaseCount sets the "passed_test_case_count" field if the given value is not nil.
-func (tpc *TestPlanCreate) SetNillablePassedTestCaseCount(u *uint32) *TestPlanCreate {
+// SetNillablePassedTestCasesCount sets the "passed_test_cases_count" field if the given value is not nil.
+func (tpc *TestPlanCreate) SetNillablePassedTestCasesCount(u *uint32) *TestPlanCreate {
 	if u != nil {
-		tpc.SetPassedTestCaseCount(*u)
+		tpc.SetPassedTestCasesCount(*u)
 	}
 	return tpc
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (tpc *TestPlanCreate) SetSkippedTestCaseCount(u uint32) *TestPlanCreate {
-	tpc.mutation.SetSkippedTestCaseCount(u)
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (tpc *TestPlanCreate) SetSkippedTestCasesCount(u uint32) *TestPlanCreate {
+	tpc.mutation.SetSkippedTestCasesCount(u)
 	return tpc
 }
 
-// SetNillableSkippedTestCaseCount sets the "skipped_test_case_count" field if the given value is not nil.
-func (tpc *TestPlanCreate) SetNillableSkippedTestCaseCount(u *uint32) *TestPlanCreate {
+// SetNillableSkippedTestCasesCount sets the "skipped_test_cases_count" field if the given value is not nil.
+func (tpc *TestPlanCreate) SetNillableSkippedTestCasesCount(u *uint32) *TestPlanCreate {
 	if u != nil {
-		tpc.SetSkippedTestCaseCount(*u)
+		tpc.SetSkippedTestCasesCount(*u)
 	}
 	return tpc
 }
@@ -341,17 +341,17 @@ func (tpc *TestPlanCreate) defaults() error {
 		v := testplan.DefaultResponsibleUserID()
 		tpc.mutation.SetResponsibleUserID(v)
 	}
-	if _, ok := tpc.mutation.FailedTestCaseCount(); !ok {
-		v := testplan.DefaultFailedTestCaseCount
-		tpc.mutation.SetFailedTestCaseCount(v)
+	if _, ok := tpc.mutation.FailedTestCasesCount(); !ok {
+		v := testplan.DefaultFailedTestCasesCount
+		tpc.mutation.SetFailedTestCasesCount(v)
 	}
-	if _, ok := tpc.mutation.PassedTestCaseCount(); !ok {
-		v := testplan.DefaultPassedTestCaseCount
-		tpc.mutation.SetPassedTestCaseCount(v)
+	if _, ok := tpc.mutation.PassedTestCasesCount(); !ok {
+		v := testplan.DefaultPassedTestCasesCount
+		tpc.mutation.SetPassedTestCasesCount(v)
 	}
-	if _, ok := tpc.mutation.SkippedTestCaseCount(); !ok {
-		v := testplan.DefaultSkippedTestCaseCount
-		tpc.mutation.SetSkippedTestCaseCount(v)
+	if _, ok := tpc.mutation.SkippedTestCasesCount(); !ok {
+		v := testplan.DefaultSkippedTestCasesCount
+		tpc.mutation.SetSkippedTestCasesCount(v)
 	}
 	if _, ok := tpc.mutation.RunDuration(); !ok {
 		v := testplan.DefaultRunDuration
@@ -479,29 +479,29 @@ func (tpc *TestPlanCreate) createSpec() (*TestPlan, *sqlgraph.CreateSpec) {
 		})
 		_node.ResponsibleUserID = value
 	}
-	if value, ok := tpc.mutation.FailedTestCaseCount(); ok {
+	if value, ok := tpc.mutation.FailedTestCasesCount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldFailedTestCaseCount,
+			Column: testplan.FieldFailedTestCasesCount,
 		})
-		_node.FailedTestCaseCount = value
+		_node.FailedTestCasesCount = value
 	}
-	if value, ok := tpc.mutation.PassedTestCaseCount(); ok {
+	if value, ok := tpc.mutation.PassedTestCasesCount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldPassedTestCaseCount,
+			Column: testplan.FieldPassedTestCasesCount,
 		})
-		_node.PassedTestCaseCount = value
+		_node.PassedTestCasesCount = value
 	}
-	if value, ok := tpc.mutation.SkippedTestCaseCount(); ok {
+	if value, ok := tpc.mutation.SkippedTestCasesCount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: testplan.FieldSkippedTestCaseCount,
+			Column: testplan.FieldSkippedTestCasesCount,
 		})
-		_node.SkippedTestCaseCount = value
+		_node.SkippedTestCasesCount = value
 	}
 	if value, ok := tpc.mutation.RunDuration(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -707,75 +707,75 @@ func (u *TestPlanUpsert) ClearResponsibleUserID() *TestPlanUpsert {
 	return u
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (u *TestPlanUpsert) SetFailedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Set(testplan.FieldFailedTestCaseCount, v)
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (u *TestPlanUpsert) SetFailedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Set(testplan.FieldFailedTestCasesCount, v)
 	return u
 }
 
-// UpdateFailedTestCaseCount sets the "failed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsert) UpdateFailedTestCaseCount() *TestPlanUpsert {
-	u.SetExcluded(testplan.FieldFailedTestCaseCount)
+// UpdateFailedTestCasesCount sets the "failed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsert) UpdateFailedTestCasesCount() *TestPlanUpsert {
+	u.SetExcluded(testplan.FieldFailedTestCasesCount)
 	return u
 }
 
-// AddFailedTestCaseCount adds v to the "failed_test_case_count" field.
-func (u *TestPlanUpsert) AddFailedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Add(testplan.FieldFailedTestCaseCount, v)
+// AddFailedTestCasesCount adds v to the "failed_test_cases_count" field.
+func (u *TestPlanUpsert) AddFailedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Add(testplan.FieldFailedTestCasesCount, v)
 	return u
 }
 
-// ClearFailedTestCaseCount clears the value of the "failed_test_case_count" field.
-func (u *TestPlanUpsert) ClearFailedTestCaseCount() *TestPlanUpsert {
-	u.SetNull(testplan.FieldFailedTestCaseCount)
+// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
+func (u *TestPlanUpsert) ClearFailedTestCasesCount() *TestPlanUpsert {
+	u.SetNull(testplan.FieldFailedTestCasesCount)
 	return u
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (u *TestPlanUpsert) SetPassedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Set(testplan.FieldPassedTestCaseCount, v)
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (u *TestPlanUpsert) SetPassedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Set(testplan.FieldPassedTestCasesCount, v)
 	return u
 }
 
-// UpdatePassedTestCaseCount sets the "passed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsert) UpdatePassedTestCaseCount() *TestPlanUpsert {
-	u.SetExcluded(testplan.FieldPassedTestCaseCount)
+// UpdatePassedTestCasesCount sets the "passed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsert) UpdatePassedTestCasesCount() *TestPlanUpsert {
+	u.SetExcluded(testplan.FieldPassedTestCasesCount)
 	return u
 }
 
-// AddPassedTestCaseCount adds v to the "passed_test_case_count" field.
-func (u *TestPlanUpsert) AddPassedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Add(testplan.FieldPassedTestCaseCount, v)
+// AddPassedTestCasesCount adds v to the "passed_test_cases_count" field.
+func (u *TestPlanUpsert) AddPassedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Add(testplan.FieldPassedTestCasesCount, v)
 	return u
 }
 
-// ClearPassedTestCaseCount clears the value of the "passed_test_case_count" field.
-func (u *TestPlanUpsert) ClearPassedTestCaseCount() *TestPlanUpsert {
-	u.SetNull(testplan.FieldPassedTestCaseCount)
+// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
+func (u *TestPlanUpsert) ClearPassedTestCasesCount() *TestPlanUpsert {
+	u.SetNull(testplan.FieldPassedTestCasesCount)
 	return u
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (u *TestPlanUpsert) SetSkippedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Set(testplan.FieldSkippedTestCaseCount, v)
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (u *TestPlanUpsert) SetSkippedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Set(testplan.FieldSkippedTestCasesCount, v)
 	return u
 }
 
-// UpdateSkippedTestCaseCount sets the "skipped_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsert) UpdateSkippedTestCaseCount() *TestPlanUpsert {
-	u.SetExcluded(testplan.FieldSkippedTestCaseCount)
+// UpdateSkippedTestCasesCount sets the "skipped_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsert) UpdateSkippedTestCasesCount() *TestPlanUpsert {
+	u.SetExcluded(testplan.FieldSkippedTestCasesCount)
 	return u
 }
 
-// AddSkippedTestCaseCount adds v to the "skipped_test_case_count" field.
-func (u *TestPlanUpsert) AddSkippedTestCaseCount(v uint32) *TestPlanUpsert {
-	u.Add(testplan.FieldSkippedTestCaseCount, v)
+// AddSkippedTestCasesCount adds v to the "skipped_test_cases_count" field.
+func (u *TestPlanUpsert) AddSkippedTestCasesCount(v uint32) *TestPlanUpsert {
+	u.Add(testplan.FieldSkippedTestCasesCount, v)
 	return u
 }
 
-// ClearSkippedTestCaseCount clears the value of the "skipped_test_case_count" field.
-func (u *TestPlanUpsert) ClearSkippedTestCaseCount() *TestPlanUpsert {
-	u.SetNull(testplan.FieldSkippedTestCaseCount)
+// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
+func (u *TestPlanUpsert) ClearSkippedTestCasesCount() *TestPlanUpsert {
+	u.SetNull(testplan.FieldSkippedTestCasesCount)
 	return u
 }
 
@@ -1042,87 +1042,87 @@ func (u *TestPlanUpsertOne) ClearResponsibleUserID() *TestPlanUpsertOne {
 	})
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (u *TestPlanUpsertOne) SetFailedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (u *TestPlanUpsertOne) SetFailedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetFailedTestCaseCount(v)
+		s.SetFailedTestCasesCount(v)
 	})
 }
 
-// AddFailedTestCaseCount adds v to the "failed_test_case_count" field.
-func (u *TestPlanUpsertOne) AddFailedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// AddFailedTestCasesCount adds v to the "failed_test_cases_count" field.
+func (u *TestPlanUpsertOne) AddFailedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddFailedTestCaseCount(v)
+		s.AddFailedTestCasesCount(v)
 	})
 }
 
-// UpdateFailedTestCaseCount sets the "failed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertOne) UpdateFailedTestCaseCount() *TestPlanUpsertOne {
+// UpdateFailedTestCasesCount sets the "failed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertOne) UpdateFailedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdateFailedTestCaseCount()
+		s.UpdateFailedTestCasesCount()
 	})
 }
 
-// ClearFailedTestCaseCount clears the value of the "failed_test_case_count" field.
-func (u *TestPlanUpsertOne) ClearFailedTestCaseCount() *TestPlanUpsertOne {
+// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
+func (u *TestPlanUpsertOne) ClearFailedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearFailedTestCaseCount()
+		s.ClearFailedTestCasesCount()
 	})
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (u *TestPlanUpsertOne) SetPassedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (u *TestPlanUpsertOne) SetPassedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetPassedTestCaseCount(v)
+		s.SetPassedTestCasesCount(v)
 	})
 }
 
-// AddPassedTestCaseCount adds v to the "passed_test_case_count" field.
-func (u *TestPlanUpsertOne) AddPassedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// AddPassedTestCasesCount adds v to the "passed_test_cases_count" field.
+func (u *TestPlanUpsertOne) AddPassedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddPassedTestCaseCount(v)
+		s.AddPassedTestCasesCount(v)
 	})
 }
 
-// UpdatePassedTestCaseCount sets the "passed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertOne) UpdatePassedTestCaseCount() *TestPlanUpsertOne {
+// UpdatePassedTestCasesCount sets the "passed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertOne) UpdatePassedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdatePassedTestCaseCount()
+		s.UpdatePassedTestCasesCount()
 	})
 }
 
-// ClearPassedTestCaseCount clears the value of the "passed_test_case_count" field.
-func (u *TestPlanUpsertOne) ClearPassedTestCaseCount() *TestPlanUpsertOne {
+// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
+func (u *TestPlanUpsertOne) ClearPassedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearPassedTestCaseCount()
+		s.ClearPassedTestCasesCount()
 	})
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (u *TestPlanUpsertOne) SetSkippedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertOne) SetSkippedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetSkippedTestCaseCount(v)
+		s.SetSkippedTestCasesCount(v)
 	})
 }
 
-// AddSkippedTestCaseCount adds v to the "skipped_test_case_count" field.
-func (u *TestPlanUpsertOne) AddSkippedTestCaseCount(v uint32) *TestPlanUpsertOne {
+// AddSkippedTestCasesCount adds v to the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertOne) AddSkippedTestCasesCount(v uint32) *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddSkippedTestCaseCount(v)
+		s.AddSkippedTestCasesCount(v)
 	})
 }
 
-// UpdateSkippedTestCaseCount sets the "skipped_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertOne) UpdateSkippedTestCaseCount() *TestPlanUpsertOne {
+// UpdateSkippedTestCasesCount sets the "skipped_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertOne) UpdateSkippedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdateSkippedTestCaseCount()
+		s.UpdateSkippedTestCasesCount()
 	})
 }
 
-// ClearSkippedTestCaseCount clears the value of the "skipped_test_case_count" field.
-func (u *TestPlanUpsertOne) ClearSkippedTestCaseCount() *TestPlanUpsertOne {
+// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertOne) ClearSkippedTestCasesCount() *TestPlanUpsertOne {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearSkippedTestCaseCount()
+		s.ClearSkippedTestCasesCount()
 	})
 }
 
@@ -1566,87 +1566,87 @@ func (u *TestPlanUpsertBulk) ClearResponsibleUserID() *TestPlanUpsertBulk {
 	})
 }
 
-// SetFailedTestCaseCount sets the "failed_test_case_count" field.
-func (u *TestPlanUpsertBulk) SetFailedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) SetFailedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetFailedTestCaseCount(v)
+		s.SetFailedTestCasesCount(v)
 	})
 }
 
-// AddFailedTestCaseCount adds v to the "failed_test_case_count" field.
-func (u *TestPlanUpsertBulk) AddFailedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// AddFailedTestCasesCount adds v to the "failed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) AddFailedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddFailedTestCaseCount(v)
+		s.AddFailedTestCasesCount(v)
 	})
 }
 
-// UpdateFailedTestCaseCount sets the "failed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertBulk) UpdateFailedTestCaseCount() *TestPlanUpsertBulk {
+// UpdateFailedTestCasesCount sets the "failed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertBulk) UpdateFailedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdateFailedTestCaseCount()
+		s.UpdateFailedTestCasesCount()
 	})
 }
 
-// ClearFailedTestCaseCount clears the value of the "failed_test_case_count" field.
-func (u *TestPlanUpsertBulk) ClearFailedTestCaseCount() *TestPlanUpsertBulk {
+// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) ClearFailedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearFailedTestCaseCount()
+		s.ClearFailedTestCasesCount()
 	})
 }
 
-// SetPassedTestCaseCount sets the "passed_test_case_count" field.
-func (u *TestPlanUpsertBulk) SetPassedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) SetPassedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetPassedTestCaseCount(v)
+		s.SetPassedTestCasesCount(v)
 	})
 }
 
-// AddPassedTestCaseCount adds v to the "passed_test_case_count" field.
-func (u *TestPlanUpsertBulk) AddPassedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// AddPassedTestCasesCount adds v to the "passed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) AddPassedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddPassedTestCaseCount(v)
+		s.AddPassedTestCasesCount(v)
 	})
 }
 
-// UpdatePassedTestCaseCount sets the "passed_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertBulk) UpdatePassedTestCaseCount() *TestPlanUpsertBulk {
+// UpdatePassedTestCasesCount sets the "passed_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertBulk) UpdatePassedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdatePassedTestCaseCount()
+		s.UpdatePassedTestCasesCount()
 	})
 }
 
-// ClearPassedTestCaseCount clears the value of the "passed_test_case_count" field.
-func (u *TestPlanUpsertBulk) ClearPassedTestCaseCount() *TestPlanUpsertBulk {
+// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
+func (u *TestPlanUpsertBulk) ClearPassedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearPassedTestCaseCount()
+		s.ClearPassedTestCasesCount()
 	})
 }
 
-// SetSkippedTestCaseCount sets the "skipped_test_case_count" field.
-func (u *TestPlanUpsertBulk) SetSkippedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertBulk) SetSkippedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.SetSkippedTestCaseCount(v)
+		s.SetSkippedTestCasesCount(v)
 	})
 }
 
-// AddSkippedTestCaseCount adds v to the "skipped_test_case_count" field.
-func (u *TestPlanUpsertBulk) AddSkippedTestCaseCount(v uint32) *TestPlanUpsertBulk {
+// AddSkippedTestCasesCount adds v to the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertBulk) AddSkippedTestCasesCount(v uint32) *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.AddSkippedTestCaseCount(v)
+		s.AddSkippedTestCasesCount(v)
 	})
 }
 
-// UpdateSkippedTestCaseCount sets the "skipped_test_case_count" field to the value that was provided on create.
-func (u *TestPlanUpsertBulk) UpdateSkippedTestCaseCount() *TestPlanUpsertBulk {
+// UpdateSkippedTestCasesCount sets the "skipped_test_cases_count" field to the value that was provided on create.
+func (u *TestPlanUpsertBulk) UpdateSkippedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.UpdateSkippedTestCaseCount()
+		s.UpdateSkippedTestCasesCount()
 	})
 }
 
-// ClearSkippedTestCaseCount clears the value of the "skipped_test_case_count" field.
-func (u *TestPlanUpsertBulk) ClearSkippedTestCaseCount() *TestPlanUpsertBulk {
+// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
+func (u *TestPlanUpsertBulk) ClearSkippedTestCasesCount() *TestPlanUpsertBulk {
 	return u.Update(func(s *TestPlanUpsert) {
-		s.ClearSkippedTestCaseCount()
+		s.ClearSkippedTestCasesCount()
 	})
 }
 

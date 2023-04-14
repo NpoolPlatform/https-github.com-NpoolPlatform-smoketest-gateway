@@ -355,18 +355,18 @@ func init() {
 	testplanDescResponsibleUserID := testplanFields[4].Descriptor()
 	// testplan.DefaultResponsibleUserID holds the default value on creation for the responsible_user_id field.
 	testplan.DefaultResponsibleUserID = testplanDescResponsibleUserID.Default.(func() uuid.UUID)
-	// testplanDescFailedTestCaseCount is the schema descriptor for failed_test_case_count field.
-	testplanDescFailedTestCaseCount := testplanFields[5].Descriptor()
-	// testplan.DefaultFailedTestCaseCount holds the default value on creation for the failed_test_case_count field.
-	testplan.DefaultFailedTestCaseCount = testplanDescFailedTestCaseCount.Default.(uint32)
-	// testplanDescPassedTestCaseCount is the schema descriptor for passed_test_case_count field.
-	testplanDescPassedTestCaseCount := testplanFields[6].Descriptor()
-	// testplan.DefaultPassedTestCaseCount holds the default value on creation for the passed_test_case_count field.
-	testplan.DefaultPassedTestCaseCount = testplanDescPassedTestCaseCount.Default.(uint32)
-	// testplanDescSkippedTestCaseCount is the schema descriptor for skipped_test_case_count field.
-	testplanDescSkippedTestCaseCount := testplanFields[7].Descriptor()
-	// testplan.DefaultSkippedTestCaseCount holds the default value on creation for the skipped_test_case_count field.
-	testplan.DefaultSkippedTestCaseCount = testplanDescSkippedTestCaseCount.Default.(uint32)
+	// testplanDescFailedTestCasesCount is the schema descriptor for failed_test_cases_count field.
+	testplanDescFailedTestCasesCount := testplanFields[5].Descriptor()
+	// testplan.DefaultFailedTestCasesCount holds the default value on creation for the failed_test_cases_count field.
+	testplan.DefaultFailedTestCasesCount = testplanDescFailedTestCasesCount.Default.(uint32)
+	// testplanDescPassedTestCasesCount is the schema descriptor for passed_test_cases_count field.
+	testplanDescPassedTestCasesCount := testplanFields[6].Descriptor()
+	// testplan.DefaultPassedTestCasesCount holds the default value on creation for the passed_test_cases_count field.
+	testplan.DefaultPassedTestCasesCount = testplanDescPassedTestCasesCount.Default.(uint32)
+	// testplanDescSkippedTestCasesCount is the schema descriptor for skipped_test_cases_count field.
+	testplanDescSkippedTestCasesCount := testplanFields[7].Descriptor()
+	// testplan.DefaultSkippedTestCasesCount holds the default value on creation for the skipped_test_cases_count field.
+	testplan.DefaultSkippedTestCasesCount = testplanDescSkippedTestCasesCount.Default.(uint32)
 	// testplanDescRunDuration is the schema descriptor for run_duration field.
 	testplanDescRunDuration := testplanFields[8].Descriptor()
 	// testplan.DefaultRunDuration holds the default value on creation for the run_duration field.
