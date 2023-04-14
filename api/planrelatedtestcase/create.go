@@ -14,14 +14,13 @@ import (
 //nolint
 func (s *Server) CreatePlanRelatedTestCase(ctx context.Context, in *npool.CreatePlanRelatedTestCaseRequest) (*npool.CreatePlanRelatedTestCaseResponse, error) {
 	req := in.GetInfo()
-	result := req.TestCaseResult.String()
 	handler, err := planrelatedtestcase1.NewHandler(
 		ctx,
 		planrelatedtestcase1.WithTestPlanID(req.TestPlanID),
 		planrelatedtestcase1.WithTestCaseID(req.TestCaseID),
 		planrelatedtestcase1.WithTestUserID(req.TestUserID),
 		planrelatedtestcase1.WithTestCaseOutput(req.TestCaseOutput),
-		planrelatedtestcase1.WithTestCaseResult(&result),
+		planrelatedtestcase1.WithTestCaseResult(req.TestCaseResult),
 		planrelatedtestcase1.WithIndex(req.Index),
 		planrelatedtestcase1.WithRunDuration(req.RunDuration),
 	)

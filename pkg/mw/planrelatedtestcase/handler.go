@@ -15,7 +15,7 @@ type Handler struct {
 	TestCaseID     *string
 	TestUserID     *string
 	TestCaseOutput *string
-	TestCaseResult *string
+	TestCaseResult *planrelatedtestcasemwpb.TestCaseResult
 	Description    *string
 	Index          *uint32
 	RunDuration    *uint32
@@ -87,7 +87,7 @@ func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseResult(result *string) func(context.Context, *Handler) error {
+func WithTestCaseResult(result *planrelatedtestcasemwpb.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return fmt.Errorf("need testcase result")
