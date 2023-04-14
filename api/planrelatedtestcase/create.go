@@ -23,7 +23,7 @@ func (s *Server) CreatePlanRelatedTestCase(ctx context.Context, in *npool.Create
 		planrelatedtestcase1.WithTestCaseOutput(req.TestCaseOutput),
 		planrelatedtestcase1.WithTestCaseResult(&result),
 		planrelatedtestcase1.WithIndex(req.Index),
-		planrelatedtestcase1.WithRunDuration(req.Index),
+		planrelatedtestcase1.WithRunDuration(req.RunDuration),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
