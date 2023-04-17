@@ -71,6 +71,14 @@ func (mc *ModuleCreate) SetName(s string) *ModuleCreate {
 	return mc
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (mc *ModuleCreate) SetNillableName(s *string) *ModuleCreate {
+	if s != nil {
+		mc.SetName(*s)
+	}
+	return mc
+}
+
 // SetDescription sets the "description" field.
 func (mc *ModuleCreate) SetDescription(s string) *ModuleCreate {
 	mc.mutation.SetDescription(s)
@@ -198,6 +206,10 @@ func (mc *ModuleCreate) defaults() error {
 		}
 		v := module.DefaultDeletedAt()
 		mc.mutation.SetDeletedAt(v)
+	}
+	if _, ok := mc.mutation.Name(); !ok {
+		v := module.DefaultName
+		mc.mutation.SetName(v)
 	}
 	if _, ok := mc.mutation.Description(); !ok {
 		v := module.DefaultDescription

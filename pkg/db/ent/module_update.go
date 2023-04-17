@@ -89,6 +89,14 @@ func (mu *ModuleUpdate) SetName(s string) *ModuleUpdate {
 	return mu
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (mu *ModuleUpdate) SetNillableName(s *string) *ModuleUpdate {
+	if s != nil {
+		mu.SetName(*s)
+	}
+	return mu
+}
+
 // SetDescription sets the "description" field.
 func (mu *ModuleUpdate) SetDescription(s string) *ModuleUpdate {
 	mu.mutation.SetDescription(s)
@@ -348,6 +356,14 @@ func (muo *ModuleUpdateOne) AddDeletedAt(u int32) *ModuleUpdateOne {
 // SetName sets the "name" field.
 func (muo *ModuleUpdateOne) SetName(s string) *ModuleUpdateOne {
 	muo.mutation.SetName(s)
+	return muo
+}
+
+// SetNillableName sets the "name" field if the given value is not nil.
+func (muo *ModuleUpdateOne) SetNillableName(s *string) *ModuleUpdateOne {
+	if s != nil {
+		muo.SetName(*s)
+	}
 	return muo
 }
 

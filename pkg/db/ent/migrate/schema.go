@@ -32,7 +32,7 @@ var (
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
-		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "name", Type: field.TypeString, Default: ""},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 	}
 	// ModulesTable holds the schema information for the "modules" table.
