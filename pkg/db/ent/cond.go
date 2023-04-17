@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/google/uuid"
 )
 
-// RelatedTestCase is the model entity for the RelatedTestCase schema.
-type RelatedTestCase struct {
+// Cond is the model entity for the Cond schema.
+type Cond struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
@@ -26,154 +26,154 @@ type RelatedTestCase struct {
 	CondType string `json:"cond_type,omitempty"`
 	// TestCaseID holds the value of the "test_case_id" field.
 	TestCaseID uuid.UUID `json:"test_case_id,omitempty"`
-	// RelatedTestCaseID holds the value of the "related_test_case_id" field.
-	RelatedTestCaseID uuid.UUID `json:"related_test_case_id,omitempty"`
-	// ArgumentsTransfer holds the value of the "arguments_transfer" field.
-	ArgumentsTransfer string `json:"arguments_transfer,omitempty"`
+	// CondTestCaseID holds the value of the "cond_test_case_id" field.
+	CondTestCaseID uuid.UUID `json:"cond_test_case_id,omitempty"`
+	// ArgumentMap holds the value of the "argument_map" field.
+	ArgumentMap string `json:"argument_map,omitempty"`
 	// Index holds the value of the "index" field.
 	Index uint32 `json:"index,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*RelatedTestCase) scanValues(columns []string) ([]interface{}, error) {
+func (*Cond) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case relatedtestcase.FieldCreatedAt, relatedtestcase.FieldUpdatedAt, relatedtestcase.FieldDeletedAt, relatedtestcase.FieldIndex:
+		case cond.FieldCreatedAt, cond.FieldUpdatedAt, cond.FieldDeletedAt, cond.FieldIndex:
 			values[i] = new(sql.NullInt64)
-		case relatedtestcase.FieldCondType, relatedtestcase.FieldArgumentsTransfer:
+		case cond.FieldCondType, cond.FieldArgumentMap:
 			values[i] = new(sql.NullString)
-		case relatedtestcase.FieldID, relatedtestcase.FieldTestCaseID, relatedtestcase.FieldRelatedTestCaseID:
+		case cond.FieldID, cond.FieldTestCaseID, cond.FieldCondTestCaseID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type RelatedTestCase", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type Cond", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the RelatedTestCase fields.
-func (rtc *RelatedTestCase) assignValues(columns []string, values []interface{}) error {
+// to the Cond fields.
+func (c *Cond) assignValues(columns []string, values []interface{}) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case relatedtestcase.FieldID:
+		case cond.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				rtc.ID = *value
+				c.ID = *value
 			}
-		case relatedtestcase.FieldCreatedAt:
+		case cond.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				rtc.CreatedAt = uint32(value.Int64)
+				c.CreatedAt = uint32(value.Int64)
 			}
-		case relatedtestcase.FieldUpdatedAt:
+		case cond.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				rtc.UpdatedAt = uint32(value.Int64)
+				c.UpdatedAt = uint32(value.Int64)
 			}
-		case relatedtestcase.FieldDeletedAt:
+		case cond.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				rtc.DeletedAt = uint32(value.Int64)
+				c.DeletedAt = uint32(value.Int64)
 			}
-		case relatedtestcase.FieldCondType:
+		case cond.FieldCondType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field cond_type", values[i])
 			} else if value.Valid {
-				rtc.CondType = value.String
+				c.CondType = value.String
 			}
-		case relatedtestcase.FieldTestCaseID:
+		case cond.FieldTestCaseID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field test_case_id", values[i])
 			} else if value != nil {
-				rtc.TestCaseID = *value
+				c.TestCaseID = *value
 			}
-		case relatedtestcase.FieldRelatedTestCaseID:
+		case cond.FieldCondTestCaseID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field related_test_case_id", values[i])
+				return fmt.Errorf("unexpected type %T for field cond_test_case_id", values[i])
 			} else if value != nil {
-				rtc.RelatedTestCaseID = *value
+				c.CondTestCaseID = *value
 			}
-		case relatedtestcase.FieldArgumentsTransfer:
+		case cond.FieldArgumentMap:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field arguments_transfer", values[i])
+				return fmt.Errorf("unexpected type %T for field argument_map", values[i])
 			} else if value.Valid {
-				rtc.ArgumentsTransfer = value.String
+				c.ArgumentMap = value.String
 			}
-		case relatedtestcase.FieldIndex:
+		case cond.FieldIndex:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field index", values[i])
 			} else if value.Valid {
-				rtc.Index = uint32(value.Int64)
+				c.Index = uint32(value.Int64)
 			}
 		}
 	}
 	return nil
 }
 
-// Update returns a builder for updating this RelatedTestCase.
-// Note that you need to call RelatedTestCase.Unwrap() before calling this method if this RelatedTestCase
+// Update returns a builder for updating this Cond.
+// Note that you need to call Cond.Unwrap() before calling this method if this Cond
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (rtc *RelatedTestCase) Update() *RelatedTestCaseUpdateOne {
-	return (&RelatedTestCaseClient{config: rtc.config}).UpdateOne(rtc)
+func (c *Cond) Update() *CondUpdateOne {
+	return (&CondClient{config: c.config}).UpdateOne(c)
 }
 
-// Unwrap unwraps the RelatedTestCase entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the Cond entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (rtc *RelatedTestCase) Unwrap() *RelatedTestCase {
-	_tx, ok := rtc.config.driver.(*txDriver)
+func (c *Cond) Unwrap() *Cond {
+	_tx, ok := c.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: RelatedTestCase is not a transactional entity")
+		panic("ent: Cond is not a transactional entity")
 	}
-	rtc.config.driver = _tx.drv
-	return rtc
+	c.config.driver = _tx.drv
+	return c
 }
 
 // String implements the fmt.Stringer.
-func (rtc *RelatedTestCase) String() string {
+func (c *Cond) String() string {
 	var builder strings.Builder
-	builder.WriteString("RelatedTestCase(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", rtc.ID))
+	builder.WriteString("Cond(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", c.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.CreatedAt))
+	builder.WriteString(fmt.Sprintf("%v", c.CreatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.UpdatedAt))
+	builder.WriteString(fmt.Sprintf("%v", c.UpdatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("deleted_at=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.DeletedAt))
+	builder.WriteString(fmt.Sprintf("%v", c.DeletedAt))
 	builder.WriteString(", ")
 	builder.WriteString("cond_type=")
-	builder.WriteString(rtc.CondType)
+	builder.WriteString(c.CondType)
 	builder.WriteString(", ")
 	builder.WriteString("test_case_id=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.TestCaseID))
+	builder.WriteString(fmt.Sprintf("%v", c.TestCaseID))
 	builder.WriteString(", ")
-	builder.WriteString("related_test_case_id=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.RelatedTestCaseID))
+	builder.WriteString("cond_test_case_id=")
+	builder.WriteString(fmt.Sprintf("%v", c.CondTestCaseID))
 	builder.WriteString(", ")
-	builder.WriteString("arguments_transfer=")
-	builder.WriteString(rtc.ArgumentsTransfer)
+	builder.WriteString("argument_map=")
+	builder.WriteString(c.ArgumentMap)
 	builder.WriteString(", ")
 	builder.WriteString("index=")
-	builder.WriteString(fmt.Sprintf("%v", rtc.Index))
+	builder.WriteString(fmt.Sprintf("%v", c.Index))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// RelatedTestCases is a parsable slice of RelatedTestCase.
-type RelatedTestCases []*RelatedTestCase
+// Conds is a parsable slice of Cond.
+type Conds []*Cond
 
-func (rtc RelatedTestCases) config(cfg config) {
-	for _i := range rtc {
-		rtc[_i].config = cfg
+func (c Conds) config(cfg config) {
+	for _i := range c {
+		c[_i].config = cfg
 	}
 }

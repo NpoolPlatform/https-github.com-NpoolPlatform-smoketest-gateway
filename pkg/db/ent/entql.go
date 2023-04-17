@@ -3,9 +3,9 @@
 package ent
 
 import (
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 
@@ -19,6 +19,27 @@ import (
 var schemaGraph = func() *sqlgraph.Schema {
 	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 5)}
 	graph.Nodes[0] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   cond.Table,
+			Columns: cond.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: cond.FieldID,
+			},
+		},
+		Type: "Cond",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			cond.FieldCreatedAt:      {Type: field.TypeUint32, Column: cond.FieldCreatedAt},
+			cond.FieldUpdatedAt:      {Type: field.TypeUint32, Column: cond.FieldUpdatedAt},
+			cond.FieldDeletedAt:      {Type: field.TypeUint32, Column: cond.FieldDeletedAt},
+			cond.FieldCondType:       {Type: field.TypeString, Column: cond.FieldCondType},
+			cond.FieldTestCaseID:     {Type: field.TypeUUID, Column: cond.FieldTestCaseID},
+			cond.FieldCondTestCaseID: {Type: field.TypeUUID, Column: cond.FieldCondTestCaseID},
+			cond.FieldArgumentMap:    {Type: field.TypeString, Column: cond.FieldArgumentMap},
+			cond.FieldIndex:          {Type: field.TypeUint32, Column: cond.FieldIndex},
+		},
+	}
+	graph.Nodes[1] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   module.Table,
 			Columns: module.Columns,
@@ -36,7 +57,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			module.FieldDescription: {Type: field.TypeString, Column: module.FieldDescription},
 		},
 	}
-	graph.Nodes[1] = &sqlgraph.Node{
+	graph.Nodes[2] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   planrelatedtestcase.Table,
 			Columns: planrelatedtestcase.Columns,
@@ -57,27 +78,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			planrelatedtestcase.FieldTestUserID:     {Type: field.TypeUUID, Column: planrelatedtestcase.FieldTestUserID},
 			planrelatedtestcase.FieldRunDuration:    {Type: field.TypeUint32, Column: planrelatedtestcase.FieldRunDuration},
 			planrelatedtestcase.FieldTestCaseResult: {Type: field.TypeString, Column: planrelatedtestcase.FieldTestCaseResult},
-		},
-	}
-	graph.Nodes[2] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   relatedtestcase.Table,
-			Columns: relatedtestcase.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: relatedtestcase.FieldID,
-			},
-		},
-		Type: "RelatedTestCase",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			relatedtestcase.FieldCreatedAt:         {Type: field.TypeUint32, Column: relatedtestcase.FieldCreatedAt},
-			relatedtestcase.FieldUpdatedAt:         {Type: field.TypeUint32, Column: relatedtestcase.FieldUpdatedAt},
-			relatedtestcase.FieldDeletedAt:         {Type: field.TypeUint32, Column: relatedtestcase.FieldDeletedAt},
-			relatedtestcase.FieldCondType:          {Type: field.TypeString, Column: relatedtestcase.FieldCondType},
-			relatedtestcase.FieldTestCaseID:        {Type: field.TypeUUID, Column: relatedtestcase.FieldTestCaseID},
-			relatedtestcase.FieldRelatedTestCaseID: {Type: field.TypeUUID, Column: relatedtestcase.FieldRelatedTestCaseID},
-			relatedtestcase.FieldArgumentsTransfer: {Type: field.TypeString, Column: relatedtestcase.FieldArgumentsTransfer},
-			relatedtestcase.FieldIndex:             {Type: field.TypeUint32, Column: relatedtestcase.FieldIndex},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -141,6 +141,86 @@ type predicateAdder interface {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (cq *CondQuery) addPredicate(pred func(s *sql.Selector)) {
+	cq.predicates = append(cq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the CondQuery builder.
+func (cq *CondQuery) Filter() *CondFilter {
+	return &CondFilter{config: cq.config, predicateAdder: cq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *CondMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the CondMutation builder.
+func (m *CondMutation) Filter() *CondFilter {
+	return &CondFilter{config: m.config, predicateAdder: m}
+}
+
+// CondFilter provides a generic filtering capability at runtime for CondQuery.
+type CondFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *CondFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *CondFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(cond.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *CondFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(cond.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *CondFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(cond.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *CondFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(cond.FieldDeletedAt))
+}
+
+// WhereCondType applies the entql string predicate on the cond_type field.
+func (f *CondFilter) WhereCondType(p entql.StringP) {
+	f.Where(p.Field(cond.FieldCondType))
+}
+
+// WhereTestCaseID applies the entql [16]byte predicate on the test_case_id field.
+func (f *CondFilter) WhereTestCaseID(p entql.ValueP) {
+	f.Where(p.Field(cond.FieldTestCaseID))
+}
+
+// WhereCondTestCaseID applies the entql [16]byte predicate on the cond_test_case_id field.
+func (f *CondFilter) WhereCondTestCaseID(p entql.ValueP) {
+	f.Where(p.Field(cond.FieldCondTestCaseID))
+}
+
+// WhereArgumentMap applies the entql string predicate on the argument_map field.
+func (f *CondFilter) WhereArgumentMap(p entql.StringP) {
+	f.Where(p.Field(cond.FieldArgumentMap))
+}
+
+// WhereIndex applies the entql uint32 predicate on the index field.
+func (f *CondFilter) WhereIndex(p entql.Uint32P) {
+	f.Where(p.Field(cond.FieldIndex))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (mq *ModuleQuery) addPredicate(pred func(s *sql.Selector)) {
 	mq.predicates = append(mq.predicates, pred)
 }
@@ -169,7 +249,7 @@ type ModuleFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ModuleFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -234,7 +314,7 @@ type PlanRelatedTestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *PlanRelatedTestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -293,86 +373,6 @@ func (f *PlanRelatedTestCaseFilter) WhereRunDuration(p entql.Uint32P) {
 // WhereTestCaseResult applies the entql string predicate on the test_case_result field.
 func (f *PlanRelatedTestCaseFilter) WhereTestCaseResult(p entql.StringP) {
 	f.Where(p.Field(planrelatedtestcase.FieldTestCaseResult))
-}
-
-// addPredicate implements the predicateAdder interface.
-func (rtcq *RelatedTestCaseQuery) addPredicate(pred func(s *sql.Selector)) {
-	rtcq.predicates = append(rtcq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the RelatedTestCaseQuery builder.
-func (rtcq *RelatedTestCaseQuery) Filter() *RelatedTestCaseFilter {
-	return &RelatedTestCaseFilter{config: rtcq.config, predicateAdder: rtcq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *RelatedTestCaseMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the RelatedTestCaseMutation builder.
-func (m *RelatedTestCaseMutation) Filter() *RelatedTestCaseFilter {
-	return &RelatedTestCaseFilter{config: m.config, predicateAdder: m}
-}
-
-// RelatedTestCaseFilter provides a generic filtering capability at runtime for RelatedTestCaseQuery.
-type RelatedTestCaseFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *RelatedTestCaseFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *RelatedTestCaseFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(relatedtestcase.FieldID))
-}
-
-// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
-func (f *RelatedTestCaseFilter) WhereCreatedAt(p entql.Uint32P) {
-	f.Where(p.Field(relatedtestcase.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
-func (f *RelatedTestCaseFilter) WhereUpdatedAt(p entql.Uint32P) {
-	f.Where(p.Field(relatedtestcase.FieldUpdatedAt))
-}
-
-// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
-func (f *RelatedTestCaseFilter) WhereDeletedAt(p entql.Uint32P) {
-	f.Where(p.Field(relatedtestcase.FieldDeletedAt))
-}
-
-// WhereCondType applies the entql string predicate on the cond_type field.
-func (f *RelatedTestCaseFilter) WhereCondType(p entql.StringP) {
-	f.Where(p.Field(relatedtestcase.FieldCondType))
-}
-
-// WhereTestCaseID applies the entql [16]byte predicate on the test_case_id field.
-func (f *RelatedTestCaseFilter) WhereTestCaseID(p entql.ValueP) {
-	f.Where(p.Field(relatedtestcase.FieldTestCaseID))
-}
-
-// WhereRelatedTestCaseID applies the entql [16]byte predicate on the related_test_case_id field.
-func (f *RelatedTestCaseFilter) WhereRelatedTestCaseID(p entql.ValueP) {
-	f.Where(p.Field(relatedtestcase.FieldRelatedTestCaseID))
-}
-
-// WhereArgumentsTransfer applies the entql string predicate on the arguments_transfer field.
-func (f *RelatedTestCaseFilter) WhereArgumentsTransfer(p entql.StringP) {
-	f.Where(p.Field(relatedtestcase.FieldArgumentsTransfer))
-}
-
-// WhereIndex applies the entql uint32 predicate on the index field.
-func (f *RelatedTestCaseFilter) WhereIndex(p entql.Uint32P) {
-	f.Where(p.Field(relatedtestcase.FieldIndex))
 }
 
 // addPredicate implements the predicateAdder interface.

@@ -8,6 +8,24 @@ import (
 )
 
 var (
+	// CondsColumns holds the columns for the "conds" table.
+	CondsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "cond_type", Type: field.TypeString, Nullable: true, Default: "DefaultCondType"},
+		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "cond_test_case_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "argument_map", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
+	}
+	// CondsTable holds the schema information for the "conds" table.
+	CondsTable = &schema.Table{
+		Name:       "conds",
+		Columns:    CondsColumns,
+		PrimaryKey: []*schema.Column{CondsColumns[0]},
+	}
 	// ModulesColumns holds the columns for the "modules" table.
 	ModulesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -42,24 +60,6 @@ var (
 		Name:       "plan_related_test_cases",
 		Columns:    PlanRelatedTestCasesColumns,
 		PrimaryKey: []*schema.Column{PlanRelatedTestCasesColumns[0]},
-	}
-	// RelatedTestCasesColumns holds the columns for the "related_test_cases" table.
-	RelatedTestCasesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
-		{Name: "created_at", Type: field.TypeUint32},
-		{Name: "updated_at", Type: field.TypeUint32},
-		{Name: "deleted_at", Type: field.TypeUint32},
-		{Name: "cond_type", Type: field.TypeString, Nullable: true, Default: "DefaultCondType"},
-		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "related_test_case_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "arguments_transfer", Type: field.TypeString, Nullable: true, Default: ""},
-		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
-	}
-	// RelatedTestCasesTable holds the schema information for the "related_test_cases" table.
-	RelatedTestCasesTable = &schema.Table{
-		Name:       "related_test_cases",
-		Columns:    RelatedTestCasesColumns,
-		PrimaryKey: []*schema.Column{RelatedTestCasesColumns[0]},
 	}
 	// TestCasesColumns holds the columns for the "test_cases" table.
 	TestCasesColumns = []*schema.Column{
@@ -108,9 +108,9 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		CondsTable,
 		ModulesTable,
 		PlanRelatedTestCasesTable,
-		RelatedTestCasesTable,
 		TestCasesTable,
 		TestPlansTable,
 	}

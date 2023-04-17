@@ -28,9 +28,9 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
+	Cond                []ent.Hook
 	Module              []ent.Hook
 	PlanRelatedTestCase []ent.Hook
-	RelatedTestCase     []ent.Hook
 	TestCase            []ent.Hook
 	TestPlan            []ent.Hook
 }

@@ -9,6 +9,19 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
 
+// The CondFunc type is an adapter to allow the use of ordinary
+// function as Cond mutator.
+type CondFunc func(context.Context, *ent.CondMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CondFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.CondMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CondMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The ModuleFunc type is an adapter to allow the use of ordinary
 // function as Module mutator.
 type ModuleFunc func(context.Context, *ent.ModuleMutation) (ent.Value, error)
@@ -31,19 +44,6 @@ func (f PlanRelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (en
 	mv, ok := m.(*ent.PlanRelatedTestCaseMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanRelatedTestCaseMutation", m)
-	}
-	return f(ctx, mv)
-}
-
-// The RelatedTestCaseFunc type is an adapter to allow the use of ordinary
-// function as RelatedTestCase mutator.
-type RelatedTestCaseFunc func(context.Context, *ent.RelatedTestCaseMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f RelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.RelatedTestCaseMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RelatedTestCaseMutation", m)
 	}
 	return f(ctx, mv)
 }

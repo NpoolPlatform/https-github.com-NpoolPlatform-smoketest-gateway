@@ -8,19 +8,19 @@ import (
 	"github.com/google/uuid"
 )
 
-// RelatedTestCase holds the schema definition for the RelatedTestCase entity.
-type RelatedTestCase struct {
+// Cond holds the schema definition for the Cond entity.
+type Cond struct {
 	ent.Schema
 }
 
-func (RelatedTestCase) Mixin() []ent.Mixin {
+func (Cond) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
 	}
 }
 
-// Fields of the RelatedTestCase.
-func (RelatedTestCase) Fields() []ent.Field {
+// Fields of the Cond.
+func (Cond) Fields() []ent.Field {
 	return []ent.Field{
 		field.
 			UUID("id", uuid.UUID{}).
@@ -37,13 +37,13 @@ func (RelatedTestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			UUID("related_test_case_id", uuid.UUID{}).
+			UUID("cond_test_case_id", uuid.UUID{}).
 			Optional().
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
 		field.
-			String("arguments_transfer").
+			String("argument_map").
 			Optional().
 			Default(""),
 		field.
@@ -53,7 +53,7 @@ func (RelatedTestCase) Fields() []ent.Field {
 	}
 }
 
-// Edges of the RelatedTestCase.
-func (RelatedTestCase) Edges() []ent.Edge {
+// Edges of the Cond.
+func (Cond) Edges() []ent.Edge {
 	return nil
 }

@@ -14,12 +14,12 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// Cond is the client for interacting with the Cond builders.
+	Cond *CondClient
 	// Module is the client for interacting with the Module builders.
 	Module *ModuleClient
 	// PlanRelatedTestCase is the client for interacting with the PlanRelatedTestCase builders.
 	PlanRelatedTestCase *PlanRelatedTestCaseClient
-	// RelatedTestCase is the client for interacting with the RelatedTestCase builders.
-	RelatedTestCase *RelatedTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
 	TestCase *TestCaseClient
 	// TestPlan is the client for interacting with the TestPlan builders.
@@ -159,9 +159,9 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.Cond = NewCondClient(tx.config)
 	tx.Module = NewModuleClient(tx.config)
 	tx.PlanRelatedTestCase = NewPlanRelatedTestCaseClient(tx.config)
-	tx.RelatedTestCase = NewRelatedTestCaseClient(tx.config)
 	tx.TestCase = NewTestCaseClient(tx.config)
 	tx.TestPlan = NewTestPlanClient(tx.config)
 }
@@ -173,7 +173,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Module.QueryXXX(), the query will be executed
+// applies a query, for example: Cond.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.
