@@ -211,23 +211,50 @@ func (prtcu *PlanRelatedTestCaseUpdate) ClearRunDuration() *PlanRelatedTestCaseU
 	return prtcu
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (prtcu *PlanRelatedTestCaseUpdate) SetTestCaseResult(s string) *PlanRelatedTestCaseUpdate {
-	prtcu.mutation.SetTestCaseResult(s)
+// SetResult sets the "result" field.
+func (prtcu *PlanRelatedTestCaseUpdate) SetResult(s string) *PlanRelatedTestCaseUpdate {
+	prtcu.mutation.SetResult(s)
 	return prtcu
 }
 
-// SetNillableTestCaseResult sets the "test_case_result" field if the given value is not nil.
-func (prtcu *PlanRelatedTestCaseUpdate) SetNillableTestCaseResult(s *string) *PlanRelatedTestCaseUpdate {
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (prtcu *PlanRelatedTestCaseUpdate) SetNillableResult(s *string) *PlanRelatedTestCaseUpdate {
 	if s != nil {
-		prtcu.SetTestCaseResult(*s)
+		prtcu.SetResult(*s)
 	}
 	return prtcu
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (prtcu *PlanRelatedTestCaseUpdate) ClearTestCaseResult() *PlanRelatedTestCaseUpdate {
-	prtcu.mutation.ClearTestCaseResult()
+// ClearResult clears the value of the "result" field.
+func (prtcu *PlanRelatedTestCaseUpdate) ClearResult() *PlanRelatedTestCaseUpdate {
+	prtcu.mutation.ClearResult()
+	return prtcu
+}
+
+// SetIndex sets the "index" field.
+func (prtcu *PlanRelatedTestCaseUpdate) SetIndex(u uint32) *PlanRelatedTestCaseUpdate {
+	prtcu.mutation.ResetIndex()
+	prtcu.mutation.SetIndex(u)
+	return prtcu
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (prtcu *PlanRelatedTestCaseUpdate) SetNillableIndex(u *uint32) *PlanRelatedTestCaseUpdate {
+	if u != nil {
+		prtcu.SetIndex(*u)
+	}
+	return prtcu
+}
+
+// AddIndex adds u to the "index" field.
+func (prtcu *PlanRelatedTestCaseUpdate) AddIndex(u int32) *PlanRelatedTestCaseUpdate {
+	prtcu.mutation.AddIndex(u)
+	return prtcu
+}
+
+// ClearIndex clears the value of the "index" field.
+func (prtcu *PlanRelatedTestCaseUpdate) ClearIndex() *PlanRelatedTestCaseUpdate {
+	prtcu.mutation.ClearIndex()
 	return prtcu
 }
 
@@ -456,17 +483,37 @@ func (prtcu *PlanRelatedTestCaseUpdate) sqlSave(ctx context.Context) (n int, err
 			Column: planrelatedtestcase.FieldRunDuration,
 		})
 	}
-	if value, ok := prtcu.mutation.TestCaseResult(); ok {
+	if value, ok := prtcu.mutation.Result(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: planrelatedtestcase.FieldTestCaseResult,
+			Column: planrelatedtestcase.FieldResult,
 		})
 	}
-	if prtcu.mutation.TestCaseResultCleared() {
+	if prtcu.mutation.ResultCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: planrelatedtestcase.FieldTestCaseResult,
+			Column: planrelatedtestcase.FieldResult,
+		})
+	}
+	if value, ok := prtcu.mutation.Index(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: planrelatedtestcase.FieldIndex,
+		})
+	}
+	if value, ok := prtcu.mutation.AddedIndex(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: planrelatedtestcase.FieldIndex,
+		})
+	}
+	if prtcu.mutation.IndexCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: planrelatedtestcase.FieldIndex,
 		})
 	}
 	_spec.Modifiers = prtcu.modifiers
@@ -672,23 +719,50 @@ func (prtcuo *PlanRelatedTestCaseUpdateOne) ClearRunDuration() *PlanRelatedTestC
 	return prtcuo
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (prtcuo *PlanRelatedTestCaseUpdateOne) SetTestCaseResult(s string) *PlanRelatedTestCaseUpdateOne {
-	prtcuo.mutation.SetTestCaseResult(s)
+// SetResult sets the "result" field.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) SetResult(s string) *PlanRelatedTestCaseUpdateOne {
+	prtcuo.mutation.SetResult(s)
 	return prtcuo
 }
 
-// SetNillableTestCaseResult sets the "test_case_result" field if the given value is not nil.
-func (prtcuo *PlanRelatedTestCaseUpdateOne) SetNillableTestCaseResult(s *string) *PlanRelatedTestCaseUpdateOne {
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) SetNillableResult(s *string) *PlanRelatedTestCaseUpdateOne {
 	if s != nil {
-		prtcuo.SetTestCaseResult(*s)
+		prtcuo.SetResult(*s)
 	}
 	return prtcuo
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (prtcuo *PlanRelatedTestCaseUpdateOne) ClearTestCaseResult() *PlanRelatedTestCaseUpdateOne {
-	prtcuo.mutation.ClearTestCaseResult()
+// ClearResult clears the value of the "result" field.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) ClearResult() *PlanRelatedTestCaseUpdateOne {
+	prtcuo.mutation.ClearResult()
+	return prtcuo
+}
+
+// SetIndex sets the "index" field.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) SetIndex(u uint32) *PlanRelatedTestCaseUpdateOne {
+	prtcuo.mutation.ResetIndex()
+	prtcuo.mutation.SetIndex(u)
+	return prtcuo
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) SetNillableIndex(u *uint32) *PlanRelatedTestCaseUpdateOne {
+	if u != nil {
+		prtcuo.SetIndex(*u)
+	}
+	return prtcuo
+}
+
+// AddIndex adds u to the "index" field.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) AddIndex(u int32) *PlanRelatedTestCaseUpdateOne {
+	prtcuo.mutation.AddIndex(u)
+	return prtcuo
+}
+
+// ClearIndex clears the value of the "index" field.
+func (prtcuo *PlanRelatedTestCaseUpdateOne) ClearIndex() *PlanRelatedTestCaseUpdateOne {
+	prtcuo.mutation.ClearIndex()
 	return prtcuo
 }
 
@@ -947,17 +1021,37 @@ func (prtcuo *PlanRelatedTestCaseUpdateOne) sqlSave(ctx context.Context) (_node 
 			Column: planrelatedtestcase.FieldRunDuration,
 		})
 	}
-	if value, ok := prtcuo.mutation.TestCaseResult(); ok {
+	if value, ok := prtcuo.mutation.Result(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: planrelatedtestcase.FieldTestCaseResult,
+			Column: planrelatedtestcase.FieldResult,
 		})
 	}
-	if prtcuo.mutation.TestCaseResultCleared() {
+	if prtcuo.mutation.ResultCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: planrelatedtestcase.FieldTestCaseResult,
+			Column: planrelatedtestcase.FieldResult,
+		})
+	}
+	if value, ok := prtcuo.mutation.Index(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: planrelatedtestcase.FieldIndex,
+		})
+	}
+	if value, ok := prtcuo.mutation.AddedIndex(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: planrelatedtestcase.FieldIndex,
+		})
+	}
+	if prtcuo.mutation.IndexCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: planrelatedtestcase.FieldIndex,
 		})
 	}
 	_spec.Modifiers = prtcuo.modifiers

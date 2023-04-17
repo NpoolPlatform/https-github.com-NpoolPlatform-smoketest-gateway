@@ -142,10 +142,17 @@ func RunDuration(v uint32) predicate.PlanRelatedTestCase {
 	})
 }
 
-// TestCaseResult applies equality check predicate on the "test_case_result" field. It's identical to TestCaseResultEQ.
-func TestCaseResult(v string) predicate.PlanRelatedTestCase {
+// Result applies equality check predicate on the "result" field. It's identical to ResultEQ.
+func Result(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestCaseResult), v))
+		s.Where(sql.EQ(s.C(FieldResult), v))
+	})
+}
+
+// Index applies equality check predicate on the "index" field. It's identical to IndexEQ.
+func Index(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIndex), v))
 	})
 }
 
@@ -879,116 +886,194 @@ func RunDurationNotNil() predicate.PlanRelatedTestCase {
 	})
 }
 
-// TestCaseResultEQ applies the EQ predicate on the "test_case_result" field.
-func TestCaseResultEQ(v string) predicate.PlanRelatedTestCase {
+// ResultEQ applies the EQ predicate on the "result" field.
+func ResultEQ(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestCaseResult), v))
+		s.Where(sql.EQ(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultNEQ applies the NEQ predicate on the "test_case_result" field.
-func TestCaseResultNEQ(v string) predicate.PlanRelatedTestCase {
+// ResultNEQ applies the NEQ predicate on the "result" field.
+func ResultNEQ(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldTestCaseResult), v))
+		s.Where(sql.NEQ(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultIn applies the In predicate on the "test_case_result" field.
-func TestCaseResultIn(vs ...string) predicate.PlanRelatedTestCase {
+// ResultIn applies the In predicate on the "result" field.
+func ResultIn(vs ...string) predicate.PlanRelatedTestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldTestCaseResult), v...))
+		s.Where(sql.In(s.C(FieldResult), v...))
 	})
 }
 
-// TestCaseResultNotIn applies the NotIn predicate on the "test_case_result" field.
-func TestCaseResultNotIn(vs ...string) predicate.PlanRelatedTestCase {
+// ResultNotIn applies the NotIn predicate on the "result" field.
+func ResultNotIn(vs ...string) predicate.PlanRelatedTestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldTestCaseResult), v...))
+		s.Where(sql.NotIn(s.C(FieldResult), v...))
 	})
 }
 
-// TestCaseResultGT applies the GT predicate on the "test_case_result" field.
-func TestCaseResultGT(v string) predicate.PlanRelatedTestCase {
+// ResultGT applies the GT predicate on the "result" field.
+func ResultGT(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldTestCaseResult), v))
+		s.Where(sql.GT(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultGTE applies the GTE predicate on the "test_case_result" field.
-func TestCaseResultGTE(v string) predicate.PlanRelatedTestCase {
+// ResultGTE applies the GTE predicate on the "result" field.
+func ResultGTE(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldTestCaseResult), v))
+		s.Where(sql.GTE(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultLT applies the LT predicate on the "test_case_result" field.
-func TestCaseResultLT(v string) predicate.PlanRelatedTestCase {
+// ResultLT applies the LT predicate on the "result" field.
+func ResultLT(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldTestCaseResult), v))
+		s.Where(sql.LT(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultLTE applies the LTE predicate on the "test_case_result" field.
-func TestCaseResultLTE(v string) predicate.PlanRelatedTestCase {
+// ResultLTE applies the LTE predicate on the "result" field.
+func ResultLTE(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldTestCaseResult), v))
+		s.Where(sql.LTE(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultContains applies the Contains predicate on the "test_case_result" field.
-func TestCaseResultContains(v string) predicate.PlanRelatedTestCase {
+// ResultContains applies the Contains predicate on the "result" field.
+func ResultContains(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldTestCaseResult), v))
+		s.Where(sql.Contains(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultHasPrefix applies the HasPrefix predicate on the "test_case_result" field.
-func TestCaseResultHasPrefix(v string) predicate.PlanRelatedTestCase {
+// ResultHasPrefix applies the HasPrefix predicate on the "result" field.
+func ResultHasPrefix(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldTestCaseResult), v))
+		s.Where(sql.HasPrefix(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultHasSuffix applies the HasSuffix predicate on the "test_case_result" field.
-func TestCaseResultHasSuffix(v string) predicate.PlanRelatedTestCase {
+// ResultHasSuffix applies the HasSuffix predicate on the "result" field.
+func ResultHasSuffix(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldTestCaseResult), v))
+		s.Where(sql.HasSuffix(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultIsNil applies the IsNil predicate on the "test_case_result" field.
-func TestCaseResultIsNil() predicate.PlanRelatedTestCase {
+// ResultIsNil applies the IsNil predicate on the "result" field.
+func ResultIsNil() predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldTestCaseResult)))
+		s.Where(sql.IsNull(s.C(FieldResult)))
 	})
 }
 
-// TestCaseResultNotNil applies the NotNil predicate on the "test_case_result" field.
-func TestCaseResultNotNil() predicate.PlanRelatedTestCase {
+// ResultNotNil applies the NotNil predicate on the "result" field.
+func ResultNotNil() predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldTestCaseResult)))
+		s.Where(sql.NotNull(s.C(FieldResult)))
 	})
 }
 
-// TestCaseResultEqualFold applies the EqualFold predicate on the "test_case_result" field.
-func TestCaseResultEqualFold(v string) predicate.PlanRelatedTestCase {
+// ResultEqualFold applies the EqualFold predicate on the "result" field.
+func ResultEqualFold(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldTestCaseResult), v))
+		s.Where(sql.EqualFold(s.C(FieldResult), v))
 	})
 }
 
-// TestCaseResultContainsFold applies the ContainsFold predicate on the "test_case_result" field.
-func TestCaseResultContainsFold(v string) predicate.PlanRelatedTestCase {
+// ResultContainsFold applies the ContainsFold predicate on the "result" field.
+func ResultContainsFold(v string) predicate.PlanRelatedTestCase {
 	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldTestCaseResult), v))
+		s.Where(sql.ContainsFold(s.C(FieldResult), v))
+	})
+}
+
+// IndexEQ applies the EQ predicate on the "index" field.
+func IndexEQ(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldIndex), v))
+	})
+}
+
+// IndexNEQ applies the NEQ predicate on the "index" field.
+func IndexNEQ(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldIndex), v))
+	})
+}
+
+// IndexIn applies the In predicate on the "index" field.
+func IndexIn(vs ...uint32) predicate.PlanRelatedTestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldIndex), v...))
+	})
+}
+
+// IndexNotIn applies the NotIn predicate on the "index" field.
+func IndexNotIn(vs ...uint32) predicate.PlanRelatedTestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldIndex), v...))
+	})
+}
+
+// IndexGT applies the GT predicate on the "index" field.
+func IndexGT(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldIndex), v))
+	})
+}
+
+// IndexGTE applies the GTE predicate on the "index" field.
+func IndexGTE(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldIndex), v))
+	})
+}
+
+// IndexLT applies the LT predicate on the "index" field.
+func IndexLT(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldIndex), v))
+	})
+}
+
+// IndexLTE applies the LTE predicate on the "index" field.
+func IndexLTE(v uint32) predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldIndex), v))
+	})
+}
+
+// IndexIsNil applies the IsNil predicate on the "index" field.
+func IndexIsNil() predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldIndex)))
+	})
+}
+
+// IndexNotNil applies the NotNil predicate on the "index" field.
+func IndexNotNil() predicate.PlanRelatedTestCase {
+	return predicate.PlanRelatedTestCase(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldIndex)))
 	})
 }
 

@@ -34,8 +34,10 @@ type PlanRelatedTestCase struct {
 	TestUserID uuid.UUID `json:"test_user_id,omitempty"`
 	// RunDuration holds the value of the "run_duration" field.
 	RunDuration uint32 `json:"run_duration,omitempty"`
-	// TestCaseResult holds the value of the "test_case_result" field.
-	TestCaseResult string `json:"test_case_result,omitempty"`
+	// Result holds the value of the "result" field.
+	Result string `json:"result,omitempty"`
+	// Index holds the value of the "index" field.
+	Index uint32 `json:"index,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -43,9 +45,9 @@ func (*PlanRelatedTestCase) scanValues(columns []string) ([]interface{}, error) 
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case planrelatedtestcase.FieldCreatedAt, planrelatedtestcase.FieldUpdatedAt, planrelatedtestcase.FieldDeletedAt, planrelatedtestcase.FieldRunDuration:
+		case planrelatedtestcase.FieldCreatedAt, planrelatedtestcase.FieldUpdatedAt, planrelatedtestcase.FieldDeletedAt, planrelatedtestcase.FieldRunDuration, planrelatedtestcase.FieldIndex:
 			values[i] = new(sql.NullInt64)
-		case planrelatedtestcase.FieldTestCaseOutput, planrelatedtestcase.FieldDescription, planrelatedtestcase.FieldTestCaseResult:
+		case planrelatedtestcase.FieldTestCaseOutput, planrelatedtestcase.FieldDescription, planrelatedtestcase.FieldResult:
 			values[i] = new(sql.NullString)
 		case planrelatedtestcase.FieldID, planrelatedtestcase.FieldTestPlanID, planrelatedtestcase.FieldTestCaseID, planrelatedtestcase.FieldTestUserID:
 			values[i] = new(uuid.UUID)
@@ -124,11 +126,17 @@ func (prtc *PlanRelatedTestCase) assignValues(columns []string, values []interfa
 			} else if value.Valid {
 				prtc.RunDuration = uint32(value.Int64)
 			}
-		case planrelatedtestcase.FieldTestCaseResult:
+		case planrelatedtestcase.FieldResult:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field test_case_result", values[i])
+				return fmt.Errorf("unexpected type %T for field result", values[i])
 			} else if value.Valid {
-				prtc.TestCaseResult = value.String
+				prtc.Result = value.String
+			}
+		case planrelatedtestcase.FieldIndex:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field index", values[i])
+			} else if value.Valid {
+				prtc.Index = uint32(value.Int64)
 			}
 		}
 	}
@@ -185,8 +193,11 @@ func (prtc *PlanRelatedTestCase) String() string {
 	builder.WriteString("run_duration=")
 	builder.WriteString(fmt.Sprintf("%v", prtc.RunDuration))
 	builder.WriteString(", ")
-	builder.WriteString("test_case_result=")
-	builder.WriteString(prtc.TestCaseResult)
+	builder.WriteString("result=")
+	builder.WriteString(prtc.Result)
+	builder.WriteString(", ")
+	builder.WriteString("index=")
+	builder.WriteString(fmt.Sprintf("%v", prtc.Index))
 	builder.WriteByte(')')
 	return builder.String()
 }

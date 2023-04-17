@@ -53,7 +53,8 @@ var (
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "test_user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "run_duration", Type: field.TypeUint32, Nullable: true, Default: 0},
-		{Name: "test_case_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseResult"},
+		{Name: "result", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseResult"},
+		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// PlanRelatedTestCasesTable holds the schema information for the "plan_related_test_cases" table.
 	PlanRelatedTestCasesTable = &schema.Table{

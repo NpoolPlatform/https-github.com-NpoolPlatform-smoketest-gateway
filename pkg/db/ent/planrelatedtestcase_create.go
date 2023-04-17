@@ -149,16 +149,30 @@ func (prtcc *PlanRelatedTestCaseCreate) SetNillableRunDuration(u *uint32) *PlanR
 	return prtcc
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (prtcc *PlanRelatedTestCaseCreate) SetTestCaseResult(s string) *PlanRelatedTestCaseCreate {
-	prtcc.mutation.SetTestCaseResult(s)
+// SetResult sets the "result" field.
+func (prtcc *PlanRelatedTestCaseCreate) SetResult(s string) *PlanRelatedTestCaseCreate {
+	prtcc.mutation.SetResult(s)
 	return prtcc
 }
 
-// SetNillableTestCaseResult sets the "test_case_result" field if the given value is not nil.
-func (prtcc *PlanRelatedTestCaseCreate) SetNillableTestCaseResult(s *string) *PlanRelatedTestCaseCreate {
+// SetNillableResult sets the "result" field if the given value is not nil.
+func (prtcc *PlanRelatedTestCaseCreate) SetNillableResult(s *string) *PlanRelatedTestCaseCreate {
 	if s != nil {
-		prtcc.SetTestCaseResult(*s)
+		prtcc.SetResult(*s)
+	}
+	return prtcc
+}
+
+// SetIndex sets the "index" field.
+func (prtcc *PlanRelatedTestCaseCreate) SetIndex(u uint32) *PlanRelatedTestCaseCreate {
+	prtcc.mutation.SetIndex(u)
+	return prtcc
+}
+
+// SetNillableIndex sets the "index" field if the given value is not nil.
+func (prtcc *PlanRelatedTestCaseCreate) SetNillableIndex(u *uint32) *PlanRelatedTestCaseCreate {
+	if u != nil {
+		prtcc.SetIndex(*u)
 	}
 	return prtcc
 }
@@ -310,9 +324,13 @@ func (prtcc *PlanRelatedTestCaseCreate) defaults() error {
 		v := planrelatedtestcase.DefaultRunDuration
 		prtcc.mutation.SetRunDuration(v)
 	}
-	if _, ok := prtcc.mutation.TestCaseResult(); !ok {
-		v := planrelatedtestcase.DefaultTestCaseResult
-		prtcc.mutation.SetTestCaseResult(v)
+	if _, ok := prtcc.mutation.Result(); !ok {
+		v := planrelatedtestcase.DefaultResult
+		prtcc.mutation.SetResult(v)
+	}
+	if _, ok := prtcc.mutation.Index(); !ok {
+		v := planrelatedtestcase.DefaultIndex
+		prtcc.mutation.SetIndex(v)
 	}
 	if _, ok := prtcc.mutation.ID(); !ok {
 		if planrelatedtestcase.DefaultID == nil {
@@ -444,13 +462,21 @@ func (prtcc *PlanRelatedTestCaseCreate) createSpec() (*PlanRelatedTestCase, *sql
 		})
 		_node.RunDuration = value
 	}
-	if value, ok := prtcc.mutation.TestCaseResult(); ok {
+	if value, ok := prtcc.mutation.Result(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: planrelatedtestcase.FieldTestCaseResult,
+			Column: planrelatedtestcase.FieldResult,
 		})
-		_node.TestCaseResult = value
+		_node.Result = value
+	}
+	if value, ok := prtcc.mutation.Index(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: planrelatedtestcase.FieldIndex,
+		})
+		_node.Index = value
 	}
 	return _node, _spec
 }
@@ -674,21 +700,45 @@ func (u *PlanRelatedTestCaseUpsert) ClearRunDuration() *PlanRelatedTestCaseUpser
 	return u
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsert) SetTestCaseResult(v string) *PlanRelatedTestCaseUpsert {
-	u.Set(planrelatedtestcase.FieldTestCaseResult, v)
+// SetResult sets the "result" field.
+func (u *PlanRelatedTestCaseUpsert) SetResult(v string) *PlanRelatedTestCaseUpsert {
+	u.Set(planrelatedtestcase.FieldResult, v)
 	return u
 }
 
-// UpdateTestCaseResult sets the "test_case_result" field to the value that was provided on create.
-func (u *PlanRelatedTestCaseUpsert) UpdateTestCaseResult() *PlanRelatedTestCaseUpsert {
-	u.SetExcluded(planrelatedtestcase.FieldTestCaseResult)
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsert) UpdateResult() *PlanRelatedTestCaseUpsert {
+	u.SetExcluded(planrelatedtestcase.FieldResult)
 	return u
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsert) ClearTestCaseResult() *PlanRelatedTestCaseUpsert {
-	u.SetNull(planrelatedtestcase.FieldTestCaseResult)
+// ClearResult clears the value of the "result" field.
+func (u *PlanRelatedTestCaseUpsert) ClearResult() *PlanRelatedTestCaseUpsert {
+	u.SetNull(planrelatedtestcase.FieldResult)
+	return u
+}
+
+// SetIndex sets the "index" field.
+func (u *PlanRelatedTestCaseUpsert) SetIndex(v uint32) *PlanRelatedTestCaseUpsert {
+	u.Set(planrelatedtestcase.FieldIndex, v)
+	return u
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsert) UpdateIndex() *PlanRelatedTestCaseUpsert {
+	u.SetExcluded(planrelatedtestcase.FieldIndex)
+	return u
+}
+
+// AddIndex adds v to the "index" field.
+func (u *PlanRelatedTestCaseUpsert) AddIndex(v uint32) *PlanRelatedTestCaseUpsert {
+	u.Add(planrelatedtestcase.FieldIndex, v)
+	return u
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *PlanRelatedTestCaseUpsert) ClearIndex() *PlanRelatedTestCaseUpsert {
+	u.SetNull(planrelatedtestcase.FieldIndex)
 	return u
 }
 
@@ -938,24 +988,52 @@ func (u *PlanRelatedTestCaseUpsertOne) ClearRunDuration() *PlanRelatedTestCaseUp
 	})
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsertOne) SetTestCaseResult(v string) *PlanRelatedTestCaseUpsertOne {
+// SetResult sets the "result" field.
+func (u *PlanRelatedTestCaseUpsertOne) SetResult(v string) *PlanRelatedTestCaseUpsertOne {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.SetTestCaseResult(v)
+		s.SetResult(v)
 	})
 }
 
-// UpdateTestCaseResult sets the "test_case_result" field to the value that was provided on create.
-func (u *PlanRelatedTestCaseUpsertOne) UpdateTestCaseResult() *PlanRelatedTestCaseUpsertOne {
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsertOne) UpdateResult() *PlanRelatedTestCaseUpsertOne {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.UpdateTestCaseResult()
+		s.UpdateResult()
 	})
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsertOne) ClearTestCaseResult() *PlanRelatedTestCaseUpsertOne {
+// ClearResult clears the value of the "result" field.
+func (u *PlanRelatedTestCaseUpsertOne) ClearResult() *PlanRelatedTestCaseUpsertOne {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.ClearTestCaseResult()
+		s.ClearResult()
+	})
+}
+
+// SetIndex sets the "index" field.
+func (u *PlanRelatedTestCaseUpsertOne) SetIndex(v uint32) *PlanRelatedTestCaseUpsertOne {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.SetIndex(v)
+	})
+}
+
+// AddIndex adds v to the "index" field.
+func (u *PlanRelatedTestCaseUpsertOne) AddIndex(v uint32) *PlanRelatedTestCaseUpsertOne {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.AddIndex(v)
+	})
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsertOne) UpdateIndex() *PlanRelatedTestCaseUpsertOne {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.UpdateIndex()
+	})
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *PlanRelatedTestCaseUpsertOne) ClearIndex() *PlanRelatedTestCaseUpsertOne {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.ClearIndex()
 	})
 }
 
@@ -1371,24 +1449,52 @@ func (u *PlanRelatedTestCaseUpsertBulk) ClearRunDuration() *PlanRelatedTestCaseU
 	})
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsertBulk) SetTestCaseResult(v string) *PlanRelatedTestCaseUpsertBulk {
+// SetResult sets the "result" field.
+func (u *PlanRelatedTestCaseUpsertBulk) SetResult(v string) *PlanRelatedTestCaseUpsertBulk {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.SetTestCaseResult(v)
+		s.SetResult(v)
 	})
 }
 
-// UpdateTestCaseResult sets the "test_case_result" field to the value that was provided on create.
-func (u *PlanRelatedTestCaseUpsertBulk) UpdateTestCaseResult() *PlanRelatedTestCaseUpsertBulk {
+// UpdateResult sets the "result" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsertBulk) UpdateResult() *PlanRelatedTestCaseUpsertBulk {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.UpdateTestCaseResult()
+		s.UpdateResult()
 	})
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (u *PlanRelatedTestCaseUpsertBulk) ClearTestCaseResult() *PlanRelatedTestCaseUpsertBulk {
+// ClearResult clears the value of the "result" field.
+func (u *PlanRelatedTestCaseUpsertBulk) ClearResult() *PlanRelatedTestCaseUpsertBulk {
 	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
-		s.ClearTestCaseResult()
+		s.ClearResult()
+	})
+}
+
+// SetIndex sets the "index" field.
+func (u *PlanRelatedTestCaseUpsertBulk) SetIndex(v uint32) *PlanRelatedTestCaseUpsertBulk {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.SetIndex(v)
+	})
+}
+
+// AddIndex adds v to the "index" field.
+func (u *PlanRelatedTestCaseUpsertBulk) AddIndex(v uint32) *PlanRelatedTestCaseUpsertBulk {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.AddIndex(v)
+	})
+}
+
+// UpdateIndex sets the "index" field to the value that was provided on create.
+func (u *PlanRelatedTestCaseUpsertBulk) UpdateIndex() *PlanRelatedTestCaseUpsertBulk {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.UpdateIndex()
+	})
+}
+
+// ClearIndex clears the value of the "index" field.
+func (u *PlanRelatedTestCaseUpsertBulk) ClearIndex() *PlanRelatedTestCaseUpsertBulk {
+	return u.Update(func(s *PlanRelatedTestCaseUpsert) {
+		s.ClearIndex()
 	})
 }
 

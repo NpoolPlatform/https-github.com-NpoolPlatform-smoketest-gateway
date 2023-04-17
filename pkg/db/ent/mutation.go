@@ -1640,7 +1640,9 @@ type PlanRelatedTestCaseMutation struct {
 	test_user_id     *uuid.UUID
 	run_duration     *uint32
 	addrun_duration  *int32
-	test_case_result *string
+	result           *string
+	index            *uint32
+	addindex         *int32
 	clearedFields    map[string]struct{}
 	done             bool
 	oldValue         func(context.Context) (*PlanRelatedTestCase, error)
@@ -2234,53 +2236,123 @@ func (m *PlanRelatedTestCaseMutation) ResetRunDuration() {
 	delete(m.clearedFields, planrelatedtestcase.FieldRunDuration)
 }
 
-// SetTestCaseResult sets the "test_case_result" field.
-func (m *PlanRelatedTestCaseMutation) SetTestCaseResult(s string) {
-	m.test_case_result = &s
+// SetResult sets the "result" field.
+func (m *PlanRelatedTestCaseMutation) SetResult(s string) {
+	m.result = &s
 }
 
-// TestCaseResult returns the value of the "test_case_result" field in the mutation.
-func (m *PlanRelatedTestCaseMutation) TestCaseResult() (r string, exists bool) {
-	v := m.test_case_result
+// Result returns the value of the "result" field in the mutation.
+func (m *PlanRelatedTestCaseMutation) Result() (r string, exists bool) {
+	v := m.result
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTestCaseResult returns the old "test_case_result" field's value of the PlanRelatedTestCase entity.
+// OldResult returns the old "result" field's value of the PlanRelatedTestCase entity.
 // If the PlanRelatedTestCase object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PlanRelatedTestCaseMutation) OldTestCaseResult(ctx context.Context) (v string, err error) {
+func (m *PlanRelatedTestCaseMutation) OldResult(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTestCaseResult is only allowed on UpdateOne operations")
+		return v, errors.New("OldResult is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTestCaseResult requires an ID field in the mutation")
+		return v, errors.New("OldResult requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTestCaseResult: %w", err)
+		return v, fmt.Errorf("querying old value for OldResult: %w", err)
 	}
-	return oldValue.TestCaseResult, nil
+	return oldValue.Result, nil
 }
 
-// ClearTestCaseResult clears the value of the "test_case_result" field.
-func (m *PlanRelatedTestCaseMutation) ClearTestCaseResult() {
-	m.test_case_result = nil
-	m.clearedFields[planrelatedtestcase.FieldTestCaseResult] = struct{}{}
+// ClearResult clears the value of the "result" field.
+func (m *PlanRelatedTestCaseMutation) ClearResult() {
+	m.result = nil
+	m.clearedFields[planrelatedtestcase.FieldResult] = struct{}{}
 }
 
-// TestCaseResultCleared returns if the "test_case_result" field was cleared in this mutation.
-func (m *PlanRelatedTestCaseMutation) TestCaseResultCleared() bool {
-	_, ok := m.clearedFields[planrelatedtestcase.FieldTestCaseResult]
+// ResultCleared returns if the "result" field was cleared in this mutation.
+func (m *PlanRelatedTestCaseMutation) ResultCleared() bool {
+	_, ok := m.clearedFields[planrelatedtestcase.FieldResult]
 	return ok
 }
 
-// ResetTestCaseResult resets all changes to the "test_case_result" field.
-func (m *PlanRelatedTestCaseMutation) ResetTestCaseResult() {
-	m.test_case_result = nil
-	delete(m.clearedFields, planrelatedtestcase.FieldTestCaseResult)
+// ResetResult resets all changes to the "result" field.
+func (m *PlanRelatedTestCaseMutation) ResetResult() {
+	m.result = nil
+	delete(m.clearedFields, planrelatedtestcase.FieldResult)
+}
+
+// SetIndex sets the "index" field.
+func (m *PlanRelatedTestCaseMutation) SetIndex(u uint32) {
+	m.index = &u
+	m.addindex = nil
+}
+
+// Index returns the value of the "index" field in the mutation.
+func (m *PlanRelatedTestCaseMutation) Index() (r uint32, exists bool) {
+	v := m.index
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIndex returns the old "index" field's value of the PlanRelatedTestCase entity.
+// If the PlanRelatedTestCase object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlanRelatedTestCaseMutation) OldIndex(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIndex is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIndex requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIndex: %w", err)
+	}
+	return oldValue.Index, nil
+}
+
+// AddIndex adds u to the "index" field.
+func (m *PlanRelatedTestCaseMutation) AddIndex(u int32) {
+	if m.addindex != nil {
+		*m.addindex += u
+	} else {
+		m.addindex = &u
+	}
+}
+
+// AddedIndex returns the value that was added to the "index" field in this mutation.
+func (m *PlanRelatedTestCaseMutation) AddedIndex() (r int32, exists bool) {
+	v := m.addindex
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearIndex clears the value of the "index" field.
+func (m *PlanRelatedTestCaseMutation) ClearIndex() {
+	m.index = nil
+	m.addindex = nil
+	m.clearedFields[planrelatedtestcase.FieldIndex] = struct{}{}
+}
+
+// IndexCleared returns if the "index" field was cleared in this mutation.
+func (m *PlanRelatedTestCaseMutation) IndexCleared() bool {
+	_, ok := m.clearedFields[planrelatedtestcase.FieldIndex]
+	return ok
+}
+
+// ResetIndex resets all changes to the "index" field.
+func (m *PlanRelatedTestCaseMutation) ResetIndex() {
+	m.index = nil
+	m.addindex = nil
+	delete(m.clearedFields, planrelatedtestcase.FieldIndex)
 }
 
 // Where appends a list predicates to the PlanRelatedTestCaseMutation builder.
@@ -2302,7 +2374,7 @@ func (m *PlanRelatedTestCaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PlanRelatedTestCaseMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.created_at != nil {
 		fields = append(fields, planrelatedtestcase.FieldCreatedAt)
 	}
@@ -2330,8 +2402,11 @@ func (m *PlanRelatedTestCaseMutation) Fields() []string {
 	if m.run_duration != nil {
 		fields = append(fields, planrelatedtestcase.FieldRunDuration)
 	}
-	if m.test_case_result != nil {
-		fields = append(fields, planrelatedtestcase.FieldTestCaseResult)
+	if m.result != nil {
+		fields = append(fields, planrelatedtestcase.FieldResult)
+	}
+	if m.index != nil {
+		fields = append(fields, planrelatedtestcase.FieldIndex)
 	}
 	return fields
 }
@@ -2359,8 +2434,10 @@ func (m *PlanRelatedTestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.TestUserID()
 	case planrelatedtestcase.FieldRunDuration:
 		return m.RunDuration()
-	case planrelatedtestcase.FieldTestCaseResult:
-		return m.TestCaseResult()
+	case planrelatedtestcase.FieldResult:
+		return m.Result()
+	case planrelatedtestcase.FieldIndex:
+		return m.Index()
 	}
 	return nil, false
 }
@@ -2388,8 +2465,10 @@ func (m *PlanRelatedTestCaseMutation) OldField(ctx context.Context, name string)
 		return m.OldTestUserID(ctx)
 	case planrelatedtestcase.FieldRunDuration:
 		return m.OldRunDuration(ctx)
-	case planrelatedtestcase.FieldTestCaseResult:
-		return m.OldTestCaseResult(ctx)
+	case planrelatedtestcase.FieldResult:
+		return m.OldResult(ctx)
+	case planrelatedtestcase.FieldIndex:
+		return m.OldIndex(ctx)
 	}
 	return nil, fmt.Errorf("unknown PlanRelatedTestCase field %s", name)
 }
@@ -2462,12 +2541,19 @@ func (m *PlanRelatedTestCaseMutation) SetField(name string, value ent.Value) err
 		}
 		m.SetRunDuration(v)
 		return nil
-	case planrelatedtestcase.FieldTestCaseResult:
+	case planrelatedtestcase.FieldResult:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTestCaseResult(v)
+		m.SetResult(v)
+		return nil
+	case planrelatedtestcase.FieldIndex:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIndex(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PlanRelatedTestCase field %s", name)
@@ -2489,6 +2575,9 @@ func (m *PlanRelatedTestCaseMutation) AddedFields() []string {
 	if m.addrun_duration != nil {
 		fields = append(fields, planrelatedtestcase.FieldRunDuration)
 	}
+	if m.addindex != nil {
+		fields = append(fields, planrelatedtestcase.FieldIndex)
+	}
 	return fields
 }
 
@@ -2505,6 +2594,8 @@ func (m *PlanRelatedTestCaseMutation) AddedField(name string) (ent.Value, bool) 
 		return m.AddedDeletedAt()
 	case planrelatedtestcase.FieldRunDuration:
 		return m.AddedRunDuration()
+	case planrelatedtestcase.FieldIndex:
+		return m.AddedIndex()
 	}
 	return nil, false
 }
@@ -2542,6 +2633,13 @@ func (m *PlanRelatedTestCaseMutation) AddField(name string, value ent.Value) err
 		}
 		m.AddRunDuration(v)
 		return nil
+	case planrelatedtestcase.FieldIndex:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddIndex(v)
+		return nil
 	}
 	return fmt.Errorf("unknown PlanRelatedTestCase numeric field %s", name)
 }
@@ -2568,8 +2666,11 @@ func (m *PlanRelatedTestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(planrelatedtestcase.FieldRunDuration) {
 		fields = append(fields, planrelatedtestcase.FieldRunDuration)
 	}
-	if m.FieldCleared(planrelatedtestcase.FieldTestCaseResult) {
-		fields = append(fields, planrelatedtestcase.FieldTestCaseResult)
+	if m.FieldCleared(planrelatedtestcase.FieldResult) {
+		fields = append(fields, planrelatedtestcase.FieldResult)
+	}
+	if m.FieldCleared(planrelatedtestcase.FieldIndex) {
+		fields = append(fields, planrelatedtestcase.FieldIndex)
 	}
 	return fields
 }
@@ -2603,8 +2704,11 @@ func (m *PlanRelatedTestCaseMutation) ClearField(name string) error {
 	case planrelatedtestcase.FieldRunDuration:
 		m.ClearRunDuration()
 		return nil
-	case planrelatedtestcase.FieldTestCaseResult:
-		m.ClearTestCaseResult()
+	case planrelatedtestcase.FieldResult:
+		m.ClearResult()
+		return nil
+	case planrelatedtestcase.FieldIndex:
+		m.ClearIndex()
 		return nil
 	}
 	return fmt.Errorf("unknown PlanRelatedTestCase nullable field %s", name)
@@ -2641,8 +2745,11 @@ func (m *PlanRelatedTestCaseMutation) ResetField(name string) error {
 	case planrelatedtestcase.FieldRunDuration:
 		m.ResetRunDuration()
 		return nil
-	case planrelatedtestcase.FieldTestCaseResult:
-		m.ResetTestCaseResult()
+	case planrelatedtestcase.FieldResult:
+		m.ResetResult()
+		return nil
+	case planrelatedtestcase.FieldIndex:
+		m.ResetIndex()
 		return nil
 	}
 	return fmt.Errorf("unknown PlanRelatedTestCase field %s", name)

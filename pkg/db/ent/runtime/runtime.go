@@ -161,10 +161,14 @@ func init() {
 	planrelatedtestcaseDescRunDuration := planrelatedtestcaseFields[6].Descriptor()
 	// planrelatedtestcase.DefaultRunDuration holds the default value on creation for the run_duration field.
 	planrelatedtestcase.DefaultRunDuration = planrelatedtestcaseDescRunDuration.Default.(uint32)
-	// planrelatedtestcaseDescTestCaseResult is the schema descriptor for test_case_result field.
-	planrelatedtestcaseDescTestCaseResult := planrelatedtestcaseFields[7].Descriptor()
-	// planrelatedtestcase.DefaultTestCaseResult holds the default value on creation for the test_case_result field.
-	planrelatedtestcase.DefaultTestCaseResult = planrelatedtestcaseDescTestCaseResult.Default.(string)
+	// planrelatedtestcaseDescResult is the schema descriptor for result field.
+	planrelatedtestcaseDescResult := planrelatedtestcaseFields[7].Descriptor()
+	// planrelatedtestcase.DefaultResult holds the default value on creation for the result field.
+	planrelatedtestcase.DefaultResult = planrelatedtestcaseDescResult.Default.(string)
+	// planrelatedtestcaseDescIndex is the schema descriptor for index field.
+	planrelatedtestcaseDescIndex := planrelatedtestcaseFields[8].Descriptor()
+	// planrelatedtestcase.DefaultIndex holds the default value on creation for the index field.
+	planrelatedtestcase.DefaultIndex = planrelatedtestcaseDescIndex.Default.(uint32)
 	// planrelatedtestcaseDescID is the schema descriptor for id field.
 	planrelatedtestcaseDescID := planrelatedtestcaseFields[0].Descriptor()
 	// planrelatedtestcase.DefaultID holds the default value on creation for the id field.

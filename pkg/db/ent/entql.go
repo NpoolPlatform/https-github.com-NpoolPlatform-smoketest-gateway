@@ -77,7 +77,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			planrelatedtestcase.FieldDescription:    {Type: field.TypeString, Column: planrelatedtestcase.FieldDescription},
 			planrelatedtestcase.FieldTestUserID:     {Type: field.TypeUUID, Column: planrelatedtestcase.FieldTestUserID},
 			planrelatedtestcase.FieldRunDuration:    {Type: field.TypeUint32, Column: planrelatedtestcase.FieldRunDuration},
-			planrelatedtestcase.FieldTestCaseResult: {Type: field.TypeString, Column: planrelatedtestcase.FieldTestCaseResult},
+			planrelatedtestcase.FieldResult:         {Type: field.TypeString, Column: planrelatedtestcase.FieldResult},
+			planrelatedtestcase.FieldIndex:          {Type: field.TypeUint32, Column: planrelatedtestcase.FieldIndex},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -370,9 +371,14 @@ func (f *PlanRelatedTestCaseFilter) WhereRunDuration(p entql.Uint32P) {
 	f.Where(p.Field(planrelatedtestcase.FieldRunDuration))
 }
 
-// WhereTestCaseResult applies the entql string predicate on the test_case_result field.
-func (f *PlanRelatedTestCaseFilter) WhereTestCaseResult(p entql.StringP) {
-	f.Where(p.Field(planrelatedtestcase.FieldTestCaseResult))
+// WhereResult applies the entql string predicate on the result field.
+func (f *PlanRelatedTestCaseFilter) WhereResult(p entql.StringP) {
+	f.Where(p.Field(planrelatedtestcase.FieldResult))
+}
+
+// WhereIndex applies the entql uint32 predicate on the index field.
+func (f *PlanRelatedTestCaseFilter) WhereIndex(p entql.Uint32P) {
+	f.Where(p.Field(planrelatedtestcase.FieldIndex))
 }
 
 // addPredicate implements the predicateAdder interface.

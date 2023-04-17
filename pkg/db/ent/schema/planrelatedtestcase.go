@@ -57,9 +57,13 @@ func (PlanRelatedTestCase) Fields() []ent.Field {
 			Optional().
 			Default(0),
 		field.
-			String("test_case_result").
+			String("result").
 			Optional().
 			Default(planrelatedtestcase.TestCaseResult_DefaultTestCaseResult.String()),
+		field.
+			Uint32("index").
+			Optional().
+			Default(0),
 	}
 }
 

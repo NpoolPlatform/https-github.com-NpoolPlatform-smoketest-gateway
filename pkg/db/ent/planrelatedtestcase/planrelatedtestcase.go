@@ -30,8 +30,10 @@ const (
 	FieldTestUserID = "test_user_id"
 	// FieldRunDuration holds the string denoting the run_duration field in the database.
 	FieldRunDuration = "run_duration"
-	// FieldTestCaseResult holds the string denoting the test_case_result field in the database.
-	FieldTestCaseResult = "test_case_result"
+	// FieldResult holds the string denoting the result field in the database.
+	FieldResult = "result"
+	// FieldIndex holds the string denoting the index field in the database.
+	FieldIndex = "index"
 	// Table holds the table name of the planrelatedtestcase in the database.
 	Table = "plan_related_test_cases"
 )
@@ -48,7 +50,8 @@ var Columns = []string{
 	FieldDescription,
 	FieldTestUserID,
 	FieldRunDuration,
-	FieldTestCaseResult,
+	FieldResult,
+	FieldIndex,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -90,8 +93,10 @@ var (
 	DefaultTestUserID func() uuid.UUID
 	// DefaultRunDuration holds the default value on creation for the "run_duration" field.
 	DefaultRunDuration uint32
-	// DefaultTestCaseResult holds the default value on creation for the "test_case_result" field.
-	DefaultTestCaseResult string
+	// DefaultResult holds the default value on creation for the "result" field.
+	DefaultResult string
+	// DefaultIndex holds the default value on creation for the "index" field.
+	DefaultIndex uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
