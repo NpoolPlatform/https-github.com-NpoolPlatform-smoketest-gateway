@@ -198,28 +198,28 @@ func (f ModuleMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ModuleMutation", m)
 }
 
-// The PlanRelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
+// The PlanTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type PlanRelatedTestCaseQueryRuleFunc func(context.Context, *ent.PlanRelatedTestCaseQuery) error
+type PlanTestCaseQueryRuleFunc func(context.Context, *ent.PlanTestCaseQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f PlanRelatedTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.PlanRelatedTestCaseQuery); ok {
+func (f PlanTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PlanTestCaseQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlanRelatedTestCaseQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlanTestCaseQuery", q)
 }
 
-// The PlanRelatedTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
+// The PlanTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type PlanRelatedTestCaseMutationRuleFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) error
+type PlanTestCaseMutationRuleFunc func(context.Context, *ent.PlanTestCaseMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f PlanRelatedTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.PlanRelatedTestCaseMutation); ok {
+func (f PlanTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PlanTestCaseMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlanRelatedTestCaseMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlanTestCaseMutation", m)
 }
 
 // The TestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
@@ -309,7 +309,7 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.ModuleQuery:
 		return q.Filter(), nil
-	case *ent.PlanRelatedTestCaseQuery:
+	case *ent.PlanTestCaseQuery:
 		return q.Filter(), nil
 	case *ent.TestCaseQuery:
 		return q.Filter(), nil
@@ -326,7 +326,7 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 		return m.Filter(), nil
 	case *ent.ModuleMutation:
 		return m.Filter(), nil
-	case *ent.PlanRelatedTestCaseMutation:
+	case *ent.PlanTestCaseMutation:
 		return m.Filter(), nil
 	case *ent.TestCaseMutation:
 		return m.Filter(), nil

@@ -3,24 +3,24 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	planrelatedtestcase "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/testcase"
+	plantestcase "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/mixin"
 	"github.com/google/uuid"
 )
 
-// PlanRelatedTestCase holds the schema definition for the PlanRelatedTestCase entity.
-type PlanRelatedTestCase struct {
+// PlanTestCase holds the schema definition for the PlanTestCase entity.
+type PlanTestCase struct {
 	ent.Schema
 }
 
-func (PlanRelatedTestCase) Mixin() []ent.Mixin {
+func (PlanTestCase) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
 	}
 }
 
-// Fields of the PlanRelatedTestCase.
-func (PlanRelatedTestCase) Fields() []ent.Field {
+// Fields of the PlanTestCase.
+func (PlanTestCase) Fields() []ent.Field {
 	return []ent.Field{
 		field.
 			UUID("id", uuid.UUID{}).
@@ -59,7 +59,7 @@ func (PlanRelatedTestCase) Fields() []ent.Field {
 		field.
 			String("result").
 			Optional().
-			Default(planrelatedtestcase.TestCaseResult_DefaultTestCaseResult.String()),
+			Default(plantestcase.TestCaseResult_DefaultTestCaseResult.String()),
 		field.
 			Uint32("index").
 			Optional().
@@ -67,7 +67,7 @@ func (PlanRelatedTestCase) Fields() []ent.Field {
 	}
 }
 
-// Edges of the PlanRelatedTestCase.
-func (PlanRelatedTestCase) Edges() []ent.Edge {
+// Edges of the PlanTestCase.
+func (PlanTestCase) Edges() []ent.Edge {
 	return nil
 }

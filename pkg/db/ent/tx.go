@@ -18,8 +18,8 @@ type Tx struct {
 	Cond *CondClient
 	// Module is the client for interacting with the Module builders.
 	Module *ModuleClient
-	// PlanRelatedTestCase is the client for interacting with the PlanRelatedTestCase builders.
-	PlanRelatedTestCase *PlanRelatedTestCaseClient
+	// PlanTestCase is the client for interacting with the PlanTestCase builders.
+	PlanTestCase *PlanTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
 	TestCase *TestCaseClient
 	// TestPlan is the client for interacting with the TestPlan builders.
@@ -161,7 +161,7 @@ func (tx *Tx) Client() *Client {
 func (tx *Tx) init() {
 	tx.Cond = NewCondClient(tx.config)
 	tx.Module = NewModuleClient(tx.config)
-	tx.PlanRelatedTestCase = NewPlanRelatedTestCaseClient(tx.config)
+	tx.PlanTestCase = NewPlanTestCaseClient(tx.config)
 	tx.TestCase = NewTestCaseClient(tx.config)
 	tx.TestPlan = NewTestPlanClient(tx.config)
 }

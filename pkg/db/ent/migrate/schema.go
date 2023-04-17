@@ -41,8 +41,8 @@ var (
 		Columns:    ModulesColumns,
 		PrimaryKey: []*schema.Column{ModulesColumns[0]},
 	}
-	// PlanRelatedTestCasesColumns holds the columns for the "plan_related_test_cases" table.
-	PlanRelatedTestCasesColumns = []*schema.Column{
+	// PlanTestCasesColumns holds the columns for the "plan_test_cases" table.
+	PlanTestCasesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
@@ -56,11 +56,11 @@ var (
 		{Name: "result", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseResult"},
 		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
-	// PlanRelatedTestCasesTable holds the schema information for the "plan_related_test_cases" table.
-	PlanRelatedTestCasesTable = &schema.Table{
-		Name:       "plan_related_test_cases",
-		Columns:    PlanRelatedTestCasesColumns,
-		PrimaryKey: []*schema.Column{PlanRelatedTestCasesColumns[0]},
+	// PlanTestCasesTable holds the schema information for the "plan_test_cases" table.
+	PlanTestCasesTable = &schema.Table{
+		Name:       "plan_test_cases",
+		Columns:    PlanTestCasesColumns,
+		PrimaryKey: []*schema.Column{PlanTestCasesColumns[0]},
 	}
 	// TestCasesColumns holds the columns for the "test_cases" table.
 	TestCasesColumns = []*schema.Column{
@@ -111,7 +111,7 @@ var (
 	Tables = []*schema.Table{
 		CondsTable,
 		ModulesTable,
-		PlanRelatedTestCasesTable,
+		PlanTestCasesTable,
 		TestCasesTable,
 		TestPlansTable,
 	}

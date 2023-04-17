@@ -13,7 +13,7 @@ import (
 
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 
@@ -30,8 +30,8 @@ type Client struct {
 	Cond *CondClient
 	// Module is the client for interacting with the Module builders.
 	Module *ModuleClient
-	// PlanRelatedTestCase is the client for interacting with the PlanRelatedTestCase builders.
-	PlanRelatedTestCase *PlanRelatedTestCaseClient
+	// PlanTestCase is the client for interacting with the PlanTestCase builders.
+	PlanTestCase *PlanTestCaseClient
 	// TestCase is the client for interacting with the TestCase builders.
 	TestCase *TestCaseClient
 	// TestPlan is the client for interacting with the TestPlan builders.
@@ -51,7 +51,7 @@ func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Cond = NewCondClient(c.config)
 	c.Module = NewModuleClient(c.config)
-	c.PlanRelatedTestCase = NewPlanRelatedTestCaseClient(c.config)
+	c.PlanTestCase = NewPlanTestCaseClient(c.config)
 	c.TestCase = NewTestCaseClient(c.config)
 	c.TestPlan = NewTestPlanClient(c.config)
 }
@@ -85,13 +85,13 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:                 ctx,
-		config:              cfg,
-		Cond:                NewCondClient(cfg),
-		Module:              NewModuleClient(cfg),
-		PlanRelatedTestCase: NewPlanRelatedTestCaseClient(cfg),
-		TestCase:            NewTestCaseClient(cfg),
-		TestPlan:            NewTestPlanClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Cond:         NewCondClient(cfg),
+		Module:       NewModuleClient(cfg),
+		PlanTestCase: NewPlanTestCaseClient(cfg),
+		TestCase:     NewTestCaseClient(cfg),
+		TestPlan:     NewTestPlanClient(cfg),
 	}, nil
 }
 
@@ -109,13 +109,13 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:                 ctx,
-		config:              cfg,
-		Cond:                NewCondClient(cfg),
-		Module:              NewModuleClient(cfg),
-		PlanRelatedTestCase: NewPlanRelatedTestCaseClient(cfg),
-		TestCase:            NewTestCaseClient(cfg),
-		TestPlan:            NewTestPlanClient(cfg),
+		ctx:          ctx,
+		config:       cfg,
+		Cond:         NewCondClient(cfg),
+		Module:       NewModuleClient(cfg),
+		PlanTestCase: NewPlanTestCaseClient(cfg),
+		TestCase:     NewTestCaseClient(cfg),
+		TestPlan:     NewTestPlanClient(cfg),
 	}, nil
 }
 
@@ -147,7 +147,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	c.Cond.Use(hooks...)
 	c.Module.Use(hooks...)
-	c.PlanRelatedTestCase.Use(hooks...)
+	c.PlanTestCase.Use(hooks...)
 	c.TestCase.Use(hooks...)
 	c.TestPlan.Use(hooks...)
 }
@@ -334,84 +334,84 @@ func (c *ModuleClient) Hooks() []Hook {
 	return append(hooks[:len(hooks):len(hooks)], module.Hooks[:]...)
 }
 
-// PlanRelatedTestCaseClient is a client for the PlanRelatedTestCase schema.
-type PlanRelatedTestCaseClient struct {
+// PlanTestCaseClient is a client for the PlanTestCase schema.
+type PlanTestCaseClient struct {
 	config
 }
 
-// NewPlanRelatedTestCaseClient returns a client for the PlanRelatedTestCase from the given config.
-func NewPlanRelatedTestCaseClient(c config) *PlanRelatedTestCaseClient {
-	return &PlanRelatedTestCaseClient{config: c}
+// NewPlanTestCaseClient returns a client for the PlanTestCase from the given config.
+func NewPlanTestCaseClient(c config) *PlanTestCaseClient {
+	return &PlanTestCaseClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `planrelatedtestcase.Hooks(f(g(h())))`.
-func (c *PlanRelatedTestCaseClient) Use(hooks ...Hook) {
-	c.hooks.PlanRelatedTestCase = append(c.hooks.PlanRelatedTestCase, hooks...)
+// A call to `Use(f, g, h)` equals to `plantestcase.Hooks(f(g(h())))`.
+func (c *PlanTestCaseClient) Use(hooks ...Hook) {
+	c.hooks.PlanTestCase = append(c.hooks.PlanTestCase, hooks...)
 }
 
-// Create returns a builder for creating a PlanRelatedTestCase entity.
-func (c *PlanRelatedTestCaseClient) Create() *PlanRelatedTestCaseCreate {
-	mutation := newPlanRelatedTestCaseMutation(c.config, OpCreate)
-	return &PlanRelatedTestCaseCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a PlanTestCase entity.
+func (c *PlanTestCaseClient) Create() *PlanTestCaseCreate {
+	mutation := newPlanTestCaseMutation(c.config, OpCreate)
+	return &PlanTestCaseCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of PlanRelatedTestCase entities.
-func (c *PlanRelatedTestCaseClient) CreateBulk(builders ...*PlanRelatedTestCaseCreate) *PlanRelatedTestCaseCreateBulk {
-	return &PlanRelatedTestCaseCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of PlanTestCase entities.
+func (c *PlanTestCaseClient) CreateBulk(builders ...*PlanTestCaseCreate) *PlanTestCaseCreateBulk {
+	return &PlanTestCaseCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for PlanRelatedTestCase.
-func (c *PlanRelatedTestCaseClient) Update() *PlanRelatedTestCaseUpdate {
-	mutation := newPlanRelatedTestCaseMutation(c.config, OpUpdate)
-	return &PlanRelatedTestCaseUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for PlanTestCase.
+func (c *PlanTestCaseClient) Update() *PlanTestCaseUpdate {
+	mutation := newPlanTestCaseMutation(c.config, OpUpdate)
+	return &PlanTestCaseUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *PlanRelatedTestCaseClient) UpdateOne(prtc *PlanRelatedTestCase) *PlanRelatedTestCaseUpdateOne {
-	mutation := newPlanRelatedTestCaseMutation(c.config, OpUpdateOne, withPlanRelatedTestCase(prtc))
-	return &PlanRelatedTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PlanTestCaseClient) UpdateOne(ptc *PlanTestCase) *PlanTestCaseUpdateOne {
+	mutation := newPlanTestCaseMutation(c.config, OpUpdateOne, withPlanTestCase(ptc))
+	return &PlanTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *PlanRelatedTestCaseClient) UpdateOneID(id uuid.UUID) *PlanRelatedTestCaseUpdateOne {
-	mutation := newPlanRelatedTestCaseMutation(c.config, OpUpdateOne, withPlanRelatedTestCaseID(id))
-	return &PlanRelatedTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *PlanTestCaseClient) UpdateOneID(id uuid.UUID) *PlanTestCaseUpdateOne {
+	mutation := newPlanTestCaseMutation(c.config, OpUpdateOne, withPlanTestCaseID(id))
+	return &PlanTestCaseUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for PlanRelatedTestCase.
-func (c *PlanRelatedTestCaseClient) Delete() *PlanRelatedTestCaseDelete {
-	mutation := newPlanRelatedTestCaseMutation(c.config, OpDelete)
-	return &PlanRelatedTestCaseDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for PlanTestCase.
+func (c *PlanTestCaseClient) Delete() *PlanTestCaseDelete {
+	mutation := newPlanTestCaseMutation(c.config, OpDelete)
+	return &PlanTestCaseDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *PlanRelatedTestCaseClient) DeleteOne(prtc *PlanRelatedTestCase) *PlanRelatedTestCaseDeleteOne {
-	return c.DeleteOneID(prtc.ID)
+func (c *PlanTestCaseClient) DeleteOne(ptc *PlanTestCase) *PlanTestCaseDeleteOne {
+	return c.DeleteOneID(ptc.ID)
 }
 
 // DeleteOne returns a builder for deleting the given entity by its id.
-func (c *PlanRelatedTestCaseClient) DeleteOneID(id uuid.UUID) *PlanRelatedTestCaseDeleteOne {
-	builder := c.Delete().Where(planrelatedtestcase.ID(id))
+func (c *PlanTestCaseClient) DeleteOneID(id uuid.UUID) *PlanTestCaseDeleteOne {
+	builder := c.Delete().Where(plantestcase.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &PlanRelatedTestCaseDeleteOne{builder}
+	return &PlanTestCaseDeleteOne{builder}
 }
 
-// Query returns a query builder for PlanRelatedTestCase.
-func (c *PlanRelatedTestCaseClient) Query() *PlanRelatedTestCaseQuery {
-	return &PlanRelatedTestCaseQuery{
+// Query returns a query builder for PlanTestCase.
+func (c *PlanTestCaseClient) Query() *PlanTestCaseQuery {
+	return &PlanTestCaseQuery{
 		config: c.config,
 	}
 }
 
-// Get returns a PlanRelatedTestCase entity by its id.
-func (c *PlanRelatedTestCaseClient) Get(ctx context.Context, id uuid.UUID) (*PlanRelatedTestCase, error) {
-	return c.Query().Where(planrelatedtestcase.ID(id)).Only(ctx)
+// Get returns a PlanTestCase entity by its id.
+func (c *PlanTestCaseClient) Get(ctx context.Context, id uuid.UUID) (*PlanTestCase, error) {
+	return c.Query().Where(plantestcase.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *PlanRelatedTestCaseClient) GetX(ctx context.Context, id uuid.UUID) *PlanRelatedTestCase {
+func (c *PlanTestCaseClient) GetX(ctx context.Context, id uuid.UUID) *PlanTestCase {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -420,9 +420,9 @@ func (c *PlanRelatedTestCaseClient) GetX(ctx context.Context, id uuid.UUID) *Pla
 }
 
 // Hooks returns the client hooks.
-func (c *PlanRelatedTestCaseClient) Hooks() []Hook {
-	hooks := c.hooks.PlanRelatedTestCase
-	return append(hooks[:len(hooks):len(hooks)], planrelatedtestcase.Hooks[:]...)
+func (c *PlanTestCaseClient) Hooks() []Hook {
+	hooks := c.hooks.PlanTestCase
+	return append(hooks[:len(hooks):len(hooks)], plantestcase.Hooks[:]...)
 }
 
 // TestCaseClient is a client for the TestCase schema.

@@ -35,15 +35,15 @@ func (f ModuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
-// The PlanRelatedTestCaseFunc type is an adapter to allow the use of ordinary
-// function as PlanRelatedTestCase mutator.
-type PlanRelatedTestCaseFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) (ent.Value, error)
+// The PlanTestCaseFunc type is an adapter to allow the use of ordinary
+// function as PlanTestCase mutator.
+type PlanTestCaseFunc func(context.Context, *ent.PlanTestCaseMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f PlanRelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.PlanRelatedTestCaseMutation)
+func (f PlanTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PlanTestCaseMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanRelatedTestCaseMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanTestCaseMutation", m)
 	}
 	return f(ctx, mv)
 }

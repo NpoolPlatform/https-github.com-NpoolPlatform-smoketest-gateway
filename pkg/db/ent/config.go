@@ -28,11 +28,11 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
-	Cond                []ent.Hook
-	Module              []ent.Hook
-	PlanRelatedTestCase []ent.Hook
-	TestCase            []ent.Hook
-	TestPlan            []ent.Hook
+	Cond         []ent.Hook
+	Module       []ent.Hook
+	PlanTestCase []ent.Hook
+	TestCase     []ent.Hook
+	TestPlan     []ent.Hook
 }
 
 // Options applies the options on the config object.

@@ -12,7 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 )
@@ -35,11 +35,11 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		cond.Table:                cond.ValidColumn,
-		module.Table:              module.ValidColumn,
-		planrelatedtestcase.Table: planrelatedtestcase.ValidColumn,
-		testcase.Table:            testcase.ValidColumn,
-		testplan.Table:            testplan.ValidColumn,
+		cond.Table:         cond.ValidColumn,
+		module.Table:       module.ValidColumn,
+		plantestcase.Table: plantestcase.ValidColumn,
+		testcase.Table:     testcase.ValidColumn,
+		testplan.Table:     testplan.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

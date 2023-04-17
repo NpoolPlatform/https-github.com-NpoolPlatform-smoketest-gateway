@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
+	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/google/uuid"
 )
 
-// PlanRelatedTestCase is the model entity for the PlanRelatedTestCase schema.
-type PlanRelatedTestCase struct {
+// PlanTestCase is the model entity for the PlanTestCase schema.
+type PlanTestCase struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
@@ -41,172 +41,172 @@ type PlanRelatedTestCase struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*PlanRelatedTestCase) scanValues(columns []string) ([]interface{}, error) {
+func (*PlanTestCase) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case planrelatedtestcase.FieldCreatedAt, planrelatedtestcase.FieldUpdatedAt, planrelatedtestcase.FieldDeletedAt, planrelatedtestcase.FieldRunDuration, planrelatedtestcase.FieldIndex:
+		case plantestcase.FieldCreatedAt, plantestcase.FieldUpdatedAt, plantestcase.FieldDeletedAt, plantestcase.FieldRunDuration, plantestcase.FieldIndex:
 			values[i] = new(sql.NullInt64)
-		case planrelatedtestcase.FieldTestCaseOutput, planrelatedtestcase.FieldDescription, planrelatedtestcase.FieldResult:
+		case plantestcase.FieldTestCaseOutput, plantestcase.FieldDescription, plantestcase.FieldResult:
 			values[i] = new(sql.NullString)
-		case planrelatedtestcase.FieldID, planrelatedtestcase.FieldTestPlanID, planrelatedtestcase.FieldTestCaseID, planrelatedtestcase.FieldTestUserID:
+		case plantestcase.FieldID, plantestcase.FieldTestPlanID, plantestcase.FieldTestCaseID, plantestcase.FieldTestUserID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type PlanRelatedTestCase", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type PlanTestCase", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the PlanRelatedTestCase fields.
-func (prtc *PlanRelatedTestCase) assignValues(columns []string, values []interface{}) error {
+// to the PlanTestCase fields.
+func (ptc *PlanTestCase) assignValues(columns []string, values []interface{}) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case planrelatedtestcase.FieldID:
+		case plantestcase.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				prtc.ID = *value
+				ptc.ID = *value
 			}
-		case planrelatedtestcase.FieldCreatedAt:
+		case plantestcase.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				prtc.CreatedAt = uint32(value.Int64)
+				ptc.CreatedAt = uint32(value.Int64)
 			}
-		case planrelatedtestcase.FieldUpdatedAt:
+		case plantestcase.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				prtc.UpdatedAt = uint32(value.Int64)
+				ptc.UpdatedAt = uint32(value.Int64)
 			}
-		case planrelatedtestcase.FieldDeletedAt:
+		case plantestcase.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				prtc.DeletedAt = uint32(value.Int64)
+				ptc.DeletedAt = uint32(value.Int64)
 			}
-		case planrelatedtestcase.FieldTestPlanID:
+		case plantestcase.FieldTestPlanID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field test_plan_id", values[i])
 			} else if value != nil {
-				prtc.TestPlanID = *value
+				ptc.TestPlanID = *value
 			}
-		case planrelatedtestcase.FieldTestCaseID:
+		case plantestcase.FieldTestCaseID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field test_case_id", values[i])
 			} else if value != nil {
-				prtc.TestCaseID = *value
+				ptc.TestCaseID = *value
 			}
-		case planrelatedtestcase.FieldTestCaseOutput:
+		case plantestcase.FieldTestCaseOutput:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field test_case_output", values[i])
 			} else if value.Valid {
-				prtc.TestCaseOutput = value.String
+				ptc.TestCaseOutput = value.String
 			}
-		case planrelatedtestcase.FieldDescription:
+		case plantestcase.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
-				prtc.Description = value.String
+				ptc.Description = value.String
 			}
-		case planrelatedtestcase.FieldTestUserID:
+		case plantestcase.FieldTestUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field test_user_id", values[i])
 			} else if value != nil {
-				prtc.TestUserID = *value
+				ptc.TestUserID = *value
 			}
-		case planrelatedtestcase.FieldRunDuration:
+		case plantestcase.FieldRunDuration:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field run_duration", values[i])
 			} else if value.Valid {
-				prtc.RunDuration = uint32(value.Int64)
+				ptc.RunDuration = uint32(value.Int64)
 			}
-		case planrelatedtestcase.FieldResult:
+		case plantestcase.FieldResult:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field result", values[i])
 			} else if value.Valid {
-				prtc.Result = value.String
+				ptc.Result = value.String
 			}
-		case planrelatedtestcase.FieldIndex:
+		case plantestcase.FieldIndex:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field index", values[i])
 			} else if value.Valid {
-				prtc.Index = uint32(value.Int64)
+				ptc.Index = uint32(value.Int64)
 			}
 		}
 	}
 	return nil
 }
 
-// Update returns a builder for updating this PlanRelatedTestCase.
-// Note that you need to call PlanRelatedTestCase.Unwrap() before calling this method if this PlanRelatedTestCase
+// Update returns a builder for updating this PlanTestCase.
+// Note that you need to call PlanTestCase.Unwrap() before calling this method if this PlanTestCase
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (prtc *PlanRelatedTestCase) Update() *PlanRelatedTestCaseUpdateOne {
-	return (&PlanRelatedTestCaseClient{config: prtc.config}).UpdateOne(prtc)
+func (ptc *PlanTestCase) Update() *PlanTestCaseUpdateOne {
+	return (&PlanTestCaseClient{config: ptc.config}).UpdateOne(ptc)
 }
 
-// Unwrap unwraps the PlanRelatedTestCase entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the PlanTestCase entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (prtc *PlanRelatedTestCase) Unwrap() *PlanRelatedTestCase {
-	_tx, ok := prtc.config.driver.(*txDriver)
+func (ptc *PlanTestCase) Unwrap() *PlanTestCase {
+	_tx, ok := ptc.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: PlanRelatedTestCase is not a transactional entity")
+		panic("ent: PlanTestCase is not a transactional entity")
 	}
-	prtc.config.driver = _tx.drv
-	return prtc
+	ptc.config.driver = _tx.drv
+	return ptc
 }
 
 // String implements the fmt.Stringer.
-func (prtc *PlanRelatedTestCase) String() string {
+func (ptc *PlanTestCase) String() string {
 	var builder strings.Builder
-	builder.WriteString("PlanRelatedTestCase(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", prtc.ID))
+	builder.WriteString("PlanTestCase(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", ptc.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.CreatedAt))
+	builder.WriteString(fmt.Sprintf("%v", ptc.CreatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.UpdatedAt))
+	builder.WriteString(fmt.Sprintf("%v", ptc.UpdatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("deleted_at=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.DeletedAt))
+	builder.WriteString(fmt.Sprintf("%v", ptc.DeletedAt))
 	builder.WriteString(", ")
 	builder.WriteString("test_plan_id=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.TestPlanID))
+	builder.WriteString(fmt.Sprintf("%v", ptc.TestPlanID))
 	builder.WriteString(", ")
 	builder.WriteString("test_case_id=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.TestCaseID))
+	builder.WriteString(fmt.Sprintf("%v", ptc.TestCaseID))
 	builder.WriteString(", ")
 	builder.WriteString("test_case_output=")
-	builder.WriteString(prtc.TestCaseOutput)
+	builder.WriteString(ptc.TestCaseOutput)
 	builder.WriteString(", ")
 	builder.WriteString("description=")
-	builder.WriteString(prtc.Description)
+	builder.WriteString(ptc.Description)
 	builder.WriteString(", ")
 	builder.WriteString("test_user_id=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.TestUserID))
+	builder.WriteString(fmt.Sprintf("%v", ptc.TestUserID))
 	builder.WriteString(", ")
 	builder.WriteString("run_duration=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.RunDuration))
+	builder.WriteString(fmt.Sprintf("%v", ptc.RunDuration))
 	builder.WriteString(", ")
 	builder.WriteString("result=")
-	builder.WriteString(prtc.Result)
+	builder.WriteString(ptc.Result)
 	builder.WriteString(", ")
 	builder.WriteString("index=")
-	builder.WriteString(fmt.Sprintf("%v", prtc.Index))
+	builder.WriteString(fmt.Sprintf("%v", ptc.Index))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// PlanRelatedTestCases is a parsable slice of PlanRelatedTestCase.
-type PlanRelatedTestCases []*PlanRelatedTestCase
+// PlanTestCases is a parsable slice of PlanTestCase.
+type PlanTestCases []*PlanTestCase
 
-func (prtc PlanRelatedTestCases) config(cfg config) {
-	for _i := range prtc {
-		prtc[_i].config = cfg
+func (ptc PlanTestCases) config(cfg config) {
+	for _i := range ptc {
+		ptc[_i].config = cfg
 	}
 }
