@@ -43,7 +43,7 @@ func (Cond) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			String("argument_map").
+			Text("argument_map").
 			Optional().
 			Default(""),
 		field.

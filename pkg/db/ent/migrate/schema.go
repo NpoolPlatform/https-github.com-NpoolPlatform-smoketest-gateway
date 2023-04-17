@@ -17,7 +17,7 @@ var (
 		{Name: "cond_type", Type: field.TypeString, Nullable: true, Default: "DefaultCondType"},
 		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "cond_test_case_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "argument_map", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "argument_map", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "index", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// CondsTable holds the schema information for the "conds" table.
