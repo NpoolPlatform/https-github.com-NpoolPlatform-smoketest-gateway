@@ -3,13 +3,13 @@ package api
 import (
 	"context"
 
+	"github.com/NpoolPlatform/ledger-manager/api/detail"
 	"github.com/NpoolPlatform/message/npool/servicetmpl"
 
-	"github.com/NpoolPlatform/smoketest-middleware/api/detail"
 	"github.com/NpoolPlatform/smoketest-middleware/api/module"
-	"github.com/NpoolPlatform/smoketest-middleware/api/planrelatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testplan"
+	planrelatedtestcase "github.com/NpoolPlatform/smoketest-middleware/api/testplan/testcase"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

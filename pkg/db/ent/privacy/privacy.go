@@ -150,30 +150,6 @@ func DenyMutationOperationRule(op ent.Op) MutationRule {
 	return OnMutationOperation(rule, op)
 }
 
-// The DetailQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type DetailQueryRuleFunc func(context.Context, *ent.DetailQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f DetailQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.DetailQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.DetailQuery", q)
-}
-
-// The DetailMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type DetailMutationRuleFunc func(context.Context, *ent.DetailMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f DetailMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.DetailMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.DetailMutation", m)
-}
-
 // The ModuleQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type ModuleQueryRuleFunc func(context.Context, *ent.ModuleQuery) error
@@ -329,8 +305,6 @@ var _ QueryMutationRule = FilterFunc(nil)
 
 func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
-	case *ent.DetailQuery:
-		return q.Filter(), nil
 	case *ent.ModuleQuery:
 		return q.Filter(), nil
 	case *ent.PlanRelatedTestCaseQuery:
@@ -348,8 +322,6 @@ func queryFilter(q ent.Query) (Filter, error) {
 
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
-	case *ent.DetailMutation:
-		return m.Filter(), nil
 	case *ent.ModuleMutation:
 		return m.Filter(), nil
 	case *ent.PlanRelatedTestCaseMutation:

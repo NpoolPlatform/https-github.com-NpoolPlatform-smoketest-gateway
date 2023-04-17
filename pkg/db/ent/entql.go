@@ -3,7 +3,6 @@
 package ent
 
 import (
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/detail"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/planrelatedtestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/relatedtestcase"
@@ -18,34 +17,8 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 6)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 5)}
 	graph.Nodes[0] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   detail.Table,
-			Columns: detail.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: detail.FieldID,
-			},
-		},
-		Type: "Detail",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			detail.FieldCreatedAt:       {Type: field.TypeUint32, Column: detail.FieldCreatedAt},
-			detail.FieldUpdatedAt:       {Type: field.TypeUint32, Column: detail.FieldUpdatedAt},
-			detail.FieldDeletedAt:       {Type: field.TypeUint32, Column: detail.FieldDeletedAt},
-			detail.FieldAppID:           {Type: field.TypeUUID, Column: detail.FieldAppID},
-			detail.FieldUserID:          {Type: field.TypeUUID, Column: detail.FieldUserID},
-			detail.FieldCoinTypeID:      {Type: field.TypeUUID, Column: detail.FieldCoinTypeID},
-			detail.FieldIoType:          {Type: field.TypeString, Column: detail.FieldIoType},
-			detail.FieldIoSubType:       {Type: field.TypeString, Column: detail.FieldIoSubType},
-			detail.FieldAmount:          {Type: field.TypeOther, Column: detail.FieldAmount},
-			detail.FieldFromCoinTypeID:  {Type: field.TypeUUID, Column: detail.FieldFromCoinTypeID},
-			detail.FieldCoinUsdCurrency: {Type: field.TypeOther, Column: detail.FieldCoinUsdCurrency},
-			detail.FieldIoExtra:         {Type: field.TypeString, Column: detail.FieldIoExtra},
-			detail.FieldFromOldID:       {Type: field.TypeUUID, Column: detail.FieldFromOldID},
-		},
-	}
-	graph.Nodes[1] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   module.Table,
 			Columns: module.Columns,
@@ -63,7 +36,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			module.FieldDescription: {Type: field.TypeString, Column: module.FieldDescription},
 		},
 	}
-	graph.Nodes[2] = &sqlgraph.Node{
+	graph.Nodes[1] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   planrelatedtestcase.Table,
 			Columns: planrelatedtestcase.Columns,
@@ -86,7 +59,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			planrelatedtestcase.FieldTestCaseResult: {Type: field.TypeString, Column: planrelatedtestcase.FieldTestCaseResult},
 		},
 	}
-	graph.Nodes[3] = &sqlgraph.Node{
+	graph.Nodes[2] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   relatedtestcase.Table,
 			Columns: relatedtestcase.Columns,
@@ -107,7 +80,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			relatedtestcase.FieldIndex:             {Type: field.TypeUint32, Column: relatedtestcase.FieldIndex},
 		},
 	}
-	graph.Nodes[4] = &sqlgraph.Node{
+	graph.Nodes[3] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
@@ -132,7 +105,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testcase.FieldDeprecated:         {Type: field.TypeBool, Column: testcase.FieldDeprecated},
 		},
 	}
-	graph.Nodes[5] = &sqlgraph.Node{
+	graph.Nodes[4] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
@@ -168,111 +141,6 @@ type predicateAdder interface {
 }
 
 // addPredicate implements the predicateAdder interface.
-func (dq *DetailQuery) addPredicate(pred func(s *sql.Selector)) {
-	dq.predicates = append(dq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the DetailQuery builder.
-func (dq *DetailQuery) Filter() *DetailFilter {
-	return &DetailFilter{config: dq.config, predicateAdder: dq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *DetailMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the DetailMutation builder.
-func (m *DetailMutation) Filter() *DetailFilter {
-	return &DetailFilter{config: m.config, predicateAdder: m}
-}
-
-// DetailFilter provides a generic filtering capability at runtime for DetailQuery.
-type DetailFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *DetailFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *DetailFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldID))
-}
-
-// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
-func (f *DetailFilter) WhereCreatedAt(p entql.Uint32P) {
-	f.Where(p.Field(detail.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
-func (f *DetailFilter) WhereUpdatedAt(p entql.Uint32P) {
-	f.Where(p.Field(detail.FieldUpdatedAt))
-}
-
-// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
-func (f *DetailFilter) WhereDeletedAt(p entql.Uint32P) {
-	f.Where(p.Field(detail.FieldDeletedAt))
-}
-
-// WhereAppID applies the entql [16]byte predicate on the app_id field.
-func (f *DetailFilter) WhereAppID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldAppID))
-}
-
-// WhereUserID applies the entql [16]byte predicate on the user_id field.
-func (f *DetailFilter) WhereUserID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldUserID))
-}
-
-// WhereCoinTypeID applies the entql [16]byte predicate on the coin_type_id field.
-func (f *DetailFilter) WhereCoinTypeID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldCoinTypeID))
-}
-
-// WhereIoType applies the entql string predicate on the io_type field.
-func (f *DetailFilter) WhereIoType(p entql.StringP) {
-	f.Where(p.Field(detail.FieldIoType))
-}
-
-// WhereIoSubType applies the entql string predicate on the io_sub_type field.
-func (f *DetailFilter) WhereIoSubType(p entql.StringP) {
-	f.Where(p.Field(detail.FieldIoSubType))
-}
-
-// WhereAmount applies the entql other predicate on the amount field.
-func (f *DetailFilter) WhereAmount(p entql.OtherP) {
-	f.Where(p.Field(detail.FieldAmount))
-}
-
-// WhereFromCoinTypeID applies the entql [16]byte predicate on the from_coin_type_id field.
-func (f *DetailFilter) WhereFromCoinTypeID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldFromCoinTypeID))
-}
-
-// WhereCoinUsdCurrency applies the entql other predicate on the coin_usd_currency field.
-func (f *DetailFilter) WhereCoinUsdCurrency(p entql.OtherP) {
-	f.Where(p.Field(detail.FieldCoinUsdCurrency))
-}
-
-// WhereIoExtra applies the entql string predicate on the io_extra field.
-func (f *DetailFilter) WhereIoExtra(p entql.StringP) {
-	f.Where(p.Field(detail.FieldIoExtra))
-}
-
-// WhereFromOldID applies the entql [16]byte predicate on the from_old_id field.
-func (f *DetailFilter) WhereFromOldID(p entql.ValueP) {
-	f.Where(p.Field(detail.FieldFromOldID))
-}
-
-// addPredicate implements the predicateAdder interface.
 func (mq *ModuleQuery) addPredicate(pred func(s *sql.Selector)) {
 	mq.predicates = append(mq.predicates, pred)
 }
@@ -301,7 +169,7 @@ type ModuleFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *ModuleFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -366,7 +234,7 @@ type PlanRelatedTestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *PlanRelatedTestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -456,7 +324,7 @@ type RelatedTestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *RelatedTestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -536,7 +404,7 @@ type TestCaseFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TestCaseFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -636,7 +504,7 @@ type TestPlanFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *TestPlanFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

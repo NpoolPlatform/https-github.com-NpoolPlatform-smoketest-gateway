@@ -8,29 +8,6 @@ import (
 )
 
 var (
-	// DetailsColumns holds the columns for the "details" table.
-	DetailsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
-		{Name: "created_at", Type: field.TypeUint32},
-		{Name: "updated_at", Type: field.TypeUint32},
-		{Name: "deleted_at", Type: field.TypeUint32},
-		{Name: "app_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "coin_type_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "io_type", Type: field.TypeString, Nullable: true, Default: "DefaultType"},
-		{Name: "io_sub_type", Type: field.TypeString, Nullable: true, Default: "DefaultSubType"},
-		{Name: "amount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "from_coin_type_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "coin_usd_currency", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "io_extra", Type: field.TypeString, Nullable: true, Default: ""},
-		{Name: "from_old_id", Type: field.TypeUUID, Nullable: true},
-	}
-	// DetailsTable holds the schema information for the "details" table.
-	DetailsTable = &schema.Table{
-		Name:       "details",
-		Columns:    DetailsColumns,
-		PrimaryKey: []*schema.Column{DetailsColumns[0]},
-	}
 	// ModulesColumns holds the columns for the "modules" table.
 	ModulesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -121,7 +98,7 @@ var (
 		{Name: "skipped_test_cases_count", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "run_duration", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "deadline", Type: field.TypeUint32, Nullable: true, Default: 0},
-		{Name: "test_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestTestState"},
+		{Name: "test_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestResultState"},
 	}
 	// TestPlansTable holds the schema information for the "test_plans" table.
 	TestPlansTable = &schema.Table{
@@ -131,7 +108,6 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		DetailsTable,
 		ModulesTable,
 		PlanRelatedTestCasesTable,
 		RelatedTestCasesTable,

@@ -3,7 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/planrelatedtestcase"
+	planrelatedtestcase "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/mixin"
 	"github.com/google/uuid"
 )

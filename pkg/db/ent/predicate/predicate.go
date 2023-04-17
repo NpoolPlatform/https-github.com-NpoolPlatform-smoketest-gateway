@@ -6,9 +6,6 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Detail is the predicate function for detail builders.
-type Detail func(*sql.Selector)
-
 // Module is the predicate function for module builders.
 type Module func(*sql.Selector)
 
