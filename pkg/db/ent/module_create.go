@@ -236,9 +236,6 @@ func (mc *ModuleCreate) check() error {
 	if _, ok := mc.mutation.DeletedAt(); !ok {
 		return &ValidationError{Name: "deleted_at", err: errors.New(`ent: missing required field "Module.deleted_at"`)}
 	}
-	if _, ok := mc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Module.name"`)}
-	}
 	return nil
 }
 
@@ -436,6 +433,12 @@ func (u *ModuleUpsert) UpdateName() *ModuleUpsert {
 	return u
 }
 
+// ClearName clears the value of the "name" field.
+func (u *ModuleUpsert) ClearName() *ModuleUpsert {
+	u.SetNull(module.FieldName)
+	return u
+}
+
 // SetDescription sets the "description" field.
 func (u *ModuleUpsert) SetDescription(v string) *ModuleUpsert {
 	u.Set(module.FieldDescription, v)
@@ -578,6 +581,13 @@ func (u *ModuleUpsertOne) SetName(v string) *ModuleUpsertOne {
 func (u *ModuleUpsertOne) UpdateName() *ModuleUpsertOne {
 	return u.Update(func(s *ModuleUpsert) {
 		s.UpdateName()
+	})
+}
+
+// ClearName clears the value of the "name" field.
+func (u *ModuleUpsertOne) ClearName() *ModuleUpsertOne {
+	return u.Update(func(s *ModuleUpsert) {
+		s.ClearName()
 	})
 }
 
@@ -892,6 +902,13 @@ func (u *ModuleUpsertBulk) SetName(v string) *ModuleUpsertBulk {
 func (u *ModuleUpsertBulk) UpdateName() *ModuleUpsertBulk {
 	return u.Update(func(s *ModuleUpsert) {
 		s.UpdateName()
+	})
+}
+
+// ClearName clears the value of the "name" field.
+func (u *ModuleUpsertBulk) ClearName() *ModuleUpsertBulk {
+	return u.Update(func(s *ModuleUpsert) {
+		s.ClearName()
 	})
 }
 
