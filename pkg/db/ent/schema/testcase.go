@@ -47,15 +47,15 @@ func (TestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			Text("arguments").
+			Text("input").
 			Optional().
 			Default(""),
 		field.
-			Text("arg_type_description").
+			Text("input_desc").
 			Optional().
 			Default(""),
 		field.
-			Text("expectation_result").
+			Text("expectation").
 			Optional().
 			Default(""),
 		field.

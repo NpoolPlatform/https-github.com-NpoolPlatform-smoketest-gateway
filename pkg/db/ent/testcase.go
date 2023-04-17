@@ -30,12 +30,12 @@ type TestCase struct {
 	ModuleID uuid.UUID `json:"module_id,omitempty"`
 	// APIID holds the value of the "api_id" field.
 	APIID uuid.UUID `json:"api_id,omitempty"`
-	// Arguments holds the value of the "arguments" field.
-	Arguments string `json:"arguments,omitempty"`
-	// ArgTypeDescription holds the value of the "arg_type_description" field.
-	ArgTypeDescription string `json:"arg_type_description,omitempty"`
-	// ExpectationResult holds the value of the "expectation_result" field.
-	ExpectationResult string `json:"expectation_result,omitempty"`
+	// Input holds the value of the "input" field.
+	Input string `json:"input,omitempty"`
+	// InputDesc holds the value of the "input_desc" field.
+	InputDesc string `json:"input_desc,omitempty"`
+	// Expectation holds the value of the "expectation" field.
+	Expectation string `json:"expectation,omitempty"`
 	// TestCaseType holds the value of the "test_case_type" field.
 	TestCaseType string `json:"test_case_type,omitempty"`
 	// Deprecated holds the value of the "deprecated" field.
@@ -51,7 +51,7 @@ func (*TestCase) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case testcase.FieldCreatedAt, testcase.FieldUpdatedAt, testcase.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case testcase.FieldName, testcase.FieldDescription, testcase.FieldArguments, testcase.FieldArgTypeDescription, testcase.FieldExpectationResult, testcase.FieldTestCaseType:
+		case testcase.FieldName, testcase.FieldDescription, testcase.FieldInput, testcase.FieldInputDesc, testcase.FieldExpectation, testcase.FieldTestCaseType:
 			values[i] = new(sql.NullString)
 		case testcase.FieldID, testcase.FieldModuleID, testcase.FieldAPIID:
 			values[i] = new(uuid.UUID)
@@ -118,23 +118,23 @@ func (tc *TestCase) assignValues(columns []string, values []interface{}) error {
 			} else if value != nil {
 				tc.APIID = *value
 			}
-		case testcase.FieldArguments:
+		case testcase.FieldInput:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field arguments", values[i])
+				return fmt.Errorf("unexpected type %T for field input", values[i])
 			} else if value.Valid {
-				tc.Arguments = value.String
+				tc.Input = value.String
 			}
-		case testcase.FieldArgTypeDescription:
+		case testcase.FieldInputDesc:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field arg_type_description", values[i])
+				return fmt.Errorf("unexpected type %T for field input_desc", values[i])
 			} else if value.Valid {
-				tc.ArgTypeDescription = value.String
+				tc.InputDesc = value.String
 			}
-		case testcase.FieldExpectationResult:
+		case testcase.FieldExpectation:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field expectation_result", values[i])
+				return fmt.Errorf("unexpected type %T for field expectation", values[i])
 			} else if value.Valid {
-				tc.ExpectationResult = value.String
+				tc.Expectation = value.String
 			}
 		case testcase.FieldTestCaseType:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -197,14 +197,14 @@ func (tc *TestCase) String() string {
 	builder.WriteString("api_id=")
 	builder.WriteString(fmt.Sprintf("%v", tc.APIID))
 	builder.WriteString(", ")
-	builder.WriteString("arguments=")
-	builder.WriteString(tc.Arguments)
+	builder.WriteString("input=")
+	builder.WriteString(tc.Input)
 	builder.WriteString(", ")
-	builder.WriteString("arg_type_description=")
-	builder.WriteString(tc.ArgTypeDescription)
+	builder.WriteString("input_desc=")
+	builder.WriteString(tc.InputDesc)
 	builder.WriteString(", ")
-	builder.WriteString("expectation_result=")
-	builder.WriteString(tc.ExpectationResult)
+	builder.WriteString("expectation=")
+	builder.WriteString(tc.Expectation)
 	builder.WriteString(", ")
 	builder.WriteString("test_case_type=")
 	builder.WriteString(tc.TestCaseType)

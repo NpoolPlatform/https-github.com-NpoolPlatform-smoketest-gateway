@@ -92,18 +92,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "TestCase",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			testcase.FieldCreatedAt:          {Type: field.TypeUint32, Column: testcase.FieldCreatedAt},
-			testcase.FieldUpdatedAt:          {Type: field.TypeUint32, Column: testcase.FieldUpdatedAt},
-			testcase.FieldDeletedAt:          {Type: field.TypeUint32, Column: testcase.FieldDeletedAt},
-			testcase.FieldName:               {Type: field.TypeString, Column: testcase.FieldName},
-			testcase.FieldDescription:        {Type: field.TypeString, Column: testcase.FieldDescription},
-			testcase.FieldModuleID:           {Type: field.TypeUUID, Column: testcase.FieldModuleID},
-			testcase.FieldAPIID:              {Type: field.TypeUUID, Column: testcase.FieldAPIID},
-			testcase.FieldArguments:          {Type: field.TypeString, Column: testcase.FieldArguments},
-			testcase.FieldArgTypeDescription: {Type: field.TypeString, Column: testcase.FieldArgTypeDescription},
-			testcase.FieldExpectationResult:  {Type: field.TypeString, Column: testcase.FieldExpectationResult},
-			testcase.FieldTestCaseType:       {Type: field.TypeString, Column: testcase.FieldTestCaseType},
-			testcase.FieldDeprecated:         {Type: field.TypeBool, Column: testcase.FieldDeprecated},
+			testcase.FieldCreatedAt:    {Type: field.TypeUint32, Column: testcase.FieldCreatedAt},
+			testcase.FieldUpdatedAt:    {Type: field.TypeUint32, Column: testcase.FieldUpdatedAt},
+			testcase.FieldDeletedAt:    {Type: field.TypeUint32, Column: testcase.FieldDeletedAt},
+			testcase.FieldName:         {Type: field.TypeString, Column: testcase.FieldName},
+			testcase.FieldDescription:  {Type: field.TypeString, Column: testcase.FieldDescription},
+			testcase.FieldModuleID:     {Type: field.TypeUUID, Column: testcase.FieldModuleID},
+			testcase.FieldAPIID:        {Type: field.TypeUUID, Column: testcase.FieldAPIID},
+			testcase.FieldInput:        {Type: field.TypeString, Column: testcase.FieldInput},
+			testcase.FieldInputDesc:    {Type: field.TypeString, Column: testcase.FieldInputDesc},
+			testcase.FieldExpectation:  {Type: field.TypeString, Column: testcase.FieldExpectation},
+			testcase.FieldTestCaseType: {Type: field.TypeString, Column: testcase.FieldTestCaseType},
+			testcase.FieldDeprecated:   {Type: field.TypeBool, Column: testcase.FieldDeprecated},
 		},
 	}
 	graph.Nodes[4] = &sqlgraph.Node{
@@ -456,19 +456,19 @@ func (f *TestCaseFilter) WhereAPIID(p entql.ValueP) {
 	f.Where(p.Field(testcase.FieldAPIID))
 }
 
-// WhereArguments applies the entql string predicate on the arguments field.
-func (f *TestCaseFilter) WhereArguments(p entql.StringP) {
-	f.Where(p.Field(testcase.FieldArguments))
+// WhereInput applies the entql string predicate on the input field.
+func (f *TestCaseFilter) WhereInput(p entql.StringP) {
+	f.Where(p.Field(testcase.FieldInput))
 }
 
-// WhereArgTypeDescription applies the entql string predicate on the arg_type_description field.
-func (f *TestCaseFilter) WhereArgTypeDescription(p entql.StringP) {
-	f.Where(p.Field(testcase.FieldArgTypeDescription))
+// WhereInputDesc applies the entql string predicate on the input_desc field.
+func (f *TestCaseFilter) WhereInputDesc(p entql.StringP) {
+	f.Where(p.Field(testcase.FieldInputDesc))
 }
 
-// WhereExpectationResult applies the entql string predicate on the expectation_result field.
-func (f *TestCaseFilter) WhereExpectationResult(p entql.StringP) {
-	f.Where(p.Field(testcase.FieldExpectationResult))
+// WhereExpectation applies the entql string predicate on the expectation field.
+func (f *TestCaseFilter) WhereExpectation(p entql.StringP) {
+	f.Where(p.Field(testcase.FieldExpectation))
 }
 
 // WhereTestCaseType applies the entql string predicate on the test_case_type field.

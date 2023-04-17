@@ -217,18 +217,18 @@ func init() {
 	testcaseDescAPIID := testcaseFields[4].Descriptor()
 	// testcase.DefaultAPIID holds the default value on creation for the api_id field.
 	testcase.DefaultAPIID = testcaseDescAPIID.Default.(func() uuid.UUID)
-	// testcaseDescArguments is the schema descriptor for arguments field.
-	testcaseDescArguments := testcaseFields[5].Descriptor()
-	// testcase.DefaultArguments holds the default value on creation for the arguments field.
-	testcase.DefaultArguments = testcaseDescArguments.Default.(string)
-	// testcaseDescArgTypeDescription is the schema descriptor for arg_type_description field.
-	testcaseDescArgTypeDescription := testcaseFields[6].Descriptor()
-	// testcase.DefaultArgTypeDescription holds the default value on creation for the arg_type_description field.
-	testcase.DefaultArgTypeDescription = testcaseDescArgTypeDescription.Default.(string)
-	// testcaseDescExpectationResult is the schema descriptor for expectation_result field.
-	testcaseDescExpectationResult := testcaseFields[7].Descriptor()
-	// testcase.DefaultExpectationResult holds the default value on creation for the expectation_result field.
-	testcase.DefaultExpectationResult = testcaseDescExpectationResult.Default.(string)
+	// testcaseDescInput is the schema descriptor for input field.
+	testcaseDescInput := testcaseFields[5].Descriptor()
+	// testcase.DefaultInput holds the default value on creation for the input field.
+	testcase.DefaultInput = testcaseDescInput.Default.(string)
+	// testcaseDescInputDesc is the schema descriptor for input_desc field.
+	testcaseDescInputDesc := testcaseFields[6].Descriptor()
+	// testcase.DefaultInputDesc holds the default value on creation for the input_desc field.
+	testcase.DefaultInputDesc = testcaseDescInputDesc.Default.(string)
+	// testcaseDescExpectation is the schema descriptor for expectation field.
+	testcaseDescExpectation := testcaseFields[7].Descriptor()
+	// testcase.DefaultExpectation holds the default value on creation for the expectation field.
+	testcase.DefaultExpectation = testcaseDescExpectation.Default.(string)
 	// testcaseDescTestCaseType is the schema descriptor for test_case_type field.
 	testcaseDescTestCaseType := testcaseFields[8].Descriptor()
 	// testcase.DefaultTestCaseType holds the default value on creation for the test_case_type field.
