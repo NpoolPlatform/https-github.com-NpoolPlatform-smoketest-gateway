@@ -91,7 +91,7 @@ var (
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
-		{Name: "state", Type: field.TypeString, Nullable: true, Default: "DefaultTestPlanState"},
+		{Name: "state", Type: field.TypeString, Nullable: true, Default: "WaitStart"},
 		{Name: "created_by", Type: field.TypeUUID, Nullable: true},
 		{Name: "executor", Type: field.TypeUUID, Nullable: true},
 		{Name: "fails", Type: field.TypeUint32, Nullable: true, Default: 0},

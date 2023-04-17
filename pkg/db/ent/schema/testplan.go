@@ -33,7 +33,7 @@ func (TestPlan) Fields() []ent.Field {
 		field.
 			String("state").
 			Optional().
-			Default(testplan.TestPlanState_DefaultTestPlanState.String()),
+			Default(testplan.TestPlanState_WaitStart.String()),
 		field.
 			UUID("created_by", uuid.UUID{}).
 			Optional().
