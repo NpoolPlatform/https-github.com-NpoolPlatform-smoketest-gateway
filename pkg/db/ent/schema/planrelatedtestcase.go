@@ -39,7 +39,7 @@ func (PlanRelatedTestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			String("test_case_output").
+			Text("test_case_output").
 			Optional().
 			Default(""),
 		field.
