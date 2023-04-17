@@ -3993,34 +3993,34 @@ func (m *TestCaseMutation) ResetEdge(name string) error {
 // TestPlanMutation represents an operation that mutates the TestPlan nodes in the graph.
 type TestPlanMutation struct {
 	config
-	op                          Op
-	typ                         string
-	id                          *uuid.UUID
-	created_at                  *uint32
-	addcreated_at               *int32
-	updated_at                  *uint32
-	addupdated_at               *int32
-	deleted_at                  *uint32
-	adddeleted_at               *int32
-	name                        *string
-	state                       *string
-	owner_id                    *uuid.UUID
-	responsible_user_id         *uuid.UUID
-	failed_test_cases_count     *uint32
-	addfailed_test_cases_count  *int32
-	passed_test_cases_count     *uint32
-	addpassed_test_cases_count  *int32
-	skipped_test_cases_count    *uint32
-	addskipped_test_cases_count *int32
-	run_duration                *uint32
-	addrun_duration             *int32
-	deadline                    *uint32
-	adddeadline                 *int32
-	test_result                 *string
-	clearedFields               map[string]struct{}
-	done                        bool
-	oldValue                    func(context.Context) (*TestPlan, error)
-	predicates                  []predicate.TestPlan
+	op              Op
+	typ             string
+	id              *uuid.UUID
+	created_at      *uint32
+	addcreated_at   *int32
+	updated_at      *uint32
+	addupdated_at   *int32
+	deleted_at      *uint32
+	adddeleted_at   *int32
+	name            *string
+	state           *string
+	created_by      *uuid.UUID
+	executor        *uuid.UUID
+	fails           *uint32
+	addfails        *int32
+	passes          *uint32
+	addpasses       *int32
+	skips           *uint32
+	addskips        *int32
+	run_duration    *uint32
+	addrun_duration *int32
+	deadline        *uint32
+	adddeadline     *int32
+	result          *string
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*TestPlan, error)
+	predicates      []predicate.TestPlan
 }
 
 var _ ent.Mutation = (*TestPlanMutation)(nil)
@@ -4393,312 +4393,312 @@ func (m *TestPlanMutation) ResetState() {
 	delete(m.clearedFields, testplan.FieldState)
 }
 
-// SetOwnerID sets the "owner_id" field.
-func (m *TestPlanMutation) SetOwnerID(u uuid.UUID) {
-	m.owner_id = &u
+// SetCreatedBy sets the "created_by" field.
+func (m *TestPlanMutation) SetCreatedBy(u uuid.UUID) {
+	m.created_by = &u
 }
 
-// OwnerID returns the value of the "owner_id" field in the mutation.
-func (m *TestPlanMutation) OwnerID() (r uuid.UUID, exists bool) {
-	v := m.owner_id
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *TestPlanMutation) CreatedBy() (r uuid.UUID, exists bool) {
+	v := m.created_by
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldOwnerID returns the old "owner_id" field's value of the TestPlan entity.
+// OldCreatedBy returns the old "created_by" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldOwnerID(ctx context.Context) (v uuid.UUID, err error) {
+func (m *TestPlanMutation) OldCreatedBy(ctx context.Context) (v uuid.UUID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldOwnerID is only allowed on UpdateOne operations")
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldOwnerID requires an ID field in the mutation")
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldOwnerID: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
 	}
-	return oldValue.OwnerID, nil
+	return oldValue.CreatedBy, nil
 }
 
-// ClearOwnerID clears the value of the "owner_id" field.
-func (m *TestPlanMutation) ClearOwnerID() {
-	m.owner_id = nil
-	m.clearedFields[testplan.FieldOwnerID] = struct{}{}
+// ClearCreatedBy clears the value of the "created_by" field.
+func (m *TestPlanMutation) ClearCreatedBy() {
+	m.created_by = nil
+	m.clearedFields[testplan.FieldCreatedBy] = struct{}{}
 }
 
-// OwnerIDCleared returns if the "owner_id" field was cleared in this mutation.
-func (m *TestPlanMutation) OwnerIDCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldOwnerID]
+// CreatedByCleared returns if the "created_by" field was cleared in this mutation.
+func (m *TestPlanMutation) CreatedByCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldCreatedBy]
 	return ok
 }
 
-// ResetOwnerID resets all changes to the "owner_id" field.
-func (m *TestPlanMutation) ResetOwnerID() {
-	m.owner_id = nil
-	delete(m.clearedFields, testplan.FieldOwnerID)
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *TestPlanMutation) ResetCreatedBy() {
+	m.created_by = nil
+	delete(m.clearedFields, testplan.FieldCreatedBy)
 }
 
-// SetResponsibleUserID sets the "responsible_user_id" field.
-func (m *TestPlanMutation) SetResponsibleUserID(u uuid.UUID) {
-	m.responsible_user_id = &u
+// SetExecutor sets the "executor" field.
+func (m *TestPlanMutation) SetExecutor(u uuid.UUID) {
+	m.executor = &u
 }
 
-// ResponsibleUserID returns the value of the "responsible_user_id" field in the mutation.
-func (m *TestPlanMutation) ResponsibleUserID() (r uuid.UUID, exists bool) {
-	v := m.responsible_user_id
+// Executor returns the value of the "executor" field in the mutation.
+func (m *TestPlanMutation) Executor() (r uuid.UUID, exists bool) {
+	v := m.executor
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldResponsibleUserID returns the old "responsible_user_id" field's value of the TestPlan entity.
+// OldExecutor returns the old "executor" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldResponsibleUserID(ctx context.Context) (v uuid.UUID, err error) {
+func (m *TestPlanMutation) OldExecutor(ctx context.Context) (v uuid.UUID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldResponsibleUserID is only allowed on UpdateOne operations")
+		return v, errors.New("OldExecutor is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldResponsibleUserID requires an ID field in the mutation")
+		return v, errors.New("OldExecutor requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldResponsibleUserID: %w", err)
+		return v, fmt.Errorf("querying old value for OldExecutor: %w", err)
 	}
-	return oldValue.ResponsibleUserID, nil
+	return oldValue.Executor, nil
 }
 
-// ClearResponsibleUserID clears the value of the "responsible_user_id" field.
-func (m *TestPlanMutation) ClearResponsibleUserID() {
-	m.responsible_user_id = nil
-	m.clearedFields[testplan.FieldResponsibleUserID] = struct{}{}
+// ClearExecutor clears the value of the "executor" field.
+func (m *TestPlanMutation) ClearExecutor() {
+	m.executor = nil
+	m.clearedFields[testplan.FieldExecutor] = struct{}{}
 }
 
-// ResponsibleUserIDCleared returns if the "responsible_user_id" field was cleared in this mutation.
-func (m *TestPlanMutation) ResponsibleUserIDCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldResponsibleUserID]
+// ExecutorCleared returns if the "executor" field was cleared in this mutation.
+func (m *TestPlanMutation) ExecutorCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldExecutor]
 	return ok
 }
 
-// ResetResponsibleUserID resets all changes to the "responsible_user_id" field.
-func (m *TestPlanMutation) ResetResponsibleUserID() {
-	m.responsible_user_id = nil
-	delete(m.clearedFields, testplan.FieldResponsibleUserID)
+// ResetExecutor resets all changes to the "executor" field.
+func (m *TestPlanMutation) ResetExecutor() {
+	m.executor = nil
+	delete(m.clearedFields, testplan.FieldExecutor)
 }
 
-// SetFailedTestCasesCount sets the "failed_test_cases_count" field.
-func (m *TestPlanMutation) SetFailedTestCasesCount(u uint32) {
-	m.failed_test_cases_count = &u
-	m.addfailed_test_cases_count = nil
+// SetFails sets the "fails" field.
+func (m *TestPlanMutation) SetFails(u uint32) {
+	m.fails = &u
+	m.addfails = nil
 }
 
-// FailedTestCasesCount returns the value of the "failed_test_cases_count" field in the mutation.
-func (m *TestPlanMutation) FailedTestCasesCount() (r uint32, exists bool) {
-	v := m.failed_test_cases_count
+// Fails returns the value of the "fails" field in the mutation.
+func (m *TestPlanMutation) Fails() (r uint32, exists bool) {
+	v := m.fails
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldFailedTestCasesCount returns the old "failed_test_cases_count" field's value of the TestPlan entity.
+// OldFails returns the old "fails" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldFailedTestCasesCount(ctx context.Context) (v uint32, err error) {
+func (m *TestPlanMutation) OldFails(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldFailedTestCasesCount is only allowed on UpdateOne operations")
+		return v, errors.New("OldFails is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldFailedTestCasesCount requires an ID field in the mutation")
+		return v, errors.New("OldFails requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldFailedTestCasesCount: %w", err)
+		return v, fmt.Errorf("querying old value for OldFails: %w", err)
 	}
-	return oldValue.FailedTestCasesCount, nil
+	return oldValue.Fails, nil
 }
 
-// AddFailedTestCasesCount adds u to the "failed_test_cases_count" field.
-func (m *TestPlanMutation) AddFailedTestCasesCount(u int32) {
-	if m.addfailed_test_cases_count != nil {
-		*m.addfailed_test_cases_count += u
+// AddFails adds u to the "fails" field.
+func (m *TestPlanMutation) AddFails(u int32) {
+	if m.addfails != nil {
+		*m.addfails += u
 	} else {
-		m.addfailed_test_cases_count = &u
+		m.addfails = &u
 	}
 }
 
-// AddedFailedTestCasesCount returns the value that was added to the "failed_test_cases_count" field in this mutation.
-func (m *TestPlanMutation) AddedFailedTestCasesCount() (r int32, exists bool) {
-	v := m.addfailed_test_cases_count
+// AddedFails returns the value that was added to the "fails" field in this mutation.
+func (m *TestPlanMutation) AddedFails() (r int32, exists bool) {
+	v := m.addfails
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearFailedTestCasesCount clears the value of the "failed_test_cases_count" field.
-func (m *TestPlanMutation) ClearFailedTestCasesCount() {
-	m.failed_test_cases_count = nil
-	m.addfailed_test_cases_count = nil
-	m.clearedFields[testplan.FieldFailedTestCasesCount] = struct{}{}
+// ClearFails clears the value of the "fails" field.
+func (m *TestPlanMutation) ClearFails() {
+	m.fails = nil
+	m.addfails = nil
+	m.clearedFields[testplan.FieldFails] = struct{}{}
 }
 
-// FailedTestCasesCountCleared returns if the "failed_test_cases_count" field was cleared in this mutation.
-func (m *TestPlanMutation) FailedTestCasesCountCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldFailedTestCasesCount]
+// FailsCleared returns if the "fails" field was cleared in this mutation.
+func (m *TestPlanMutation) FailsCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldFails]
 	return ok
 }
 
-// ResetFailedTestCasesCount resets all changes to the "failed_test_cases_count" field.
-func (m *TestPlanMutation) ResetFailedTestCasesCount() {
-	m.failed_test_cases_count = nil
-	m.addfailed_test_cases_count = nil
-	delete(m.clearedFields, testplan.FieldFailedTestCasesCount)
+// ResetFails resets all changes to the "fails" field.
+func (m *TestPlanMutation) ResetFails() {
+	m.fails = nil
+	m.addfails = nil
+	delete(m.clearedFields, testplan.FieldFails)
 }
 
-// SetPassedTestCasesCount sets the "passed_test_cases_count" field.
-func (m *TestPlanMutation) SetPassedTestCasesCount(u uint32) {
-	m.passed_test_cases_count = &u
-	m.addpassed_test_cases_count = nil
+// SetPasses sets the "passes" field.
+func (m *TestPlanMutation) SetPasses(u uint32) {
+	m.passes = &u
+	m.addpasses = nil
 }
 
-// PassedTestCasesCount returns the value of the "passed_test_cases_count" field in the mutation.
-func (m *TestPlanMutation) PassedTestCasesCount() (r uint32, exists bool) {
-	v := m.passed_test_cases_count
+// Passes returns the value of the "passes" field in the mutation.
+func (m *TestPlanMutation) Passes() (r uint32, exists bool) {
+	v := m.passes
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldPassedTestCasesCount returns the old "passed_test_cases_count" field's value of the TestPlan entity.
+// OldPasses returns the old "passes" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldPassedTestCasesCount(ctx context.Context) (v uint32, err error) {
+func (m *TestPlanMutation) OldPasses(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPassedTestCasesCount is only allowed on UpdateOne operations")
+		return v, errors.New("OldPasses is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPassedTestCasesCount requires an ID field in the mutation")
+		return v, errors.New("OldPasses requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPassedTestCasesCount: %w", err)
+		return v, fmt.Errorf("querying old value for OldPasses: %w", err)
 	}
-	return oldValue.PassedTestCasesCount, nil
+	return oldValue.Passes, nil
 }
 
-// AddPassedTestCasesCount adds u to the "passed_test_cases_count" field.
-func (m *TestPlanMutation) AddPassedTestCasesCount(u int32) {
-	if m.addpassed_test_cases_count != nil {
-		*m.addpassed_test_cases_count += u
+// AddPasses adds u to the "passes" field.
+func (m *TestPlanMutation) AddPasses(u int32) {
+	if m.addpasses != nil {
+		*m.addpasses += u
 	} else {
-		m.addpassed_test_cases_count = &u
+		m.addpasses = &u
 	}
 }
 
-// AddedPassedTestCasesCount returns the value that was added to the "passed_test_cases_count" field in this mutation.
-func (m *TestPlanMutation) AddedPassedTestCasesCount() (r int32, exists bool) {
-	v := m.addpassed_test_cases_count
+// AddedPasses returns the value that was added to the "passes" field in this mutation.
+func (m *TestPlanMutation) AddedPasses() (r int32, exists bool) {
+	v := m.addpasses
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearPassedTestCasesCount clears the value of the "passed_test_cases_count" field.
-func (m *TestPlanMutation) ClearPassedTestCasesCount() {
-	m.passed_test_cases_count = nil
-	m.addpassed_test_cases_count = nil
-	m.clearedFields[testplan.FieldPassedTestCasesCount] = struct{}{}
+// ClearPasses clears the value of the "passes" field.
+func (m *TestPlanMutation) ClearPasses() {
+	m.passes = nil
+	m.addpasses = nil
+	m.clearedFields[testplan.FieldPasses] = struct{}{}
 }
 
-// PassedTestCasesCountCleared returns if the "passed_test_cases_count" field was cleared in this mutation.
-func (m *TestPlanMutation) PassedTestCasesCountCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldPassedTestCasesCount]
+// PassesCleared returns if the "passes" field was cleared in this mutation.
+func (m *TestPlanMutation) PassesCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldPasses]
 	return ok
 }
 
-// ResetPassedTestCasesCount resets all changes to the "passed_test_cases_count" field.
-func (m *TestPlanMutation) ResetPassedTestCasesCount() {
-	m.passed_test_cases_count = nil
-	m.addpassed_test_cases_count = nil
-	delete(m.clearedFields, testplan.FieldPassedTestCasesCount)
+// ResetPasses resets all changes to the "passes" field.
+func (m *TestPlanMutation) ResetPasses() {
+	m.passes = nil
+	m.addpasses = nil
+	delete(m.clearedFields, testplan.FieldPasses)
 }
 
-// SetSkippedTestCasesCount sets the "skipped_test_cases_count" field.
-func (m *TestPlanMutation) SetSkippedTestCasesCount(u uint32) {
-	m.skipped_test_cases_count = &u
-	m.addskipped_test_cases_count = nil
+// SetSkips sets the "skips" field.
+func (m *TestPlanMutation) SetSkips(u uint32) {
+	m.skips = &u
+	m.addskips = nil
 }
 
-// SkippedTestCasesCount returns the value of the "skipped_test_cases_count" field in the mutation.
-func (m *TestPlanMutation) SkippedTestCasesCount() (r uint32, exists bool) {
-	v := m.skipped_test_cases_count
+// Skips returns the value of the "skips" field in the mutation.
+func (m *TestPlanMutation) Skips() (r uint32, exists bool) {
+	v := m.skips
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldSkippedTestCasesCount returns the old "skipped_test_cases_count" field's value of the TestPlan entity.
+// OldSkips returns the old "skips" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldSkippedTestCasesCount(ctx context.Context) (v uint32, err error) {
+func (m *TestPlanMutation) OldSkips(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldSkippedTestCasesCount is only allowed on UpdateOne operations")
+		return v, errors.New("OldSkips is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldSkippedTestCasesCount requires an ID field in the mutation")
+		return v, errors.New("OldSkips requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldSkippedTestCasesCount: %w", err)
+		return v, fmt.Errorf("querying old value for OldSkips: %w", err)
 	}
-	return oldValue.SkippedTestCasesCount, nil
+	return oldValue.Skips, nil
 }
 
-// AddSkippedTestCasesCount adds u to the "skipped_test_cases_count" field.
-func (m *TestPlanMutation) AddSkippedTestCasesCount(u int32) {
-	if m.addskipped_test_cases_count != nil {
-		*m.addskipped_test_cases_count += u
+// AddSkips adds u to the "skips" field.
+func (m *TestPlanMutation) AddSkips(u int32) {
+	if m.addskips != nil {
+		*m.addskips += u
 	} else {
-		m.addskipped_test_cases_count = &u
+		m.addskips = &u
 	}
 }
 
-// AddedSkippedTestCasesCount returns the value that was added to the "skipped_test_cases_count" field in this mutation.
-func (m *TestPlanMutation) AddedSkippedTestCasesCount() (r int32, exists bool) {
-	v := m.addskipped_test_cases_count
+// AddedSkips returns the value that was added to the "skips" field in this mutation.
+func (m *TestPlanMutation) AddedSkips() (r int32, exists bool) {
+	v := m.addskips
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ClearSkippedTestCasesCount clears the value of the "skipped_test_cases_count" field.
-func (m *TestPlanMutation) ClearSkippedTestCasesCount() {
-	m.skipped_test_cases_count = nil
-	m.addskipped_test_cases_count = nil
-	m.clearedFields[testplan.FieldSkippedTestCasesCount] = struct{}{}
+// ClearSkips clears the value of the "skips" field.
+func (m *TestPlanMutation) ClearSkips() {
+	m.skips = nil
+	m.addskips = nil
+	m.clearedFields[testplan.FieldSkips] = struct{}{}
 }
 
-// SkippedTestCasesCountCleared returns if the "skipped_test_cases_count" field was cleared in this mutation.
-func (m *TestPlanMutation) SkippedTestCasesCountCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldSkippedTestCasesCount]
+// SkipsCleared returns if the "skips" field was cleared in this mutation.
+func (m *TestPlanMutation) SkipsCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldSkips]
 	return ok
 }
 
-// ResetSkippedTestCasesCount resets all changes to the "skipped_test_cases_count" field.
-func (m *TestPlanMutation) ResetSkippedTestCasesCount() {
-	m.skipped_test_cases_count = nil
-	m.addskipped_test_cases_count = nil
-	delete(m.clearedFields, testplan.FieldSkippedTestCasesCount)
+// ResetSkips resets all changes to the "skips" field.
+func (m *TestPlanMutation) ResetSkips() {
+	m.skips = nil
+	m.addskips = nil
+	delete(m.clearedFields, testplan.FieldSkips)
 }
 
 // SetRunDuration sets the "run_duration" field.
@@ -4841,53 +4841,53 @@ func (m *TestPlanMutation) ResetDeadline() {
 	delete(m.clearedFields, testplan.FieldDeadline)
 }
 
-// SetTestResult sets the "test_result" field.
-func (m *TestPlanMutation) SetTestResult(s string) {
-	m.test_result = &s
+// SetResult sets the "result" field.
+func (m *TestPlanMutation) SetResult(s string) {
+	m.result = &s
 }
 
-// TestResult returns the value of the "test_result" field in the mutation.
-func (m *TestPlanMutation) TestResult() (r string, exists bool) {
-	v := m.test_result
+// Result returns the value of the "result" field in the mutation.
+func (m *TestPlanMutation) Result() (r string, exists bool) {
+	v := m.result
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTestResult returns the old "test_result" field's value of the TestPlan entity.
+// OldResult returns the old "result" field's value of the TestPlan entity.
 // If the TestPlan object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TestPlanMutation) OldTestResult(ctx context.Context) (v string, err error) {
+func (m *TestPlanMutation) OldResult(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTestResult is only allowed on UpdateOne operations")
+		return v, errors.New("OldResult is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTestResult requires an ID field in the mutation")
+		return v, errors.New("OldResult requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTestResult: %w", err)
+		return v, fmt.Errorf("querying old value for OldResult: %w", err)
 	}
-	return oldValue.TestResult, nil
+	return oldValue.Result, nil
 }
 
-// ClearTestResult clears the value of the "test_result" field.
-func (m *TestPlanMutation) ClearTestResult() {
-	m.test_result = nil
-	m.clearedFields[testplan.FieldTestResult] = struct{}{}
+// ClearResult clears the value of the "result" field.
+func (m *TestPlanMutation) ClearResult() {
+	m.result = nil
+	m.clearedFields[testplan.FieldResult] = struct{}{}
 }
 
-// TestResultCleared returns if the "test_result" field was cleared in this mutation.
-func (m *TestPlanMutation) TestResultCleared() bool {
-	_, ok := m.clearedFields[testplan.FieldTestResult]
+// ResultCleared returns if the "result" field was cleared in this mutation.
+func (m *TestPlanMutation) ResultCleared() bool {
+	_, ok := m.clearedFields[testplan.FieldResult]
 	return ok
 }
 
-// ResetTestResult resets all changes to the "test_result" field.
-func (m *TestPlanMutation) ResetTestResult() {
-	m.test_result = nil
-	delete(m.clearedFields, testplan.FieldTestResult)
+// ResetResult resets all changes to the "result" field.
+func (m *TestPlanMutation) ResetResult() {
+	m.result = nil
+	delete(m.clearedFields, testplan.FieldResult)
 }
 
 // Where appends a list predicates to the TestPlanMutation builder.
@@ -4925,20 +4925,20 @@ func (m *TestPlanMutation) Fields() []string {
 	if m.state != nil {
 		fields = append(fields, testplan.FieldState)
 	}
-	if m.owner_id != nil {
-		fields = append(fields, testplan.FieldOwnerID)
+	if m.created_by != nil {
+		fields = append(fields, testplan.FieldCreatedBy)
 	}
-	if m.responsible_user_id != nil {
-		fields = append(fields, testplan.FieldResponsibleUserID)
+	if m.executor != nil {
+		fields = append(fields, testplan.FieldExecutor)
 	}
-	if m.failed_test_cases_count != nil {
-		fields = append(fields, testplan.FieldFailedTestCasesCount)
+	if m.fails != nil {
+		fields = append(fields, testplan.FieldFails)
 	}
-	if m.passed_test_cases_count != nil {
-		fields = append(fields, testplan.FieldPassedTestCasesCount)
+	if m.passes != nil {
+		fields = append(fields, testplan.FieldPasses)
 	}
-	if m.skipped_test_cases_count != nil {
-		fields = append(fields, testplan.FieldSkippedTestCasesCount)
+	if m.skips != nil {
+		fields = append(fields, testplan.FieldSkips)
 	}
 	if m.run_duration != nil {
 		fields = append(fields, testplan.FieldRunDuration)
@@ -4946,8 +4946,8 @@ func (m *TestPlanMutation) Fields() []string {
 	if m.deadline != nil {
 		fields = append(fields, testplan.FieldDeadline)
 	}
-	if m.test_result != nil {
-		fields = append(fields, testplan.FieldTestResult)
+	if m.result != nil {
+		fields = append(fields, testplan.FieldResult)
 	}
 	return fields
 }
@@ -4967,22 +4967,22 @@ func (m *TestPlanMutation) Field(name string) (ent.Value, bool) {
 		return m.Name()
 	case testplan.FieldState:
 		return m.State()
-	case testplan.FieldOwnerID:
-		return m.OwnerID()
-	case testplan.FieldResponsibleUserID:
-		return m.ResponsibleUserID()
-	case testplan.FieldFailedTestCasesCount:
-		return m.FailedTestCasesCount()
-	case testplan.FieldPassedTestCasesCount:
-		return m.PassedTestCasesCount()
-	case testplan.FieldSkippedTestCasesCount:
-		return m.SkippedTestCasesCount()
+	case testplan.FieldCreatedBy:
+		return m.CreatedBy()
+	case testplan.FieldExecutor:
+		return m.Executor()
+	case testplan.FieldFails:
+		return m.Fails()
+	case testplan.FieldPasses:
+		return m.Passes()
+	case testplan.FieldSkips:
+		return m.Skips()
 	case testplan.FieldRunDuration:
 		return m.RunDuration()
 	case testplan.FieldDeadline:
 		return m.Deadline()
-	case testplan.FieldTestResult:
-		return m.TestResult()
+	case testplan.FieldResult:
+		return m.Result()
 	}
 	return nil, false
 }
@@ -5002,22 +5002,22 @@ func (m *TestPlanMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldName(ctx)
 	case testplan.FieldState:
 		return m.OldState(ctx)
-	case testplan.FieldOwnerID:
-		return m.OldOwnerID(ctx)
-	case testplan.FieldResponsibleUserID:
-		return m.OldResponsibleUserID(ctx)
-	case testplan.FieldFailedTestCasesCount:
-		return m.OldFailedTestCasesCount(ctx)
-	case testplan.FieldPassedTestCasesCount:
-		return m.OldPassedTestCasesCount(ctx)
-	case testplan.FieldSkippedTestCasesCount:
-		return m.OldSkippedTestCasesCount(ctx)
+	case testplan.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case testplan.FieldExecutor:
+		return m.OldExecutor(ctx)
+	case testplan.FieldFails:
+		return m.OldFails(ctx)
+	case testplan.FieldPasses:
+		return m.OldPasses(ctx)
+	case testplan.FieldSkips:
+		return m.OldSkips(ctx)
 	case testplan.FieldRunDuration:
 		return m.OldRunDuration(ctx)
 	case testplan.FieldDeadline:
 		return m.OldDeadline(ctx)
-	case testplan.FieldTestResult:
-		return m.OldTestResult(ctx)
+	case testplan.FieldResult:
+		return m.OldResult(ctx)
 	}
 	return nil, fmt.Errorf("unknown TestPlan field %s", name)
 }
@@ -5062,40 +5062,40 @@ func (m *TestPlanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetState(v)
 		return nil
-	case testplan.FieldOwnerID:
+	case testplan.FieldCreatedBy:
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetOwnerID(v)
+		m.SetCreatedBy(v)
 		return nil
-	case testplan.FieldResponsibleUserID:
+	case testplan.FieldExecutor:
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetResponsibleUserID(v)
+		m.SetExecutor(v)
 		return nil
-	case testplan.FieldFailedTestCasesCount:
+	case testplan.FieldFails:
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetFailedTestCasesCount(v)
+		m.SetFails(v)
 		return nil
-	case testplan.FieldPassedTestCasesCount:
+	case testplan.FieldPasses:
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetPassedTestCasesCount(v)
+		m.SetPasses(v)
 		return nil
-	case testplan.FieldSkippedTestCasesCount:
+	case testplan.FieldSkips:
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetSkippedTestCasesCount(v)
+		m.SetSkips(v)
 		return nil
 	case testplan.FieldRunDuration:
 		v, ok := value.(uint32)
@@ -5111,12 +5111,12 @@ func (m *TestPlanMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetDeadline(v)
 		return nil
-	case testplan.FieldTestResult:
+	case testplan.FieldResult:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTestResult(v)
+		m.SetResult(v)
 		return nil
 	}
 	return fmt.Errorf("unknown TestPlan field %s", name)
@@ -5135,14 +5135,14 @@ func (m *TestPlanMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, testplan.FieldDeletedAt)
 	}
-	if m.addfailed_test_cases_count != nil {
-		fields = append(fields, testplan.FieldFailedTestCasesCount)
+	if m.addfails != nil {
+		fields = append(fields, testplan.FieldFails)
 	}
-	if m.addpassed_test_cases_count != nil {
-		fields = append(fields, testplan.FieldPassedTestCasesCount)
+	if m.addpasses != nil {
+		fields = append(fields, testplan.FieldPasses)
 	}
-	if m.addskipped_test_cases_count != nil {
-		fields = append(fields, testplan.FieldSkippedTestCasesCount)
+	if m.addskips != nil {
+		fields = append(fields, testplan.FieldSkips)
 	}
 	if m.addrun_duration != nil {
 		fields = append(fields, testplan.FieldRunDuration)
@@ -5164,12 +5164,12 @@ func (m *TestPlanMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case testplan.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case testplan.FieldFailedTestCasesCount:
-		return m.AddedFailedTestCasesCount()
-	case testplan.FieldPassedTestCasesCount:
-		return m.AddedPassedTestCasesCount()
-	case testplan.FieldSkippedTestCasesCount:
-		return m.AddedSkippedTestCasesCount()
+	case testplan.FieldFails:
+		return m.AddedFails()
+	case testplan.FieldPasses:
+		return m.AddedPasses()
+	case testplan.FieldSkips:
+		return m.AddedSkips()
 	case testplan.FieldRunDuration:
 		return m.AddedRunDuration()
 	case testplan.FieldDeadline:
@@ -5204,26 +5204,26 @@ func (m *TestPlanMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddDeletedAt(v)
 		return nil
-	case testplan.FieldFailedTestCasesCount:
+	case testplan.FieldFails:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddFailedTestCasesCount(v)
+		m.AddFails(v)
 		return nil
-	case testplan.FieldPassedTestCasesCount:
+	case testplan.FieldPasses:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddPassedTestCasesCount(v)
+		m.AddPasses(v)
 		return nil
-	case testplan.FieldSkippedTestCasesCount:
+	case testplan.FieldSkips:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddSkippedTestCasesCount(v)
+		m.AddSkips(v)
 		return nil
 	case testplan.FieldRunDuration:
 		v, ok := value.(int32)
@@ -5253,20 +5253,20 @@ func (m *TestPlanMutation) ClearedFields() []string {
 	if m.FieldCleared(testplan.FieldState) {
 		fields = append(fields, testplan.FieldState)
 	}
-	if m.FieldCleared(testplan.FieldOwnerID) {
-		fields = append(fields, testplan.FieldOwnerID)
+	if m.FieldCleared(testplan.FieldCreatedBy) {
+		fields = append(fields, testplan.FieldCreatedBy)
 	}
-	if m.FieldCleared(testplan.FieldResponsibleUserID) {
-		fields = append(fields, testplan.FieldResponsibleUserID)
+	if m.FieldCleared(testplan.FieldExecutor) {
+		fields = append(fields, testplan.FieldExecutor)
 	}
-	if m.FieldCleared(testplan.FieldFailedTestCasesCount) {
-		fields = append(fields, testplan.FieldFailedTestCasesCount)
+	if m.FieldCleared(testplan.FieldFails) {
+		fields = append(fields, testplan.FieldFails)
 	}
-	if m.FieldCleared(testplan.FieldPassedTestCasesCount) {
-		fields = append(fields, testplan.FieldPassedTestCasesCount)
+	if m.FieldCleared(testplan.FieldPasses) {
+		fields = append(fields, testplan.FieldPasses)
 	}
-	if m.FieldCleared(testplan.FieldSkippedTestCasesCount) {
-		fields = append(fields, testplan.FieldSkippedTestCasesCount)
+	if m.FieldCleared(testplan.FieldSkips) {
+		fields = append(fields, testplan.FieldSkips)
 	}
 	if m.FieldCleared(testplan.FieldRunDuration) {
 		fields = append(fields, testplan.FieldRunDuration)
@@ -5274,8 +5274,8 @@ func (m *TestPlanMutation) ClearedFields() []string {
 	if m.FieldCleared(testplan.FieldDeadline) {
 		fields = append(fields, testplan.FieldDeadline)
 	}
-	if m.FieldCleared(testplan.FieldTestResult) {
-		fields = append(fields, testplan.FieldTestResult)
+	if m.FieldCleared(testplan.FieldResult) {
+		fields = append(fields, testplan.FieldResult)
 	}
 	return fields
 }
@@ -5297,20 +5297,20 @@ func (m *TestPlanMutation) ClearField(name string) error {
 	case testplan.FieldState:
 		m.ClearState()
 		return nil
-	case testplan.FieldOwnerID:
-		m.ClearOwnerID()
+	case testplan.FieldCreatedBy:
+		m.ClearCreatedBy()
 		return nil
-	case testplan.FieldResponsibleUserID:
-		m.ClearResponsibleUserID()
+	case testplan.FieldExecutor:
+		m.ClearExecutor()
 		return nil
-	case testplan.FieldFailedTestCasesCount:
-		m.ClearFailedTestCasesCount()
+	case testplan.FieldFails:
+		m.ClearFails()
 		return nil
-	case testplan.FieldPassedTestCasesCount:
-		m.ClearPassedTestCasesCount()
+	case testplan.FieldPasses:
+		m.ClearPasses()
 		return nil
-	case testplan.FieldSkippedTestCasesCount:
-		m.ClearSkippedTestCasesCount()
+	case testplan.FieldSkips:
+		m.ClearSkips()
 		return nil
 	case testplan.FieldRunDuration:
 		m.ClearRunDuration()
@@ -5318,8 +5318,8 @@ func (m *TestPlanMutation) ClearField(name string) error {
 	case testplan.FieldDeadline:
 		m.ClearDeadline()
 		return nil
-	case testplan.FieldTestResult:
-		m.ClearTestResult()
+	case testplan.FieldResult:
+		m.ClearResult()
 		return nil
 	}
 	return fmt.Errorf("unknown TestPlan nullable field %s", name)
@@ -5344,20 +5344,20 @@ func (m *TestPlanMutation) ResetField(name string) error {
 	case testplan.FieldState:
 		m.ResetState()
 		return nil
-	case testplan.FieldOwnerID:
-		m.ResetOwnerID()
+	case testplan.FieldCreatedBy:
+		m.ResetCreatedBy()
 		return nil
-	case testplan.FieldResponsibleUserID:
-		m.ResetResponsibleUserID()
+	case testplan.FieldExecutor:
+		m.ResetExecutor()
 		return nil
-	case testplan.FieldFailedTestCasesCount:
-		m.ResetFailedTestCasesCount()
+	case testplan.FieldFails:
+		m.ResetFails()
 		return nil
-	case testplan.FieldPassedTestCasesCount:
-		m.ResetPassedTestCasesCount()
+	case testplan.FieldPasses:
+		m.ResetPasses()
 		return nil
-	case testplan.FieldSkippedTestCasesCount:
-		m.ResetSkippedTestCasesCount()
+	case testplan.FieldSkips:
+		m.ResetSkips()
 		return nil
 	case testplan.FieldRunDuration:
 		m.ResetRunDuration()
@@ -5365,8 +5365,8 @@ func (m *TestPlanMutation) ResetField(name string) error {
 	case testplan.FieldDeadline:
 		m.ResetDeadline()
 		return nil
-	case testplan.FieldTestResult:
-		m.ResetTestResult()
+	case testplan.FieldResult:
+		m.ResetResult()
 		return nil
 	}
 	return fmt.Errorf("unknown TestPlan field %s", name)

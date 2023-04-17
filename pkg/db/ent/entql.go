@@ -117,19 +117,19 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "TestPlan",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			testplan.FieldCreatedAt:             {Type: field.TypeUint32, Column: testplan.FieldCreatedAt},
-			testplan.FieldUpdatedAt:             {Type: field.TypeUint32, Column: testplan.FieldUpdatedAt},
-			testplan.FieldDeletedAt:             {Type: field.TypeUint32, Column: testplan.FieldDeletedAt},
-			testplan.FieldName:                  {Type: field.TypeString, Column: testplan.FieldName},
-			testplan.FieldState:                 {Type: field.TypeString, Column: testplan.FieldState},
-			testplan.FieldOwnerID:               {Type: field.TypeUUID, Column: testplan.FieldOwnerID},
-			testplan.FieldResponsibleUserID:     {Type: field.TypeUUID, Column: testplan.FieldResponsibleUserID},
-			testplan.FieldFailedTestCasesCount:  {Type: field.TypeUint32, Column: testplan.FieldFailedTestCasesCount},
-			testplan.FieldPassedTestCasesCount:  {Type: field.TypeUint32, Column: testplan.FieldPassedTestCasesCount},
-			testplan.FieldSkippedTestCasesCount: {Type: field.TypeUint32, Column: testplan.FieldSkippedTestCasesCount},
-			testplan.FieldRunDuration:           {Type: field.TypeUint32, Column: testplan.FieldRunDuration},
-			testplan.FieldDeadline:              {Type: field.TypeUint32, Column: testplan.FieldDeadline},
-			testplan.FieldTestResult:            {Type: field.TypeString, Column: testplan.FieldTestResult},
+			testplan.FieldCreatedAt:   {Type: field.TypeUint32, Column: testplan.FieldCreatedAt},
+			testplan.FieldUpdatedAt:   {Type: field.TypeUint32, Column: testplan.FieldUpdatedAt},
+			testplan.FieldDeletedAt:   {Type: field.TypeUint32, Column: testplan.FieldDeletedAt},
+			testplan.FieldName:        {Type: field.TypeString, Column: testplan.FieldName},
+			testplan.FieldState:       {Type: field.TypeString, Column: testplan.FieldState},
+			testplan.FieldCreatedBy:   {Type: field.TypeUUID, Column: testplan.FieldCreatedBy},
+			testplan.FieldExecutor:    {Type: field.TypeUUID, Column: testplan.FieldExecutor},
+			testplan.FieldFails:       {Type: field.TypeUint32, Column: testplan.FieldFails},
+			testplan.FieldPasses:      {Type: field.TypeUint32, Column: testplan.FieldPasses},
+			testplan.FieldSkips:       {Type: field.TypeUint32, Column: testplan.FieldSkips},
+			testplan.FieldRunDuration: {Type: field.TypeUint32, Column: testplan.FieldRunDuration},
+			testplan.FieldDeadline:    {Type: field.TypeUint32, Column: testplan.FieldDeadline},
+			testplan.FieldResult:      {Type: field.TypeString, Column: testplan.FieldResult},
 		},
 	}
 	return graph
@@ -546,29 +546,29 @@ func (f *TestPlanFilter) WhereState(p entql.StringP) {
 	f.Where(p.Field(testplan.FieldState))
 }
 
-// WhereOwnerID applies the entql [16]byte predicate on the owner_id field.
-func (f *TestPlanFilter) WhereOwnerID(p entql.ValueP) {
-	f.Where(p.Field(testplan.FieldOwnerID))
+// WhereCreatedBy applies the entql [16]byte predicate on the created_by field.
+func (f *TestPlanFilter) WhereCreatedBy(p entql.ValueP) {
+	f.Where(p.Field(testplan.FieldCreatedBy))
 }
 
-// WhereResponsibleUserID applies the entql [16]byte predicate on the responsible_user_id field.
-func (f *TestPlanFilter) WhereResponsibleUserID(p entql.ValueP) {
-	f.Where(p.Field(testplan.FieldResponsibleUserID))
+// WhereExecutor applies the entql [16]byte predicate on the executor field.
+func (f *TestPlanFilter) WhereExecutor(p entql.ValueP) {
+	f.Where(p.Field(testplan.FieldExecutor))
 }
 
-// WhereFailedTestCasesCount applies the entql uint32 predicate on the failed_test_cases_count field.
-func (f *TestPlanFilter) WhereFailedTestCasesCount(p entql.Uint32P) {
-	f.Where(p.Field(testplan.FieldFailedTestCasesCount))
+// WhereFails applies the entql uint32 predicate on the fails field.
+func (f *TestPlanFilter) WhereFails(p entql.Uint32P) {
+	f.Where(p.Field(testplan.FieldFails))
 }
 
-// WherePassedTestCasesCount applies the entql uint32 predicate on the passed_test_cases_count field.
-func (f *TestPlanFilter) WherePassedTestCasesCount(p entql.Uint32P) {
-	f.Where(p.Field(testplan.FieldPassedTestCasesCount))
+// WherePasses applies the entql uint32 predicate on the passes field.
+func (f *TestPlanFilter) WherePasses(p entql.Uint32P) {
+	f.Where(p.Field(testplan.FieldPasses))
 }
 
-// WhereSkippedTestCasesCount applies the entql uint32 predicate on the skipped_test_cases_count field.
-func (f *TestPlanFilter) WhereSkippedTestCasesCount(p entql.Uint32P) {
-	f.Where(p.Field(testplan.FieldSkippedTestCasesCount))
+// WhereSkips applies the entql uint32 predicate on the skips field.
+func (f *TestPlanFilter) WhereSkips(p entql.Uint32P) {
+	f.Where(p.Field(testplan.FieldSkips))
 }
 
 // WhereRunDuration applies the entql uint32 predicate on the run_duration field.
@@ -581,7 +581,7 @@ func (f *TestPlanFilter) WhereDeadline(p entql.Uint32P) {
 	f.Where(p.Field(testplan.FieldDeadline))
 }
 
-// WhereTestResult applies the entql string predicate on the test_result field.
-func (f *TestPlanFilter) WhereTestResult(p entql.StringP) {
-	f.Where(p.Field(testplan.FieldTestResult))
+// WhereResult applies the entql string predicate on the result field.
+func (f *TestPlanFilter) WhereResult(p entql.StringP) {
+	f.Where(p.Field(testplan.FieldResult))
 }

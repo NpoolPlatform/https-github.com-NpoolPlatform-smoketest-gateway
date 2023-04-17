@@ -92,14 +92,14 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "state", Type: field.TypeString, Nullable: true, Default: "DefaultTestPlanState"},
-		{Name: "owner_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "responsible_user_id", Type: field.TypeUUID, Nullable: true},
-		{Name: "failed_test_cases_count", Type: field.TypeUint32, Nullable: true, Default: 0},
-		{Name: "passed_test_cases_count", Type: field.TypeUint32, Nullable: true, Default: 0},
-		{Name: "skipped_test_cases_count", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "created_by", Type: field.TypeUUID, Nullable: true},
+		{Name: "executor", Type: field.TypeUUID, Nullable: true},
+		{Name: "fails", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "passes", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "skips", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "run_duration", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "deadline", Type: field.TypeUint32, Nullable: true, Default: 0},
-		{Name: "test_result", Type: field.TypeString, Nullable: true, Default: "DefaultTestResultState"},
+		{Name: "result", Type: field.TypeString, Nullable: true, Default: "DefaultTestResultState"},
 	}
 	// TestPlansTable holds the schema information for the "test_plans" table.
 	TestPlansTable = &schema.Table{

@@ -277,26 +277,26 @@ func init() {
 	testplanDescState := testplanFields[2].Descriptor()
 	// testplan.DefaultState holds the default value on creation for the state field.
 	testplan.DefaultState = testplanDescState.Default.(string)
-	// testplanDescOwnerID is the schema descriptor for owner_id field.
-	testplanDescOwnerID := testplanFields[3].Descriptor()
-	// testplan.DefaultOwnerID holds the default value on creation for the owner_id field.
-	testplan.DefaultOwnerID = testplanDescOwnerID.Default.(func() uuid.UUID)
-	// testplanDescResponsibleUserID is the schema descriptor for responsible_user_id field.
-	testplanDescResponsibleUserID := testplanFields[4].Descriptor()
-	// testplan.DefaultResponsibleUserID holds the default value on creation for the responsible_user_id field.
-	testplan.DefaultResponsibleUserID = testplanDescResponsibleUserID.Default.(func() uuid.UUID)
-	// testplanDescFailedTestCasesCount is the schema descriptor for failed_test_cases_count field.
-	testplanDescFailedTestCasesCount := testplanFields[5].Descriptor()
-	// testplan.DefaultFailedTestCasesCount holds the default value on creation for the failed_test_cases_count field.
-	testplan.DefaultFailedTestCasesCount = testplanDescFailedTestCasesCount.Default.(uint32)
-	// testplanDescPassedTestCasesCount is the schema descriptor for passed_test_cases_count field.
-	testplanDescPassedTestCasesCount := testplanFields[6].Descriptor()
-	// testplan.DefaultPassedTestCasesCount holds the default value on creation for the passed_test_cases_count field.
-	testplan.DefaultPassedTestCasesCount = testplanDescPassedTestCasesCount.Default.(uint32)
-	// testplanDescSkippedTestCasesCount is the schema descriptor for skipped_test_cases_count field.
-	testplanDescSkippedTestCasesCount := testplanFields[7].Descriptor()
-	// testplan.DefaultSkippedTestCasesCount holds the default value on creation for the skipped_test_cases_count field.
-	testplan.DefaultSkippedTestCasesCount = testplanDescSkippedTestCasesCount.Default.(uint32)
+	// testplanDescCreatedBy is the schema descriptor for created_by field.
+	testplanDescCreatedBy := testplanFields[3].Descriptor()
+	// testplan.DefaultCreatedBy holds the default value on creation for the created_by field.
+	testplan.DefaultCreatedBy = testplanDescCreatedBy.Default.(func() uuid.UUID)
+	// testplanDescExecutor is the schema descriptor for executor field.
+	testplanDescExecutor := testplanFields[4].Descriptor()
+	// testplan.DefaultExecutor holds the default value on creation for the executor field.
+	testplan.DefaultExecutor = testplanDescExecutor.Default.(func() uuid.UUID)
+	// testplanDescFails is the schema descriptor for fails field.
+	testplanDescFails := testplanFields[5].Descriptor()
+	// testplan.DefaultFails holds the default value on creation for the fails field.
+	testplan.DefaultFails = testplanDescFails.Default.(uint32)
+	// testplanDescPasses is the schema descriptor for passes field.
+	testplanDescPasses := testplanFields[6].Descriptor()
+	// testplan.DefaultPasses holds the default value on creation for the passes field.
+	testplan.DefaultPasses = testplanDescPasses.Default.(uint32)
+	// testplanDescSkips is the schema descriptor for skips field.
+	testplanDescSkips := testplanFields[7].Descriptor()
+	// testplan.DefaultSkips holds the default value on creation for the skips field.
+	testplan.DefaultSkips = testplanDescSkips.Default.(uint32)
 	// testplanDescRunDuration is the schema descriptor for run_duration field.
 	testplanDescRunDuration := testplanFields[8].Descriptor()
 	// testplan.DefaultRunDuration holds the default value on creation for the run_duration field.
@@ -305,10 +305,10 @@ func init() {
 	testplanDescDeadline := testplanFields[9].Descriptor()
 	// testplan.DefaultDeadline holds the default value on creation for the deadline field.
 	testplan.DefaultDeadline = testplanDescDeadline.Default.(uint32)
-	// testplanDescTestResult is the schema descriptor for test_result field.
-	testplanDescTestResult := testplanFields[10].Descriptor()
-	// testplan.DefaultTestResult holds the default value on creation for the test_result field.
-	testplan.DefaultTestResult = testplanDescTestResult.Default.(string)
+	// testplanDescResult is the schema descriptor for result field.
+	testplanDescResult := testplanFields[10].Descriptor()
+	// testplan.DefaultResult holds the default value on creation for the result field.
+	testplan.DefaultResult = testplanDescResult.Default.(string)
 	// testplanDescID is the schema descriptor for id field.
 	testplanDescID := testplanFields[0].Descriptor()
 	// testplan.DefaultID holds the default value on creation for the id field.

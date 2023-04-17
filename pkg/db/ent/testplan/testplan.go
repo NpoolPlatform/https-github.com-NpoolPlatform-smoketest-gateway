@@ -22,22 +22,22 @@ const (
 	FieldName = "name"
 	// FieldState holds the string denoting the state field in the database.
 	FieldState = "state"
-	// FieldOwnerID holds the string denoting the owner_id field in the database.
-	FieldOwnerID = "owner_id"
-	// FieldResponsibleUserID holds the string denoting the responsible_user_id field in the database.
-	FieldResponsibleUserID = "responsible_user_id"
-	// FieldFailedTestCasesCount holds the string denoting the failed_test_cases_count field in the database.
-	FieldFailedTestCasesCount = "failed_test_cases_count"
-	// FieldPassedTestCasesCount holds the string denoting the passed_test_cases_count field in the database.
-	FieldPassedTestCasesCount = "passed_test_cases_count"
-	// FieldSkippedTestCasesCount holds the string denoting the skipped_test_cases_count field in the database.
-	FieldSkippedTestCasesCount = "skipped_test_cases_count"
+	// FieldCreatedBy holds the string denoting the created_by field in the database.
+	FieldCreatedBy = "created_by"
+	// FieldExecutor holds the string denoting the executor field in the database.
+	FieldExecutor = "executor"
+	// FieldFails holds the string denoting the fails field in the database.
+	FieldFails = "fails"
+	// FieldPasses holds the string denoting the passes field in the database.
+	FieldPasses = "passes"
+	// FieldSkips holds the string denoting the skips field in the database.
+	FieldSkips = "skips"
 	// FieldRunDuration holds the string denoting the run_duration field in the database.
 	FieldRunDuration = "run_duration"
 	// FieldDeadline holds the string denoting the deadline field in the database.
 	FieldDeadline = "deadline"
-	// FieldTestResult holds the string denoting the test_result field in the database.
-	FieldTestResult = "test_result"
+	// FieldResult holds the string denoting the result field in the database.
+	FieldResult = "result"
 	// Table holds the table name of the testplan in the database.
 	Table = "test_plans"
 )
@@ -50,14 +50,14 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldName,
 	FieldState,
-	FieldOwnerID,
-	FieldResponsibleUserID,
-	FieldFailedTestCasesCount,
-	FieldPassedTestCasesCount,
-	FieldSkippedTestCasesCount,
+	FieldCreatedBy,
+	FieldExecutor,
+	FieldFails,
+	FieldPasses,
+	FieldSkips,
 	FieldRunDuration,
 	FieldDeadline,
-	FieldTestResult,
+	FieldResult,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -91,22 +91,22 @@ var (
 	DefaultName string
 	// DefaultState holds the default value on creation for the "state" field.
 	DefaultState string
-	// DefaultOwnerID holds the default value on creation for the "owner_id" field.
-	DefaultOwnerID func() uuid.UUID
-	// DefaultResponsibleUserID holds the default value on creation for the "responsible_user_id" field.
-	DefaultResponsibleUserID func() uuid.UUID
-	// DefaultFailedTestCasesCount holds the default value on creation for the "failed_test_cases_count" field.
-	DefaultFailedTestCasesCount uint32
-	// DefaultPassedTestCasesCount holds the default value on creation for the "passed_test_cases_count" field.
-	DefaultPassedTestCasesCount uint32
-	// DefaultSkippedTestCasesCount holds the default value on creation for the "skipped_test_cases_count" field.
-	DefaultSkippedTestCasesCount uint32
+	// DefaultCreatedBy holds the default value on creation for the "created_by" field.
+	DefaultCreatedBy func() uuid.UUID
+	// DefaultExecutor holds the default value on creation for the "executor" field.
+	DefaultExecutor func() uuid.UUID
+	// DefaultFails holds the default value on creation for the "fails" field.
+	DefaultFails uint32
+	// DefaultPasses holds the default value on creation for the "passes" field.
+	DefaultPasses uint32
+	// DefaultSkips holds the default value on creation for the "skips" field.
+	DefaultSkips uint32
 	// DefaultRunDuration holds the default value on creation for the "run_duration" field.
 	DefaultRunDuration uint32
 	// DefaultDeadline holds the default value on creation for the "deadline" field.
 	DefaultDeadline uint32
-	// DefaultTestResult holds the default value on creation for the "test_result" field.
-	DefaultTestResult string
+	// DefaultResult holds the default value on creation for the "result" field.
+	DefaultResult string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )
