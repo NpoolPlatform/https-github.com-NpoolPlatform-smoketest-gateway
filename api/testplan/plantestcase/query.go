@@ -6,17 +6,17 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
-	planrelatedtestcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/plantestcase"
+	PlanTestCase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/plantestcase"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 //nolint
-func (s *Server) GetPlanRelatedTestCases(ctx context.Context, in *npool.GetPlanRelatedTestCasesRequest) (*npool.GetPlanRelatedTestCasesResponse, error) {
-	handler, err := planrelatedtestcase1.NewHandler(
+func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCasesRequest) (*npool.GetPlanTestCasesResponse, error) {
+	handler, err := PlanTestCase1.NewHandler(
 		ctx,
-		planrelatedtestcase1.WithConds(
+		PlanTestCase1.WithConds(
 			in.GetConds(),
 			in.GetOffset(),
 			in.GetLimit(),
@@ -24,45 +24,45 @@ func (s *Server) GetPlanRelatedTestCases(ctx context.Context, in *npool.GetPlanR
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
-			"GetPlanRelatedTestCases",
+			"GetPlanTestCases",
 			"In", in,
 			"Error", err,
 		)
-		return &npool.GetPlanRelatedTestCasesResponse{}, status.Error(codes.InvalidArgument, err.Error())
+		return &npool.GetPlanTestCasesResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	infos, total, err := handler.GetPlanRelatedTestCases(ctx)
+	infos, total, err := handler.GetPlanTestCases(ctx)
 	if err != nil {
-		return &npool.GetPlanRelatedTestCasesResponse{}, status.Error(codes.Internal, err.Error())
+		return &npool.GetPlanTestCasesResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &npool.GetPlanRelatedTestCasesResponse{
+	return &npool.GetPlanTestCasesResponse{
 		Infos: infos,
 		Total: total,
 	}, nil
 }
 
 //nolint
-func (s *Server) GetPlanRelatedTestCase(ctx context.Context, in *npool.GetPlanRelatedTestCaseRequest) (*npool.GetPlanRelatedTestCaseResponse, error) {
-	handler, err := planrelatedtestcase1.NewHandler(
+func (s *Server) GetPlanTestCase(ctx context.Context, in *npool.GetPlanTestCaseRequest) (*npool.GetPlanTestCaseResponse, error) {
+	handler, err := PlanTestCase1.NewHandler(
 		ctx,
-		planrelatedtestcase1.WithID(&in.ID),
+		PlanTestCase1.WithID(&in.ID),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
-			"GetPlanRelatedTestCase",
+			"GetPlanTestCase",
 			"In", in,
 			"Error", err,
 		)
-		return &npool.GetPlanRelatedTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
+		return &npool.GetPlanTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	info, err := handler.GetPlanRelatedTestCase(ctx)
+	info, err := handler.GetPlanTestCase(ctx)
 	if err != nil {
-		return &npool.GetPlanRelatedTestCaseResponse{}, status.Error(codes.Internal, err.Error())
+		return &npool.GetPlanTestCaseResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &npool.GetPlanRelatedTestCaseResponse{
+	return &npool.GetPlanTestCaseResponse{
 		Info: info,
 	}, nil
 }

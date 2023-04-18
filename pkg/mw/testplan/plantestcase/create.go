@@ -3,11 +3,10 @@ package plantestcase
 import (
 	"context"
 
-	"github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	plantestcase "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 )
 
 type createHandler struct {
@@ -18,14 +17,14 @@ func (h *createHandler) validate() error {
 	return nil
 }
 
-func (h *createHandler) createPlanRelatedTestCase(ctx context.Context, tx *ent.Tx) error {
-	info, err := planrelatedtestcasecrud.CreateSet(
-		tx.PlanRelatedTestCase.Create(),
-		&plantestcasecrud.PlanRelatedTestCaseReq{
+func (h *createHandler) createPlanTestCas(ctx context.Context, tx *ent.Tx) error {
+	info, err := plantestcase.CreateSet(
+		tx.PlanTestCase.Create(),
+		&plantestcase.PlanTestCasReq{
 			TestPlanID:     h.TestCaseID,
 			TestCaseID:     h.TestCaseID,
 			TestCaseOutput: h.TestCaseOutput,
-			TestCaseResult: (*plantestcasecrud.TestCaseResult)(h.TestCaseResult),
+			TestCaseResult: (*plantestcase.TestCaseResult)(h.TestCaseResult),
 			TestUserID:     h.TestUserID,
 			RunDuration:    h.RunDuration,
 			Description:    h.Description,
@@ -40,7 +39,7 @@ func (h *createHandler) createPlanRelatedTestCase(ctx context.Context, tx *ent.T
 	return nil
 }
 
-func (h *Handler) CreatePlanRelatedTestCase(ctx context.Context) (info *npool.PlanRelatedTestCase, err error) {
+func (h *Handler) CreatePlanTestCas(ctx context.Context) (info *npool.PlanTestCas, err error) {
 	handler := &createHandler{
 		Handler: h,
 	}
@@ -50,7 +49,7 @@ func (h *Handler) CreatePlanRelatedTestCase(ctx context.Context) (info *npool.Pl
 	}
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		if err := handler.createPlanRelatedTestCase(_ctx, tx); err != nil {
+		if err := handler.createPlanTestCas(_ctx, tx); err != nil {
 			return err
 		}
 		return nil
@@ -59,5 +58,5 @@ func (h *Handler) CreatePlanRelatedTestCase(ctx context.Context) (info *npool.Pl
 		return nil, err
 	}
 
-	return h.GetPlanRelatedTestCase(ctx)
+	return h.GetPlanTestCas(ctx)
 }
