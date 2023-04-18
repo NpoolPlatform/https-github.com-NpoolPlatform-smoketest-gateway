@@ -1,12 +1,12 @@
-package testcase
+package plantestcase
 
 import (
 	"context"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/testcase"
-	planrelatedtestcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/testcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	planrelatedtestcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/plantestcase"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
