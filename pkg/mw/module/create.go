@@ -8,7 +8,7 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/module/crud"
+	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 )
 
 type createHandler struct {

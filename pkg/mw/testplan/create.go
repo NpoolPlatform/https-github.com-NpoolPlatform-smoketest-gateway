@@ -8,7 +8,7 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/testplan/crud"
+	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 )
 
 type createHandler struct {

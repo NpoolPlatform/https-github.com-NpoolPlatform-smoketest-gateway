@@ -5,9 +5,9 @@ import (
 
 	testmgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/testcase/crud"
 	"github.com/google/uuid"
 )
 

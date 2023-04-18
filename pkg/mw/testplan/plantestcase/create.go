@@ -1,13 +1,13 @@
-package planrelatedtestcase
+package plantestcase
 
 import (
 	"context"
 
-	"github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/testcase"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/testcase"
+	"github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	planrelatedtestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/testplan/testcase/crud"
+	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 )
 
 type createHandler struct {
@@ -21,11 +21,11 @@ func (h *createHandler) validate() error {
 func (h *createHandler) createPlanRelatedTestCase(ctx context.Context, tx *ent.Tx) error {
 	info, err := planrelatedtestcasecrud.CreateSet(
 		tx.PlanRelatedTestCase.Create(),
-		&planrelatedtestcase.PlanRelatedTestCaseReq{
+		&plantestcasecrud.PlanRelatedTestCaseReq{
 			TestPlanID:     h.TestCaseID,
 			TestCaseID:     h.TestCaseID,
 			TestCaseOutput: h.TestCaseOutput,
-			TestCaseResult: (*planrelatedtestcase.TestCaseResult)(h.TestCaseResult),
+			TestCaseResult: (*plantestcasecrud.TestCaseResult)(h.TestCaseResult),
 			TestUserID:     h.TestUserID,
 			RunDuration:    h.RunDuration,
 			Description:    h.Description,

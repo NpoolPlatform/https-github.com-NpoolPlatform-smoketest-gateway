@@ -1,10 +1,10 @@
-package planrelatedtestcase
+package plantestcase
 
 import (
 	"context"
 	"fmt"
 
-	planrelatedtestcasemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/testcase"
+	planrelatedtestcasemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	"github.com/google/uuid"
 )
