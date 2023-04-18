@@ -8,11 +8,10 @@ require (
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230327065405-91484c9b17ea
 	github.com/NpoolPlatform/ledger-manager v0.0.0-20230304034151-2eac728c8780
 	github.com/NpoolPlatform/libent-cruder v0.0.0-20220621110548-8f3f8049ecc5
-	github.com/NpoolPlatform/message v0.0.0-20230417090842-7043844e5442
+	github.com/NpoolPlatform/message v0.0.0-20230418085901-344a41162d60
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
-	github.com/shopspring/decimal v1.3.1
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.1
 	github.com/urfave/cli/v2 v2.4.0
@@ -76,6 +75,7 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
