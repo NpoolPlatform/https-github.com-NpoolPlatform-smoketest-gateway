@@ -21,9 +21,6 @@ func CreateSet(c *ent.ModuleCreate, in *npool.ModuleReq) *ent.ModuleCreate {
 	if in.Description != nil {
 		c.SetDescription(in.GetDescription())
 	}
-	if in.CreatedAt != nil {
-		c.SetCreatedAt(in.GetCreatedAt())
-	}
 	return c
 }
 
