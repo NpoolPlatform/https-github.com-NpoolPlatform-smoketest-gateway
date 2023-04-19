@@ -11,7 +11,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-//nolint
 func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTestCaseRequest) (*npool.CreatePlanTestCaseResponse, error) {
 	req := in.GetInfo()
 	handler, err := plantestcase1.NewHandler(

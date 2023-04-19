@@ -38,7 +38,6 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 	}, nil
 }
 
-//nolint
 func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) (*npool.GetTestCaseResponse, error) {
 	handler, err := testcase1.NewHandler(
 		ctx,

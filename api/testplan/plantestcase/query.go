@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-//nolint
 func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCasesRequest) (*npool.GetPlanTestCasesResponse, error) {
 	handler, err := plantestcase1.NewHandler(
 		ctx,
@@ -40,7 +39,6 @@ func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCase
 	}, nil
 }
 
-//nolint
 func (s *Server) GetPlanTestCase(ctx context.Context, in *npool.GetPlanTestCaseRequest) (*npool.GetPlanTestCaseResponse, error) {
 	handler, err := plantestcase1.NewHandler(
 		ctx,

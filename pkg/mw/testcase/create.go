@@ -81,6 +81,9 @@ func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err
 	handler := &createHandler{
 		Handler: h,
 	}
+	if err := handler.validate(); err != nil {
+		return nil, err
+	}
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
 		if err := handler.createModule(_ctx, tx); err != nil {

@@ -11,10 +11,9 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-//nolint
 func (s *Server) DeleteTestCase(ctx context.Context, in *npool.DeleteTestCaseRequest) (*npool.DeleteTestCaseResponse, error) {
 	req := in.GetInfo()
-	handler, err := testcase1.NewHandler(ctx, testcase1.WithID(req.ID),)
+	handler, err := testcase1.NewHandler(ctx, testcase1.WithID(req.ID))
 	if err != nil {
 		logger.Sugar().Errorw(
 			"DeleteTestCase",

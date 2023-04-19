@@ -15,7 +15,7 @@ type Req struct {
 	Name         *string
 	Description  *string
 	ModuleID     *uuid.UUID
-	ApiID        *uuid.UUID
+	ApiID        *uuid.UUID //nolint
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
