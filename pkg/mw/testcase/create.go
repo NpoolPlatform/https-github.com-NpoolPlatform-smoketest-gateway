@@ -2,12 +2,9 @@ package testcase
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	commonpb "github.com/NpoolPlatform/message/npool"
-	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
-	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
@@ -19,59 +16,60 @@ type createHandler struct {
 	*Handler
 }
 
-func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
-	exist, err := modulecrud.Exist(ctx, *h.ModuleName)
-	if err != nil {
-		return err
+func (h *createHandler) validate() error {
+	if h.Name == nil {
+		return fmt.Errorf("invalid name")
 	}
+	const leastNameLen = 2
+	if len(*h.Name) < leastNameLen {
+		return fmt.Errorf("name %v too short", *h.Name)
+	}
+	return nil
+}
 
-	if exist {
-		info, err := modulecrud.RowOnly(ctx, &modulemgrpb.Conds{
-			Name: &commonpb.StringVal{
-				Op:    cruder.EQ,
-				Value: *h.ModuleName,
-			},
-		})
+func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
+	conds := &modulecrud.Conds{}
+	conds.Name = &cruder.Cond{Op: conds.Name.Op, Val: h.ModuleName}
+
+	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		info, err := modulecrud.SetQueryConds(cli.Module.Query(), conds)
 		if err != nil {
 			return err
 		}
-		moduleID := info.ID.String()
-		h.ModuleID = &moduleID
-		return nil
-	}
 
-	info, err := modulecrud.CreateSet(
-		tx.Module.Create(),
-		&modulemgrpb.ModuleReq{
-			Name: h.ModuleName,
-		},
-	).Save(ctx)
+		_, err = info.Exist(_ctx)
+		return err
+	})
 	if err != nil {
-		logger.Sugar().Errorw("createModule", "error", err)
 		return err
 	}
 
-	moduleID := info.ID.String()
-	h.ModuleID = &moduleID
+	_module, err := modulecrud.CreateSet(&ent.ModuleCreate{}, &modulecrud.Req{
+		Name: h.ModuleName,
+	}).Save(ctx)
+	if err != nil {
+		return err
+	}
+
+	h.ModuleID = &_module.ID
 	return nil
 }
 
 func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 	info, err := testcasecrud.CreateSet(
 		tx.TestCase.Create(),
-		&testcasemgrpb.TestCaseReq{
-			Name:               h.Name,
-			Arguments:          h.Arguments,
-			ArgTypeDescription: h.ArgTypeDescription,
-			ModuleID:           h.ModuleID,
-			ApiID:              h.ApiID,
-			Description:        h.Description,
-			ExpectationResult:  h.ExpectationResult,
-			TestCaseType:       h.TestCaseType,
+		&testcasecrud.Req{
+			Name:         h.Name,
+			Description:  h.Description,
+			Input:        h.Input,
+			InputDesc:    h.InputDesc,
+			ApiID:        h.ApiID,
+			ModuleID:     h.ModuleID,
+			Expectation:  h.Expectation,
+			TestCaseType: h.TestCaseType,
 		},
 	).Save(ctx)
 	if err != nil {
-		logger.Sugar().Errorw("createTestCase", "error", err)
 		return err
 	}
 
@@ -84,6 +82,7 @@ func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err
 	handler := &createHandler{
 		Handler: h,
 	}
+
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
 		if err := handler.createModule(_ctx, tx); err != nil {
 			return err

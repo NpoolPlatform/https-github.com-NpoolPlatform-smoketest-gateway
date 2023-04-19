@@ -83,15 +83,13 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 }
 
 type Conds struct {
-	ID           *cruder.Cond
-	ModuleID     *cruder.Cond
-	ApiID        *cruder.Cond
-	TestCaseType *cruder.Cond
-	Deprecated   *cruder.Cond
-	IDs          *cruder.Cond
+	ID         *cruder.Cond
+	ModuleID   *cruder.Cond
+	Deprecated *cruder.Cond
+	IDs        *cruder.Cond
 }
 
-func SetQueryConds(q *ent.TestCaseQuery, conds Conds) (*ent.TestCaseQuery, error) {
+func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) {
 	if conds.ID != nil {
 		id, ok := conds.ID.Val.(uuid.UUID)
 		if !ok {
