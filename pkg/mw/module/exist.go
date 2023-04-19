@@ -45,7 +45,7 @@ func (h *Handler) ExistModuleConds(ctx context.Context) (exist bool, err error) 
 				conds.IDs = &cruder.Cond{Op: h.Conds.ID.Op, Val: h.Conds.IDs.Value}
 			}
 
-			q := &ent.ModuleQuery{}
+			q := cli.Module.Query()
 			info, err := modulecrud.SetQueryConds(q, conds)
 			if err != nil {
 				return err
