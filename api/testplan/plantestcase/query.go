@@ -6,7 +6,7 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
-	PlanTestCase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/plantestcase"
+	plantestcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan/plantestcase"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -14,13 +14,11 @@ import (
 
 //nolint
 func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCasesRequest) (*npool.GetPlanTestCasesResponse, error) {
-	handler, err := PlanTestCase1.NewHandler(
+	handler, err := plantestcase1.NewHandler(
 		ctx,
-		PlanTestCase1.WithConds(
-			in.GetConds(),
-			in.GetOffset(),
-			in.GetLimit(),
-		),
+		plantestcase1.WithConds(in.GetConds()),
+		plantestcase1.WithOffset(in.GetOffset()),
+		plantestcase1.WithLimit(in.GetLimit()),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
@@ -44,9 +42,9 @@ func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCase
 
 //nolint
 func (s *Server) GetPlanTestCase(ctx context.Context, in *npool.GetPlanTestCaseRequest) (*npool.GetPlanTestCaseResponse, error) {
-	handler, err := PlanTestCase1.NewHandler(
+	handler, err := plantestcase1.NewHandler(
 		ctx,
-		PlanTestCase1.WithID(&in.ID),
+		plantestcase1.WithID(&in.ID),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

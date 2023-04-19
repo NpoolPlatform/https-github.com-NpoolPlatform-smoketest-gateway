@@ -5,11 +5,11 @@ import (
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
+	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	plantestcase "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
-	"github.com/google/uuid"
 )
 
 type queryHandler struct {
@@ -25,7 +25,7 @@ func (h *queryHandler) selectPlanTestCase(stm *ent.PlanTestCaseQuery) {
 		plantestcase.FieldTestPlanID,
 		plantestcase.FieldTestCaseID,
 		plantestcase.FieldTestCaseOutput,
-		// plantestcase.FieldTestCaseResult,
+		plantestcase.FieldResult,
 		plantestcase.FieldTestUserID,
 		plantestcase.FieldRunDuration,
 		plantestcase.FieldDescription,
@@ -46,7 +46,7 @@ func (h *queryHandler) queryPlanTestCase(cli *ent.Client) error {
 		cli.PlanTestCase.
 			Query().
 			Where(
-				plantestcase.ID(uuid.MustParse(*h.ID)),
+				plantestcase.ID(*h.ID),
 				plantestcase.DeletedAt(0),
 			),
 	)
@@ -54,25 +54,9 @@ func (h *queryHandler) queryPlanTestCase(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryPlanTestCaseByConds(ctx context.Context, cli *ent.Client) (err error) {
-	if h.Conds == nil {
-		return fmt.Errorf("invalid conds")
-	}
-
-	stm := cli.PlanTestCase.Query()
-	if h.Conds.ID != nil {
-		stm = stm.Where(
-			plantestcase.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
-		)
-	}
-	if h.Conds.TestPlanID != nil {
-		stm = stm.Where(
-			plantestcase.TestPlanID(uuid.MustParse(h.Conds.GetTestPlanID().GetValue())),
-		)
-	}
-	if h.Conds.TestUserID != nil {
-		stm = stm.Where(
-			plantestcase.TestUserID(uuid.MustParse(h.Conds.GetTestPlanID().GetValue())),
-		)
+	stm, err := plantestcasecrud.SetQueryConds(cli.PlanTestCase.Query(), h.Conds)
+	if err != nil {
+		return err
 	}
 
 	total, err := stm.Count(ctx)
@@ -100,6 +84,10 @@ func (h *Handler) GetPlanTestCases(ctx context.Context) ([]*npool.PlanTestCase, 
 			return err
 		}
 		handler.queryJoin()
+		handler.
+			stm.
+			Offset(int(h.Offset)).
+			Limit(int(h.Limit))
 		if err := handler.scan(_ctx); err != nil {
 			return err
 		}
