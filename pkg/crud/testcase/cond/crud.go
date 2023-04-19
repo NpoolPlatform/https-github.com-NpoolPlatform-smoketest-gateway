@@ -111,6 +111,8 @@ func SetQueryConds(q *ent.CondQuery, conds *Conds) (*ent.CondQuery, error) {
 		switch conds.CondType.Op {
 		case cruder.EQ:
 			q.Where(cond.CondType(condType))
+		default:
+			return nil, fmt.Errorf("invalid cond type")
 		}
 	}
 	return q, nil
