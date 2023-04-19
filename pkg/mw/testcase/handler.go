@@ -5,26 +5,28 @@ import (
 	"fmt"
 
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID                 *string
-	Name               *string
-	Description        *string
-	ModuleID           *string
-	ModuleName         *string
-	ApiID              *string //nolint
-	Arguments          *string
-	ArgTypeDescription *string
-	ExpectationResult  *string
-	TestCaseType       *testcasemgrpb.TestCaseType
-	Deprecated         *bool
-	Conds              *testcasemgrpb.Conds
-	Offset             *int32
-	Limit              *int32
+	ID           *string
+	Name         *string
+	Description  *string
+	ModuleID     *uuid.UUID
+	ModuleName   *string
+	ApiID        *uuid.UUID //nolint
+	Input        *string
+	InputDesc    *string
+	Expectation  *string
+	TestCaseType *testcasemgrpb.TestCaseType
+	Deprecated   *bool
+	Conds        *testcasecrud.Conds
+	Offset       int32
+	Limit        int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -37,79 +39,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-//nolint
-func WithApiID(apiID *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*apiID); err != nil {
-			return err
-		}
-
-		_, err := apimwcli.ExistAPI(ctx, *apiID)
-		if err != nil {
-			return err
-		}
-
-		h.ApiID = apiID
-		return nil
-	}
-}
-
 func WithID(testCaseID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _, err := uuid.Parse(*testCaseID); err != nil {
 			return err
 		}
 		h.ID = testCaseID
-		return nil
-	}
-}
-
-func WithModuleID(moduleID *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*moduleID); err != nil {
-			return err
-		}
-		h.ModuleID = moduleID
-		return nil
-	}
-}
-
-func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if moduleName == nil {
-			return nil
-		}
-		h.ModuleName = moduleName
-		return nil
-	}
-}
-
-func WithExpectationResult(expectationResult *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if expectationResult == nil {
-			return nil
-		}
-		h.ExpectationResult = expectationResult
-		return nil
-	}
-}
-
-func WithArguments(arguments *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if arguments == nil {
-			return nil
-		}
-		h.Arguments = arguments
-		return nil
-	}
-}
-
-func WithArgTypeDescription(description *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if description == nil {
-			return nil
-		}
-		h.ArgTypeDescription = description
 		return nil
 	}
 }
@@ -134,31 +69,32 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *testcasemgrpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithExpectation(expectation *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if conds == nil {
-			return fmt.Errorf("invalid conds")
+		if expectation == nil {
+			return nil
 		}
+		h.Expectation = expectation
+		return nil
+	}
+}
 
-		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
-				return err
-			}
+func WithInput(input *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if input == nil {
+			return nil
 		}
+		h.Input = input
+		return nil
+	}
+}
 
-		if conds.ModuleID != nil {
-			if _, err := uuid.Parse(conds.GetModuleID().GetValue()); err != nil {
-				return err
-			}
+func WithInputDesc(inputDesc *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if inputDesc == nil {
+			return nil
 		}
-
-		h.Conds = conds
-		h.Offset = &offset
-		if limit == 0 {
-			limit = constant.DefaultRowLimit
-		}
-		h.Limit = &limit
-
+		h.InputDesc = inputDesc
 		return nil
 	}
 }
@@ -179,6 +115,93 @@ func WithTestCaseType(testCaseType *testcasemgrpb.TestCaseType) func(context.Con
 			return nil
 		}
 		h.TestCaseType = testCaseType
+		return nil
+	}
+}
+
+//nolint
+func WithApiID(apiID *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		_apiID, err := uuid.Parse(*apiID)
+		if err != nil {
+			return err
+		}
+
+		_, err = apimwcli.ExistAPI(ctx, *apiID)
+		if err != nil {
+			return err
+		}
+
+		h.ApiID = &_apiID
+		return nil
+	}
+}
+
+func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if moduleName == nil {
+			return fmt.Errorf("invalid module name")
+		}
+		h.ModuleName = moduleName
+		return nil
+	}
+}
+
+func WithConds(conds *testcasemgrpb.Conds) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &testcasecrud.Conds{}
+		if conds == nil {
+			return nil
+		}
+
+		if conds.ID != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+		}
+
+		if conds.ModuleID != nil {
+			id, err := uuid.Parse(conds.GetModuleID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ModuleID = &cruder.Cond{Op: h.Conds.ModuleID.Op, Val: id}
+		}
+
+		if conds.Deprecated != nil {
+			h.Conds.Deprecated = &cruder.Cond{Op: h.Conds.Deprecated.Op, Val: conds.Deprecated}
+		}
+
+		if len(conds.GetIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: ids}
+		}
+		return nil
+	}
+}
+
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if limit == 0 {
+			limit = constant.DefaultRowLimit
+		}
+		h.Limit = limit
 		return nil
 	}
 }
