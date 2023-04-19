@@ -29,7 +29,6 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	}
 	return handler, nil
 }
-
 func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		_id, err := uuid.Parse(*id)
@@ -46,9 +45,9 @@ func WithName(name *string) func(context.Context, *Handler) error {
 		if name == nil {
 			return nil
 		}
-		const leastNameLen = 4
+		const leastNameLen = 2
 		if len(*name) < leastNameLen {
-			return fmt.Errorf("name %v too short")
+			return fmt.Errorf("name %v too short", *name)
 		}
 		h.Name = name
 		return nil
