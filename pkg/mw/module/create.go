@@ -19,7 +19,7 @@ func (h *createHandler) validate() error {
 	if h.Name == nil {
 		return fmt.Errorf("invalid name")
 	}
-	const leastNameLen = 4
+	const leastNameLen = 2
 	if len(*h.Name) < leastNameLen {
 		return fmt.Errorf("name %v too short", *h.Name)
 	}
