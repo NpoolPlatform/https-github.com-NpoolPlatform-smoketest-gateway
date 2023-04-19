@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"entgo.io/ent/dialect/sql"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
+	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
-	"github.com/google/uuid"
 )
 
 type queryHandler struct {
@@ -29,10 +29,6 @@ func (h *queryHandler) selectModule(stm *ent.ModuleQuery) {
 	)
 }
 
-func (h *queryHandler) queryJoin() {
-	h.stm.Modify(func(s *sql.Selector) {})
-}
-
 func (h *queryHandler) queryModule(cli *ent.Client) error {
 	if h.ID == nil {
 		return fmt.Errorf("invalid module id")
@@ -41,28 +37,30 @@ func (h *queryHandler) queryModule(cli *ent.Client) error {
 		cli.Module.
 			Query().
 			Where(
-				entmodule.ID(uuid.MustParse(*h.ID)),
+				entmodule.ID(*h.ID),
 				entmodule.DeletedAt(0),
 			),
 	)
 	return nil
 }
 
-func (h *queryHandler) queryModuleByConds(ctx context.Context, cli *ent.Client) (err error) {
-	if h.Conds == nil {
-		return fmt.Errorf("invalid conds")
-	}
-
+func (h *queryHandler) queryModules(ctx context.Context, cli *ent.Client) (err error) {
 	stm := cli.Module.Query()
-	if h.Conds.ID != nil {
-		stm = stm.Where(
-			entmodule.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
-		)
-	}
-	if h.Conds.Name != nil {
-		stm = stm.Where(
-			entmodule.Name(h.Conds.GetName().GetValue()),
-		)
+	if h.Conds != nil {
+		conds := &modulecrud.Conds{}
+		if h.Conds.ID != nil {
+			conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: h.Conds.ID.Value}
+		}
+		if h.Conds.Name != nil {
+			conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: h.Conds.Name.Value}
+		}
+		if h.Conds.IDs != nil {
+			conds.IDs = &cruder.Cond{Op: h.Conds.ID.Op, Val: h.Conds.IDs.Value}
+		}
+		stm, err = modulecrud.SetQueryConds(stm, conds)
+		if err != nil {
+			return err
+		}
 	}
 
 	total, err := stm.Count(ctx)
@@ -84,11 +82,16 @@ func (h *Handler) GetModules(ctx context.Context) ([]*npool.Module, uint32, erro
 	handler := &queryHandler{
 		Handler: h,
 	}
+
 	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if err := handler.queryModuleByConds(ctx, cli); err != nil {
+		if err := handler.queryModules(_ctx, cli); err != nil {
 			return err
 		}
-		handler.queryJoin()
+
+		handler.
+			stm.
+			Offset(int(*h.Offset)).
+			Limit(int(*h.Limit))
 		if err := handler.scan(_ctx); err != nil {
 			return err
 		}

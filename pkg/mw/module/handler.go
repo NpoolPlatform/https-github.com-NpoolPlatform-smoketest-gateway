@@ -10,7 +10,7 @@ import (
 )
 
 type Handler struct {
-	ID          *string
+	ID          *uuid.UUID
 	Name        *string
 	Description *string
 	Conds       *modulemgrpb.Conds
@@ -30,10 +30,11 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 
 func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*id); err != nil {
+		_id, err := uuid.Parse(*id)
+		if err != nil {
 			return err
 		}
-		h.ID = id
+		h.ID = &_id
 		return nil
 	}
 }
@@ -42,6 +43,10 @@ func WithName(name *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if name == nil {
 			return nil
+		}
+		const leastNameLen = 4
+		if len(*name) < leastNameLen {
+			return fmt.Errorf("name %v too short")
 		}
 		h.Name = name
 		return nil
