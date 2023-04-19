@@ -13,7 +13,7 @@ import (
 )
 
 type Handler struct {
-	ID           *string
+	ID           *uuid.UUID
 	Name         *string
 	Description  *string
 	ModuleID     *uuid.UUID
@@ -39,12 +39,13 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(testCaseID *string) func(context.Context, *Handler) error {
+func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*testCaseID); err != nil {
+		_id, err := uuid.Parse(*id)
+		if err != nil {
 			return err
 		}
-		h.ID = testCaseID
+		h.ID = &_id
 		return nil
 	}
 }
