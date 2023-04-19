@@ -18,9 +18,9 @@ func (s *Server) UpdateTestCase(ctx context.Context, in *npool.UpdateTestCaseReq
 		testcase1.WithID(req.ID),
 		testcase1.WithName(req.Name),
 		testcase1.WithDescription(req.Description),
-		testcase1.WithArguments(req.Arguments),
-		testcase1.WithArgTypeDescription(req.ArgTypeDescription),
-		testcase1.WithExpectationResult(req.ExpectationResult),
+		testcase1.WithInput(req.Input),
+		testcase1.WithInputDesc(req.InputDesc),
+		testcase1.WithExpectation(req.Expectation),
 		testcase1.WithDeprecated(req.Deprecated),
 		testcase1.WithTestCaseType(req.TestCaseType),
 	)
@@ -32,6 +32,7 @@ func (s *Server) UpdateTestCase(ctx context.Context, in *npool.UpdateTestCaseReq
 		)
 		return &npool.UpdateTestCaseResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
+
 	info, err := handler.UpdateTestCase(ctx)
 	if err != nil {
 		logger.Sugar().Errorw(
