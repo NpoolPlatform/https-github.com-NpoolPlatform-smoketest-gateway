@@ -11,7 +11,6 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	enttestcase "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
-	"github.com/google/uuid"
 )
 
 type queryHandler struct {
@@ -64,7 +63,7 @@ func (h *queryHandler) queryTestCase(cli *ent.Client) error {
 		cli.TestCase.
 			Query().
 			Where(
-				enttestcase.ID(uuid.MustParse(*h.ID)),
+				enttestcase.ID(*h.ID),
 				enttestcase.DeletedAt(0),
 			),
 	)

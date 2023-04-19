@@ -73,8 +73,7 @@ func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
 		return err
 	}
 
-	testCaseID := info.ID.String()
-	h.ID = &testCaseID
+	h.ID = &info.ID
 	return nil
 }
 
