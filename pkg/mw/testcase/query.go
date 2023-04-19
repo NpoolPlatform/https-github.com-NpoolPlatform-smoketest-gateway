@@ -6,6 +6,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
@@ -27,9 +28,9 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldDescription,
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
-		enttestcase.FieldArguments,
-		enttestcase.FieldArgTypeDescription,
-		enttestcase.FieldExpectationResult,
+		enttestcase.FieldInput,
+		enttestcase.FieldInputDesc,
+		enttestcase.FieldExpectation,
 		enttestcase.FieldDeprecated,
 		enttestcase.FieldCreatedAt,
 		enttestcase.FieldUpdatedAt,
@@ -71,26 +72,9 @@ func (h *queryHandler) queryTestCase(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client) (err error) {
-	if h.Conds == nil {
-		return fmt.Errorf("invalid conds")
-	}
-
-	stm := cli.TestCase.Query()
-	if h.Conds.ID != nil {
-		stm = stm.Where(
-			enttestcase.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
-		)
-	}
-	if h.Conds.ModuleID != nil {
-		stm = stm.Where(
-			enttestcase.ModuleID(uuid.MustParse(h.Conds.GetModuleID().GetValue())),
-		)
-	}
-
-	if h.Conds.Deprecated != nil {
-		stm = stm.Where(
-			enttestcase.Deprecated(h.Conds.GetDeprecated().GetValue()),
-		)
+	stm, err := testcasecrud.SetQueryConds(cli.TestCase.Query(), h.Conds)
+	if err != nil {
+		return err
 	}
 
 	total, err := stm.Count(ctx)
@@ -99,11 +83,6 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 	}
 
 	h.total = uint32(total)
-
-	_, err = stm.Offset(int(*h.Offset)).Limit(int(*h.Limit)).All(ctx)
-	if err != nil {
-		return nil
-	}
 
 	h.selectTestCase(stm)
 	return nil
