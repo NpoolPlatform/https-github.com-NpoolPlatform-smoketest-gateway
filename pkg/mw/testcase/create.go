@@ -27,7 +27,7 @@ func (h *createHandler) validate() error {
 	return nil
 }
 
-func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
+func (h *createHandler) createModule(ctx context.Context) error {
 	conds := &modulecrud.Conds{}
 	conds.Name = &cruder.Cond{Op: conds.Name.Op, Val: h.ModuleName}
 
@@ -55,25 +55,30 @@ func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
 	return nil
 }
 
-func (h *createHandler) createTestCase(ctx context.Context, tx *ent.Tx) error {
-	info, err := testcasecrud.CreateSet(
-		tx.TestCase.Create(),
-		&testcasecrud.Req{
-			Name:         h.Name,
-			Description:  h.Description,
-			Input:        h.Input,
-			InputDesc:    h.InputDesc,
-			ApiID:        h.ApiID,
-			ModuleID:     h.ModuleID,
-			Expectation:  h.Expectation,
-			TestCaseType: h.TestCaseType,
-		},
-	).Save(ctx)
+func (h *createHandler) createTestCase(ctx context.Context) error {
+	err := db.WithClient(ctx, func(ctx context.Context, cli *ent.Client) error {
+		info, err := testcasecrud.CreateSet(
+			cli.TestCase.Create(),
+			&testcasecrud.Req{
+				Name:         h.Name,
+				Description:  h.Description,
+				Input:        h.Input,
+				InputDesc:    h.InputDesc,
+				ApiID:        h.ApiID,
+				ModuleID:     h.ModuleID,
+				Expectation:  h.Expectation,
+				TestCaseType: h.TestCaseType,
+			},
+		).Save(ctx)
+		if err != nil {
+			return err
+		}
+		h.ID = &info.ID
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-
-	h.ID = &info.ID
 	return nil
 }
 
@@ -86,10 +91,10 @@ func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err
 	}
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		if err := handler.createModule(_ctx, tx); err != nil {
+		if err := handler.createModule(_ctx); err != nil {
 			return err
 		}
-		if err := handler.createTestCase(_ctx, tx); err != nil {
+		if err := handler.createTestCase(_ctx); err != nil {
 			return err
 		}
 		return nil
