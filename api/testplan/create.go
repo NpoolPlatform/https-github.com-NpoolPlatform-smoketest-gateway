@@ -17,8 +17,8 @@ func (s *Server) CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanReq
 	handler, err := testplan1.NewHandler(
 		ctx,
 		testplan1.WithName(req.Name),
-		testplan1.WithOwnerID(req.OwnerID),
-		testplan1.WithResponsibleUserID(req.ResponsibleUserID),
+		testplan1.WithCreatedBy(req.CreatedBy),
+		testplan1.WithExecutor(req.Executor),
 		testplan1.WithDeadline(req.Deadline),
 	)
 	if err != nil {

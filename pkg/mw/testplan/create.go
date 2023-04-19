@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 )
 
 type createHandler struct {
@@ -19,28 +18,10 @@ func (h *createHandler) validate() error {
 	if h.Name == nil {
 		return fmt.Errorf("invalid name")
 	}
-	if h.OwnerID == nil {
-		return fmt.Errorf("invalid owner id")
+	const leastNameLen = 4
+	if len(*h.Name) < leastNameLen {
+		return fmt.Errorf("name %v too short", *h.Name)
 	}
-	return nil
-}
-
-func (h *createHandler) createTestPlan(ctx context.Context, tx *ent.Tx) error {
-	info, err := testplancrud.CreateSet(
-		tx.TestPlan.Create(),
-		&testplan.TestPlanReq{
-			Name:              h.Name,
-			OwnerID:           h.OwnerID,
-			ResponsibleUserID: h.ResponsibleUserID,
-			Deadline:          h.Deadline,
-		},
-	).Save(ctx)
-	if err != nil {
-		return err
-	}
-
-	id := info.ID.String()
-	h.ID = &id
 	return nil
 }
 
@@ -53,12 +34,23 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 		return nil, err
 	}
 
-	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		if err := handler.createTestPlan(_ctx, tx); err != nil {
+	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		info, err := testplancrud.CreateSet(
+			cli.TestPlan.Create(),
+			&testplancrud.Req{
+				Name:      h.Name,
+				CreatedBy: h.CreatedBy,
+				Executor:  h.Executor,
+				Deadline:  h.Deadline,
+			},
+		).Save(_ctx)
+		if err != nil {
 			return err
 		}
+		h.ID = &info.ID
 		return nil
 	})
+
 	if err != nil {
 		return nil, err
 	}
