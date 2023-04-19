@@ -30,7 +30,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanRequest) (*npool.TestPlan, error) {
+func CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanRequest) (*mgrpb.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateTestPlan(ctx, &npool.CreateTestPlanRequest{Info: in.GetInfo()})
 		if err != nil {
@@ -41,10 +41,10 @@ func CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanRequest) (*npoo
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.TestPlan), nil
+	return info.(*mgrpb.TestPlan), nil
 }
 
-func GetTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
+func GetTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlan(ctx, &npool.GetTestPlanRequest{
 			ID: id,
@@ -57,10 +57,10 @@ func GetTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.TestPlan), nil
+	return info.(*mgrpb.TestPlan), nil
 }
 
-func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.TestPlan, uint32, error) {
+func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.TestPlan, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlans(ctx, &npool.GetTestPlansRequest{
@@ -78,5 +78,5 @@ func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*npool.TestPlan), total, nil
+	return infos.([]*mgrpb.TestPlan), total, nil
 }

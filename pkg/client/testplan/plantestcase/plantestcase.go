@@ -1,5 +1,5 @@
 //nolint:nolintlint,dupl
-package planrelatedtestcase
+package plantestcase
 
 import (
 	"context"
@@ -8,6 +8,7 @@ import (
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 
 	servicename "github.com/NpoolPlatform/smoketest-middleware/pkg/servicename"
@@ -28,9 +29,11 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreatePlanRelatedTestCase(ctx context.Context, in *npool.CreatePlanRelatedTestCaseRequest) (*npool.PlanRelatedTestCase, error) {
+func CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTestCaseRequest) (*mgrpb.PlanTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.CreatePlanRelatedTestCase(ctx, &npool.CreatePlanRelatedTestCaseRequest{Info: in.GetInfo()})
+		resp, err := cli.CreatePlanTestCase(ctx, &npool.CreatePlanTestCaseRequest{
+			Info: in.GetInfo(),
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -39,12 +42,12 @@ func CreatePlanRelatedTestCase(ctx context.Context, in *npool.CreatePlanRelatedT
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.PlanRelatedTestCase), nil
+	return info.(*mgrpb.PlanTestCase), nil
 }
 
-func GetPlanRelatedTestCase(ctx context.Context, id string) (*npool.PlanRelatedTestCase, error) {
+func GetPlanTestCase(ctx context.Context, id string) (*mgrpb.PlanTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.GetPlanRelatedTestCase(ctx, &npool.GetPlanRelatedTestCaseRequest{
+		resp, err := cli.GetPlanTestCase(ctx, &npool.GetPlanTestCaseRequest{
 			ID: id,
 		})
 		if err != nil {
@@ -55,13 +58,13 @@ func GetPlanRelatedTestCase(ctx context.Context, id string) (*npool.PlanRelatedT
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.PlanRelatedTestCase), nil
+	return info.(*mgrpb.PlanTestCase), nil
 }
 
-func GetPlanRelatedTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.PlanRelatedTestCase, uint32, error) {
+func GetPlanTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.PlanTestCase, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.GetPlanRelatedTestCases(ctx, &npool.GetPlanRelatedTestCasesRequest{
+		resp, err := cli.GetPlanTestCases(ctx, &npool.GetPlanTestCasesRequest{
 			Conds:  conds,
 			Offset: offset,
 			Limit:  limit,
@@ -76,5 +79,5 @@ func GetPlanRelatedTestCases(ctx context.Context, conds *npool.Conds, offset, li
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*npool.PlanRelatedTestCase), total, nil
+	return infos.([]*mgrpb.PlanTestCase), total, nil
 }
