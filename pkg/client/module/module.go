@@ -30,11 +30,14 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.Module, error) {
+func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*mgrpb.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		req := in.GetInfo()
 		resp, err := cli.CreateModule(ctx, &npool.CreateModuleRequest{
-			Name:        in.Name,
-			Description: in.Description,
+			Info: &mgrpb.ModuleReq{
+				Name:        req.Name,
+				Description: req.Description,
+			},
 		})
 		if err != nil {
 			return nil, err
@@ -44,10 +47,10 @@ func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.Mo
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.Module), nil
+	return info.(*mgrpb.Module), nil
 }
 
-func GetModule(ctx context.Context, id string) (*npool.Module, error) {
+func GetModule(ctx context.Context, id string) (*mgrpb.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModule(ctx, &npool.GetModuleRequest{
 			ID: id,
@@ -60,16 +63,16 @@ func GetModule(ctx context.Context, id string) (*npool.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*npool.Module), nil
+	return info.(*mgrpb.Module), nil
 }
 
-func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.Module, uint32, error) {
+func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.Module, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModules(ctx, &npool.GetModulesRequest{
 			Conds:  conds,
-			Offset: &offset,
-			Limit:  &limit,
+			Offset: offset,
+			Limit:  limit,
 		})
 		if err != nil {
 			return nil, err
@@ -81,5 +84,5 @@ func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*npool.Module), total, nil
+	return infos.([]*mgrpb.Module), total, nil
 }
