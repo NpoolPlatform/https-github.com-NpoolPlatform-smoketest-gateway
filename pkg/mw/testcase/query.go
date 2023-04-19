@@ -100,6 +100,10 @@ func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, 
 			return err
 		}
 		handler.queryJoin()
+		handler.
+			stm.
+			Offset(int(h.Offset)).
+			Limit(int(h.Limit))
 		if err := handler.scan(_ctx); err != nil {
 			return err
 		}
