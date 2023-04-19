@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/google/uuid"
 )
 
@@ -13,9 +15,9 @@ type Handler struct {
 	ID          *uuid.UUID
 	Name        *string
 	Description *string
-	Conds       *modulemgrpb.Conds
-	Offset      *int32
-	Limit       *int32
+	Conds       *modulecrud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -63,25 +65,50 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *modulemgrpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithConds(conds *modulemgrpb.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &modulecrud.Conds{}
 		if conds == nil {
-			return fmt.Errorf("invalid conds")
+			return nil
 		}
-
 		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
 				return err
 			}
+			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
 		}
+		if conds.Name != nil {
+			h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: conds.GetName().GetValue()}
+		}
+		if len(conds.GetIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: ids}
+		}
+		return nil
+	}
+}
 
-		h.Conds = conds
-		h.Offset = &offset
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
 		if limit == 0 {
 			limit = constant.DefaultRowLimit
 		}
-		h.Limit = &limit
-
+		h.Limit = limit
 		return nil
 	}
 }
