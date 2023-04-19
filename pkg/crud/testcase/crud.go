@@ -21,6 +21,7 @@ type Req struct {
 	Expectation  *string
 	TestCaseType *testcasemgrpb.TestCaseType
 	Deprecated   *bool
+	DeletedAt    *uint32
 }
 
 func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
