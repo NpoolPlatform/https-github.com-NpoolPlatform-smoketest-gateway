@@ -15,11 +15,9 @@ import (
 func (s *Server) GetModules(ctx context.Context, in *npool.GetModulesRequest) (*npool.GetModulesResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithConds(
-			in.GetConds(),
-			in.GetOffset(),
-			in.GetLimit(),
-		),
+		module1.WithConds(in.GetConds()),
+		module1.WithOffset(in.Offset),
+		module1.WithLimit(in.Limit),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

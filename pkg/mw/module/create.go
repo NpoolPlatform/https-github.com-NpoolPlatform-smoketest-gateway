@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -34,6 +35,7 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
+	h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: h.Name}
 	if _, err = h.ExistModuleConds(ctx); err != nil {
 		return nil, fmt.Errorf("name already exist")
 	}
