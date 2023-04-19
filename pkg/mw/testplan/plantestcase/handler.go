@@ -4,24 +4,26 @@ import (
 	"context"
 	"fmt"
 
-	planrelatedtestcasemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	plantestcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID             *string
-	TestPlanID     *string
-	TestCaseID     *string
-	TestUserID     *string
+	ID             *uuid.UUID
+	TestPlanID     *uuid.UUID
+	TestCaseID     *uuid.UUID
+	TestUserID     *uuid.UUID
 	TestCaseOutput *string
-	TestCaseResult *planrelatedtestcasemwpb.TestCaseResult
+	TestCaseResult *plantestcasemgrpb.TestCaseResult
 	Description    *string
-	Index          *uint32
+	Index          uint32
 	RunDuration    *uint32
-	Conds          *planrelatedtestcasemwpb.Conds
-	Offset         *int32
-	Limit          *int32
+	Conds          *plantestcasecrud.Conds
+	Offset         int32
+	Limit          int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -36,30 +38,35 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 
 func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*id); err != nil {
+		_id, err := uuid.Parse(*id)
+		if err != nil {
 			return err
 		}
-		h.ID = id
+		h.ID = &_id
 		return nil
 	}
 }
 
 func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*planID); err != nil {
+		_planID, err := uuid.Parse(*planID)
+		if err != nil {
 			return err
 		}
-		h.TestPlanID = planID
+
+		h.TestPlanID = &_planID
 		return nil
 	}
 }
 
 func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*testCaseID); err != nil {
+		_testCaseID, err := uuid.Parse(*testCaseID)
+		if err != nil {
 			return err
 		}
-		h.TestCaseID = testCaseID
+
+		h.TestCaseID = &_testCaseID
 		return nil
 	}
 }
@@ -69,10 +76,12 @@ func WithTestUserID(userID *string) func(context.Context, *Handler) error {
 		if userID == nil {
 			return nil
 		}
-		if _, err := uuid.Parse(*userID); err != nil {
+		_userID, err := uuid.Parse(*userID)
+		if err != nil {
 			return err
 		}
-		h.TestUserID = userID
+
+		h.TestUserID = &_userID
 		return nil
 	}
 }
@@ -87,10 +96,17 @@ func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseResult(result *planrelatedtestcasemwpb.TestCaseResult) func(context.Context, *Handler) error {
+func WithTestCaseResult(result *plantestcasemgrpb.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return fmt.Errorf("need testcase result")
+		}
+		switch *result {
+		case plantestcasemgrpb.TestCaseResult_Passed:
+		case plantestcasemgrpb.TestCaseResult_Failed:
+		case plantestcasemgrpb.TestCaseResult_Skipped:
+		default:
+			return fmt.Errorf("invalid testcase result")
 		}
 		h.TestCaseResult = result
 		return nil
@@ -107,9 +123,9 @@ func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
 	}
 }
 
-func WithIndex(index *uint32) func(context.Context, *Handler) error {
+func WithIndex(index uint32) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if index == nil {
+		if index == 0 {
 			return nil
 		}
 		h.Index = index
@@ -127,34 +143,53 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *planrelatedtestcasemwpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithConds(conds *plantestcasemgrpb.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &plantestcasecrud.Conds{}
 		if conds == nil {
-			return fmt.Errorf("invalid conds")
+			return nil
 		}
 
 		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
 				return err
 			}
+			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
 		}
+
 		if conds.TestPlanID != nil {
-			if _, err := uuid.Parse(conds.GetTestPlanID().GetValue()); err != nil {
+			id, err := uuid.Parse(conds.GetTestPlanID().GetValue())
+			if err != nil {
 				return err
 			}
+			h.Conds.TestPlanID = &cruder.Cond{Op: h.Conds.TestPlanID.Op, Val: id}
 		}
 
-		h.Conds = conds
-
-		if h.Offset == nil {
-			offset = constant.DefaultRowLimit
+		if conds.TestUserID != nil {
+			id, err := uuid.Parse(conds.GetTestUserID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.TestUserID = &cruder.Cond{Op: h.Conds.TestUserID.Op, Val: id}
 		}
-		h.Offset = &offset
+		return nil
+	}
+}
+
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
 		if limit == 0 {
 			limit = constant.DefaultRowLimit
 		}
-		h.Limit = &limit
-
+		h.Limit = limit
 		return nil
 	}
 }
