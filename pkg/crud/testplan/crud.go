@@ -84,7 +84,7 @@ type Conds struct {
 	State     *cruder.Cond
 }
 
-func SetQueryConds(q *ent.TestPlanQuery, conds Conds) (*ent.TestPlanQuery, error) {
+func SetQueryConds(q *ent.TestPlanQuery, conds *Conds) (*ent.TestPlanQuery, error) {
 	if conds.ID != nil {
 		id, ok := conds.ID.Val.(uuid.UUID)
 		if !ok {
