@@ -30,7 +30,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq) (*npool.TestCase, error) {
+func CreateTestCase(ctx context.Context, in *mgrpb.TestCaseReq) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateTestCase(ctx, &npool.CreateTestCaseRequest{
 			Info: in,
@@ -86,7 +86,9 @@ func GetTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
-			ID: id,
+			Info: &mgrpb.TestCaseReq{
+				ID: &id,
+			},
 		})
 		if err != nil {
 			return nil, err
