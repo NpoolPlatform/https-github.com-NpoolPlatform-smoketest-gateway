@@ -30,9 +30,9 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanRequest) (*mgrpb.TestPlan, error) {
+func CreateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.CreateTestPlan(ctx, &npool.CreateTestPlanRequest{Info: in.GetInfo()})
+		resp, err := cli.CreateTestPlan(ctx, &npool.CreateTestPlanRequest{Info: in})
 		if err != nil {
 			return nil, err
 		}
