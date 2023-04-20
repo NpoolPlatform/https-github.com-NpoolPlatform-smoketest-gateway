@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -27,6 +28,7 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldDescription,
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
+		enttestcase.FieldTestCaseType,
 		enttestcase.FieldInput,
 		enttestcase.FieldInputDesc,
 		enttestcase.FieldExpectation,
@@ -91,6 +93,12 @@ func (h *queryHandler) scan(ctx context.Context) error {
 	return h.stm.Scan(ctx, &h.infos)
 }
 
+func (h *queryHandler) formalize() {
+	for _, info := range h.infos {
+		info.TestCaseType = mgrpb.TestCaseType(mgrpb.TestCaseType_value[info.TestCaseTypeStr])
+	}
+}
+
 func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, error) {
 	handler := &queryHandler{
 		Handler: h,
@@ -113,6 +121,7 @@ func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, 
 		return nil, 0, err
 	}
 
+	handler.formalize()
 	return handler.infos, handler.total, nil
 }
 
@@ -134,5 +143,7 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 	if err != nil {
 		return
 	}
+
+	handler.formalize()
 	return handler.infos[0], nil
 }
