@@ -11,7 +11,6 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
-	mwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -38,16 +37,14 @@ var (
 
 func createModule(t *testing.T) {
 	var (
-		req = mwpb.CreateModuleRequest{
-			Info: &npool.ModuleReq{
-				ID:          &ret.ID,
-				Name:        &ret.Name,
-				Description: &ret.Description,
-			},
+		req = &npool.ModuleReq{
+			ID:          &ret.ID,
+			Name:        &ret.Name,
+			Description: &ret.Description,
 		}
 	)
 
-	info, err := CreateModule(context.Background(), &req)
+	info, err := CreateModule(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
