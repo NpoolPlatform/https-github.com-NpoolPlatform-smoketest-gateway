@@ -28,6 +28,26 @@ func init() {
 	}
 }
 
+//TODO:need delete api method
+// func setupApi(t *testing.T) {
+// 	var (
+// 		serviceName = "service name"
+// 		protocol    = api.Protocol_HTTP
+// 		method      = api.Method_POST
+// 		path        = "/get/app"
+// 		pathPrefix  = "/api/user"
+// 	)
+// 	_api, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
+// 		ServiceName: &serviceName,
+// 		Protocol:    &protocol,
+// 		Method:      &method,
+// 		Path:        &path,
+// 		PathPrefix:  &pathPrefix,
+// 	})
+// 	assert.Nil(t, err)
+// 	assert.NotNil(t, _api)
+// }
+
 var (
 	ret = mwpb.TestCase{
 		ID:              uuid.NewString(),
