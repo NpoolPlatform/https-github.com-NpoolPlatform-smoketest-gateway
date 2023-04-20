@@ -19,6 +19,7 @@ type Req struct {
 	TestUserID     *uuid.UUID
 	Result         *string
 	Index          *uint32
+	DeletedAt      *uint32
 }
 
 func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
