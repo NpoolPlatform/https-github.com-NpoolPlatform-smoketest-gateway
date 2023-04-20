@@ -40,6 +40,7 @@ func createModule(t *testing.T) {
 	var (
 		req = mwpb.CreateModuleRequest{
 			Info: &npool.ModuleReq{
+				ID:          &ret.ID,
 				Name:        &ret.Name,
 				Description: &ret.Description,
 			},
@@ -68,6 +69,17 @@ func getModules(t *testing.T) {
 	}
 }
 
+func deleteModule(t *testing.T) {
+	info, err := DeleteModule(context.Background(), ret.ID)
+	if assert.Nil(t, err) {
+		assert.Equal(t, info, &ret)
+	}
+
+	info, err = GetModule(context.Background(), ret.ID)
+	assert.Nil(t, err)
+	assert.Nil(t, info)
+}
+
 func TestMainOrder(t *testing.T) {
 	if runByGithubAction, err := strconv.ParseBool(os.Getenv("RUN_BY_GITHUB_ACTION")); err == nil && runByGithubAction {
 		return
@@ -82,4 +94,5 @@ func TestMainOrder(t *testing.T) {
 	t.Run("createModule", createModule)
 	t.Run("getModule", getModule)
 	t.Run("getModules", getModules)
+	t.Run("deleteModule", deleteModule)
 }
