@@ -57,8 +57,6 @@ func createModule(t *testing.T) {
 func getModule(t *testing.T) {
 	info, err := GetModule(context.Background(), ret.ID)
 	if assert.Nil(t, err) {
-		ret.CreatedAt = info.CreatedAt
-		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
 	}
 }
