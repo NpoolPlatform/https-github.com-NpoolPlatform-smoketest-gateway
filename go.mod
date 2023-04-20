@@ -3,6 +3,7 @@ module github.com/NpoolPlatform/smoketest-middleware
 go 1.17
 
 require (
+	bou.ke/monkey v1.0.2
 	entgo.io/ent v0.11.2
 	github.com/NpoolPlatform/basal-middleware v0.0.0-20230412060318-656a1d48645b
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20230327065405-91484c9b17ea
