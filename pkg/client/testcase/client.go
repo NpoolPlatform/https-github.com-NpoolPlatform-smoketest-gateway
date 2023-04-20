@@ -101,10 +101,10 @@ func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	return info.(*npool.TestCase), nil
 }
 
-func UpdateTestCase(ctx context.Context, in *npool.UpdateTestCaseRequest) (*npool.TestCase, error) {
+func UpdateTestCase(ctx context.Context, in *mgrpb.TestCaseReq) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateTestCase(ctx, &npool.UpdateTestCaseRequest{
-			Info: in.Info,
+			Info: in,
 		})
 		if err != nil {
 			return nil, err
