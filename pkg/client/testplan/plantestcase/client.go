@@ -99,3 +99,19 @@ func DeletePlanTestCase(ctx context.Context, id string) (*mgrpb.PlanTestCase, er
 	}
 	return info.(*mgrpb.PlanTestCase), nil
 }
+
+func UpdatePlanTestCase(ctx context.Context, in *mgrpb.PlanTestCaseReq) (*mgrpb.PlanTestCase, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.UpdatePlanTestCase(ctx, &npool.UpdatePlanTestCaseRequest{
+			Info: in,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*mgrpb.PlanTestCase), nil
+}
