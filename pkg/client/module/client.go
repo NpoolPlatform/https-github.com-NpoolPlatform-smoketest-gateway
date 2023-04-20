@@ -30,14 +30,10 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*mgrpb.Module, error) {
+func CreateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		req := in.GetInfo()
 		resp, err := cli.CreateModule(ctx, &npool.CreateModuleRequest{
-			Info: &mgrpb.ModuleReq{
-				Name:        req.Name,
-				Description: req.Description,
-			},
+			Info: in,
 		})
 		if err != nil {
 			return nil, err
