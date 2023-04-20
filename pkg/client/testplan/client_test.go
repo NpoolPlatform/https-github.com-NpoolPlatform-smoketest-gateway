@@ -11,7 +11,6 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
-	mwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -40,32 +39,25 @@ var (
 		Skips:       0,
 		RunDuration: 0,
 		Result:      npool.TestResultState_DefaultTestResultState,
+		Deadline:    0,
 		CreatedAt:   0,
 		UpdatedAt:   0,
-		Deadline:    0,
 	}
 )
 
 func createTestPlan(t *testing.T) {
 	var (
-		req = mwpb.CreateTestPlanRequest{
-			Info: &npool.TestPlanReq{
-				Name:      &ret.Name,
-				CreatedBy: &ret.CreatedBy,
-				Executor:  &ret.Executor,
-				Deadline:  &ret.Deadline,
-			},
+		req = &npool.TestPlanReq{
+			ID:        &ret.ID,
+			Name:      &ret.Name,
+			CreatedBy: &ret.CreatedBy,
+			Executor:  &ret.Executor,
+			Deadline:  &ret.Deadline,
 		}
 	)
 
-	info, err := CreateTestPlan(context.Background(), &req)
+	info, err := CreateTestPlan(context.Background(), req)
 	if assert.Nil(t, err) {
-		ret.ID = info.ID
-		ret.Fails = info.Fails
-		ret.Passes = info.Passes
-		ret.Skips = info.Skips
-		ret.RunDuration = info.RunDuration
-		ret.Result = info.Result
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
@@ -86,6 +78,17 @@ func getTestPlans(t *testing.T) {
 	}
 }
 
+func deleteTestPlan(t *testing.T) {
+	info, err := DeleteTestPlan(context.Background(), ret.ID)
+	if assert.Nil(t, err) {
+		assert.Equal(t, info, &ret)
+	}
+
+	info, err = GetTestPlan(context.Background(), ret.ID)
+	assert.Nil(t, err)
+	assert.Nil(t, info)
+}
+
 func TestMainOrder(t *testing.T) {
 	if runByGithubAction, err := strconv.ParseBool(os.Getenv("RUN_BY_GITHUB_ACTION")); err == nil && runByGithubAction {
 		return
@@ -100,4 +103,5 @@ func TestMainOrder(t *testing.T) {
 	t.Run("createTestPlan", createTestPlan)
 	t.Run("getTestPlan", getTestPlan)
 	t.Run("getTestPlans", getTestPlans)
+	t.Run("deleteTestPlan", deleteTestPlan)
 }
