@@ -98,3 +98,19 @@ func DeleteTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
 	}
 	return info.(*mgrpb.TestPlan), nil
 }
+
+func UpdateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.UpdateTestPlan(ctx, &npool.UpdateTestPlanRequest{
+			Info: in,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*mgrpb.TestPlan), nil
+}
