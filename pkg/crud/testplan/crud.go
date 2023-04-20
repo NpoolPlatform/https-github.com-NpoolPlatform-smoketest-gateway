@@ -22,6 +22,7 @@ type Req struct {
 	RunDuration *uint32
 	Result      *testplanmgrpb.TestResultState
 	Deadline    *uint32
+	DeletedAt   *uint32
 }
 
 func CreateSet(c *ent.TestPlanCreate, req *Req) *ent.TestPlanCreate {

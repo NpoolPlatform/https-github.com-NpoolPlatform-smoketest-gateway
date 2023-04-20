@@ -80,3 +80,21 @@ func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 	}
 	return infos.([]*mgrpb.TestPlan), total, nil
 }
+
+func DeleteTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.DeleteTestPlan(ctx, &npool.DeleteTestPlanRequest{
+			Info: &mgrpb.TestPlanReq{
+				ID: &id,
+			},
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*mgrpb.TestPlan), nil
+}
