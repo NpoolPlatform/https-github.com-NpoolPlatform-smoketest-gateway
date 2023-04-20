@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/google/uuid"
@@ -17,7 +18,7 @@ type Req struct {
 	Description    *string
 	RunDuration    *uint32
 	TestUserID     *uuid.UUID
-	Result         *string
+	Result         *mgrpb.TestCaseResult
 	Index          *uint32
 	DeletedAt      *uint32
 }
@@ -48,7 +49,7 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 		c.SetTestUserID(*req.TestUserID)
 	}
 	if req.Result != nil {
-		c.SetResult(*req.Result)
+		c.SetResult(req.Result.String())
 	}
 	if req.Index != nil {
 		c.SetIndex(*req.Index)

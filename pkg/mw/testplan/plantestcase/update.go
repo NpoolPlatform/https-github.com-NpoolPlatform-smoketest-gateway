@@ -7,38 +7,33 @@ import (
 	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
-func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestCase, err error) {
-	id := uuid.New()
-	if h.ID == nil {
-		h.ID = &id
-	}
-
+func (h *Handler) UpdatePlanTestCase(ctx context.Context) (info *npool.PlanTestCase, err error) {
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := plantestcasecrud.CreateSet(
-			cli.PlanTestCase.Create(),
+		if _, err := plantestcasecrud.UpdateSet(
+			cli.PlanTestCase.UpdateOneID(*h.ID),
 			&plantestcasecrud.Req{
-				TestPlanID:     h.TestPlanID,
-				TestCaseID:     h.TestCaseID,
-				TestUserID:     h.TestUserID,
+				ID:             h.ID,
 				TestCaseOutput: h.TestCaseOutput,
-				Description:    h.Description,
-				RunDuration:    h.RunDuration,
 				Result:         h.TestCaseResult,
 				Index:          &h.Index,
+				RunDuration:    h.RunDuration,
+				Description:    h.Description,
 			},
 		).Save(_ctx); err != nil {
 			return err
 		}
-
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
 
-	return h.GetPlanTestCase(ctx)
+	info, err = h.GetPlanTestCase(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
 }
