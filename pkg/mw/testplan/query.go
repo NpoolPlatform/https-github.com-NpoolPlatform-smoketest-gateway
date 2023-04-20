@@ -73,6 +73,13 @@ func (h *queryHandler) scan(ctx context.Context) error {
 	return h.stm.Scan(ctx, &h.infos)
 }
 
+func (h *queryHandler) formalize() {
+	for _, info := range h.infos {
+		info.State = npool.TestPlanState(npool.TestPlanState_value[info.StateStr])
+		info.Result = npool.TestResultState(npool.TestResultState_value[info.ResultStr])
+	}
+}
+
 func (h *Handler) GetTestPlans(ctx context.Context) ([]*npool.TestPlan, uint32, error) {
 	handler := &queryHandler{
 		Handler: h,
@@ -93,7 +100,7 @@ func (h *Handler) GetTestPlans(ctx context.Context) ([]*npool.TestPlan, uint32, 
 	if err != nil {
 		return nil, 0, err
 	}
-
+	handler.formalize()
 	return handler.infos, handler.total, nil
 }
 
@@ -114,5 +121,7 @@ func (h *Handler) GetTestPlan(ctx context.Context) (info *npool.TestPlan, err er
 	if err != nil {
 		return
 	}
+
+	handler.formalize()
 	return handler.infos[0], nil
 }
