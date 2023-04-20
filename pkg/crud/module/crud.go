@@ -1,7 +1,6 @@
 package module
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -14,6 +13,7 @@ type Req struct {
 	ID          *uuid.UUID
 	Name        *string
 	Description *string
+	DeletedAt   *uint32
 }
 
 func CreateSet(c *ent.ModuleCreate, req *Req) *ent.ModuleCreate {
@@ -29,14 +29,14 @@ func CreateSet(c *ent.ModuleCreate, req *Req) *ent.ModuleCreate {
 	return c
 }
 
-func UpdateSet(ctx context.Context, u *ent.ModuleUpdateOne, req *Req) (*ent.ModuleUpdateOne, error) {
+func UpdateSet(u *ent.ModuleUpdateOne, req *Req) *ent.ModuleUpdateOne {
 	if req.Name != nil {
 		u.SetName(*req.Name)
 	}
 	if req.Description != nil {
 		u.SetDescription(*req.Description)
 	}
-	return u, nil
+	return u
 }
 
 type Conds struct {
