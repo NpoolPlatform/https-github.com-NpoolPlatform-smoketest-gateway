@@ -2,6 +2,7 @@ package testcase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
@@ -75,6 +76,10 @@ func WithExpectation(expectation *string) func(context.Context, *Handler) error 
 		if expectation == nil {
 			return nil
 		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*expectation), &r); err != nil {
+			return err
+		}
 		h.Expectation = expectation
 		return nil
 	}
@@ -85,6 +90,11 @@ func WithInput(input *string) func(context.Context, *Handler) error {
 		if input == nil {
 			return nil
 		}
+
+		var r interface{}
+		if err := json.Unmarshal([]byte(*input), &r); err != nil {
+			return err
+		}
 		h.Input = input
 		return nil
 	}
@@ -94,6 +104,11 @@ func WithInputDesc(inputDesc *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if inputDesc == nil {
 			return nil
+		}
+
+		var r interface{}
+		if err := json.Unmarshal([]byte(*inputDesc), &r); err != nil {
+			return err
 		}
 		h.InputDesc = inputDesc
 		return nil
