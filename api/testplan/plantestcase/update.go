@@ -19,7 +19,7 @@ func (s *Server) UpdatePlanTestCase(ctx context.Context, in *npool.UpdatePlanTes
 		plantestcase1.WithTestCaseOutput(req.TestCaseOutput),
 		plantestcase1.WithRunDuration(req.RunDuration),
 		plantestcase1.WithTestCaseResult(req.Result),
-		plantestcase1.WithIndex(*req.Index),
+		plantestcase1.WithIndex(req.Index),
 		plantestcase1.WithDescription(req.Description),
 	)
 	if err != nil {

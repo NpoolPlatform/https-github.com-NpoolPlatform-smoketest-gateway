@@ -4,7 +4,7 @@ import (
 	"context"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
-	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/google/uuid"
@@ -17,9 +17,9 @@ func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := plantestcasecrud.CreateSet(
+		if _, err := crud.CreateSet(
 			cli.PlanTestCase.Create(),
-			&plantestcasecrud.Req{
+			&crud.Req{
 				TestPlanID:     h.TestPlanID,
 				TestCaseID:     h.TestCaseID,
 				TestUserID:     h.TestUserID,
@@ -27,7 +27,7 @@ func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 				Description:    h.Description,
 				RunDuration:    h.RunDuration,
 				Result:         h.TestCaseResult,
-				Index:          &h.Index,
+				Index:          h.Index,
 			},
 		).Save(_ctx); err != nil {
 			return err

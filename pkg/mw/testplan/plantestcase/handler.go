@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	plantestcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
-	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/google/uuid"
 )
 
@@ -17,11 +17,11 @@ type Handler struct {
 	TestCaseID     *uuid.UUID
 	TestUserID     *uuid.UUID
 	TestCaseOutput *string
-	TestCaseResult *plantestcasemgrpb.TestCaseResult
+	TestCaseResult *mgrpb.TestCaseResult
 	Description    *string
-	Index          uint32
+	Index          *uint32
 	RunDuration    *uint32
-	Conds          *plantestcasecrud.Conds
+	Conds          *crud.Conds
 	Offset         int32
 	Limit          int32
 }
@@ -99,15 +99,15 @@ func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseResult(result *plantestcasemgrpb.TestCaseResult) func(context.Context, *Handler) error {
+func WithTestCaseResult(result *mgrpb.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return fmt.Errorf("need testcase result")
 		}
 		switch *result {
-		case plantestcasemgrpb.TestCaseResult_Passed:
-		case plantestcasemgrpb.TestCaseResult_Failed:
-		case plantestcasemgrpb.TestCaseResult_Skipped:
+		case mgrpb.TestCaseResult_Passed:
+		case mgrpb.TestCaseResult_Failed:
+		case mgrpb.TestCaseResult_Skipped:
 		default:
 			return fmt.Errorf("invalid testcase result")
 		}
@@ -126,9 +126,9 @@ func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
 	}
 }
 
-func WithIndex(index uint32) func(context.Context, *Handler) error {
+func WithIndex(index *uint32) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if index == 0 {
+		if index == nil {
 			return nil
 		}
 		h.Index = index
@@ -146,9 +146,9 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *plantestcasemgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *mgrpb.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		h.Conds = &plantestcasecrud.Conds{}
+		h.Conds = &crud.Conds{}
 		if conds == nil {
 			return nil
 		}

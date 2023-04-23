@@ -5,7 +5,7 @@ import (
 	"time"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
-	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
@@ -18,9 +18,9 @@ func (h *Handler) DeletePlanTestCase(ctx context.Context) (*npool.PlanTestCase, 
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		now := uint32(time.Now().Unix())
-		if _, err := plantestcasecrud.UpdateSet(
+		if _, err := crud.UpdateSet(
 			cli.PlanTestCase.UpdateOneID(*h.ID),
-			&plantestcasecrud.Req{
+			&crud.Req{
 				ID:        h.ID,
 				DeletedAt: &now,
 			},

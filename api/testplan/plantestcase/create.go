@@ -21,7 +21,7 @@ func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTes
 		plantestcase1.WithTestUserID(req.TestUserID),
 		plantestcase1.WithTestCaseOutput(req.TestCaseOutput),
 		plantestcase1.WithTestCaseResult(req.Result),
-		plantestcase1.WithIndex(*req.Index),
+		plantestcase1.WithIndex(req.Index),
 		plantestcase1.WithRunDuration(req.RunDuration),
 	)
 	if err != nil {
