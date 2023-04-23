@@ -7,7 +7,6 @@ import (
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
 type createHandler struct {
@@ -25,11 +24,6 @@ func (h *Handler) CreateCond(ctx context.Context) (info *npool.Cond, err error) 
 
 	if err := handler.validate(); err != nil {
 		return nil, err
-	}
-
-	id := uuid.New()
-	if handler.ID == nil {
-		handler.ID = &id
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {

@@ -9,7 +9,6 @@ import (
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
 type createHandler struct {
@@ -34,11 +33,6 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 
 	if err := handler.validate(); err != nil {
 		return nil, err
-	}
-
-	id := uuid.New()
-	if handler.ID == nil {
-		handler.ID = &id
 	}
 
 	h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: h.Name}

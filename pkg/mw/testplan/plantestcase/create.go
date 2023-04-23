@@ -7,15 +7,9 @@ import (
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
 func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestCase, err error) {
-	id := uuid.New()
-	if h.ID == nil {
-		h.ID = &id
-	}
-
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		if _, err := crud.CreateSet(
 			cli.PlanTestCase.Create(),

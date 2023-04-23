@@ -8,7 +8,6 @@ import (
 	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
 type createHandler struct {
@@ -33,11 +32,6 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 
 	if err := handler.validate(); err != nil {
 		return nil, err
-	}
-
-	id := uuid.New()
-	if handler.ID == nil {
-		handler.ID = &id
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
