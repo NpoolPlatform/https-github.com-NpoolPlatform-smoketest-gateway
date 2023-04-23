@@ -2,6 +2,7 @@ package cond
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
@@ -70,6 +71,13 @@ func WithCondType(_type *mgrpb.CondType) func(context.Context, *Handler) error {
 		if _type == nil {
 			return nil
 		}
+		switch *_type {
+		case mgrpb.CondType_PreCondition:
+		case mgrpb.CondType_Cleaner:
+		default:
+			return fmt.Errorf("invalid CondType")
+		}
+
 		h.CondType = _type
 		return nil
 	}
