@@ -6,7 +6,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
-	plantestcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	plantestcase "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
@@ -54,7 +54,7 @@ func (h *queryHandler) queryPlanTestCase(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryPlanTestCaseByConds(ctx context.Context, cli *ent.Client) (err error) {
-	stm, err := plantestcasecrud.SetQueryConds(cli.PlanTestCase.Query(), h.Conds)
+	stm, err := crud.SetQueryConds(cli.PlanTestCase.Query(), h.Conds)
 	if err != nil {
 		return err
 	}
