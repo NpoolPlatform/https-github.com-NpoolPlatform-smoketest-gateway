@@ -100,3 +100,20 @@ func DeleteModule(ctx context.Context, id string) (*mgrpb.Module, error) {
 	}
 	return info.(*mgrpb.Module), nil
 }
+
+
+func UpdateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.UpdateModule(ctx, &npool.UpdateModuleRequest{
+			Info: in,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*mgrpb.Module), nil
+}

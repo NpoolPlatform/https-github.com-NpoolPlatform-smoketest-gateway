@@ -52,6 +52,26 @@ func createModule(t *testing.T) {
 	}
 }
 
+func updateModule(t *testing.T) {
+	var (
+		name        = uuid.NewString()
+		description = uuid.NewString()
+		req         = &npool.ModuleReq{
+			ID:          &ret.ID,
+			Name:        &name,
+			Description: &description,
+		}
+	)
+
+	info, err := UpdateModule(context.Background(), req)
+	if assert.Nil(t, err) {
+		ret.Name = name
+		ret.Description = description
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
+	}
+}
+
 func getModule(t *testing.T) {
 	info, err := GetModule(context.Background(), ret.ID)
 	if assert.Nil(t, err) {
@@ -89,6 +109,7 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createModule", createModule)
+	t.Run("updateModule", updateModule)
 	t.Run("getModule", getModule)
 	t.Run("getModules", getModules)
 	t.Run("deleteModule", deleteModule)
