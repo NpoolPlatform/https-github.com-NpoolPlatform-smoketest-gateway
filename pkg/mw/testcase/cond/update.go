@@ -14,12 +14,9 @@ func (h *Handler) UpdateCond(ctx context.Context) (info *npool.Cond, err error) 
 		if _, err := crud.UpdateSet(
 			cli.Cond.UpdateOneID(*h.ID),
 			&crud.Req{
-				ID:             h.ID,
-				TestCaseID:     h.TestCaseID,
-				CondTestCaseID: h.CondTestCaseID,
-				Index:          h.Index,
-				ArgumentMap:    h.ArgumentMap,
-				CondType:       h.CondType,
+				Index:       h.Index,
+				ArgumentMap: h.ArgumentMap,
+				CondType:    h.CondType,
 			},
 		).Save(_ctx); err != nil {
 			return err
