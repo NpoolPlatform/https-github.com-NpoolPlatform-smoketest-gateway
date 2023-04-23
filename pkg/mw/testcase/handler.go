@@ -7,9 +7,9 @@ import (
 
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
+	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
-	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/google/uuid"
 )
 
@@ -23,9 +23,9 @@ type Handler struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
-	TestCaseType *testcasemgrpb.TestCaseType
+	TestCaseType *mgrpb.TestCaseType
 	Deprecated   *bool
-	Conds        *testcasecrud.Conds
+	Conds        *crud.Conds
 	Offset       int32
 	Limit        int32
 }
@@ -125,7 +125,7 @@ func WithDeprecated(deprecated *bool) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseType(testCaseType *testcasemgrpb.TestCaseType) func(context.Context, *Handler) error {
+func WithTestCaseType(testCaseType *mgrpb.TestCaseType) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if testCaseType == nil {
 			return nil
@@ -163,9 +163,9 @@ func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithConds(conds *testcasemgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *mgrpb.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		h.Conds = &testcasecrud.Conds{}
+		h.Conds = &crud.Conds{}
 		if conds == nil {
 			return nil
 		}
