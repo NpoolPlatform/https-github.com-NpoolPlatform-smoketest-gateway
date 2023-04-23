@@ -21,7 +21,6 @@ func (h *Handler) DeletePlanTestCase(ctx context.Context) (*npool.PlanTestCase, 
 		if _, err := crud.UpdateSet(
 			cli.PlanTestCase.UpdateOneID(*h.ID),
 			&crud.Req{
-				ID:        h.ID,
 				DeletedAt: &now,
 			},
 		).Save(ctx); err != nil {

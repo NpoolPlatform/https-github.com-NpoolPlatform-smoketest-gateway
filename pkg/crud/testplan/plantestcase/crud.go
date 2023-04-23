@@ -58,8 +58,29 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 }
 
 func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOne {
+	if req.Description != nil {
+		u.SetDescription(*req.Description)
+	}
+	if req.TestCaseOutput != nil {
+		u.SetTestCaseOutput(*req.TestCaseOutput)
+	}
+	if req.Description != nil {
+		u.SetDescription(*req.Description)
+	}
+	if req.RunDuration != nil {
+		u.SetRunDuration(*req.RunDuration)
+	}
+	if req.Result != nil {
+		u.SetResult(req.Result.String())
+	}
 	if req.Index != nil {
 		u.SetIndex(*req.Index)
+	}
+	if req.Index != nil {
+		u.SetIndex(*req.Index)
+	}
+	if req.DeletedAt != nil {
+		u.SetDeletedAt(*req.DeletedAt)
 	}
 	return u
 }
