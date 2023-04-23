@@ -53,6 +53,7 @@ func createPlanTestCase(t *testing.T) {
 		}
 	)
 
+	fmt.Println("row: ", *req)
 	info, err := CreatePlanTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
