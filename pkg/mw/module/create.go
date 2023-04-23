@@ -9,7 +9,6 @@ import (
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
 )
 
 type createHandler struct {
@@ -36,27 +35,24 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	id := uuid.New()
-	if handler.ID == nil {
-		handler.ID = &id
-	}
-
 	h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: h.Name}
 	if _, err = h.ExistModuleConds(ctx); err != nil {
 		return nil, fmt.Errorf("name already exist")
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := modulecrud.CreateSet(
+		info, err := modulecrud.CreateSet(
 			cli.Module.Create(),
 			&modulecrud.Req{
-				ID:          h.ID,
 				Name:        h.Name,
 				Description: h.Description,
 			},
-		).Save(ctx); err != nil {
+		).Save(ctx)
+		if err != nil {
 			return err
 		}
+
+		h.ID = &info.ID
 		return nil
 	})
 	if err != nil {

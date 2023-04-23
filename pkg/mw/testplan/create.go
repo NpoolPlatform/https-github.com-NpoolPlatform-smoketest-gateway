@@ -41,10 +41,9 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		_, err := testplancrud.CreateSet(
+		info, err := testplancrud.CreateSet(
 			cli.TestPlan.Create(),
 			&testplancrud.Req{
-				ID:        h.ID,
 				Name:      h.Name,
 				CreatedBy: h.CreatedBy,
 				Executor:  h.Executor,
@@ -54,6 +53,8 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 		if err != nil {
 			return err
 		}
+
+		h.ID = &info.ID
 		return nil
 	})
 
