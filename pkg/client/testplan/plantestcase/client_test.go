@@ -31,11 +31,12 @@ var (
 	ret = npool.PlanTestCase{
 		TestPlanID:     uuid.NewString(),
 		TestCaseID:     uuid.NewString(),
-		TestUserID:     uuid.NewString(),
+		TestCaseOutput: "",
 		RunDuration:    1,
 		Index:          10,
-		TestCaseOutput: "",
 		Description:    uuid.NewString(),
+		TestUserID:     uuid.NewString(),
+		Result:         npool.TestCaseResult_Passed,
 	}
 )
 
