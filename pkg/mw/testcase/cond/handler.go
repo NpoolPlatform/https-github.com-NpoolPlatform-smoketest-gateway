@@ -1,4 +1,4 @@
-package testcasecond
+package cond
 
 import (
 	"context"
@@ -15,7 +15,7 @@ type Handler struct {
 	TestCaseID     *uuid.UUID
 	CondTestCaseID *uuid.UUID
 	CondType       *mgrpb.CondType
-	Index          *int32
+	Index          *uint32
 	ArgumentMap    *string
 	Conds          *crud.Conds
 	Offset         int32
@@ -75,7 +75,7 @@ func WithCondType(_type *mgrpb.CondType) func(context.Context, *Handler) error {
 	}
 }
 
-func WithIndex(index *int32) func(context.Context, *Handler) error {
+func WithIndex(index *uint32) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if index == nil {
 			return nil

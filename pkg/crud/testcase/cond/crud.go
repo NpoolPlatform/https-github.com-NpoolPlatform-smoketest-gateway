@@ -1,7 +1,6 @@
 package cond
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -18,6 +17,7 @@ type Req struct {
 	CondTestCaseID *uuid.UUID
 	Index          *uint32
 	ArgumentMap    *string
+	DeletedAt      *uint32
 }
 
 func CreateSet(c *ent.CondCreate, req *Req) *ent.CondCreate {
@@ -42,7 +42,7 @@ func CreateSet(c *ent.CondCreate, req *Req) *ent.CondCreate {
 	return c
 }
 
-func UpdateSet(ctx context.Context, u *ent.CondUpdateOne, req *Req) *ent.CondUpdateOne {
+func UpdateSet(u *ent.CondUpdateOne, req *Req) *ent.CondUpdateOne {
 	if req.CondType != nil {
 		u.SetCondType(req.CondType.String())
 	}
