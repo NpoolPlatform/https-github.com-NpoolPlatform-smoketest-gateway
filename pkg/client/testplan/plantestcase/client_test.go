@@ -45,10 +45,11 @@ func createPlanTestCase(t *testing.T) {
 		req = &npool.PlanTestCaseReq{
 			TestPlanID:     &ret.TestPlanID,
 			TestCaseID:     &ret.TestCaseID,
-			RunDuration:    &ret.RunDuration,
-			Index:          &ret.Index,
 			TestCaseOutput: &ret.TestCaseOutput,
 			Description:    &ret.Description,
+			RunDuration:    &ret.RunDuration,
+			Index:          &ret.Index,
+			Result:         &ret.Result,
 		}
 	)
 
