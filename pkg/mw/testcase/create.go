@@ -10,6 +10,7 @@ import (
 	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
+	"github.com/google/uuid"
 )
 
 type createHandler struct {
@@ -88,6 +89,11 @@ func (h *Handler) CreateTestCase(ctx context.Context) (info *npool.TestCase, err
 	}
 	if err := handler.validate(); err != nil {
 		return nil, err
+	}
+
+	id := uuid.New()
+	if handler.ID == nil {
+		handler.ID = &id
 	}
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
