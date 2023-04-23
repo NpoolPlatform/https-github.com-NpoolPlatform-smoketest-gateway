@@ -133,7 +133,7 @@ func updateTestCase(t *testing.T) {
 		ret.TestCaseType = testCaseType
 		ret.TestCaseTypeStr = testCaseTypeStr
 		ret.UpdatedAt = info.UpdatedAt
-		assert.Equal(t, ret, info)
+		assert.Equal(t, &ret, info)
 	}
 }
 
