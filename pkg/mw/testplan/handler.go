@@ -52,6 +52,10 @@ func WithName(name *string) func(context.Context, *Handler) error {
 		if name == nil {
 			return nil
 		}
+		const leastNameLen = 4
+		if len(*name) < leastNameLen {
+			return fmt.Errorf("name %v too short", *name)
+		}
 		h.Name = name
 		return nil
 	}
