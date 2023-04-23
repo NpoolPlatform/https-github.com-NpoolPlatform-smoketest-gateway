@@ -15,7 +15,6 @@ func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTes
 	req := in.GetInfo()
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(req.ID),
 		plantestcase1.WithTestPlanID(req.TestPlanID),
 		plantestcase1.WithTestCaseID(req.TestCaseID),
 		plantestcase1.WithTestUserID(req.TestUserID),

@@ -15,7 +15,6 @@ func (s *Server) CreateModule(ctx context.Context, in *npool.CreateModuleRequest
 	req := in.GetInfo()
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(req.ID),
 		module1.WithName(req.Name),
 		module1.WithDescription(req.Description),
 	)

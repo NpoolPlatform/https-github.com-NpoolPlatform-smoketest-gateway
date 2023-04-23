@@ -15,7 +15,6 @@ func (s *Server) CreateCond(ctx context.Context, in *npool.CreateCondRequest) (*
 	req := in.GetInfo()
 	handler, err := cond1.NewHandler(
 		ctx,
-		cond1.WithID(req.ID),
 		cond1.WithTestCaseID(req.TestCaseID),
 		cond1.WithCondTestCaseID(req.CondTestCaseID),
 		cond1.WithCondType(req.CondType),
