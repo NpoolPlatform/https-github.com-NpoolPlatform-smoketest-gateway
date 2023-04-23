@@ -124,8 +124,6 @@ func (h *Handler) GetPlanTestCase(ctx context.Context) (info *npool.PlanTestCase
 	if err != nil {
 		return
 	}
-
-	fmt.Println("ID: ", *h.ID)
 	if len(handler.infos) == 0 {
 		return nil, nil
 	}
