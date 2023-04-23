@@ -59,6 +59,32 @@ func createCond(t *testing.T) {
 	}
 }
 
+func updateCond(t *testing.T) {
+	var (
+		index       = uint32(100)
+		argumentMap = "{'Username': ''}"
+		condType    = npool.CondType_PreCondition
+		condTypeStr = npool.CondType_PreCondition.String()
+		req         = &npool.CondReq{
+			ID:             &ret.ID,
+			TestCaseID:     &ret.TestCaseID,
+			CondTestCaseID: &ret.CondTestCaseID,
+			CondType:       &condType,
+			Index:          &index,
+			ArgumentMap:    &argumentMap,
+		}
+	)
+	info, err := UpdateCond(context.Background(), req)
+	if assert.Nil(t, err) {
+		ret.Index = index
+		ret.ArgumentMap = argumentMap
+		ret.CondTypeStr = condTypeStr
+		ret.CreatedAt = info.CreatedAt
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
+	}
+}
+
 func getCond(t *testing.T) {
 	info, err := GetCond(context.Background(), ret.ID)
 	if assert.Nil(t, err) {
@@ -96,6 +122,7 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createCond", createCond)
+	t.Run("updateCond", updateCond)
 	t.Run("getCond", getCond)
 	t.Run("getConds", getConds)
 	t.Run("deleteCond", deleteCond)
