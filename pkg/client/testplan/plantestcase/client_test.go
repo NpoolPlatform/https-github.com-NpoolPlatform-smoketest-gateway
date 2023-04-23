@@ -29,7 +29,6 @@ func init() {
 
 var (
 	ret = npool.PlanTestCase{
-		ID:             uuid.NewString(),
 		TestPlanID:     uuid.NewString(),
 		TestCaseID:     uuid.NewString(),
 		TestUserID:     uuid.NewString(),
@@ -43,7 +42,6 @@ var (
 func createPlanTestCase(t *testing.T) {
 	var (
 		req = &npool.PlanTestCaseReq{
-			ID:             &ret.ID,
 			TestPlanID:     &ret.TestPlanID,
 			TestCaseID:     &ret.TestCaseID,
 			RunDuration:    &ret.RunDuration,
@@ -55,6 +53,7 @@ func createPlanTestCase(t *testing.T) {
 
 	info, err := CreatePlanTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
+		ret.ID = info.ID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)

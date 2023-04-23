@@ -29,7 +29,6 @@ func init() {
 
 var (
 	ret = npool.TestPlan{
-		ID:          uuid.NewString(),
 		Name:        uuid.NewString(),
 		CreatedBy:   uuid.NewString(),
 		Executor:    uuid.NewString(),
@@ -48,7 +47,6 @@ var (
 func createTestPlan(t *testing.T) {
 	var (
 		req = &npool.TestPlanReq{
-			ID:        &ret.ID,
 			Name:      &ret.Name,
 			CreatedBy: &ret.CreatedBy,
 			Executor:  &ret.Executor,
@@ -58,6 +56,7 @@ func createTestPlan(t *testing.T) {
 
 	info, err := CreateTestPlan(context.Background(), req)
 	if assert.Nil(t, err) {
+		ret.ID = info.ID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)

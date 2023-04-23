@@ -50,7 +50,6 @@ func init() {
 
 var (
 	ret = mwpb.TestCase{
-		ID:              uuid.NewString(),
 		Name:            "用例名称",
 		Description:     "用例描述",
 		ModuleID:        uuid.NewString(),
@@ -68,7 +67,6 @@ var (
 func createTestCase(t *testing.T) {
 	var (
 		req = &npool.TestCaseReq{
-			ID:          &ret.ID,
 			Name:        &ret.Name,
 			Description: &ret.Description,
 			ModuleName:  &ret.ModuleName,
@@ -81,6 +79,7 @@ func createTestCase(t *testing.T) {
 
 	info, err := CreateTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
+		ret.ID = info.ID
 		ret.ModuleID = info.ModuleID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt

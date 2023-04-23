@@ -29,7 +29,6 @@ func init() {
 
 var (
 	ret = npool.Module{
-		ID:          uuid.NewString(),
 		Name:        uuid.NewString(),
 		Description: uuid.NewString(),
 	}
@@ -38,7 +37,6 @@ var (
 func createModule(t *testing.T) {
 	var (
 		req = &npool.ModuleReq{
-			ID:          &ret.ID,
 			Name:        &ret.Name,
 			Description: &ret.Description,
 		}
@@ -46,6 +44,7 @@ func createModule(t *testing.T) {
 
 	info, err := CreateModule(context.Background(), req)
 	if assert.Nil(t, err) {
+		ret.ID = info.ID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)

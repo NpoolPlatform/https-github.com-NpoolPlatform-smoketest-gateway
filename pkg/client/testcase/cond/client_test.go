@@ -29,7 +29,6 @@ func init() {
 
 var (
 	ret = npool.Cond{
-		ID:             uuid.NewString(),
 		TestCaseID:     uuid.NewString(),
 		CondTestCaseID: uuid.NewString(),
 		CondType:       npool.CondType_DefaultCondType,
@@ -42,7 +41,6 @@ var (
 func createCond(t *testing.T) {
 	var (
 		req = &npool.CondReq{
-			ID:             &ret.ID,
 			TestCaseID:     &ret.TestCaseID,
 			CondTestCaseID: &ret.CondTestCaseID,
 			CondType:       &ret.CondType,
@@ -53,6 +51,7 @@ func createCond(t *testing.T) {
 
 	info, err := CreateCond(context.Background(), req)
 	if assert.Nil(t, err) {
+		ret.ID = info.ID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
