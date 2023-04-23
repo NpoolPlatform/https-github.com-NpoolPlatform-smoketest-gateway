@@ -42,7 +42,7 @@ func CreateSet(c *ent.CondCreate, req *Req) *ent.CondCreate {
 	return c
 }
 
-func UpdateSet(ctx context.Context, u *ent.CondUpdateOne, req *Req) (*ent.CondUpdateOne, error) {
+func UpdateSet(ctx context.Context, u *ent.CondUpdateOne, req *Req) *ent.CondUpdateOne {
 	if req.CondType != nil {
 		u.SetCondType(req.CondType.String())
 	}
@@ -52,7 +52,7 @@ func UpdateSet(ctx context.Context, u *ent.CondUpdateOne, req *Req) (*ent.CondUp
 	if req.ArgumentMap != nil {
 		u.SetArgumentMap(*req.ArgumentMap)
 	}
-	return u, nil
+	return u
 }
 
 type Conds struct {
