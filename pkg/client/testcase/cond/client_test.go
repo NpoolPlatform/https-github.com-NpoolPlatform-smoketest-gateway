@@ -79,7 +79,6 @@ func updateCond(t *testing.T) {
 		ret.Index = index
 		ret.ArgumentMap = argumentMap
 		ret.CondTypeStr = condTypeStr
-		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
 	}
