@@ -10,7 +10,6 @@ import (
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
@@ -33,8 +32,8 @@ var (
 		ID:             uuid.NewString(),
 		TestCaseID:     uuid.NewString(),
 		CondTestCaseID: uuid.NewString(),
-		CondType:       mgrpb.CondType_DefaultCondType,
-		CondTypeStr:    mgrpb.CondType_DefaultCondType.String(),
+		CondType:       npool.CondType_DefaultCondType,
+		CondTypeStr:    npool.CondType_DefaultCondType.String(),
 		Index:          10,
 		ArgumentMap:    "{}",
 	}
