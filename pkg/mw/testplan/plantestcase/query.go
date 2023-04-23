@@ -125,6 +125,11 @@ func (h *Handler) GetPlanTestCase(ctx context.Context) (info *npool.PlanTestCase
 		return
 	}
 
+	fmt.Println("ID: ", *h.ID)
+	if len(handler.infos) == 0 {
+		return nil, nil
+	}
+
 	handler.formalize()
 	return handler.infos[0], nil
 }
