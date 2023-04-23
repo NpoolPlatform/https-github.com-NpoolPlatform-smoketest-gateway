@@ -7,6 +7,7 @@ import (
 
 	"github.com/NpoolPlatform/smoketest-middleware/api/module"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testcase"
+	"github.com/NpoolPlatform/smoketest-middleware/api/testcase/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testplan"
 	plantestcase "github.com/NpoolPlatform/smoketest-middleware/api/testplan/plantestcase"
 
@@ -21,6 +22,7 @@ type Server struct {
 func Register(server grpc.ServiceRegistrar) {
 	servicetmpl.RegisterManagerServer(server, &Server{})
 	testcase.Register(server)
+	cond.Register(server)
 	module.Register(server)
 	testplan.Register(server)
 	plantestcase.Register(server)
