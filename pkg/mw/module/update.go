@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
@@ -10,15 +11,25 @@ import (
 )
 
 func (h *Handler) UpdateModule(ctx context.Context) (info *npool.Module, err error) {
+	info, err = h.GetModule(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// determine whether name is the same as before
+	req := &crud.Req{}
+	if info.Name == *h.Name {
+		req.Name = nil
+	} else {
+		if exist, _ := h.ExistModuleByName(ctx); exist {
+			return nil, fmt.Errorf("name already exist")
+		}
+		req.Name = h.Name
+	}
+	req.Description = h.Description
+
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := crud.UpdateSet(
-			cli.Module.UpdateOneID(*h.ID),
-			&crud.Req{
-				ID:          h.ID,
-				Name:        h.Name,
-				Description: h.Description,
-			},
-		).Save(_ctx); err != nil {
+		if _, err := crud.UpdateSet(cli.Module.UpdateOneID(*h.ID), req).Save(_ctx); err != nil {
 			return err
 		}
 		return nil
