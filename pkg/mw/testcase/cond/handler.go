@@ -6,9 +6,9 @@ import (
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
-	testcasecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
+	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
 	"github.com/google/uuid"
 )
 
@@ -22,6 +22,10 @@ type Handler struct {
 	Conds          *crud.Conds
 	Offset         int32
 	Limit          int32
+}
+
+type testCaseHandler struct {
+	testcasemw.Handler
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -52,7 +56,10 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		if _, err := testcasecli.ExistTestCase(ctx, *id); err != nil {
+		testcase := &testCaseHandler{}
+		testcase.ID = &_id
+
+		if _, err := testcase.ExistTestCase(ctx); err != nil {
 			return err
 		}
 		h.TestCaseID = &_id
@@ -66,7 +73,11 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-		if _, err := testcasecli.ExistTestCase(ctx, *id); err != nil {
+
+		testcase := &testCaseHandler{}
+		testcase.ID = &_id
+
+		if _, err := testcase.ExistTestCase(ctx); err != nil {
 			return err
 		}
 
