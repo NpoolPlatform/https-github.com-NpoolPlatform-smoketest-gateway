@@ -3,6 +3,7 @@ package testcase
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
@@ -84,6 +85,7 @@ func GetTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 }
 
 func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
+	fmt.Println("Call: DeleteTestCase")
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
 			Info: &mgrpb.TestCaseReq{
