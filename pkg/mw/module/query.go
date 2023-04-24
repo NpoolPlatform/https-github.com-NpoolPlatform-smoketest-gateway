@@ -107,5 +107,9 @@ func (h *Handler) GetModule(ctx context.Context) (info *npool.Module, err error)
 	if err != nil {
 		return
 	}
+	if len(handler.infos) == 0 {
+		return nil, fmt.Errorf("id %v not found", *h.ID)
+	}
+
 	return handler.infos[0], nil
 }
