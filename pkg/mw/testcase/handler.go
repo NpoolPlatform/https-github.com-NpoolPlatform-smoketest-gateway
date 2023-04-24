@@ -143,8 +143,7 @@ func WithApiID(apiID *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		_, err = apimwcli.ExistAPI(ctx, *apiID)
-		if err != nil {
+		if _, err := apimwcli.ExistAPI(ctx, *apiID); err != nil {
 			return err
 		}
 
