@@ -6,6 +6,8 @@ import (
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
+	testcasecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
+	testplancli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testplan"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	"github.com/google/uuid"
@@ -56,6 +58,11 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
+
+		if _, err := testplancli.ExistTestPlan(ctx, *planID); err != nil {
+			return fmt.Errorf("plan id %v not exist", planID)
+		}
+
 		h.TestPlanID = &_planID
 		return nil
 	}
@@ -66,6 +73,10 @@ func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
 		_testCaseID, err := uuid.Parse(*testCaseID)
 		if err != nil {
 			return err
+		}
+
+		if _, err := testcasecli.ExistTestCase(ctx, *testCaseID); err != nil {
+			return fmt.Errorf("testcase id %v not exist", testCaseID)
 		}
 
 		h.TestCaseID = &_testCaseID
@@ -175,6 +186,11 @@ func WithConds(conds *mgrpb.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.TestUserID = &cruder.Cond{Op: h.Conds.TestUserID.Op, Val: id}
 		}
+
+		if conds.Result != nil {
+			h.Conds.Result = &cruder.Cond{Op: h.Conds.Result.Op, Val: conds.Result}
+		}
+
 		return nil
 	}
 }
