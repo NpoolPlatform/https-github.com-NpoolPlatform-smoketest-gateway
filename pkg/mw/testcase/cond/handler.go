@@ -59,8 +59,8 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 		testcase := &TestCaseHandler{}
 		testcase.ID = &_id
 
-		if exist, err := testcase.ExistTestCase(ctx); !exist {
-			return err
+		if exist, _ := testcase.ExistTestCase(ctx); !exist {
+			return fmt.Errorf("id %v not exist", *id)
 		}
 
 		h.TestCaseID = &_id
@@ -82,8 +82,8 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		testcase := &TestCaseHandler{}
 		testcase.ID = &_id
 
-		if exist, err := testcase.ExistTestCase(ctx); !exist {
-			return err
+		if exist, _ := testcase.ExistTestCase(ctx); !exist {
+			return fmt.Errorf("id %v not exist", *id)
 		}
 
 		h.CondTestCaseID = &_id

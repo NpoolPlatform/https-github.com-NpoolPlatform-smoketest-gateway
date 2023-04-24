@@ -66,8 +66,8 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 		testplan := &TestPlanHandler{}
 		testplan.ID = &_planID
 
-		if exist, err := testplan.ExistTestPlan(ctx); !exist {
-			return err
+		if exist, _ := testplan.ExistTestPlan(ctx); !exist {
+			return fmt.Errorf("test plan id %v not exist", *planID)
 		}
 
 		h.TestPlanID = &_planID
@@ -89,8 +89,8 @@ func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
 		testcase := &testCaseHandler{}
 		testcase.ID = &_testCaseID
 
-		if exist, err := testcase.ExistTestCase(ctx); !exist {
-			return err
+		if exist, _ := testcase.ExistTestCase(ctx); !exist {
+			return fmt.Errorf("testcase id %v not exist", *testCaseID)
 		}
 
 		h.TestCaseID = &_testCaseID
