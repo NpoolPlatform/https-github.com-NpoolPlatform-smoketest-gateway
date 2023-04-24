@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
-	modulecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
@@ -35,7 +34,10 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	if exist, _ := modulecli.ExistModuleByName(ctx, *handler.Name); exist {
+	exist, err := h.ExistModuleByName(ctx)
+	fmt.Println("exist: ", exist, "err: ", err)
+
+	if exist {
 		return nil, fmt.Errorf("name already exist")
 	}
 
