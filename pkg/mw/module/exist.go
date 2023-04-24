@@ -41,6 +41,7 @@ func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 			Query().
 			Where(
 				entmodule.ID(*h.ID),
+				entmodule.DeletedAt(0),
 			).
 			Exist(_ctx)
 		return err

@@ -18,7 +18,7 @@ func (h *Handler) ExistTestCase(ctx context.Context) (exist bool, err error) {
 		exist, err = cli.
 			TestCase.
 			Query().
-			Where(enttestcase.ID(*h.ID)).
+			Where(enttestcase.ID(*h.ID), enttestcase.DeletedAt(0)).
 			Exist(_ctx)
 		return err
 	})

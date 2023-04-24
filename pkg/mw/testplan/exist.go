@@ -18,7 +18,7 @@ func (h *Handler) ExistTestPlan(ctx context.Context) (exist bool, err error) {
 		exist, err = cli.
 			TestPlan.
 			Query().
-			Where(enttestplan.ID(*h.ID)).
+			Where(enttestplan.ID(*h.ID), enttestplan.DeletedAt(0)).
 			Exist(_ctx)
 		return err
 	})
