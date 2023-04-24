@@ -8,6 +8,7 @@ import (
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	testplancli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testplan"
 	"github.com/google/uuid"
 )
 
@@ -56,7 +57,7 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-
+		testplancli.CreateTestPlan()
 		h.TestPlanID = &_planID
 		return nil
 	}
