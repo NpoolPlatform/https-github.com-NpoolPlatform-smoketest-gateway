@@ -144,7 +144,7 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 		return
 	}
 	if len(handler.infos) == 0 {
-		return nil, nil
+		return nil, fmt.Errorf("id %v not exist", *handler.ID)
 	}
 
 	handler.formalize()
