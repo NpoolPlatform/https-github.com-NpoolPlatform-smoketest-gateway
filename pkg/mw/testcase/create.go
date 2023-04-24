@@ -6,8 +6,9 @@ import (
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	modulecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
-	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
@@ -28,6 +29,10 @@ func (h *createHandler) validate() error {
 }
 
 func (h *createHandler) createModule(ctx context.Context) error {
+	if exist, _ := modulecli.ExistModuleByName(ctx, *h.Name); exist {
+		// GetModuleByName
+	}
+
 	conds := &modulecrud.Conds{}
 	conds.Name = &cruder.Cond{Op: conds.Name.Op, Val: h.ModuleName}
 
@@ -57,9 +62,9 @@ func (h *createHandler) createModule(ctx context.Context) error {
 
 func (h *createHandler) createTestCase(ctx context.Context) error {
 	err := db.WithClient(ctx, func(ctx context.Context, cli *ent.Client) error {
-		info, err := testcasecrud.CreateSet(
+		info, err := crud.CreateSet(
 			cli.TestCase.Create(),
-			&testcasecrud.Req{
+			&crud.Req{
 				Name:         h.Name,
 				Description:  h.Description,
 				Input:        h.Input,

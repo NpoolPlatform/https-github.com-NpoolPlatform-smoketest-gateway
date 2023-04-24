@@ -164,3 +164,21 @@ func ExistModuleConds(ctx context.Context, conds *mgrpb.Conds) (bool, error) {
 	}
 	return info.(bool), nil
 }
+
+func GetModuleConds(ctx context.Context, conds *mgrpb.Conds) ([]*mgrpb.Module, uint32, error) {
+	var total uint32
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetModuleConds(ctx, &npool.GetModuleCondsRequest{Conds: conds})
+		if err != nil {
+			return nil, err
+		}
+
+		total = resp.GetTotal()
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return infos.([]*mgrpb.Module), total, nil
+}
