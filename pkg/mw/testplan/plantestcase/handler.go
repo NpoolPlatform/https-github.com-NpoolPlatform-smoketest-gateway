@@ -59,7 +59,7 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		if _, err := testplancli.ExistTestPlan(ctx, *planID); err != nil {
+		if exist, err := testplancli.ExistTestPlan(ctx, *planID); !exist {
 			return err
 		}
 

@@ -59,9 +59,10 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 		testcase := &testCaseHandler{}
 		testcase.ID = &_id
 
-		if _, err := testcase.ExistTestCase(ctx); err != nil {
+		if exist, err := testcase.ExistTestCase(ctx); !exist {
 			return err
 		}
+
 		h.TestCaseID = &_id
 		return nil
 	}
@@ -81,7 +82,7 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		testcase := &testCaseHandler{}
 		testcase.ID = &_id
 
-		if _, err := testcase.ExistTestCase(ctx); err != nil {
+		if exist, err := testcase.ExistTestCase(ctx); !exist {
 			return err
 		}
 
