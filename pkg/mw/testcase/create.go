@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -56,12 +55,9 @@ func (h *createHandler) createModule(ctx context.Context) error {
 		}
 
 		if len(modules) > 1 {
-			logger.Sugar().Info(
-				"CreateModule",
-				"Req", modules,
-				"Info", "too many records",
-			)
+			return fmt.Errorf("too many records")
 		}
+
 		return nil
 	})
 
