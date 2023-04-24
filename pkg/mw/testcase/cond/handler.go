@@ -24,10 +24,6 @@ type Handler struct {
 	Limit          int32
 }
 
-type testCaseHandler struct {
-	testcasemw.Handler
-}
-
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
 	handler := &Handler{}
 	for _, opt := range options {
@@ -56,6 +52,10 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 			return err
 		}
 
+		type testCaseHandler struct {
+			*testcasemw.Handler
+		}
+
 		testcase := &testCaseHandler{}
 		testcase.ID = &_id
 
@@ -72,6 +72,10 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		_id, err := uuid.Parse(*id)
 		if err != nil {
 			return err
+		}
+
+		type testCaseHandler struct {
+			*testcasemw.Handler
 		}
 
 		testcase := &testCaseHandler{}
