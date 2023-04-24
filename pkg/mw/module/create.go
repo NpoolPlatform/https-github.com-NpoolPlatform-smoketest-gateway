@@ -34,7 +34,10 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	if _, err := h.ExistModuleByName(ctx); err == nil {
+	exist, err := h.ExistModuleByName(ctx)
+	fmt.Println("exist: ", exist, "err: ", err)
+
+	if exist {
 		return nil, fmt.Errorf("name already exist")
 	}
 
