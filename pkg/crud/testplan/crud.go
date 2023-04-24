@@ -75,6 +75,9 @@ func UpdateSet(u *ent.TestPlanUpdateOne, req *Req) *ent.TestPlanUpdateOne {
 	if req.Deadline != nil {
 		u.SetDeadline(*req.Deadline)
 	}
+	if req.DeletedAt != nil {
+		u.SetDeletedAt(*req.DeletedAt)
+	}
 	return u
 }
 

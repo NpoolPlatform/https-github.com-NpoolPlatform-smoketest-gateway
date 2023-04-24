@@ -52,6 +52,9 @@ func UpdateSet(u *ent.CondUpdateOne, req *Req) *ent.CondUpdateOne {
 	if req.ArgumentMap != nil {
 		u.SetArgumentMap(*req.ArgumentMap)
 	}
+	if req.DeletedAt != nil {
+		u.SetDeletedAt(*req.DeletedAt)
+	}
 	return u
 }
 

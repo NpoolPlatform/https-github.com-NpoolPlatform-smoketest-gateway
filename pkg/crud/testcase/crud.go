@@ -80,6 +80,9 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 	if req.Deprecated != nil {
 		u.SetDeprecated(*req.Deprecated)
 	}
+	if req.DeletedAt != nil {
+		u.SetDeletedAt(*req.DeletedAt)
+	}
 	return u
 }
 
