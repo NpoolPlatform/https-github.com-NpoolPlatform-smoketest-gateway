@@ -6,6 +6,7 @@ import (
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
+	testcasecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
 	"github.com/google/uuid"
@@ -50,6 +51,10 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
+
+		if _, err := testcasecli.ExistTestCase(ctx, *id); err != nil {
+			return fmt.Errorf("testcase id %v not exist", *id)
+		}
 		h.TestCaseID = &_id
 		return nil
 	}
@@ -60,6 +65,9 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		_id, err := uuid.Parse(*id)
 		if err != nil {
 			return err
+		}
+		if _, err := testcasecli.ExistTestCase(ctx, *id); err != nil {
+			return fmt.Errorf("cond testcase id %v not exist", *id)
 		}
 		h.CondTestCaseID = &_id
 		return nil
