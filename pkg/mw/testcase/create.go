@@ -5,15 +5,11 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
-	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	npool1 "github.com/NpoolPlatform/message/npool"
-	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
-	modulecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	"github.com/google/uuid"
+	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 )
 
 type createHandler struct {
@@ -32,43 +28,44 @@ func (h *createHandler) validate() error {
 }
 
 func (h *createHandler) createModule(ctx context.Context) error {
-	modules, _, err := modulecli.GetModuleConds(ctx, &modulemgrpb.Conds{
-		Name: &npool1.StringVal{Op: cruder.EQ, Value: *h.ModuleName},
+	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		modules, err := cli.Module.Query().Where(
+			entmodule.Name(*h.Name),
+			entmodule.DeletedAt(0)).
+			All(_ctx)
+		if err != nil {
+			return err
+		}
+
+		if len(modules) == 0 {
+			_entModule := cli.Module.Create()
+			_entModule.SetName(*h.Name)
+			info, err := _entModule.Save(_ctx)
+			if err != nil {
+				return err
+			}
+			h.ModuleID = &info.ID
+			return nil
+		}
+
+		if len(modules) == 1 {
+			id := modules[0].ID
+			h.ModuleID = &id
+			return nil
+		}
+
+		if len(modules) > 1 {
+			logger.Sugar().Info(
+				"CreateModule",
+				"Req", modules,
+				"Info", "too many records",
+			)
+		}
+		return nil
 	})
+
 	if err != nil {
 		return err
-	}
-
-	if len(modules) == 0 {
-		module, err := modulecli.CreateModule(ctx, &modulemgrpb.ModuleReq{
-			Name: h.ModuleName,
-		})
-		if err != nil {
-			return err
-		}
-		id := module.ID
-		_id, err := uuid.Parse(id)
-		if err != nil {
-			return err
-		}
-		h.ModuleID = &_id
-	}
-
-	if len(modules) == 1 {
-		id := modules[0].ID
-		_id, err := uuid.Parse(id)
-		if err != nil {
-			return err
-		}
-		h.ModuleID = &_id
-	}
-
-	if len(modules) > 1 {
-		logger.Sugar().Info(
-			"CreateModule",
-			"Req", modules,
-			"Info", "too many records",
-		)
 	}
 
 	return nil
