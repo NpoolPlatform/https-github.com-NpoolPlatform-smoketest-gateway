@@ -18,7 +18,6 @@ func (h *Handler) UpdateModule(ctx context.Context) (info *npool.Module, err err
 
 	// determine whether name is the same as before
 	req := &crud.Req{}
-	fmt.Println("Info.Name: ", info.Name, "Name: ", *h.Name)
 	if info.Name != *h.Name {
 		if h.Name != nil {
 			if exist, _ := h.ExistModuleByName(ctx); exist {
