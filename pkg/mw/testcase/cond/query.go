@@ -116,6 +116,10 @@ func (h *Handler) GetCond(ctx context.Context) (info *npool.Cond, err error) {
 	if err != nil {
 		return
 	}
+	if len(handler.infos) == 0 {
+		return nil, nil
+	}
+
 	handler.formalize()
 	return handler.infos[0], nil
 }
