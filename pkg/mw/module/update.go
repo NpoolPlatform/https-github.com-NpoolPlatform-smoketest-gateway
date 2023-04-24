@@ -18,9 +18,7 @@ func (h *Handler) UpdateModule(ctx context.Context) (info *npool.Module, err err
 
 	// determine whether name is the same as before
 	req := &crud.Req{}
-	if info.Name == *h.Name {
-		req.Name = nil
-	} else {
+	if info.Name != *h.Name {
 		if exist, _ := h.ExistModuleByName(ctx); exist {
 			return nil, fmt.Errorf("name already exist")
 		}
