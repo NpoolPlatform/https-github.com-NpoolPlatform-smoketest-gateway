@@ -20,6 +20,7 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 			Query().
 			Where(
 				entmodule.Name(*h.Name),
+				entmodule.DeletedAt(0),
 			).
 			Exist(_ctx)
 		return err
