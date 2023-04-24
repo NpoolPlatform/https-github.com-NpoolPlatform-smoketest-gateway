@@ -36,6 +36,9 @@ func UpdateSet(u *ent.ModuleUpdateOne, req *Req) *ent.ModuleUpdateOne {
 	if req.Description != nil {
 		u.SetDescription(*req.Description)
 	}
+	if req.DeletedAt != nil {
+		u.SetDeletedAt(*req.DeletedAt)
+	}
 	return u
 }
 
