@@ -101,7 +101,6 @@ func DeleteModule(ctx context.Context, id string) (*mgrpb.Module, error) {
 	return info.(*mgrpb.Module), nil
 }
 
-
 func UpdateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateModule(ctx, &npool.UpdateModuleRequest{
@@ -116,4 +115,52 @@ func UpdateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, erro
 		return nil, err
 	}
 	return info.(*mgrpb.Module), nil
+}
+
+func ExistModule(ctx context.Context, id string) (bool, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.ExistModule(ctx, &npool.ExistModuleRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return false, err
+	}
+	return info.(bool), nil
+}
+
+func ExistModuleByName(ctx context.Context, name string) (bool, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.ExistModuleByName(ctx, &npool.ExistModuleByNameRequest{
+			Name: name,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return false, err
+	}
+	return info.(bool), nil
+}
+
+func ExistModuleConds(ctx context.Context, conds *mgrpb.Conds) (bool, error) {
+	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.ExistModuleConds(ctx, &npool.ExistModuleCondsRequest{
+			Conds: conds,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return false, err
+	}
+	return info.(bool), nil
 }
