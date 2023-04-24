@@ -6,10 +6,10 @@ import (
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
-	testcasecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
-	testplancli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testplan"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
+	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	testplanmw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan"
 	"github.com/google/uuid"
 )
 
@@ -59,7 +59,14 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		if exist, err := testplancli.ExistTestPlan(ctx, *planID); !exist {
+		type TestPlanHandler struct {
+			testplanmw.Handler
+		}
+
+		testplan := &TestPlanHandler{}
+		testplan.ID = &_planID
+
+		if exist, err := testplan.ExistTestPlan(ctx); !exist {
 			return err
 		}
 
@@ -75,7 +82,14 @@ func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		if _, err := testcasecli.ExistTestCase(ctx, *testCaseID); err != nil {
+		type testCaseHandler struct {
+			testcasemw.Handler
+		}
+
+		testcase := &testCaseHandler{}
+		testcase.ID = &_testCaseID
+
+		if exist, err := testcase.ExistTestCase(ctx); !exist {
 			return err
 		}
 

@@ -52,11 +52,11 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		type testCaseHandler struct {
-			*testcasemw.Handler
+		type TestCaseHandler struct {
+			testcasemw.Handler
 		}
 
-		testcase := &testCaseHandler{}
+		testcase := &TestCaseHandler{}
 		testcase.ID = &_id
 
 		if exist, err := testcase.ExistTestCase(ctx); !exist {
@@ -75,11 +75,11 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		type testCaseHandler struct {
-			*testcasemw.Handler
+		type TestCaseHandler struct {
+			testcasemw.Handler
 		}
 
-		testcase := &testCaseHandler{}
+		testcase := &TestCaseHandler{}
 		testcase.ID = &_id
 
 		if exist, err := testcase.ExistTestCase(ctx); !exist {
