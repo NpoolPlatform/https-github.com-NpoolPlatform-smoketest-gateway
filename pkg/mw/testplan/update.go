@@ -2,6 +2,8 @@ package testplan
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
 	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
@@ -10,6 +12,12 @@ import (
 )
 
 func (h *Handler) UpdateTestPlan(ctx context.Context) (info *npool.TestPlan, err error) {
+	if h.Deadline != nil {
+		if *h.Deadline <= uint32(time.Now().Unix()) {
+			return nil, fmt.Errorf("deadline less than current time")
+		}
+	}
+
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		if _, err := testplancrud.UpdateSet(
 			cli.TestPlan.UpdateOneID(*h.ID),
