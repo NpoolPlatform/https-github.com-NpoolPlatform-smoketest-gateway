@@ -18,6 +18,7 @@ func (s *Server) UpdateCond(ctx context.Context, in *npool.UpdateCondRequest) (*
 		cond1.WithID(req.ID),
 		cond1.WithIndex(req.Index),
 		cond1.WithArgumentMap(req.ArgumentMap),
+		cond1.WithCondType(req.CondType),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
