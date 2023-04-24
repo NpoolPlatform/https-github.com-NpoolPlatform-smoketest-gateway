@@ -10,6 +10,26 @@ import (
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 )
 
+func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error) {
+	if h.Name == nil {
+		return false, fmt.Errorf("invalid name")
+	}
+	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		exist, err = cli.
+			Module.
+			Query().
+			Where(
+				entmodule.Name(*h.Name),
+			).
+			Exist(_ctx)
+		return err
+	})
+	if err != nil {
+		return false, err
+	}
+	return exist, nil
+}
+
 func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 	if h.ID == nil {
 		return false, fmt.Errorf("invalid id")
@@ -37,11 +57,11 @@ func (h *Handler) ExistModuleConds(ctx context.Context) (exist bool, err error) 
 			return err
 		}
 
-		_, err = info.Exist(_ctx)
+		exist, err = info.Exist(_ctx)
 		return err
 	})
 	if err != nil {
 		return false, err
 	}
-	return true, nil
+	return exist, nil
 }

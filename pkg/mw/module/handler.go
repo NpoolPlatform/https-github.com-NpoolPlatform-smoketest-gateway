@@ -80,17 +80,6 @@ func WithConds(conds *modulemgrpb.Conds) func(context.Context, *Handler) error {
 		if conds.Name != nil {
 			h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: conds.GetName().GetValue()}
 		}
-		if len(conds.GetIDs().GetValue()) > 0 {
-			ids := []uuid.UUID{}
-			for _, id := range conds.GetIDs().GetValue() {
-				_id, err := uuid.Parse(id)
-				if err != nil {
-					return err
-				}
-				ids = append(ids, _id)
-			}
-			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: ids}
-		}
 		return nil
 	}
 }
