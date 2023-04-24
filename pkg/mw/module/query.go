@@ -113,3 +113,25 @@ func (h *Handler) GetModule(ctx context.Context) (info *npool.Module, err error)
 
 	return handler.infos[0], nil
 }
+
+func (h *Handler) GetModuleConds(ctx context.Context) ([]*npool.Module, uint32, error) {
+	handler := &queryHandler{
+		Handler: h,
+	}
+
+	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		if err := handler.queryModulesByConds(_ctx, cli); err != nil {
+			return err
+		}
+
+		if err := handler.scan(_ctx); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return handler.infos, handler.total, nil
+}
