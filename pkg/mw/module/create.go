@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
-	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
+	modulecli "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
@@ -35,15 +35,14 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: h.Name}
-	if _, err = h.ExistModuleConds(ctx); err != nil {
+	if _, err := modulecli.ExistModuleByName(ctx, *handler.Name); err == nil {
 		return nil, fmt.Errorf("name already exist")
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err := modulecrud.CreateSet(
+		info, err := crud.CreateSet(
 			cli.Module.Create(),
-			&modulecrud.Req{
+			&crud.Req{
 				Name:        h.Name,
 				Description: h.Description,
 			},
