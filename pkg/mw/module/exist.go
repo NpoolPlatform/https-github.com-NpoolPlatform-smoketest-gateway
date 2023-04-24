@@ -28,6 +28,10 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 	if err != nil {
 		return false, err
 	}
+	if !exist && err == nil {
+		return exist, fmt.Errorf("id %v not exist", *h.ID)
+	}
+
 	return exist, nil
 }
 
@@ -49,6 +53,10 @@ func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 	if err != nil {
 		return false, err
 	}
+	if !exist && err == nil {
+		return exist, fmt.Errorf("id %v not exist", *h.ID)
+	}
+
 	return exist, nil
 }
 
