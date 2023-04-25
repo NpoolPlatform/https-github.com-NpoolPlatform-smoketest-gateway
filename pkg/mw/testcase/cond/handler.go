@@ -45,6 +45,7 @@ func WithID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
+//nolint
 func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		_id, err := uuid.Parse(*id)
@@ -68,6 +69,7 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
+//nolint
 func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		_id, err := uuid.Parse(*id)

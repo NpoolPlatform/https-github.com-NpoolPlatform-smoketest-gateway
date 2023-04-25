@@ -39,6 +39,7 @@ func (s *Server) ExistModuleByName(ctx context.Context, in *npool.ExistModuleByN
 	}, nil
 }
 
+//nolint
 func (s *Server) ExistModule(ctx context.Context, in *npool.ExistModuleRequest) (*npool.ExistModuleResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
@@ -68,6 +69,7 @@ func (s *Server) ExistModule(ctx context.Context, in *npool.ExistModuleRequest) 
 	}, nil
 }
 
+//nolint
 func (s *Server) ExistModuleConds(ctx context.Context, in *npool.ExistModuleCondsRequest) (*npool.ExistModuleCondsResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
@@ -82,7 +84,7 @@ func (s *Server) ExistModuleConds(ctx context.Context, in *npool.ExistModuleCond
 		return &npool.ExistModuleCondsResponse{}, status.Error(codes.Aborted, err.Error())
 	}
 
-	exist, err := handler.ExistModule(ctx)
+	exist, err := handler.ExistModuleConds(ctx)
 	if err != nil {
 		logger.Sugar().Errorw(
 			"ExistModule",

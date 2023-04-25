@@ -10,6 +10,7 @@ import (
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 )
 
+//nolint
 func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error) {
 	if h.Name == nil {
 		return false, fmt.Errorf("invalid name")

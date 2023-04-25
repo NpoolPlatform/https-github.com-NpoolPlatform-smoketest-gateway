@@ -52,6 +52,7 @@ func WithID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
+//nolint
 func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		_planID, err := uuid.Parse(*planID)
@@ -75,6 +76,7 @@ func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
 	}
 }
 
+//nolint
 func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		_testCaseID, err := uuid.Parse(*testCaseID)
