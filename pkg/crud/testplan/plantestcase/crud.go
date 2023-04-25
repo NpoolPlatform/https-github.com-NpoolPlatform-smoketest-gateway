@@ -61,17 +61,11 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 	if req.TestCaseOutput != nil {
 		u.SetTestCaseOutput(*req.TestCaseOutput)
 	}
-	if req.Description != nil {
-		u.SetDescription(*req.Description)
-	}
 	if req.RunDuration != nil {
 		u.SetRunDuration(*req.RunDuration)
 	}
 	if req.Result != nil {
 		u.SetResult(req.Result.String())
-	}
-	if req.Index != nil {
-		u.SetIndex(*req.Index)
 	}
 	if req.Index != nil {
 		u.SetIndex(*req.Index)
