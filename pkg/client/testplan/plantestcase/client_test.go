@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
+	apicrud "github.com/NpoolPlatform/basal-manager/pkg/crud/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
@@ -44,7 +44,7 @@ var (
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apimwcli.CreateAPI(context.Background(), &apimgrpb.APIReq{
+	info, err := apicrud.Create(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
@@ -55,9 +55,9 @@ func setupAPI(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	_api.ID = info.ID
+	_api.ID = info.ID.String()
 	return func(*testing.T) {
-		_, _ = apimwcli.DeleteAPI(context.Background(), info.ID)
+		_, _ = apicrud.Delete(context.Background(), info.ID)
 	}
 }
 
