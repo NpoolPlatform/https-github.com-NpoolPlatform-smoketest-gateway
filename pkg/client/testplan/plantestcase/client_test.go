@@ -154,6 +154,24 @@ func createPlanTestCase(t *testing.T) {
 	}
 }
 
+func updatePlanTestCase(t *testing.T) {
+	ret.Index = 1000
+	ret.Description = "{}"
+	ret.TestCaseOutput = "{}"
+	req := &npool.PlanTestCaseReq{
+		ID:             &ret.ID,
+		Index:          &ret.Index,
+		Description:    &ret.Description,
+		TestCaseOutput: &ret.TestCaseOutput,
+	}
+
+	info, err := UpdatePlanTestCase(context.Background(), req)
+	if assert.Nil(t, err) {
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
+	}
+}
+
 func getPlanTestCase(t *testing.T) {
 	info, err := GetPlanTestCase(context.Background(), ret.ID)
 	if assert.Nil(t, err) {
@@ -200,6 +218,7 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createPlanTestCase", createPlanTestCase)
+	t.Run("updatePlanTestCase", updatePlanTestCase)
 	t.Run("getPlanTestCase", getPlanTestCase)
 	t.Run("getPlanTestCases", getPlanTestCases)
 	t.Run("deletePlanTestCase", deletePlanTestCase)
