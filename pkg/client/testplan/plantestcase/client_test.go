@@ -126,7 +126,6 @@ var (
 		RunDuration:    1,
 		Index:          10,
 		Description:    uuid.NewString(),
-		TestUserID:     uuid.NewString(),
 		Result:         npool.TestCaseResult_Passed,
 		ResultStr:      npool.TestCaseResult_Passed.String(),
 	}
@@ -148,6 +147,7 @@ func createPlanTestCase(t *testing.T) {
 	info, err := CreatePlanTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.TestUserID = info.TestUserID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
