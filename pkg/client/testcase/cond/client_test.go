@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apicrud "github.com/NpoolPlatform/basal-manager/pkg/crud/api"
+	apicli "github.com/NpoolPlatform/basal-manager/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
@@ -42,20 +42,21 @@ var (
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apicrud.Create(context.Background(), &apimgrpb.APIReq{
+	info, err := apicli.CreateAPI(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
+		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	_api.ID = info.ID.String()
+	tc.ApiID = info.ID
 	return func(*testing.T) {
-		_, _ = apicrud.Delete(context.Background(), info.ID)
+		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
 	}
 }
 
@@ -63,7 +64,6 @@ var (
 	tc = testcasepb.TestCase{
 		Name:       uuid.NewString(),
 		ModuleName: uuid.NewString(),
-		ApiID:      _api.ID,
 	}
 )
 
@@ -81,7 +81,8 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	tc.ID = info.ID
+	ret.TestCaseID = info.ID
+	ret.CondTestCaseID = info.ID
 	return func(*testing.T) {
 		_, _ = handler.DeleteTestCase(context.Background())
 	}
@@ -172,7 +173,7 @@ func TestMainOrder(t *testing.T) {
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
 
-	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
+	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
 
@@ -187,4 +188,6 @@ func TestMainOrder(t *testing.T) {
 	t.Run("getCond", getCond)
 	t.Run("getConds", getConds)
 	t.Run("deleteCond", deleteCond)
+
+	patch.Unpatch()
 }
