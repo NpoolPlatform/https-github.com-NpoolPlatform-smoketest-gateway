@@ -70,7 +70,6 @@ func (s *Server) ExistModule(ctx context.Context, in *npool.ExistModuleRequest) 
 	}, nil
 }
 
-//nolint
 func (s *Server) ExistModuleConds(ctx context.Context, in *npool.ExistModuleCondsRequest) (*npool.ExistModuleCondsResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
