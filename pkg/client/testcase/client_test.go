@@ -37,6 +37,7 @@ var (
 		Method:      api.Method_POST,
 		Path:        uuid.NewString(),
 		PathPrefix:  uuid.NewString(),
+		Domains:     []string{uuid.NewString()},
 	}
 )
 
@@ -47,6 +48,7 @@ func setupAPI(t *testing.T) func(*testing.T) {
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
+		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
