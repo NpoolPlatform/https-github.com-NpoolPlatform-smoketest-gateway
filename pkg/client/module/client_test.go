@@ -10,7 +10,7 @@ import (
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

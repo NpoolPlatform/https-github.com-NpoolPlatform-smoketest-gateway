@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
 	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
@@ -19,7 +19,7 @@ type Handler struct {
 	TestCaseID     *uuid.UUID
 	TestUserID     *uuid.UUID
 	TestCaseOutput *string
-	TestCaseResult *mgrpb.TestCaseResult
+	TestCaseResult *npool.TestCaseResult
 	Description    *string
 	Index          *uint32
 	RunDuration    *uint32
@@ -123,15 +123,15 @@ func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseResult(result *mgrpb.TestCaseResult) func(context.Context, *Handler) error {
+func WithTestCaseResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return fmt.Errorf("need testcase result")
 		}
 		switch *result {
-		case mgrpb.TestCaseResult_Passed:
-		case mgrpb.TestCaseResult_Failed:
-		case mgrpb.TestCaseResult_Skipped:
+		case npool.TestCaseResult_Passed:
+		case npool.TestCaseResult_Failed:
+		case npool.TestCaseResult_Skipped:
 		default:
 			return fmt.Errorf("invalid testcase result")
 		}
@@ -170,7 +170,7 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *mgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		h.Conds = &crud.Conds{}
 		if conds == nil {

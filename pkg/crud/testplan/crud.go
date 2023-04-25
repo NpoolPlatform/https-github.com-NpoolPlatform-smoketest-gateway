@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	testplanmgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
 	"github.com/google/uuid"
@@ -13,14 +13,14 @@ import (
 type Req struct {
 	ID          *uuid.UUID
 	Name        *string
-	State       *testplanmgrpb.TestPlanState
+	State       *npool.TestPlanState
 	CreatedBy   *uuid.UUID
 	Executor    *uuid.UUID
 	Fails       *uint32
 	Passes      *uint32
 	Skips       *uint32
 	RunDuration *uint32
-	Result      *testplanmgrpb.TestResultState
+	Result      *npool.TestResultState
 	Deadline    *uint32
 	DeletedAt   *uint32
 }

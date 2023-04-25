@@ -7,7 +7,6 @@ import (
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 
 	servicename "github.com/NpoolPlatform/smoketest-middleware/pkg/servicename"
@@ -28,7 +27,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateCond(ctx context.Context, in *mgrpb.CondReq) (*mgrpb.Cond, error) {
+func CreateCond(ctx context.Context, in *npool.CondReq) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateCond(ctx, &npool.CreateCondRequest{
 			Info: in,
@@ -41,10 +40,10 @@ func CreateCond(ctx context.Context, in *mgrpb.CondReq) (*mgrpb.Cond, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Cond), nil
+	return info.(*npool.Cond), nil
 }
 
-func GetCond(ctx context.Context, id string) (*mgrpb.Cond, error) {
+func GetCond(ctx context.Context, id string) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetCond(ctx, &npool.GetCondRequest{
 			ID: id,
@@ -57,10 +56,10 @@ func GetCond(ctx context.Context, id string) (*mgrpb.Cond, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Cond), nil
+	return info.(*npool.Cond), nil
 }
 
-func GetConds(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.Cond, uint32, error) {
+func GetConds(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.Cond, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetConds(ctx, &npool.GetCondsRequest{
@@ -78,13 +77,13 @@ func GetConds(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*mgrpb.Cond), total, nil
+	return infos.([]*npool.Cond), total, nil
 }
 
-func DeleteCond(ctx context.Context, id string) (*mgrpb.Cond, error) {
+func DeleteCond(ctx context.Context, id string) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteCond(ctx, &npool.DeleteCondRequest{
-			Info: &mgrpb.CondReq{
+			Info: &npool.CondReq{
 				ID: &id,
 			},
 		})
@@ -96,10 +95,10 @@ func DeleteCond(ctx context.Context, id string) (*mgrpb.Cond, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Cond), nil
+	return info.(*npool.Cond), nil
 }
 
-func UpdateCond(ctx context.Context, in *mgrpb.CondReq) (*mgrpb.Cond, error) {
+func UpdateCond(ctx context.Context, in *npool.CondReq) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateCond(ctx, &npool.UpdateCondRequest{
 			Info: in,
@@ -112,5 +111,5 @@ func UpdateCond(ctx context.Context, in *mgrpb.CondReq) (*mgrpb.Cond, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Cond), nil
+	return info.(*npool.Cond), nil
 }

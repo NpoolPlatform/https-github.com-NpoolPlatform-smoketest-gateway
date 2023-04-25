@@ -5,7 +5,6 @@ import (
 	"context"
 	"time"
 
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
@@ -30,7 +29,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, error) {
+func CreateModule(ctx context.Context, in *npool.ModuleReq) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateModule(ctx, &npool.CreateModuleRequest{
 			Info: in,
@@ -43,10 +42,10 @@ func CreateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, erro
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Module), nil
+	return info.(*npool.Module), nil
 }
 
-func GetModule(ctx context.Context, id string) (*mgrpb.Module, error) {
+func GetModule(ctx context.Context, id string) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModule(ctx, &npool.GetModuleRequest{
 			ID: id,
@@ -59,10 +58,10 @@ func GetModule(ctx context.Context, id string) (*mgrpb.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Module), nil
+	return info.(*npool.Module), nil
 }
 
-func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.Module, uint32, error) {
+func GetModules(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.Module, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModules(ctx, &npool.GetModulesRequest{
@@ -80,13 +79,13 @@ func GetModules(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*mgrpb.Module), total, nil
+	return infos.([]*npool.Module), total, nil
 }
 
-func DeleteModule(ctx context.Context, id string) (*mgrpb.Module, error) {
+func DeleteModule(ctx context.Context, id string) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteModule(ctx, &npool.DeleteModuleRequest{
-			Info: &mgrpb.ModuleReq{
+			Info: &npool.ModuleReq{
 				ID: &id,
 			},
 		})
@@ -98,10 +97,10 @@ func DeleteModule(ctx context.Context, id string) (*mgrpb.Module, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Module), nil
+	return info.(*npool.Module), nil
 }
 
-func UpdateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, error) {
+func UpdateModule(ctx context.Context, in *npool.ModuleReq) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateModule(ctx, &npool.UpdateModuleRequest{
 			Info: in,
@@ -114,7 +113,7 @@ func UpdateModule(ctx context.Context, in *mgrpb.ModuleReq) (*mgrpb.Module, erro
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.Module), nil
+	return info.(*npool.Module), nil
 }
 
 func ExistModule(ctx context.Context, id string) (bool, error) {
@@ -149,7 +148,7 @@ func ExistModuleByName(ctx context.Context, name string) (bool, error) {
 	return info.(bool), nil
 }
 
-func ExistModuleConds(ctx context.Context, conds *mgrpb.Conds) (bool, error) {
+func ExistModuleConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistModuleConds(ctx, &npool.ExistModuleCondsRequest{
 			Conds: conds,
@@ -165,7 +164,7 @@ func ExistModuleConds(ctx context.Context, conds *mgrpb.Conds) (bool, error) {
 	return info.(bool), nil
 }
 
-func GetModuleConds(ctx context.Context, conds *mgrpb.Conds) ([]*mgrpb.Module, uint32, error) {
+func GetModuleConds(ctx context.Context, conds *npool.Conds) ([]*npool.Module, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModuleConds(ctx, &npool.GetModuleCondsRequest{Conds: conds})
@@ -180,5 +179,5 @@ func GetModuleConds(ctx context.Context, conds *mgrpb.Conds) ([]*mgrpb.Module, u
 		return nil, 0, err
 	}
 
-	return infos.([]*mgrpb.Module), total, nil
+	return infos.([]*npool.Module), total, nil
 }

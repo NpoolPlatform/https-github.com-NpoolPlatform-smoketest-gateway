@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	npool "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"

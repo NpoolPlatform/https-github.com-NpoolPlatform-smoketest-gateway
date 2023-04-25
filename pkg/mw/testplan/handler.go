@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	testplanmgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/google/uuid"
@@ -14,7 +14,7 @@ import (
 type Handler struct {
 	ID        *uuid.UUID
 	Name      *string
-	State     *testplanmgrpb.TestPlanState
+	State     *npool.TestPlanState
 	CreatedBy *uuid.UUID
 	Executor  *uuid.UUID
 	Deadline  *uint32
@@ -82,16 +82,16 @@ func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
 	}
 }
 
-func WithState(state *testplanmgrpb.TestPlanState) func(context.Context, *Handler) error {
+func WithState(state *npool.TestPlanState) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if state == nil {
 			return nil
 		}
 		switch *state {
-		case testplanmgrpb.TestPlanState_WaitStart:
-		case testplanmgrpb.TestPlanState_InProgress:
-		case testplanmgrpb.TestPlanState_Finished:
-		case testplanmgrpb.TestPlanState_Overdue:
+		case npool.TestPlanState_WaitStart:
+		case npool.TestPlanState_InProgress:
+		case npool.TestPlanState_Finished:
+		case npool.TestPlanState_Overdue:
 		default:
 			return fmt.Errorf("plan state %v invalid", *state)
 		}
@@ -115,7 +115,7 @@ func WithExecutor(executor *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithConds(conds *testplanmgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		h.Conds = &testplancrud.Conds{}
 		if conds == nil {

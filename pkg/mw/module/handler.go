@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/google/uuid"
@@ -64,7 +64,7 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *modulemgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		h.Conds = &modulecrud.Conds{}
 		if conds == nil {

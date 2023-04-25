@@ -5,7 +5,6 @@ import (
 	"context"
 	"time"
 
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
@@ -30,7 +29,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan, error) {
+func CreateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateTestPlan(ctx, &npool.CreateTestPlanRequest{Info: in})
 		if err != nil {
@@ -41,10 +40,10 @@ func CreateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.TestPlan), nil
+	return info.(*npool.TestPlan), nil
 }
 
-func GetTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
+func GetTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlan(ctx, &npool.GetTestPlanRequest{
 			ID: id,
@@ -57,10 +56,10 @@ func GetTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.TestPlan), nil
+	return info.(*npool.TestPlan), nil
 }
 
-func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*mgrpb.TestPlan, uint32, error) {
+func GetTestPlans(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.TestPlan, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlans(ctx, &npool.GetTestPlansRequest{
@@ -78,13 +77,13 @@ func GetTestPlans(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) 
 	if err != nil {
 		return nil, 0, err
 	}
-	return infos.([]*mgrpb.TestPlan), total, nil
+	return infos.([]*npool.TestPlan), total, nil
 }
 
-func DeleteTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
+func DeleteTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestPlan(ctx, &npool.DeleteTestPlanRequest{
-			Info: &mgrpb.TestPlanReq{
+			Info: &npool.TestPlanReq{
 				ID: &id,
 			},
 		})
@@ -96,10 +95,10 @@ func DeleteTestPlan(ctx context.Context, id string) (*mgrpb.TestPlan, error) {
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.TestPlan), nil
+	return info.(*npool.TestPlan), nil
 }
 
-func UpdateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan, error) {
+func UpdateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateTestPlan(ctx, &npool.UpdateTestPlanRequest{
 			Info: in,
@@ -112,7 +111,7 @@ func UpdateTestPlan(ctx context.Context, in *mgrpb.TestPlanReq) (*mgrpb.TestPlan
 	if err != nil {
 		return nil, err
 	}
-	return info.(*mgrpb.TestPlan), nil
+	return info.(*npool.TestPlan), nil
 }
 
 func ExistTestPlan(ctx context.Context, id string) (bool, error) {

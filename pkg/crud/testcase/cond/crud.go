@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	condmgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/google/uuid"
@@ -12,7 +12,7 @@ import (
 
 type Req struct {
 	ID             *uuid.UUID
-	CondType       *condmgrpb.CondType
+	CondType       *npool.CondType
 	TestCaseID     *uuid.UUID
 	CondTestCaseID *uuid.UUID
 	Index          *uint32

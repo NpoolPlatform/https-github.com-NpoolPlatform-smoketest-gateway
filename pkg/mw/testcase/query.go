@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -95,7 +94,7 @@ func (h *queryHandler) scan(ctx context.Context) error {
 
 func (h *queryHandler) formalize() {
 	for _, info := range h.infos {
-		info.TestCaseType = mgrpb.TestCaseType(mgrpb.TestCaseType_value[info.TestCaseTypeStr])
+		info.TestCaseType = npool.TestCaseType(npool.TestCaseType_value[info.TestCaseTypeStr])
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
@@ -31,7 +30,7 @@ func do(ctx context.Context, fn func(_ctx context.Context, cli npool.MiddlewareC
 	return fn(_ctx, cli)
 }
 
-func CreateTestCase(ctx context.Context, in *mgrpb.TestCaseReq) (*npool.TestCase, error) {
+func CreateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.CreateTestCase(ctx, &npool.CreateTestCaseRequest{
 			Info: in,
@@ -63,7 +62,7 @@ func GetTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	return info.(*npool.TestCase), nil
 }
 
-func GetTestCases(ctx context.Context, conds *mgrpb.Conds, offset, limit int32) ([]*npool.TestCase, uint32, error) {
+func GetTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*npool.TestCase, uint32, error) {
 	var total uint32
 	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestCases(ctx, &npool.GetTestCasesRequest{
@@ -88,7 +87,7 @@ func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	fmt.Println("Call: DeleteTestCase")
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
-			Info: &mgrpb.TestCaseReq{
+			Info: &npool.TestCaseReq{
 				ID: &id,
 			},
 		})
@@ -103,7 +102,7 @@ func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	return info.(*npool.TestCase), nil
 }
 
-func UpdateTestCase(ctx context.Context, in *mgrpb.TestCaseReq) (*npool.TestCase, error) {
+func UpdateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.UpdateTestCase(ctx, &npool.UpdateTestCaseRequest{
 			Info: in,

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
 	"github.com/google/uuid"
@@ -19,7 +19,7 @@ type Req struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
-	TestCaseType *testcasemgrpb.TestCaseType
+	TestCaseType *npool.TestCaseType
 	Deprecated   *bool
 	DeletedAt    *uint32
 }

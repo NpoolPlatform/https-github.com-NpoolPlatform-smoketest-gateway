@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase/cond"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
 	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
@@ -16,7 +16,7 @@ type Handler struct {
 	ID             *uuid.UUID
 	TestCaseID     *uuid.UUID
 	CondTestCaseID *uuid.UUID
-	CondType       *mgrpb.CondType
+	CondType       *npool.CondType
 	Index          *uint32
 	ArgumentMap    *string
 	Conds          *crud.Conds
@@ -91,14 +91,14 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithCondType(_type *mgrpb.CondType) func(context.Context, *Handler) error {
+func WithCondType(_type *npool.CondType) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _type == nil {
 			return nil
 		}
 		switch *_type {
-		case mgrpb.CondType_PreCondition:
-		case mgrpb.CondType_Cleaner:
+		case npool.CondType_PreCondition:
+		case npool.CondType_Cleaner:
 		default:
 			return fmt.Errorf("invalid CondType")
 		}
@@ -128,7 +128,7 @@ func WithArgumentMap(argMap *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithConds(conds *mgrpb.Conds) func(context.Context, *Handler) error {
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if conds == nil {
 			return nil

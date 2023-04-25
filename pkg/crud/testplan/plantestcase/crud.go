@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	mgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan/plantestcase"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/google/uuid"
@@ -18,7 +18,7 @@ type Req struct {
 	Description    *string
 	RunDuration    *uint32
 	TestUserID     *uuid.UUID
-	Result         *mgrpb.TestCaseResult
+	Result         *npool.TestCaseResult
 	Index          *uint32
 	DeletedAt      *uint32
 }
