@@ -56,6 +56,7 @@ func setupAPI(t *testing.T) func(*testing.T) {
 	fmt.Println("ApiID:", info.ID)
 	return func(*testing.T) {
 		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
+		fmt.Println("DeleteAPI:", info.ID)
 	}
 }
 
@@ -158,6 +159,7 @@ func TestMainOrder(t *testing.T) {
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
 
 	teardown := setupAPI(t)
+	defer teardown(t)
 
 	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -170,5 +172,5 @@ func TestMainOrder(t *testing.T) {
 	t.Run("deleteTestCase", deleteTestCase)
 
 	patch.Unpatch()
-	defer teardown(t)
+
 }
