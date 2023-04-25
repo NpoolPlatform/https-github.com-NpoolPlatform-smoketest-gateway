@@ -27,6 +27,7 @@ func (h *queryHandler) selectPlanTestCase(stm *ent.PlanTestCaseQuery) {
 		plantestcase.FieldTestCaseOutput,
 		plantestcase.FieldResult,
 		plantestcase.FieldTestUserID,
+		plantestcase.FieldIndex,
 		plantestcase.FieldRunDuration,
 		plantestcase.FieldDescription,
 		plantestcase.FieldCreatedAt,
