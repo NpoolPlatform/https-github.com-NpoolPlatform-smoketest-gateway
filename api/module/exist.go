@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+//nolint
 func (s *Server) ExistModuleByName(ctx context.Context, in *npool.ExistModuleByNameRequest) (*npool.ExistModuleByNameResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
