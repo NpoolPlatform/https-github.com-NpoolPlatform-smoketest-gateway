@@ -10,7 +10,9 @@ import (
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -28,12 +30,40 @@ func init() {
 }
 
 var (
+	tt = testcasepb.TestCase{
+		Name:       uuid.NewString(),
+		ModuleName: uuid.NewString(),
+		ApiID:      uuid.NewString(),
+	}
+)
+
+func setupTestCase(t *testing.T) func(*testing.T) {
+	th, err := testcase1.NewHandler(
+		context.Background(),
+		testcase1.WithName(&tt.Name),
+		testcase1.WithModuleName(&tt.ModuleName),
+		testcase1.WithApiID(&tt.ApiID),
+	)
+	assert.Nil(t, err)
+	assert.NotNil(t, th)
+
+	testcase, err := th.CreateTestCase(context.Background())
+	assert.Nil(t, err)
+	assert.NotNil(t, testcase)
+
+	tt.ID = testcase.ID
+	return func(*testing.T) {
+		_, _ = th.DeleteTestCase(context.Background())
+	}
+}
+
+var (
 	ret = npool.Cond{
-		TestCaseID:     uuid.NewString(),
-		CondTestCaseID: uuid.NewString(),
-		CondType:       npool.CondType_DefaultCondType,
-		CondTypeStr:    npool.CondType_DefaultCondType.String(),
-		Index:          10,
+		TestCaseID:     tt.ID,
+		CondTestCaseID: tt.ID,
+		CondType:       npool.CondType_PreCondition,
+		CondTypeStr:    npool.CondType_PreCondition.String(),
+		Index:          100,
 		ArgumentMap:    "{}",
 	}
 )
@@ -118,6 +148,9 @@ func TestMainOrder(t *testing.T) {
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	teardown := setupTestCase(t)
+	defer teardown(t)
 
 	t.Run("createCond", createCond)
 	t.Run("updateCond", updateCond)
