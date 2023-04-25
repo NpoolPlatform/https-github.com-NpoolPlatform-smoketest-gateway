@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"testing"
+	"time"
 
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
@@ -33,6 +34,7 @@ var (
 		CreatedBy: uuid.NewString(),
 		Executor:  uuid.NewString(),
 		State:     npool.TestPlanState_WaitStart,
+		StateStr:  npool.TestPlanState_WaitStart.String(),
 	}
 )
 
@@ -48,7 +50,29 @@ func createTestPlan(t *testing.T) {
 	info, err := CreateTestPlan(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.Result = info.Result
+		ret.ResultStr = info.ResultStr
 		ret.CreatedAt = info.CreatedAt
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
+	}
+}
+
+func updateTestPlan(t *testing.T) {
+	ret.Deadline = uint32(time.Now().Unix() + 60*60*24)
+	ret.State = npool.TestPlanState_InProgress
+	ret.StateStr = npool.TestPlanState_InProgress.String()
+
+	var (
+		req = &npool.TestPlanReq{
+			ID:       &ret.ID,
+			State:    &ret.State,
+			Deadline: &ret.Deadline,
+		}
+	)
+
+	info, err := UpdateTestPlan(context.Background(), req)
+	if assert.Nil(t, err) {
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
 	}
@@ -91,6 +115,7 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createTestPlan", createTestPlan)
+	t.Run("updateTestPlan", updateTestPlan)
 	t.Run("getTestPlan", getTestPlan)
 	t.Run("getTestPlans", getTestPlans)
 	t.Run("deleteTestPlan", deleteTestPlan)
