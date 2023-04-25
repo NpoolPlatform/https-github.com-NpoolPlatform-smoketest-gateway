@@ -8,8 +8,11 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
+	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	"github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
+	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
@@ -27,32 +30,40 @@ func init() {
 	}
 }
 
-//TODO:need delete api method
-// func setupApi(t *testing.T) {
-// 	var (
-// 		serviceName = "service name"
-// 		protocol    = api.Protocol_HTTP
-// 		method      = api.Method_POST
-// 		path        = "/get/app"
-// 		pathPrefix  = "/api/user"
-// 	)
-// 	_api, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
-// 		ServiceName: &serviceName,
-// 		Protocol:    &protocol,
-// 		Method:      &method,
-// 		Path:        &path,
-// 		PathPrefix:  &pathPrefix,
-// 	})
-// 	assert.Nil(t, err)
-// 	assert.NotNil(t, _api)
-// }
+var (
+	_api = apimgrpb.API{
+		ServiceName: uuid.NewString(),
+		Protocol:    api.Protocol_HTTP,
+		Method:      api.Method_POST,
+		Path:        uuid.NewString(),
+		PathPrefix:  uuid.NewString(),
+	}
+)
+
+func setupAPI(t *testing.T) func(*testing.T) {
+	info, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
+		ServiceName: &_api.ServiceName,
+		Protocol:    &_api.Protocol,
+		Method:      &_api.Method,
+		Path:        &_api.Path,
+		PathPrefix:  &_api.PathPrefix,
+	})
+
+	assert.Nil(t, err)
+	assert.NotNil(t, info)
+
+	_api.ID = info.ID
+	return func(*testing.T) {
+		_, _ = apimwcli.DeleteAPI(context.Background(), info.ID)
+	}
+}
 
 var (
 	ret = npool.TestCase{
 		Name:            uuid.NewString(),
 		Description:     uuid.NewString(),
 		ModuleName:      uuid.NewString(),
-		ApiID:           uuid.NewString(),
+		ApiID:           _api.ID,
 		Input:           "{}",
 		InputDesc:       "{}",
 		Expectation:     "{}",
@@ -154,6 +165,9 @@ func TestMainOrder(t *testing.T) {
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	teardown := setupAPI(t)
+	defer teardown(t)
 
 	t.Run("createTestCase", createTestCase)
 	t.Run("getTestCase", getTestCase)
