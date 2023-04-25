@@ -15,6 +15,7 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 	if h.Name == nil {
 		return false, fmt.Errorf("invalid name")
 	}
+	fmt.Println("name:", *h.Name)
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		exist, err = cli.
 			Module.
@@ -24,7 +25,7 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 				entmodule.DeletedAt(0),
 			).
 			Exist(_ctx)
-		fmt.Println("exist: ", exist, "err: ", err)
+		fmt.Println("exist:", exist, "err:", err)
 		return err
 	})
 	if err != nil {
