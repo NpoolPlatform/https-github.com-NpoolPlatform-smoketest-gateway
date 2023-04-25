@@ -17,6 +17,7 @@ func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTes
 		ctx,
 		plantestcase1.WithTestPlanID(req.TestPlanID),
 		plantestcase1.WithTestCaseID(req.TestCaseID),
+		plantestcase1.WithDescription(req.Description),
 		plantestcase1.WithTestUserID(req.TestUserID),
 		plantestcase1.WithTestCaseOutput(req.TestCaseOutput),
 		plantestcase1.WithTestCaseResult(req.Result),
