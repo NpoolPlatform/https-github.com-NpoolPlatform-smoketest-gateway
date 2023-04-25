@@ -8,8 +8,11 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
+	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	"github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
+	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
@@ -30,10 +33,38 @@ func init() {
 }
 
 var (
+	_api = apimgrpb.API{
+		ServiceName: uuid.NewString(),
+		Protocol:    api.Protocol_HTTP,
+		Method:      api.Method_POST,
+		Path:        uuid.NewString(),
+		PathPrefix:  uuid.NewString(),
+	}
+)
+
+func setupAPI(t *testing.T) func(*testing.T) {
+	info, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
+		ServiceName: &_api.ServiceName,
+		Protocol:    &_api.Protocol,
+		Method:      &_api.Method,
+		Path:        &_api.Path,
+		PathPrefix:  &_api.PathPrefix,
+	})
+
+	assert.Nil(t, err)
+	assert.NotNil(t, info)
+
+	_api.ID = info.ID
+	return func(*testing.T) {
+		_, _ = apimwcli.DeleteAPI(context.Background(), info.ID)
+	}
+}
+
+var (
 	tt = testcasepb.TestCase{
 		Name:       uuid.NewString(),
 		ModuleName: uuid.NewString(),
-		ApiID:      uuid.NewString(),
+		ApiID:      _api.ID,
 	}
 )
 
@@ -89,25 +120,22 @@ func createCond(t *testing.T) {
 }
 
 func updateCond(t *testing.T) {
+	ret.Index = uint32(100)
+	ret.ArgumentMap = "{'Username': ''}"
+	ret.CondType = npool.CondType_Cleaner
+	ret.CondTypeStr = npool.CondType_Cleaner.String()
 	var (
-		index       = uint32(100)
-		argumentMap = "{'Username': ''}"
-		condType    = npool.CondType_PreCondition
-		condTypeStr = npool.CondType_PreCondition.String()
-		req         = &npool.CondReq{
+		req = &npool.CondReq{
 			ID:             &ret.ID,
 			TestCaseID:     &ret.TestCaseID,
 			CondTestCaseID: &ret.CondTestCaseID,
-			CondType:       &condType,
-			Index:          &index,
-			ArgumentMap:    &argumentMap,
+			CondType:       &ret.CondType,
+			Index:          &ret.Index,
+			ArgumentMap:    &ret.ArgumentMap,
 		}
 	)
 	info, err := UpdateCond(context.Background(), req)
 	if assert.Nil(t, err) {
-		ret.Index = index
-		ret.ArgumentMap = argumentMap
-		ret.CondTypeStr = condTypeStr
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
 	}
@@ -134,7 +162,7 @@ func deleteCond(t *testing.T) {
 	}
 
 	info, err = GetCond(context.Background(), ret.ID)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }
 
