@@ -35,6 +35,7 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 	return exist, nil
 }
 
+//nolint
 func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 	if h.ID == nil {
 		return false, fmt.Errorf("invalid id")
