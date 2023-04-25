@@ -157,6 +157,10 @@ func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
 		if moduleName == nil {
 			return fmt.Errorf("invalid module name")
 		}
+		const leastNameLen = 2
+		if len(*moduleName) < leastNameLen {
+			return fmt.Errorf("name %v too short", *moduleName)
+		}
 		h.ModuleName = moduleName
 		return nil
 	}
