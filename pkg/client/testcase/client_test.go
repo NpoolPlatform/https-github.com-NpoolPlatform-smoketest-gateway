@@ -10,7 +10,6 @@ import (
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	mwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
@@ -49,7 +48,7 @@ func init() {
 // }
 
 var (
-	ret = mwpb.TestCase{
+	ret = npool.TestCase{
 		Name:            "用例名称",
 		Description:     "用例描述",
 		ModuleID:        uuid.NewString(),
