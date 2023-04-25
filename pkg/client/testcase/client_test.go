@@ -53,6 +53,7 @@ func setupAPI(t *testing.T) func(*testing.T) {
 	assert.NotNil(t, info)
 
 	_api.ID = info.ID
+	fmt.Println("ApiID:", info.ID)
 	return func(*testing.T) {
 		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
 	}
@@ -86,6 +87,7 @@ func createTestCase(t *testing.T) {
 		}
 	)
 
+	fmt.Println("ApiID:", req.ID)
 	info, err := CreateTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
