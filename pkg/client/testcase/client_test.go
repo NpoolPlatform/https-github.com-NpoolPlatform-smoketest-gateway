@@ -99,7 +99,6 @@ func getTestCases(t *testing.T) {
 	}
 }
 
-//nolint
 func updateTestCase(t *testing.T) {
 	var (
 		name            = "用例名称111"
@@ -159,6 +158,6 @@ func TestMainOrder(t *testing.T) {
 	t.Run("createTestCase", createTestCase)
 	t.Run("getTestCase", getTestCase)
 	t.Run("getTestCases", getTestCases)
-	// t.Run("updateTestCase", updateTestCase)
+	t.Run("updateTestCase", updateTestCase)
 	t.Run("deleteTestCase", deleteTestCase)
 }
