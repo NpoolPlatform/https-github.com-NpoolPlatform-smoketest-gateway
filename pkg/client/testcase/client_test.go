@@ -53,6 +53,7 @@ func setupAPI(t *testing.T) func(*testing.T) {
 	assert.NotNil(t, info)
 
 	_api.ID = info.ID
+	ret.ApiID = info.ID
 	fmt.Println("ApiID:", info.ID)
 	return func(*testing.T) {
 		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
@@ -65,7 +66,6 @@ var (
 		Name:            uuid.NewString(),
 		Description:     uuid.NewString(),
 		ModuleName:      uuid.NewString(),
-		ApiID:           _api.ID,
 		Input:           "{}",
 		InputDesc:       "{}",
 		Expectation:     "{}",
