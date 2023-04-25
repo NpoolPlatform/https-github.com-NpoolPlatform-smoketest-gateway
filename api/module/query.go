@@ -2,7 +2,6 @@ package module
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 
@@ -14,7 +13,6 @@ import (
 )
 
 func (s *Server) GetModules(ctx context.Context, in *npool.GetModulesRequest) (*npool.GetModulesResponse, error) {
-	fmt.Println("GetConds: ", in.GetConds())
 	handler, err := module1.NewHandler(
 		ctx,
 		module1.WithConds(in.GetConds()),

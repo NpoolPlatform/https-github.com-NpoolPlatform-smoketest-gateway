@@ -3,7 +3,6 @@ package testcase
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -83,7 +82,6 @@ func GetTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) 
 }
 
 func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
-	fmt.Println("Call: DeleteTestCase")
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
 			Info: &npool.TestCaseReq{
