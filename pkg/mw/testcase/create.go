@@ -30,7 +30,7 @@ func (h *createHandler) createModule(ctx context.Context) error {
 	//TODO:Need Refactor
 	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		modules, err := cli.Module.Query().Where(
-			entmodule.Name(*h.Name),
+			entmodule.Name(*h.ModuleName),
 			entmodule.DeletedAt(0)).
 			All(_ctx)
 		if err != nil {
@@ -39,7 +39,7 @@ func (h *createHandler) createModule(ctx context.Context) error {
 
 		if len(modules) == 0 {
 			_entModule := cli.Module.Create()
-			_entModule.SetName(*h.Name)
+			_entModule.SetName(*h.ModuleName)
 			info, err := _entModule.Save(_ctx)
 			if err != nil {
 				return err
