@@ -38,22 +38,22 @@ var (
 )
 
 func setupTestCase(t *testing.T) func(*testing.T) {
-	th, err := testcase1.NewHandler(
+	handler, err := testcase1.NewHandler(
 		context.Background(),
 		testcase1.WithName(&tt.Name),
 		testcase1.WithModuleName(&tt.ModuleName),
 		testcase1.WithApiID(&tt.ApiID),
 	)
 	assert.Nil(t, err)
-	assert.NotNil(t, th)
+	assert.NotNil(t, handler)
 
-	testcase, err := th.CreateTestCase(context.Background())
+	testcase, err := handler.CreateTestCase(context.Background())
 	assert.Nil(t, err)
 	assert.NotNil(t, testcase)
 
 	tt.ID = testcase.ID
 	return func(*testing.T) {
-		_, _ = th.DeleteTestCase(context.Background())
+		_, _ = handler.DeleteTestCase(context.Background())
 	}
 }
 
