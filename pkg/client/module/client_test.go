@@ -92,7 +92,7 @@ func deleteModule(t *testing.T) {
 	}
 
 	info, err = GetModule(context.Background(), ret.ID)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }
 
