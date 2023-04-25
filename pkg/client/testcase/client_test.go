@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
+	apicrud "github.com/NpoolPlatform/basal-manager/pkg/crud/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
@@ -36,26 +36,24 @@ var (
 		Method:      apimgrpb.Method_POST,
 		Path:        uuid.NewString(),
 		PathPrefix:  uuid.NewString(),
-		Domains:     []string{uuid.NewString()},
 	}
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apimwcli.CreateAPI(context.Background(), &apimgrpb.APIReq{
+	info, err := apicrud.Create(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
-		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	_api.ID = info.ID
+	_api.ID = info.ID.String()
 	return func(*testing.T) {
-		_, _ = apimwcli.DeleteAPI(context.Background(), info.ID)
+		_, _ = apicrud.Delete(context.Background(), info.ID)
 	}
 }
 
@@ -112,34 +110,27 @@ func getTestCases(t *testing.T) {
 }
 
 func updateTestCase(t *testing.T) {
+	ret.Name = "用例名称111"
+	ret.Description = "用例描述111"
+	ret.Input = "{\"Name\": \"HelloWorld\"}"
+	ret.InputDesc = "{\"Name\": \"string\"}"
+	ret.Expectation = "{\"ID\": \"xxxxx\", \"Name\": \"HelloWorld\"}"
+	ret.TestCaseType = npool.TestCaseType_Automatic
+	ret.TestCaseTypeStr = npool.TestCaseType_Automatic.String()
 	var (
-		name            = "用例名称111"
-		description     = "用例描述111"
-		input           = "{\"Name\": \"HelloWorld\"}"
-		inputDesc       = "{\"Name\": \"string\"}"
-		expectation     = "{\"ID\": \"xxxxx\", \"Name\": \"HelloWorld\"}"
-		testCaseType    = npool.TestCaseType_Automatic
-		testCaseTypeStr = npool.TestCaseType_Automatic.String()
-		req             = &npool.TestCaseReq{
+		req = &npool.TestCaseReq{
 			ID:           &ret.ID,
-			Name:         &name,
-			Description:  &description,
-			Input:        &input,
-			InputDesc:    &inputDesc,
-			Expectation:  &expectation,
-			TestCaseType: &testCaseType,
+			Name:         &ret.Name,
+			Description:  &ret.Description,
+			Input:        &ret.Input,
+			InputDesc:    &ret.InputDesc,
+			Expectation:  &ret.Expectation,
+			TestCaseType: &ret.TestCaseType,
 		}
 	)
 
 	info, err := UpdateTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
-		ret.Name = name
-		ret.Input = input
-		ret.InputDesc = inputDesc
-		ret.Description = description
-		ret.Expectation = expectation
-		ret.TestCaseType = testCaseType
-		ret.TestCaseTypeStr = testCaseTypeStr
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, &ret, info)
 	}
