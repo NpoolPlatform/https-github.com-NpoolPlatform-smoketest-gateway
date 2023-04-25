@@ -2,6 +2,7 @@ package plantestcase
 
 import (
 	"context"
+	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
@@ -10,6 +11,9 @@ import (
 )
 
 func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestCase, err error) {
+	if h.TestCaseResult == nil {
+		return nil, fmt.Errorf("invalid testcase result")
+	}
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		info, err := crud.CreateSet(
 			cli.PlanTestCase.Create(),
