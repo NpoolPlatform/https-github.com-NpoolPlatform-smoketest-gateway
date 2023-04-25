@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apicrud "github.com/NpoolPlatform/basal-manager/pkg/crud/api"
+	apicli "github.com/NpoolPlatform/basal-manager/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
@@ -44,20 +44,21 @@ var (
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apicrud.Create(context.Background(), &apimgrpb.APIReq{
+	info, err := apicli.CreateAPI(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
+		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	_api.ID = info.ID.String()
+	tc.ApiID = info.ID
 	return func(*testing.T) {
-		_, _ = apicrud.Delete(context.Background(), info.ID)
+		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
 	}
 }
 
@@ -65,7 +66,6 @@ var (
 	tc = testcasepb.TestCase{
 		Name:       uuid.NewString(),
 		ModuleName: uuid.NewString(),
-		ApiID:      _api.ID,
 	}
 )
 
@@ -83,7 +83,7 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, info)
 
-	tc.ID = info.ID
+	ret.TestCaseID = info.ID
 	return func(*testing.T) {
 		_, _ = handler.DeleteTestCase(context.Background())
 	}
@@ -114,7 +114,7 @@ func setupTestPlan(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, testplan)
 
-	tp.ID = testplan.ID
+	ret.TestPlanID = testplan.ID
 	return func(*testing.T) {
 		_, _ = handler.DeleteTestPlan(context.Background())
 	}
@@ -122,8 +122,6 @@ func setupTestPlan(t *testing.T) func(*testing.T) {
 
 var (
 	ret = npool.PlanTestCase{
-		TestPlanID:     tp.ID,
-		TestCaseID:     tc.ID,
 		TestCaseOutput: "",
 		RunDuration:    1,
 		Index:          10,
@@ -187,10 +185,6 @@ func TestMainOrder(t *testing.T) {
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
 
-	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
-		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
-	})
-
 	apiTearDown := setupAPI(t)
 	defer apiTearDown(t)
 
@@ -200,8 +194,14 @@ func TestMainOrder(t *testing.T) {
 	tpTeardown := setupTestPlan(t)
 	defer tpTeardown(t)
 
+	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
+		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	})
+
 	t.Run("createPlanTestCase", createPlanTestCase)
 	t.Run("getPlanTestCase", getPlanTestCase)
 	t.Run("getPlanTestCases", getPlanTestCases)
 	t.Run("deletePlanTestCase", deletePlanTestCase)
+
+	patch.Unpatch()
 }

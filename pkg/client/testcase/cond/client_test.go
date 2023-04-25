@@ -173,15 +173,15 @@ func TestMainOrder(t *testing.T) {
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
 
-	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
-		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
-	})
-
 	apiTeardown := setupAPI(t)
 	defer apiTeardown(t)
 
 	teardown := setupTestCase(t)
 	defer teardown(t)
+
+	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
+		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	})
 
 	t.Run("createCond", createCond)
 	t.Run("updateCond", updateCond)
