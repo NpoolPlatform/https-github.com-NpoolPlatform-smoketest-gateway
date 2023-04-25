@@ -49,9 +49,8 @@ func init() {
 
 var (
 	ret = npool.TestCase{
-		Name:            "用例名称",
-		Description:     "用例描述",
-		ModuleID:        uuid.NewString(),
+		Name:            uuid.NewString(),
+		Description:     uuid.NewString(),
 		ModuleName:      uuid.NewString(),
 		ApiID:           uuid.NewString(),
 		Input:           "{}",
@@ -111,8 +110,6 @@ func updateTestCase(t *testing.T) {
 		testCaseTypeStr = npool.TestCaseType_Automatic.String()
 		req             = &npool.TestCaseReq{
 			ID:           &ret.ID,
-			ModuleName:   &ret.ModuleName,
-			ApiID:        &ret.ApiID,
 			Name:         &name,
 			Description:  &description,
 			Input:        &input,
@@ -127,6 +124,7 @@ func updateTestCase(t *testing.T) {
 		ret.Name = name
 		ret.Input = input
 		ret.InputDesc = inputDesc
+		ret.Description = description
 		ret.Expectation = expectation
 		ret.TestCaseType = testCaseType
 		ret.TestCaseTypeStr = testCaseTypeStr
@@ -142,7 +140,7 @@ func deleteTestCase(t *testing.T) {
 	}
 
 	info, err = GetTestCase(context.Background(), ret.ID)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }
 
@@ -158,8 +156,8 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createTestCase", createTestCase)
+	t.Run("updateTestCase", updateTestCase)
 	t.Run("getTestCase", getTestCase)
 	t.Run("getTestCases", getTestCases)
-	t.Run("updateTestCase", updateTestCase)
 	t.Run("deleteTestCase", deleteTestCase)
 }
