@@ -8,9 +8,15 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
+	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
+	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	testplanpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	testplan1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -28,9 +34,96 @@ func init() {
 }
 
 var (
+	_api = apimgrpb.API{
+		ServiceName: uuid.NewString(),
+		Protocol:    apimgrpb.Protocol_HTTP,
+		Method:      apimgrpb.Method_POST,
+		Path:        uuid.NewString(),
+		PathPrefix:  uuid.NewString(),
+	}
+)
+
+func setupAPI(t *testing.T) func(*testing.T) {
+	info, err := apimwcli.CreateAPI(context.Background(), &apimgrpb.APIReq{
+		ServiceName: &_api.ServiceName,
+		Protocol:    &_api.Protocol,
+		Method:      &_api.Method,
+		Path:        &_api.Path,
+		PathPrefix:  &_api.PathPrefix,
+	})
+
+	assert.Nil(t, err)
+	assert.NotNil(t, info)
+
+	_api.ID = info.ID
+	return func(*testing.T) {
+		_, _ = apimwcli.DeleteAPI(context.Background(), info.ID)
+	}
+}
+
+var (
+	tc = testcasepb.TestCase{
+		Name:       uuid.NewString(),
+		ModuleName: uuid.NewString(),
+		ApiID:      _api.ID,
+	}
+)
+
+func setupTestCase(t *testing.T) func(*testing.T) {
+	handler, err := testcase1.NewHandler(
+		context.Background(),
+		testcase1.WithName(&tc.Name),
+		testcase1.WithModuleName(&tc.ModuleName),
+		testcase1.WithApiID(&tc.ApiID),
+	)
+	assert.Nil(t, err)
+	assert.NotNil(t, handler)
+
+	info, err := handler.CreateTestCase(context.Background())
+	assert.Nil(t, err)
+	assert.NotNil(t, info)
+
+	tc.ID = info.ID
+	return func(*testing.T) {
+		_, _ = handler.DeleteTestCase(context.Background())
+	}
+}
+
+var (
+	tp = testplanpb.TestPlan{
+		Name:      uuid.NewString(),
+		CreatedBy: uuid.NewString(),
+		Executor:  uuid.NewString(),
+		State:     testplanpb.TestPlanState_WaitStart,
+		StateStr:  testplanpb.TestPlanState_WaitStart.String(),
+	}
+)
+
+func setupTestPlan(t *testing.T) func(*testing.T) {
+	handler, err := testplan1.NewHandler(
+		context.Background(),
+		testplan1.WithName(&tp.Name),
+		testplan1.WithCreatedBy(&tp.CreatedBy),
+		testplan1.WithExecutor(&tp.Executor),
+		testplan1.WithState(&tp.State),
+	)
+	assert.Nil(t, err)
+	assert.NotNil(t, handler)
+
+	testplan, err := handler.CreateTestPlan(context.Background())
+	assert.Nil(t, err)
+	assert.NotNil(t, testplan)
+
+	tp.ID = testplan.ID
+	return func(*testing.T) {
+		_, _ = handler.DeleteTestPlan(context.Background())
+	}
+}
+
+var (
 	ret = npool.PlanTestCase{
-		TestPlanID:     uuid.NewString(),
-		TestCaseID:     uuid.NewString(),
+		TestPlanID:     tp.ID,
+		TestCaseID:     tc.ID,
 		TestCaseOutput: "",
 		RunDuration:    1,
 		Index:          10,
@@ -97,6 +190,15 @@ func TestMainOrder(t *testing.T) {
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	apiTearDown := setupAPI(t)
+	defer apiTearDown(t)
+
+	tcTeardown := setupTestCase(t)
+	defer tcTeardown(t)
+
+	tpTeardown := setupTestPlan(t)
+	defer tpTeardown(t)
 
 	t.Run("createPlanTestCase", createPlanTestCase)
 	t.Run("getPlanTestCase", getPlanTestCase)
