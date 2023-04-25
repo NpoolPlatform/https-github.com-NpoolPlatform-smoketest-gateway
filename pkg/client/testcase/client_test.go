@@ -11,7 +11,6 @@ import (
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	"github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
@@ -33,8 +32,8 @@ func init() {
 var (
 	_api = apimgrpb.API{
 		ServiceName: uuid.NewString(),
-		Protocol:    api.Protocol_HTTP,
-		Method:      api.Method_POST,
+		Protocol:    apimgrpb.Protocol_HTTP,
+		Method:      apimgrpb.Method_POST,
 		Path:        uuid.NewString(),
 		PathPrefix:  uuid.NewString(),
 		Domains:     []string{uuid.NewString()},
@@ -42,7 +41,7 @@ var (
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
+	info, err := apimwcli.CreateAPI(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
