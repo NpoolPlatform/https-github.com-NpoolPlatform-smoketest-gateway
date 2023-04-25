@@ -18,10 +18,6 @@ func (h *createHandler) validate() error {
 	if h.Name == nil {
 		return fmt.Errorf("invalid name")
 	}
-	const leastNameLen = 2
-	if len(*h.Name) < leastNameLen {
-		return fmt.Errorf("name %v too short", *h.Name)
-	}
 	return nil
 }
 
@@ -34,8 +30,9 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	if exist, _ := h.ExistModuleByName(ctx); exist {
-		return nil, fmt.Errorf("name already exist")
+	if exist, err := h.ExistModuleByName(ctx); exist {
+		fmt.Print("------------------", exist, err)
+		return nil, err
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
@@ -56,5 +53,6 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 	if err != nil {
 		return nil, err
 	}
+
 	return h.GetModule(ctx)
 }
