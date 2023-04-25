@@ -11,7 +11,6 @@ import (
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	"github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
@@ -35,15 +34,15 @@ func init() {
 var (
 	_api = apimgrpb.API{
 		ServiceName: uuid.NewString(),
-		Protocol:    api.Protocol_HTTP,
-		Method:      api.Method_POST,
+		Protocol:    apimgrpb.Protocol_HTTP,
+		Method:      apimgrpb.Method_POST,
 		Path:        uuid.NewString(),
 		PathPrefix:  uuid.NewString(),
 	}
 )
 
 func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apimwcli.CreateAPI(context.Background(), &api.APIReq{
+	info, err := apimwcli.CreateAPI(context.Background(), &apimgrpb.APIReq{
 		ServiceName: &_api.ServiceName,
 		Protocol:    &_api.Protocol,
 		Method:      &_api.Method,
@@ -61,7 +60,7 @@ func setupAPI(t *testing.T) func(*testing.T) {
 }
 
 var (
-	tt = testcasepb.TestCase{
+	tc = testcasepb.TestCase{
 		Name:       uuid.NewString(),
 		ModuleName: uuid.NewString(),
 		ApiID:      _api.ID,
@@ -71,18 +70,18 @@ var (
 func setupTestCase(t *testing.T) func(*testing.T) {
 	handler, err := testcase1.NewHandler(
 		context.Background(),
-		testcase1.WithName(&tt.Name),
-		testcase1.WithModuleName(&tt.ModuleName),
-		testcase1.WithApiID(&tt.ApiID),
+		testcase1.WithName(&tc.Name),
+		testcase1.WithModuleName(&tc.ModuleName),
+		testcase1.WithApiID(&tc.ApiID),
 	)
 	assert.Nil(t, err)
 	assert.NotNil(t, handler)
 
-	testcase, err := handler.CreateTestCase(context.Background())
+	info, err := handler.CreateTestCase(context.Background())
 	assert.Nil(t, err)
-	assert.NotNil(t, testcase)
+	assert.NotNil(t, info)
 
-	tt.ID = testcase.ID
+	tc.ID = info.ID
 	return func(*testing.T) {
 		_, _ = handler.DeleteTestCase(context.Background())
 	}
@@ -90,8 +89,8 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 
 var (
 	ret = npool.Cond{
-		TestCaseID:     tt.ID,
-		CondTestCaseID: tt.ID,
+		TestCaseID:     tc.ID,
+		CondTestCaseID: tc.ID,
 		CondType:       npool.CondType_PreCondition,
 		CondTypeStr:    npool.CondType_PreCondition.String(),
 		Index:          100,
@@ -176,6 +175,9 @@ func TestMainOrder(t *testing.T) {
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	apiTeardown := setupAPI(t)
+	defer apiTeardown(t)
 
 	teardown := setupTestCase(t)
 	defer teardown(t)
