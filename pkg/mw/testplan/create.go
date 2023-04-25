@@ -54,7 +54,7 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 		if err != nil {
 			return err
 		}
-
+		fmt.Println("ID:", info.ID)
 		h.ID = &info.ID
 		return nil
 	})

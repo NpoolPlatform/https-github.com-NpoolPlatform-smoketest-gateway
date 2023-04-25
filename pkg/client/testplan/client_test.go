@@ -29,18 +29,10 @@ func init() {
 
 var (
 	ret = npool.TestPlan{
-		Name:        uuid.NewString(),
-		CreatedBy:   uuid.NewString(),
-		Executor:    uuid.NewString(),
-		State:       npool.TestPlanState_WaitStart,
-		Fails:       0,
-		Passes:      0,
-		Skips:       0,
-		RunDuration: 0,
-		Result:      npool.TestResultState_DefaultTestResultState,
-		Deadline:    0,
-		CreatedAt:   0,
-		UpdatedAt:   0,
+		Name:      uuid.NewString(),
+		CreatedBy: uuid.NewString(),
+		Executor:  uuid.NewString(),
+		State:     npool.TestPlanState_WaitStart,
 	}
 )
 
@@ -50,7 +42,6 @@ func createTestPlan(t *testing.T) {
 			Name:      &ret.Name,
 			CreatedBy: &ret.CreatedBy,
 			Executor:  &ret.Executor,
-			Deadline:  &ret.Deadline,
 		}
 	)
 
