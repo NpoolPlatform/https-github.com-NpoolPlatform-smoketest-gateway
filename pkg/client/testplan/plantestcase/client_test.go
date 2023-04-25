@@ -128,6 +128,7 @@ var (
 		Description:    uuid.NewString(),
 		TestUserID:     uuid.NewString(),
 		Result:         npool.TestCaseResult_Passed,
+		ResultStr:      npool.TestCaseResult_Passed.String(),
 	}
 )
 
@@ -174,7 +175,7 @@ func deletePlanTestCase(t *testing.T) {
 	}
 
 	info, err = GetPlanTestCase(context.Background(), ret.ID)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }
 

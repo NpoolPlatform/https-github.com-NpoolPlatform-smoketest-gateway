@@ -39,9 +39,6 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 	if req.TestCaseOutput != nil {
 		c.SetTestCaseOutput(*req.TestCaseOutput)
 	}
-	if req.Description != nil {
-		c.SetDescription(*req.Description)
-	}
 	if req.RunDuration != nil {
 		c.SetRunDuration(*req.RunDuration)
 	}
