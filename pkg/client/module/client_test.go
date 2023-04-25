@@ -52,20 +52,18 @@ func createModule(t *testing.T) {
 }
 
 func updateModule(t *testing.T) {
+	ret.Name = uuid.NewString()
+	ret.Description = uuid.NewString()
 	var (
-		name        = uuid.NewString()
-		description = uuid.NewString()
-		req         = &npool.ModuleReq{
+		req = &npool.ModuleReq{
 			ID:          &ret.ID,
-			Name:        &name,
-			Description: &description,
+			Name:        &ret.Name,
+			Description: &ret.Description,
 		}
 	)
 
 	info, err := UpdateModule(context.Background(), req)
 	if assert.Nil(t, err) {
-		ret.Name = name
-		ret.Description = description
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
 	}
