@@ -99,7 +99,7 @@ func deleteTestPlan(t *testing.T) {
 	}
 
 	info, err = GetTestPlan(context.Background(), ret.ID)
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }
 
