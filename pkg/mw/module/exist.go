@@ -24,6 +24,7 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 				entmodule.DeletedAt(0),
 			).
 			Exist(_ctx)
+		fmt.Println("exist: ", exist, "err: ", err)
 		return err
 	})
 	if err != nil {
