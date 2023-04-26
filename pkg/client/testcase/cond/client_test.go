@@ -121,7 +121,7 @@ func createCond(t *testing.T) {
 
 func updateCond(t *testing.T) {
 	ret.Index = uint32(100)
-	ret.ArgumentMap = "{'Username': ''}"
+	ret.ArgumentMap = "{\"Username\": \"daiki\"}"
 	ret.CondType = npool.CondType_Cleaner
 	ret.CondTypeStr = npool.CondType_Cleaner.String()
 	var (
