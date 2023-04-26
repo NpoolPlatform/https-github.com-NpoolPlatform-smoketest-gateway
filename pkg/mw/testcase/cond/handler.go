@@ -2,6 +2,7 @@ package cond
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -125,6 +126,11 @@ func WithArgumentMap(argMap *string) func(context.Context, *Handler) error {
 		if argMap == nil {
 			return nil
 		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*argMap), &r); err != nil {
+			return err
+		}
+
 		h.ArgumentMap = argMap
 		return nil
 	}
