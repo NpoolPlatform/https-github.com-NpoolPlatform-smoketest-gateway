@@ -43,10 +43,6 @@ func run(ctx context.Context) error {
 	return nil
 }
 
-func watch(ctx context.Context) error {
-	return nil
-}
-
 func rpcRegister(server grpc.ServiceRegistrar) error {
 	api.Register(server)
 
