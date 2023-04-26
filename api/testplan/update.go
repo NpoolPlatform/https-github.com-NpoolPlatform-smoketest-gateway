@@ -20,6 +20,11 @@ func (s *Server) UpdateTestPlan(ctx context.Context, in *npool.UpdateTestPlanReq
 		testplan1.WithExecutor(req.Executor),
 		testplan1.WithState(req.State),
 		testplan1.WithDeadline(req.Deadline),
+		testplan1.WithFails(req.Fails),
+		testplan1.WithSkips(req.Skips),
+		testplan1.WithFails(req.Fails),
+		testplan1.WithResult(req.Result),
+		testplan1.WithRunDuration(req.RunDuration),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

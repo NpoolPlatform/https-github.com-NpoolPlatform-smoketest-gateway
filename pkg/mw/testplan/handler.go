@@ -13,15 +13,20 @@ import (
 )
 
 type Handler struct {
-	ID        *uuid.UUID
-	Name      *string
-	State     *npool.TestPlanState
-	CreatedBy *uuid.UUID
-	Executor  *uuid.UUID
-	Deadline  *uint32
-	Conds     *testplancrud.Conds
-	Offset    int32
-	Limit     int32
+	ID          *uuid.UUID
+	Name        *string
+	State       *npool.TestPlanState
+	CreatedBy   *uuid.UUID
+	Executor    *uuid.UUID
+	Deadline    *uint32
+	Fails       *uint32
+	Skips       *uint32
+	Passes      *uint32
+	Result      *npool.TestResultState
+	RunDuration *uint32
+	Conds       *testplancrud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -116,6 +121,62 @@ func WithExecutor(executor *string) func(context.Context, *Handler) error {
 		}
 
 		h.Executor = &_executor
+		return nil
+	}
+}
+
+func WithResult(result *npool.TestResultState) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if result == nil {
+			return nil
+		}
+		switch *result {
+		case npool.TestResultState_Failed:
+		case npool.TestResultState_Passed:
+		default:
+			return fmt.Errorf("plan result %v invalid", *result)
+		}
+		h.Result = result
+		return nil
+	}
+}
+
+func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if duration == nil {
+			return nil
+		}
+		h.RunDuration = duration
+		return nil
+	}
+}
+
+func WithFails(fails *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if fails == nil {
+			return nil
+		}
+		h.Fails = fails
+		return nil
+	}
+}
+
+func WithPasses(passes *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if passes == nil {
+			return nil
+		}
+		h.Passes = passes
+		return nil
+	}
+}
+
+func WithSkips(skips *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if skips == nil {
+			return nil
+		}
+		h.Skips = skips
 		return nil
 	}
 }

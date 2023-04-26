@@ -6,7 +6,7 @@ import (
 	"time"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
-	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
@@ -19,14 +19,19 @@ func (h *Handler) UpdateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := testplancrud.UpdateSet(
+		if _, err := crud.UpdateSet(
 			cli.TestPlan.UpdateOneID(*h.ID),
-			&testplancrud.Req{
-				ID:       h.ID,
-				Name:     h.Name,
-				Executor: h.Executor,
-				State:    h.State,
-				Deadline: h.Deadline,
+			&crud.Req{
+				ID:          h.ID,
+				Name:        h.Name,
+				Executor:    h.Executor,
+				State:       h.State,
+				Deadline:    h.Deadline,
+				Fails:       h.Fails,
+				Skips:       h.Skips,
+				Passes:      h.Passes,
+				RunDuration: h.RunDuration,
+				Result:      h.Result,
 			},
 		).Save(_ctx); err != nil {
 			return err
