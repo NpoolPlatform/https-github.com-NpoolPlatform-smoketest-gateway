@@ -3,6 +3,7 @@ package testplan
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
@@ -77,6 +78,10 @@ func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
 		if deadline == nil {
 			return nil
 		}
+		if *deadline <= uint32(time.Now().Unix()) {
+			return fmt.Errorf("deadline less than current time")
+		}
+
 		h.Deadline = deadline
 		return nil
 	}
