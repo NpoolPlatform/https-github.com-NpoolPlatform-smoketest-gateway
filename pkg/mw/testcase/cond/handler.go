@@ -8,7 +8,7 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
-	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	tc "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
 	"github.com/google/uuid"
 )
 
@@ -54,7 +54,7 @@ func WithTestCaseID(id *string) func(context.Context, *Handler) error {
 		}
 
 		type TestCaseHandler struct {
-			testcasemw.Handler
+			tc.Handler
 		}
 
 		testcase := &TestCaseHandler{}
@@ -78,7 +78,7 @@ func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
 		}
 
 		type TestCaseHandler struct {
-			testcasemw.Handler
+			tc.Handler
 		}
 
 		testcase := &TestCaseHandler{}
