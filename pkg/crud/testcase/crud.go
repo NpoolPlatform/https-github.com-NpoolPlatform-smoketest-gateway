@@ -106,7 +106,6 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			return nil, fmt.Errorf("invalid id field")
 		}
 	}
-
 	if conds.ModuleID != nil {
 		moduleID, ok := conds.ID.Val.(uuid.UUID)
 		if !ok {
@@ -119,7 +118,6 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			return nil, fmt.Errorf("invalid module id field")
 		}
 	}
-
 	if conds.Deprecated != nil {
 		deprecated, ok := conds.Deprecated.Val.(bool)
 		if !ok {
@@ -132,7 +130,6 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			return nil, fmt.Errorf("invalid deprecated field")
 		}
 	}
-
 	if conds.IDs != nil {
 		ids, ok := conds.IDs.Val.([]uuid.UUID)
 		if !ok {
