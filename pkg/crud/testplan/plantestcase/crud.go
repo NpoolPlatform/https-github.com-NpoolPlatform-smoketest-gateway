@@ -84,7 +84,7 @@ type Conds struct {
 	Result      *cruder.Cond
 }
 
-func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQuery, error) {
+func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQuery, error) { //nolint
 	if conds.ID != nil {
 		id, ok := conds.ID.Val.(uuid.UUID)
 		if !ok {
@@ -134,7 +134,6 @@ func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQue
 			return nil, fmt.Errorf("invalid result field")
 		}
 	}
-
 	if conds.TestPlanIDs != nil {
 		ids, ok := conds.TestPlanIDs.Val.([]uuid.UUID)
 		if !ok {
