@@ -130,6 +130,12 @@ func WithTestCaseType(testCaseType *npool.TestCaseType) func(context.Context, *H
 		if testCaseType == nil {
 			return nil
 		}
+		switch *testCaseType {
+		case npool.TestCaseType_Manual:
+		case npool.TestCaseType_Automatic:
+		default:
+			return fmt.Errorf("invalid testcase type")
+		}
 		h.TestCaseType = testCaseType
 		return nil
 	}
@@ -143,8 +149,12 @@ func WithApiID(apiID *string) func(context.Context, *Handler) error {
 			return err
 		}
 
-		if _, err := apimwcli.ExistAPI(ctx, *apiID); err != nil {
+		exist, err := apimwcli.ExistAPI(ctx, *apiID)
+		if err != nil {
 			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid api id")
 		}
 
 		h.ApiID = &_apiID
