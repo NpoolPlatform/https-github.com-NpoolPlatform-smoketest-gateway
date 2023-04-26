@@ -132,5 +132,18 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			return nil, fmt.Errorf("invalid deprecated field")
 		}
 	}
+
+	if conds.IDs != nil {
+		ids, ok := conds.IDs.Val.([]uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid ids")
+		}
+		switch conds.IDs.Op {
+		case cruder.IN:
+			q.Where(testcase.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid testcase id filed")
+		}
+	}
 	return q, nil
 }

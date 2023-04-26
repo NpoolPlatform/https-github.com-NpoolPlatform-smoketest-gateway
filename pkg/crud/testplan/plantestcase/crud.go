@@ -79,6 +79,7 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 type Conds struct {
 	ID         *cruder.Cond
 	TestPlanID *cruder.Cond
+	TestPlanIDs *cruder.Cond
 	TestUserID *cruder.Cond
 	Result     *cruder.Cond
 }
@@ -131,6 +132,19 @@ func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQue
 			q.Where(plantestcase.Result(result))
 		default:
 			return nil, fmt.Errorf("invalid result field")
+		}
+	}
+
+	if conds.TestPlanIDs != nil {
+		ids, ok := conds.TestPlanIDs.Val.([]uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid testplan ids")
+		}
+		switch conds.TestPlanIDs.Op {
+		case cruder.IN:
+			q.Where(plantestcase.TestPlanIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid testplan id filed")
 		}
 	}
 	return q, nil

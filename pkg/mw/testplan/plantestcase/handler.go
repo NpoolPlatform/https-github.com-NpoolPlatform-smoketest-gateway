@@ -216,7 +216,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 				}
 				ids = append(ids, _id)
 			}
-			h.Conds.TestPlanID = &cruder.Cond{Op: conds.GetTestPlanIDs().GetOp(), Val: ids}
+			h.Conds.TestPlanIDs = &cruder.Cond{Op: conds.GetTestPlanIDs().GetOp(), Val: ids}
 		}
 
 		return nil
