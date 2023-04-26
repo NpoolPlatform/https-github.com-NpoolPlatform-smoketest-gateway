@@ -207,6 +207,18 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			h.Conds.Result = &cruder.Cond{Op: h.Conds.Result.Op, Val: conds.Result}
 		}
 
+		if len(conds.GetTestPlanIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetTestPlanIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.TestPlanID = &cruder.Cond{Op: conds.GetTestPlanIDs().GetOp(), Val: ids}
+		}
+
 		return nil
 	}
 }
