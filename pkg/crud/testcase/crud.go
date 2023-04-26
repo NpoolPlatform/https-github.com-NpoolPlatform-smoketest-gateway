@@ -93,6 +93,7 @@ type Conds struct {
 	IDs        *cruder.Cond
 }
 
+//nolint
 func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) {
 	if conds.ID != nil {
 		id, ok := conds.ID.Val.(uuid.UUID)

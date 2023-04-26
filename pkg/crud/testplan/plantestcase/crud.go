@@ -77,11 +77,11 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 }
 
 type Conds struct {
-	ID         *cruder.Cond
-	TestPlanID *cruder.Cond
+	ID          *cruder.Cond
+	TestPlanID  *cruder.Cond
 	TestPlanIDs *cruder.Cond
-	TestUserID *cruder.Cond
-	Result     *cruder.Cond
+	TestUserID  *cruder.Cond
+	Result      *cruder.Cond
 }
 
 func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQuery, error) {
