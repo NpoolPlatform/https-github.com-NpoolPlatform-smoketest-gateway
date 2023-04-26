@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
-	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	enttestplan "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
@@ -53,7 +53,7 @@ func (h *queryHandler) queryTestPlan(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryTestPlanByConds(ctx context.Context, cli *ent.Client) (err error) {
-	stm, err := testplancrud.SetQueryConds(cli.TestPlan.Query(), h.Conds)
+	stm, err := crud.SetQueryConds(cli.TestPlan.Query(), h.Conds)
 	if err != nil {
 		return err
 	}
