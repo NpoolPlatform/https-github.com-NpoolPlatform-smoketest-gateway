@@ -81,8 +81,8 @@ func UpdateSet(u *ent.TestPlanUpdateOne, req *Req) *ent.TestPlanUpdateOne {
 	if req.Fails != nil {
 		u.SetFails(*req.Fails)
 	}
-	if req.Passes != nil {
-		u.SetPasses(*req.Passes)
+	if req.Skips != nil {
+		u.SetSkips(*req.Skips)
 	}
 	if req.RunDuration != nil {
 		u.SetRunDuration(*req.RunDuration)
