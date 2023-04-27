@@ -62,12 +62,21 @@ func updateTestPlan(t *testing.T) {
 	ret.Deadline = uint32(time.Now().Unix() + 60*60*24)
 	ret.State = npool.TestPlanState_InProgress
 	ret.StateStr = npool.TestPlanState_InProgress.String()
+	ret.Result = npool.TestResultState_Passed
+	ret.ResultStr = npool.TestResultState_Passed.String()
+	ret.Fails = 1
+	ret.Passes = 10
+	ret.Skips = 1
 
 	var (
 		req = &npool.TestPlanReq{
 			ID:       &ret.ID,
 			State:    &ret.State,
 			Deadline: &ret.Deadline,
+			Result:   &ret.Result,
+			Fails:    &ret.Fails,
+			Passes:   &ret.Passes,
+			Skips:    &ret.Skips,
 		}
 	)
 
