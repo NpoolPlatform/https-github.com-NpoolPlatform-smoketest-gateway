@@ -17,6 +17,7 @@ func (h *Handler) UpdatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 				ID:             h.ID,
 				TestCaseOutput: h.TestCaseOutput,
 				Result:         h.TestCaseResult,
+				TestUserID:     h.TestUserID,
 				Index:          h.Index,
 				RunDuration:    h.RunDuration,
 				Description:    h.Description,
