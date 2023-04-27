@@ -22,7 +22,7 @@ func (s *Server) UpdateTestPlan(ctx context.Context, in *npool.UpdateTestPlanReq
 		testplan1.WithDeadline(req.Deadline),
 		testplan1.WithFails(req.Fails),
 		testplan1.WithSkips(req.Skips),
-		testplan1.WithFails(req.Fails),
+		testplan1.WithPasses(req.Passes),
 		testplan1.WithResult(req.Result),
 		testplan1.WithRunDuration(req.RunDuration),
 	)
