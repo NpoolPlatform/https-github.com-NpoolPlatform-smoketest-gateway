@@ -129,12 +129,9 @@ var (
 func createPlanTestCase(t *testing.T) {
 	var (
 		req = &npool.PlanTestCaseReq{
-			TestPlanID:     &ret.TestPlanID,
-			TestCaseID:     &ret.TestCaseID,
-			TestCaseOutput: &ret.TestCaseOutput,
-			RunDuration:    &ret.RunDuration,
-			Index:          &ret.Index,
-			Result:         &ret.Result,
+			TestPlanID: &ret.TestPlanID,
+			TestCaseID: &ret.TestCaseID,
+			Index:      &ret.Index,
 		}
 	)
 
