@@ -122,12 +122,7 @@ func setupTestPlan(t *testing.T) func(*testing.T) {
 
 var (
 	ret = npool.PlanTestCase{
-		TestCaseOutput: "",
-		RunDuration:    1,
-		Index:          10,
-		Description:    uuid.NewString(),
-		Result:         npool.TestCaseResult_Passed,
-		ResultStr:      npool.TestCaseResult_Passed.String(),
+		Index: 10,
 	}
 )
 
@@ -137,7 +132,6 @@ func createPlanTestCase(t *testing.T) {
 			TestPlanID:     &ret.TestPlanID,
 			TestCaseID:     &ret.TestCaseID,
 			TestCaseOutput: &ret.TestCaseOutput,
-			Description:    &ret.Description,
 			RunDuration:    &ret.RunDuration,
 			Index:          &ret.Index,
 			Result:         &ret.Result,
@@ -148,6 +142,11 @@ func createPlanTestCase(t *testing.T) {
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
 		ret.TestUserID = info.TestUserID
+		ret.TestCaseOutput = info.TestCaseOutput
+		ret.Description = info.Description
+		ret.RunDuration = info.RunDuration
+		ret.Result = info.Result
+		ret.ResultStr = info.Result.String()
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
@@ -158,11 +157,16 @@ func updatePlanTestCase(t *testing.T) {
 	ret.Index = 1000
 	ret.Description = "{}"
 	ret.TestCaseOutput = "{}"
+	ret.RunDuration = 100
+	ret.Result = npool.TestCaseResult_Passed
+	ret.ResultStr = npool.TestCaseResult_Passed.String()
 	req := &npool.PlanTestCaseReq{
 		ID:             &ret.ID,
 		Index:          &ret.Index,
 		Description:    &ret.Description,
 		TestCaseOutput: &ret.TestCaseOutput,
+		Result:         &ret.Result,
+		RunDuration:    &ret.RunDuration,
 	}
 
 	info, err := UpdatePlanTestCase(context.Background(), req)
