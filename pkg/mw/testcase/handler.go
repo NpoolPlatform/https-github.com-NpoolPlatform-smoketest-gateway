@@ -188,7 +188,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 
 		if conds.ModuleID != nil {
@@ -196,11 +196,11 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ModuleID = &cruder.Cond{Op: h.Conds.ModuleID.Op, Val: id}
+			h.Conds.ModuleID = &cruder.Cond{Op: conds.ModuleID.Op, Val: id}
 		}
 
 		if conds.Deprecated != nil {
-			h.Conds.Deprecated = &cruder.Cond{Op: h.Conds.Deprecated.Op, Val: conds.Deprecated}
+			h.Conds.Deprecated = &cruder.Cond{Op: conds.Deprecated.Op, Val: conds.Deprecated}
 		}
 
 		if len(conds.GetIDs().GetValue()) > 0 {

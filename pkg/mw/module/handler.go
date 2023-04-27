@@ -75,10 +75,10 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 		if conds.Name != nil {
-			h.Conds.Name = &cruder.Cond{Op: h.Conds.Name.Op, Val: conds.GetName().GetValue()}
+			h.Conds.Name = &cruder.Cond{Op: conds.Name.Op, Val: conds.GetName().GetValue()}
 		}
 		return nil
 	}

@@ -184,7 +184,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 
 		if conds.TestPlanID != nil {
@@ -192,7 +192,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.TestPlanID = &cruder.Cond{Op: h.Conds.TestPlanID.Op, Val: id}
+			h.Conds.TestPlanID = &cruder.Cond{Op: conds.TestPlanID.Op, Val: id}
 		}
 
 		if conds.TestUserID != nil {
@@ -200,11 +200,11 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.TestUserID = &cruder.Cond{Op: h.Conds.TestUserID.Op, Val: id}
+			h.Conds.TestUserID = &cruder.Cond{Op: conds.TestUserID.Op, Val: id}
 		}
 
 		if conds.Result != nil {
-			h.Conds.Result = &cruder.Cond{Op: h.Conds.Result.Op, Val: conds.Result}
+			h.Conds.Result = &cruder.Cond{Op: conds.Result.Op, Val: conds.Result}
 		}
 
 		if len(conds.GetTestPlanIDs().GetValue()) > 0 {

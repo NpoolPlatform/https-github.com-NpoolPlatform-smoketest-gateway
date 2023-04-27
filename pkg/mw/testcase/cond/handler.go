@@ -147,7 +147,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 
 		if conds.TestCaseID != nil {
@@ -155,7 +155,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.TestCaseID = &cruder.Cond{Op: h.Conds.TestCaseID.Op, Val: id}
+			h.Conds.TestCaseID = &cruder.Cond{Op: conds.TestCaseID.Op, Val: id}
 		}
 
 		if conds.CondTestCaseID != nil {
@@ -163,11 +163,11 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.CondTestCaseID = &cruder.Cond{Op: h.Conds.CondTestCaseID.Op, Val: id}
+			h.Conds.CondTestCaseID = &cruder.Cond{Op: conds.CondTestCaseID.Op, Val: id}
 		}
 
 		if conds.CondType != nil {
-			h.Conds.CondType = &cruder.Cond{Op: h.Conds.CondType.Op, Val: conds.CondType}
+			h.Conds.CondType = &cruder.Cond{Op: conds.CondType.Op, Val: conds.CondType}
 		}
 		return nil
 	}

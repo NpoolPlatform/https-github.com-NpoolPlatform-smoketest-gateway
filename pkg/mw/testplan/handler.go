@@ -193,11 +193,11 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: h.Conds.ID.Op, Val: id}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 
 		if conds.State != nil {
-			h.Conds.State = &cruder.Cond{Op: h.Conds.State.Op, Val: conds.State}
+			h.Conds.State = &cruder.Cond{Op: conds.State.Op, Val: conds.State}
 		}
 		return nil
 	}
