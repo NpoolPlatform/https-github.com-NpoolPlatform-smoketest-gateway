@@ -75,6 +75,21 @@ func UpdateSet(u *ent.TestPlanUpdateOne, req *Req) *ent.TestPlanUpdateOne {
 	if req.Deadline != nil {
 		u.SetDeadline(*req.Deadline)
 	}
+	if req.Passes != nil {
+		u.SetPasses(*req.Passes)
+	}
+	if req.Fails != nil {
+		u.SetFails(*req.Fails)
+	}
+	if req.Passes != nil {
+		u.SetPasses(*req.Passes)
+	}
+	if req.RunDuration != nil {
+		u.SetRunDuration(*req.RunDuration)
+	}
+	if req.Result != nil {
+		u.SetResult(req.Result.String())
+	}
 	if req.DeletedAt != nil {
 		u.SetDeletedAt(*req.DeletedAt)
 	}

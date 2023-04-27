@@ -59,6 +59,7 @@ func createTestPlan(t *testing.T) {
 }
 
 func updateTestPlan(t *testing.T) {
+	ret.RunDuration = 100
 	ret.Deadline = uint32(time.Now().Unix() + 60*60*24)
 	ret.State = npool.TestPlanState_InProgress
 	ret.StateStr = npool.TestPlanState_InProgress.String()
@@ -70,13 +71,14 @@ func updateTestPlan(t *testing.T) {
 
 	var (
 		req = &npool.TestPlanReq{
-			ID:       &ret.ID,
-			State:    &ret.State,
-			Deadline: &ret.Deadline,
-			Result:   &ret.Result,
-			Fails:    &ret.Fails,
-			Passes:   &ret.Passes,
-			Skips:    &ret.Skips,
+			ID:          &ret.ID,
+			State:       &ret.State,
+			Deadline:    &ret.Deadline,
+			RunDuration: &ret.RunDuration,
+			Result:      &ret.Result,
+			Fails:       &ret.Fails,
+			Passes:      &ret.Passes,
+			Skips:       &ret.Skips,
 		}
 	)
 
