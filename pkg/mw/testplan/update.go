@@ -22,7 +22,6 @@ func (h *Handler) UpdateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 		if _, err := crud.UpdateSet(
 			cli.TestPlan.UpdateOneID(*h.ID),
 			&crud.Req{
-				ID:          h.ID,
 				Name:        h.Name,
 				Executor:    h.Executor,
 				State:       h.State,
