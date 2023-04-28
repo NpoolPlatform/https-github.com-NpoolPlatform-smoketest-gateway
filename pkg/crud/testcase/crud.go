@@ -140,13 +140,13 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 		}
 	}
 	if conds.TestCaseType != nil {
-		testCaseType, ok := conds.TestCaseType.Val.(string)
+		testCaseType, ok := conds.TestCaseType.Val.(npool.TestCaseType)
 		if !ok {
 			return nil, fmt.Errorf("invalid testcase type")
 		}
 		switch conds.TestCaseType.Op {
 		case cruder.EQ:
-			q.Where(testcase.TestCaseType(testCaseType))
+			q.Where(testcase.TestCaseType(testCaseType.String()))
 		default:
 			return nil, fmt.Errorf("invalid testcase type field")
 		}
