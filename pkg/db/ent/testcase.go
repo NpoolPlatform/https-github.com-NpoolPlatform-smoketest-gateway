@@ -36,6 +36,8 @@ type TestCase struct {
 	InputDesc string `json:"input_desc,omitempty"`
 	// Expectation holds the value of the "expectation" field.
 	Expectation string `json:"expectation,omitempty"`
+	// OutputDesc holds the value of the "output_desc" field.
+	OutputDesc string `json:"output_desc,omitempty"`
 	// TestCaseType holds the value of the "test_case_type" field.
 	TestCaseType string `json:"test_case_type,omitempty"`
 	// Deprecated holds the value of the "deprecated" field.
@@ -51,7 +53,7 @@ func (*TestCase) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case testcase.FieldCreatedAt, testcase.FieldUpdatedAt, testcase.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case testcase.FieldName, testcase.FieldDescription, testcase.FieldInput, testcase.FieldInputDesc, testcase.FieldExpectation, testcase.FieldTestCaseType:
+		case testcase.FieldName, testcase.FieldDescription, testcase.FieldInput, testcase.FieldInputDesc, testcase.FieldExpectation, testcase.FieldOutputDesc, testcase.FieldTestCaseType:
 			values[i] = new(sql.NullString)
 		case testcase.FieldID, testcase.FieldModuleID, testcase.FieldAPIID:
 			values[i] = new(uuid.UUID)
@@ -136,6 +138,12 @@ func (tc *TestCase) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				tc.Expectation = value.String
 			}
+		case testcase.FieldOutputDesc:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field output_desc", values[i])
+			} else if value.Valid {
+				tc.OutputDesc = value.String
+			}
 		case testcase.FieldTestCaseType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field test_case_type", values[i])
@@ -205,6 +213,9 @@ func (tc *TestCase) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("expectation=")
 	builder.WriteString(tc.Expectation)
+	builder.WriteString(", ")
+	builder.WriteString("output_desc=")
+	builder.WriteString(tc.OutputDesc)
 	builder.WriteString(", ")
 	builder.WriteString("test_case_type=")
 	builder.WriteString(tc.TestCaseType)

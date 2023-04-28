@@ -149,6 +149,13 @@ func Expectation(v string) predicate.TestCase {
 	})
 }
 
+// OutputDesc applies equality check predicate on the "output_desc" field. It's identical to OutputDescEQ.
+func OutputDesc(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOutputDesc), v))
+	})
+}
+
 // TestCaseType applies equality check predicate on the "test_case_type" field. It's identical to TestCaseTypeEQ.
 func TestCaseType(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
@@ -1073,6 +1080,119 @@ func ExpectationEqualFold(v string) predicate.TestCase {
 func ExpectationContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldExpectation), v))
+	})
+}
+
+// OutputDescEQ applies the EQ predicate on the "output_desc" field.
+func OutputDescEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescNEQ applies the NEQ predicate on the "output_desc" field.
+func OutputDescNEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescIn applies the In predicate on the "output_desc" field.
+func OutputDescIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldOutputDesc), v...))
+	})
+}
+
+// OutputDescNotIn applies the NotIn predicate on the "output_desc" field.
+func OutputDescNotIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldOutputDesc), v...))
+	})
+}
+
+// OutputDescGT applies the GT predicate on the "output_desc" field.
+func OutputDescGT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescGTE applies the GTE predicate on the "output_desc" field.
+func OutputDescGTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescLT applies the LT predicate on the "output_desc" field.
+func OutputDescLT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescLTE applies the LTE predicate on the "output_desc" field.
+func OutputDescLTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescContains applies the Contains predicate on the "output_desc" field.
+func OutputDescContains(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescHasPrefix applies the HasPrefix predicate on the "output_desc" field.
+func OutputDescHasPrefix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescHasSuffix applies the HasSuffix predicate on the "output_desc" field.
+func OutputDescHasSuffix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescIsNil applies the IsNil predicate on the "output_desc" field.
+func OutputDescIsNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldOutputDesc)))
+	})
+}
+
+// OutputDescNotNil applies the NotNil predicate on the "output_desc" field.
+func OutputDescNotNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldOutputDesc)))
+	})
+}
+
+// OutputDescEqualFold applies the EqualFold predicate on the "output_desc" field.
+func OutputDescEqualFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldOutputDesc), v))
+	})
+}
+
+// OutputDescContainsFold applies the ContainsFold predicate on the "output_desc" field.
+func OutputDescContainsFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldOutputDesc), v))
 	})
 }
 

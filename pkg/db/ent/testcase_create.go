@@ -163,6 +163,20 @@ func (tcc *TestCaseCreate) SetNillableExpectation(s *string) *TestCaseCreate {
 	return tcc
 }
 
+// SetOutputDesc sets the "output_desc" field.
+func (tcc *TestCaseCreate) SetOutputDesc(s string) *TestCaseCreate {
+	tcc.mutation.SetOutputDesc(s)
+	return tcc
+}
+
+// SetNillableOutputDesc sets the "output_desc" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableOutputDesc(s *string) *TestCaseCreate {
+	if s != nil {
+		tcc.SetOutputDesc(*s)
+	}
+	return tcc
+}
+
 // SetTestCaseType sets the "test_case_type" field.
 func (tcc *TestCaseCreate) SetTestCaseType(s string) *TestCaseCreate {
 	tcc.mutation.SetTestCaseType(s)
@@ -339,6 +353,10 @@ func (tcc *TestCaseCreate) defaults() error {
 		v := testcase.DefaultExpectation
 		tcc.mutation.SetExpectation(v)
 	}
+	if _, ok := tcc.mutation.OutputDesc(); !ok {
+		v := testcase.DefaultOutputDesc
+		tcc.mutation.SetOutputDesc(v)
+	}
 	if _, ok := tcc.mutation.TestCaseType(); !ok {
 		v := testcase.DefaultTestCaseType
 		tcc.mutation.SetTestCaseType(v)
@@ -484,6 +502,14 @@ func (tcc *TestCaseCreate) createSpec() (*TestCase, *sqlgraph.CreateSpec) {
 			Column: testcase.FieldExpectation,
 		})
 		_node.Expectation = value
+	}
+	if value, ok := tcc.mutation.OutputDesc(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldOutputDesc,
+		})
+		_node.OutputDesc = value
 	}
 	if value, ok := tcc.mutation.TestCaseType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -732,6 +758,24 @@ func (u *TestCaseUpsert) UpdateExpectation() *TestCaseUpsert {
 // ClearExpectation clears the value of the "expectation" field.
 func (u *TestCaseUpsert) ClearExpectation() *TestCaseUpsert {
 	u.SetNull(testcase.FieldExpectation)
+	return u
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsert) SetOutputDesc(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldOutputDesc, v)
+	return u
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateOutputDesc() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldOutputDesc)
+	return u
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsert) ClearOutputDesc() *TestCaseUpsert {
+	u.SetNull(testcase.FieldOutputDesc)
 	return u
 }
 
@@ -1028,6 +1072,27 @@ func (u *TestCaseUpsertOne) UpdateExpectation() *TestCaseUpsertOne {
 func (u *TestCaseUpsertOne) ClearExpectation() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearExpectation()
+	})
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsertOne) SetOutputDesc(v string) *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetOutputDesc(v)
+	})
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateOutputDesc() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateOutputDesc()
+	})
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsertOne) ClearOutputDesc() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearOutputDesc()
 	})
 }
 
@@ -1496,6 +1561,27 @@ func (u *TestCaseUpsertBulk) UpdateExpectation() *TestCaseUpsertBulk {
 func (u *TestCaseUpsertBulk) ClearExpectation() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearExpectation()
+	})
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsertBulk) SetOutputDesc(v string) *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetOutputDesc(v)
+	})
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateOutputDesc() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateOutputDesc()
+	})
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsertBulk) ClearOutputDesc() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearOutputDesc()
 	})
 }
 

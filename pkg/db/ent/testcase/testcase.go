@@ -32,6 +32,8 @@ const (
 	FieldInputDesc = "input_desc"
 	// FieldExpectation holds the string denoting the expectation field in the database.
 	FieldExpectation = "expectation"
+	// FieldOutputDesc holds the string denoting the output_desc field in the database.
+	FieldOutputDesc = "output_desc"
 	// FieldTestCaseType holds the string denoting the test_case_type field in the database.
 	FieldTestCaseType = "test_case_type"
 	// FieldDeprecated holds the string denoting the deprecated field in the database.
@@ -53,6 +55,7 @@ var Columns = []string{
 	FieldInput,
 	FieldInputDesc,
 	FieldExpectation,
+	FieldOutputDesc,
 	FieldTestCaseType,
 	FieldDeprecated,
 }
@@ -98,6 +101,8 @@ var (
 	DefaultInputDesc string
 	// DefaultExpectation holds the default value on creation for the "expectation" field.
 	DefaultExpectation string
+	// DefaultOutputDesc holds the default value on creation for the "output_desc" field.
+	DefaultOutputDesc string
 	// DefaultTestCaseType holds the default value on creation for the "test_case_type" field.
 	DefaultTestCaseType string
 	// DefaultDeprecated holds the default value on creation for the "deprecated" field.

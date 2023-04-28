@@ -2914,6 +2914,7 @@ type TestCaseMutation struct {
 	input          *string
 	input_desc     *string
 	expectation    *string
+	output_desc    *string
 	test_case_type *string
 	deprecated     *bool
 	clearedFields  map[string]struct{}
@@ -3537,6 +3538,55 @@ func (m *TestCaseMutation) ResetExpectation() {
 	delete(m.clearedFields, testcase.FieldExpectation)
 }
 
+// SetOutputDesc sets the "output_desc" field.
+func (m *TestCaseMutation) SetOutputDesc(s string) {
+	m.output_desc = &s
+}
+
+// OutputDesc returns the value of the "output_desc" field in the mutation.
+func (m *TestCaseMutation) OutputDesc() (r string, exists bool) {
+	v := m.output_desc
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOutputDesc returns the old "output_desc" field's value of the TestCase entity.
+// If the TestCase object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestCaseMutation) OldOutputDesc(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOutputDesc is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOutputDesc requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOutputDesc: %w", err)
+	}
+	return oldValue.OutputDesc, nil
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (m *TestCaseMutation) ClearOutputDesc() {
+	m.output_desc = nil
+	m.clearedFields[testcase.FieldOutputDesc] = struct{}{}
+}
+
+// OutputDescCleared returns if the "output_desc" field was cleared in this mutation.
+func (m *TestCaseMutation) OutputDescCleared() bool {
+	_, ok := m.clearedFields[testcase.FieldOutputDesc]
+	return ok
+}
+
+// ResetOutputDesc resets all changes to the "output_desc" field.
+func (m *TestCaseMutation) ResetOutputDesc() {
+	m.output_desc = nil
+	delete(m.clearedFields, testcase.FieldOutputDesc)
+}
+
 // SetTestCaseType sets the "test_case_type" field.
 func (m *TestCaseMutation) SetTestCaseType(s string) {
 	m.test_case_type = &s
@@ -3654,7 +3704,7 @@ func (m *TestCaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestCaseMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.created_at != nil {
 		fields = append(fields, testcase.FieldCreatedAt)
 	}
@@ -3684,6 +3734,9 @@ func (m *TestCaseMutation) Fields() []string {
 	}
 	if m.expectation != nil {
 		fields = append(fields, testcase.FieldExpectation)
+	}
+	if m.output_desc != nil {
+		fields = append(fields, testcase.FieldOutputDesc)
 	}
 	if m.test_case_type != nil {
 		fields = append(fields, testcase.FieldTestCaseType)
@@ -3719,6 +3772,8 @@ func (m *TestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.InputDesc()
 	case testcase.FieldExpectation:
 		return m.Expectation()
+	case testcase.FieldOutputDesc:
+		return m.OutputDesc()
 	case testcase.FieldTestCaseType:
 		return m.TestCaseType()
 	case testcase.FieldDeprecated:
@@ -3752,6 +3807,8 @@ func (m *TestCaseMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldInputDesc(ctx)
 	case testcase.FieldExpectation:
 		return m.OldExpectation(ctx)
+	case testcase.FieldOutputDesc:
+		return m.OldOutputDesc(ctx)
 	case testcase.FieldTestCaseType:
 		return m.OldTestCaseType(ctx)
 	case testcase.FieldDeprecated:
@@ -3834,6 +3891,13 @@ func (m *TestCaseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetExpectation(v)
+		return nil
+	case testcase.FieldOutputDesc:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOutputDesc(v)
 		return nil
 	case testcase.FieldTestCaseType:
 		v, ok := value.(string)
@@ -3939,6 +4003,9 @@ func (m *TestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(testcase.FieldExpectation) {
 		fields = append(fields, testcase.FieldExpectation)
 	}
+	if m.FieldCleared(testcase.FieldOutputDesc) {
+		fields = append(fields, testcase.FieldOutputDesc)
+	}
 	if m.FieldCleared(testcase.FieldTestCaseType) {
 		fields = append(fields, testcase.FieldTestCaseType)
 	}
@@ -3979,6 +4046,9 @@ func (m *TestCaseMutation) ClearField(name string) error {
 		return nil
 	case testcase.FieldExpectation:
 		m.ClearExpectation()
+		return nil
+	case testcase.FieldOutputDesc:
+		m.ClearOutputDesc()
 		return nil
 	case testcase.FieldTestCaseType:
 		m.ClearTestCaseType()
@@ -4023,6 +4093,9 @@ func (m *TestCaseMutation) ResetField(name string) error {
 		return nil
 	case testcase.FieldExpectation:
 		m.ResetExpectation()
+		return nil
+	case testcase.FieldOutputDesc:
+		m.ResetOutputDesc()
 		return nil
 	case testcase.FieldTestCaseType:
 		m.ResetTestCaseType()

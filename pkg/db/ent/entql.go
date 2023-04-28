@@ -103,6 +103,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testcase.FieldInput:        {Type: field.TypeString, Column: testcase.FieldInput},
 			testcase.FieldInputDesc:    {Type: field.TypeString, Column: testcase.FieldInputDesc},
 			testcase.FieldExpectation:  {Type: field.TypeString, Column: testcase.FieldExpectation},
+			testcase.FieldOutputDesc:   {Type: field.TypeString, Column: testcase.FieldOutputDesc},
 			testcase.FieldTestCaseType: {Type: field.TypeString, Column: testcase.FieldTestCaseType},
 			testcase.FieldDeprecated:   {Type: field.TypeBool, Column: testcase.FieldDeprecated},
 		},
@@ -475,6 +476,11 @@ func (f *TestCaseFilter) WhereInputDesc(p entql.StringP) {
 // WhereExpectation applies the entql string predicate on the expectation field.
 func (f *TestCaseFilter) WhereExpectation(p entql.StringP) {
 	f.Where(p.Field(testcase.FieldExpectation))
+}
+
+// WhereOutputDesc applies the entql string predicate on the output_desc field.
+func (f *TestCaseFilter) WhereOutputDesc(p entql.StringP) {
+	f.Where(p.Field(testcase.FieldOutputDesc))
 }
 
 // WhereTestCaseType applies the entql string predicate on the test_case_type field.

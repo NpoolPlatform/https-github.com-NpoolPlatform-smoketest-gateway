@@ -59,6 +59,10 @@ func (TestCase) Fields() []ent.Field {
 			Optional().
 			Default(""),
 		field.
+			Text("output_desc").
+			Optional().
+			Default(""),
+		field.
 			String("test_case_type").
 			Optional().
 			Default(testcase.TestCaseType_DefaultTestCaseType.String()),
