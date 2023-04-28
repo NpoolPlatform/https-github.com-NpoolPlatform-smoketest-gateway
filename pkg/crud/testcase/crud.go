@@ -19,6 +19,7 @@ type Req struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
+	OutputDesc   *string
 	TestCaseType *npool.TestCaseType
 	Deprecated   *bool
 	DeletedAt    *uint32
@@ -49,6 +50,9 @@ func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
 	if req.Expectation != nil {
 		c.SetExpectation(*req.Expectation)
 	}
+	if req.OutputDesc != nil {
+		c.SetOutputDesc(*req.OutputDesc)
+	}
 	if req.TestCaseType != nil {
 		c.SetTestCaseType(req.TestCaseType.String())
 	}
@@ -73,6 +77,9 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 	}
 	if req.Expectation != nil {
 		u.SetExpectation(*req.Expectation)
+	}
+	if req.OutputDesc != nil {
+		u.SetOutputDesc(*req.OutputDesc)
 	}
 	if req.TestCaseType != nil {
 		u.SetTestCaseType(req.TestCaseType.String())

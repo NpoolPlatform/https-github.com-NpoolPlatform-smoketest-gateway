@@ -14,6 +14,7 @@ type Req struct {
 	ID          *uuid.UUID
 	TestPlanID  *uuid.UUID
 	TestCaseID  *uuid.UUID
+	Input       *string
 	Output      *string
 	Description *string
 	RunDuration *uint32
@@ -36,6 +37,9 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 	if req.Description != nil {
 		c.SetDescription(*req.Description)
 	}
+	if req.Input != nil {
+		c.SetInput(*req.Input)
+	}
 	if req.Output != nil {
 		c.SetOutput(*req.Output)
 	}
@@ -57,6 +61,9 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOne {
 	if req.Description != nil {
 		u.SetDescription(*req.Description)
+	}
+	if req.Input != nil {
+		u.SetInput(*req.Input)
 	}
 	if req.Output != nil {
 		u.SetOutput(*req.Output)
