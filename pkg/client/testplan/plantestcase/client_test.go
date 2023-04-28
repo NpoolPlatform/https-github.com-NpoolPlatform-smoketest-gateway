@@ -123,6 +123,7 @@ func setupTestPlan(t *testing.T) func(*testing.T) {
 var (
 	ret = npool.PlanTestCase{
 		Index: 10,
+		Input: "{}",
 	}
 )
 
@@ -132,6 +133,7 @@ func createPlanTestCase(t *testing.T) {
 			TestPlanID: &ret.TestPlanID,
 			TestCaseID: &ret.TestCaseID,
 			Index:      &ret.Index,
+			Input:      &ret.Input,
 		}
 	)
 
@@ -153,6 +155,7 @@ func createPlanTestCase(t *testing.T) {
 func updatePlanTestCase(t *testing.T) {
 	ret.Index = 1000
 	ret.Description = "{}"
+	ret.Input = "{\"Username\": \"hello\"}"
 	ret.Output = "{}"
 	ret.RunDuration = 100
 	ret.Result = npool.TestCaseResult_Passed
@@ -161,6 +164,7 @@ func updatePlanTestCase(t *testing.T) {
 		ID:          &ret.ID,
 		Index:       &ret.Index,
 		Description: &ret.Description,
+		Input:       &ret.Input,
 		Output:      &ret.Output,
 		Result:      &ret.Result,
 		RunDuration: &ret.RunDuration,
