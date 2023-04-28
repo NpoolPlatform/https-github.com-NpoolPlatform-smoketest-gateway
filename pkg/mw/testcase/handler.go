@@ -213,7 +213,9 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.ModuleID = &cruder.Cond{Op: conds.ModuleID.Op, Val: id}
 		}
-
+		if conds.TestCaseType != nil {
+			h.Conds.TestCaseType = &cruder.Cond{Op: conds.TestCaseType.Op, Val: conds.TestCaseType}
+		}
 		if conds.Deprecated != nil {
 			h.Conds.Deprecated = &cruder.Cond{Op: conds.Deprecated.Op, Val: conds.Deprecated}
 		}
