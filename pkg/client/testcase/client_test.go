@@ -155,9 +155,9 @@ func getTestCaseConds(t *testing.T) {
 			Op:    cruder.EQ,
 			Value: ret.ApiID,
 		},
-		TestCaseType: &commonpb.StringVal{
+		Deprecated: &commonpb.BoolVal{
 			Op:    cruder.EQ,
-			Value: ret.TestCaseType.String(),
+			Value: ret.Deprecated,
 		},
 	}, 0, 1)
 

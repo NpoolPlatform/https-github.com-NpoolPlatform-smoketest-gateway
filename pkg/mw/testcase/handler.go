@@ -220,9 +220,6 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.ApiID = &cruder.Cond{Op: conds.ApiID.Op, Val: id}
 		}
-		if conds.TestCaseType != nil {
-			h.Conds.TestCaseType = &cruder.Cond{Op: conds.TestCaseType.Op, Val: conds.TestCaseType}
-		}
 		if conds.Deprecated != nil {
 			h.Conds.Deprecated = &cruder.Cond{Op: conds.GetDeprecated().GetOp(), Val: conds.GetDeprecated().GetValue()}
 		}

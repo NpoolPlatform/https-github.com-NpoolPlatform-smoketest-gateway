@@ -94,12 +94,11 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 }
 
 type Conds struct {
-	ID           *cruder.Cond
-	ModuleID     *cruder.Cond
-	ApiID        *cruder.Cond
-	Deprecated   *cruder.Cond
-	TestCaseType *cruder.Cond
-	IDs          *cruder.Cond
+	ID         *cruder.Cond
+	ModuleID   *cruder.Cond
+	ApiID      *cruder.Cond
+	Deprecated *cruder.Cond
+	IDs        *cruder.Cond
 }
 
 func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) {
@@ -139,19 +138,6 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			return nil, fmt.Errorf("invalid api id field")
 		}
 	}
-	if conds.TestCaseType != nil {
-		testCaseType, ok := conds.TestCaseType.Val.(npool.TestCaseType)
-		if !ok {
-			return nil, fmt.Errorf("invalid testcase type")
-		}
-		switch conds.TestCaseType.Op {
-		case cruder.EQ:
-			q.Where(testcase.TestCaseType(testCaseType.String()))
-		default:
-			return nil, fmt.Errorf("invalid testcase type field")
-		}
-	}
-
 	if conds.Deprecated != nil {
 		deprecated, ok := conds.Deprecated.Val.(bool)
 		if !ok {
