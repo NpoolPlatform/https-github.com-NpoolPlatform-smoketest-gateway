@@ -6,11 +6,11 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	enttestcase "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
-	"github.com/google/uuid"
 )
 
 type queryHandler struct {
@@ -27,9 +27,10 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldDescription,
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
-		enttestcase.FieldArguments,
-		enttestcase.FieldArgTypeDescription,
-		enttestcase.FieldExpectationResult,
+		enttestcase.FieldTestCaseType,
+		enttestcase.FieldInput,
+		enttestcase.FieldInputDesc,
+		enttestcase.FieldExpectation,
 		enttestcase.FieldDeprecated,
 		enttestcase.FieldCreatedAt,
 		enttestcase.FieldUpdatedAt,
@@ -63,7 +64,7 @@ func (h *queryHandler) queryTestCase(cli *ent.Client) error {
 		cli.TestCase.
 			Query().
 			Where(
-				enttestcase.ID(uuid.MustParse(*h.ID)),
+				enttestcase.ID(*h.ID),
 				enttestcase.DeletedAt(0),
 			),
 	)
@@ -71,26 +72,9 @@ func (h *queryHandler) queryTestCase(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client) (err error) {
-	if h.Conds == nil {
-		return fmt.Errorf("invalid conds")
-	}
-
-	stm := cli.TestCase.Query()
-	if h.Conds.ID != nil {
-		stm = stm.Where(
-			enttestcase.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
-		)
-	}
-	if h.Conds.ModuleID != nil {
-		stm = stm.Where(
-			enttestcase.ModuleID(uuid.MustParse(h.Conds.GetModuleID().GetValue())),
-		)
-	}
-
-	if h.Conds.Deprecated != nil {
-		stm = stm.Where(
-			enttestcase.Deprecated(h.Conds.GetDeprecated().GetValue()),
-		)
+	stm, err := crud.SetQueryConds(cli.TestCase.Query(), h.Conds)
+	if err != nil {
+		return err
 	}
 
 	total, err := stm.Count(ctx)
@@ -100,17 +84,18 @@ func (h *queryHandler) queryTestCaseByConds(ctx context.Context, cli *ent.Client
 
 	h.total = uint32(total)
 
-	_, err = stm.Offset(int(*h.Offset)).Limit(int(*h.Limit)).All(ctx)
-	if err != nil {
-		return nil
-	}
-
 	h.selectTestCase(stm)
 	return nil
 }
 
 func (h *queryHandler) scan(ctx context.Context) error {
 	return h.stm.Scan(ctx, &h.infos)
+}
+
+func (h *queryHandler) formalize() {
+	for _, info := range h.infos {
+		info.TestCaseType = npool.TestCaseType(npool.TestCaseType_value[info.TestCaseTypeStr])
+	}
 }
 
 func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, error) {
@@ -122,6 +107,10 @@ func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, 
 			return err
 		}
 		handler.queryJoin()
+		handler.
+			stm.
+			Offset(int(h.Offset)).
+			Limit(int(h.Limit))
 		if err := handler.scan(_ctx); err != nil {
 			return err
 		}
@@ -131,6 +120,7 @@ func (h *Handler) GetTestCases(ctx context.Context) ([]*npool.TestCase, uint32, 
 		return nil, 0, err
 	}
 
+	handler.formalize()
 	return handler.infos, handler.total, nil
 }
 
@@ -152,5 +142,10 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 	if err != nil {
 		return
 	}
+	if len(handler.infos) == 0 {
+		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+	}
+
+	handler.formalize()
 	return handler.infos[0], nil
 }

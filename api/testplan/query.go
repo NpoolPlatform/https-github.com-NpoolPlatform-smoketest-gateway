@@ -15,11 +15,9 @@ import (
 func (s *Server) GetTestPlans(ctx context.Context, in *npool.GetTestPlansRequest) (*npool.GetTestPlansResponse, error) {
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithConds(
-			in.GetConds(),
-			in.GetOffset(),
-			in.GetLimit(),
-		),
+		testplan1.WithConds(in.GetConds()),
+		testplan1.WithOffset(in.GetOffset()),
+		testplan1.WithLimit(in.GetLimit()),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

@@ -3,22 +3,30 @@ package testplan
 import (
 	"context"
 	"fmt"
+	"time"
 
-	testplanmgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testplan"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	testplancrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID                *string
-	Name              *string
-	State             *string
-	OwnerID           *string
-	ResponsibleUserID *string
-	Deadline          *uint32
-	Conds             *testplanmgrpb.Conds
-	Offset            *int32
-	Limit             *int32
+	ID          *uuid.UUID
+	Name        *string
+	State       *npool.TestPlanState
+	CreatedBy   *uuid.UUID
+	Executor    *uuid.UUID
+	Deadline    *uint32
+	Fails       *uint32
+	Skips       *uint32
+	Passes      *uint32
+	Result      *npool.TestResultState
+	RunDuration *uint32
+	Conds       *testplancrud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -33,10 +41,14 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 
 func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*id); err != nil {
+		if id == nil {
+			return nil
+		}
+		_id, err := uuid.Parse(*id)
+		if err != nil {
 			return err
 		}
-		h.ID = id
+		h.ID = &_id
 		return nil
 	}
 }
@@ -46,17 +58,22 @@ func WithName(name *string) func(context.Context, *Handler) error {
 		if name == nil {
 			return nil
 		}
+		const leastNameLen = 4
+		if len(*name) < leastNameLen {
+			return fmt.Errorf("name %v too short", *name)
+		}
 		h.Name = name
 		return nil
 	}
 }
 
-func WithOwnerID(ownerID *string) func(context.Context, *Handler) error {
+func WithCreatedBy(createdBy *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*ownerID); err != nil {
+		_createdBy, err := uuid.Parse(*createdBy)
+		if err != nil {
 			return err
 		}
-		h.OwnerID = ownerID
+		h.CreatedBy = &_createdBy
 		return nil
 	}
 }
@@ -66,52 +83,139 @@ func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
 		if deadline == nil {
 			return nil
 		}
+		if *deadline <= uint32(time.Now().Unix()) {
+			return fmt.Errorf("deadline less than current time")
+		}
+
 		h.Deadline = deadline
 		return nil
 	}
 }
 
-func WithResponsibleUserID(userID *string) func(context.Context, *Handler) error {
+func WithState(state *npool.TestPlanState) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if userID == nil {
+		if state == nil {
 			return nil
 		}
-		if _, err := uuid.Parse(*userID); err != nil {
-			return err
+		switch *state {
+		case npool.TestPlanState_WaitStart:
+		case npool.TestPlanState_InProgress:
+		case npool.TestPlanState_Finished:
+		case npool.TestPlanState_Overdue:
+		default:
+			return fmt.Errorf("plan state %v invalid", *state)
 		}
-		h.ResponsibleUserID = userID
+		h.State = state
 		return nil
 	}
 }
 
-func WithConds(conds *testplanmgrpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithExecutor(executor *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		if executor == nil {
+			return nil
+		}
+		_executor, err := uuid.Parse(*executor)
+		if err != nil {
+			return err
+		}
+
+		h.Executor = &_executor
+		return nil
+	}
+}
+
+func WithResult(result *npool.TestResultState) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if result == nil {
+			return nil
+		}
+		switch *result {
+		case npool.TestResultState_Failed:
+		case npool.TestResultState_Passed:
+		default:
+			return fmt.Errorf("plan result %v invalid", *result)
+		}
+		h.Result = result
+		return nil
+	}
+}
+
+func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if duration == nil {
+			return nil
+		}
+		h.RunDuration = duration
+		return nil
+	}
+}
+
+func WithFails(fails *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if fails == nil {
+			return nil
+		}
+		h.Fails = fails
+		return nil
+	}
+}
+
+func WithPasses(passes *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if passes == nil {
+			return nil
+		}
+		h.Passes = passes
+		return nil
+	}
+}
+
+func WithSkips(skips *uint32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if skips == nil {
+			return nil
+		}
+		h.Skips = skips
+		return nil
+	}
+}
+
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &testplancrud.Conds{}
 		if conds == nil {
-			return fmt.Errorf("invalid conds")
+			return nil
 		}
 
 		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
 				return err
 			}
-		}
-		if conds.ResponsibleUserID != nil {
-			if _, err := uuid.Parse(conds.GetResponsibleUserID().GetValue()); err != nil {
-				return err
-			}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
 
-		h.Conds = conds
-
-		if h.Offset == nil {
-			offset = constant.DefaultRowLimit
+		if conds.State != nil {
+			h.Conds.State = &cruder.Cond{Op: conds.State.Op, Val: conds.State}
 		}
-		h.Offset = &offset
+		return nil
+	}
+}
+
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
 		if limit == 0 {
 			limit = constant.DefaultRowLimit
 		}
-		h.Limit = &limit
-
+		h.Limit = limit
 		return nil
 	}
 }

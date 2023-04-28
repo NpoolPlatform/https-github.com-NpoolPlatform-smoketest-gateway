@@ -128,24 +128,24 @@ func APIID(v uuid.UUID) predicate.TestCase {
 	})
 }
 
-// Arguments applies equality check predicate on the "arguments" field. It's identical to ArgumentsEQ.
-func Arguments(v string) predicate.TestCase {
+// Input applies equality check predicate on the "input" field. It's identical to InputEQ.
+func Input(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldArguments), v))
+		s.Where(sql.EQ(s.C(FieldInput), v))
 	})
 }
 
-// ArgTypeDescription applies equality check predicate on the "arg_type_description" field. It's identical to ArgTypeDescriptionEQ.
-func ArgTypeDescription(v string) predicate.TestCase {
+// InputDesc applies equality check predicate on the "input_desc" field. It's identical to InputDescEQ.
+func InputDesc(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.EQ(s.C(FieldInputDesc), v))
 	})
 }
 
-// ExpectationResult applies equality check predicate on the "expectation_result" field. It's identical to ExpectationResultEQ.
-func ExpectationResult(v string) predicate.TestCase {
+// Expectation applies equality check predicate on the "expectation" field. It's identical to ExpectationEQ.
+func Expectation(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldExpectationResult), v))
+		s.Where(sql.EQ(s.C(FieldExpectation), v))
 	})
 }
 
@@ -737,342 +737,342 @@ func APIIDNotNil() predicate.TestCase {
 	})
 }
 
-// ArgumentsEQ applies the EQ predicate on the "arguments" field.
-func ArgumentsEQ(v string) predicate.TestCase {
+// InputEQ applies the EQ predicate on the "input" field.
+func InputEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldArguments), v))
+		s.Where(sql.EQ(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsNEQ applies the NEQ predicate on the "arguments" field.
-func ArgumentsNEQ(v string) predicate.TestCase {
+// InputNEQ applies the NEQ predicate on the "input" field.
+func InputNEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldArguments), v))
+		s.Where(sql.NEQ(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsIn applies the In predicate on the "arguments" field.
-func ArgumentsIn(vs ...string) predicate.TestCase {
+// InputIn applies the In predicate on the "input" field.
+func InputIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldArguments), v...))
+		s.Where(sql.In(s.C(FieldInput), v...))
 	})
 }
 
-// ArgumentsNotIn applies the NotIn predicate on the "arguments" field.
-func ArgumentsNotIn(vs ...string) predicate.TestCase {
+// InputNotIn applies the NotIn predicate on the "input" field.
+func InputNotIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldArguments), v...))
+		s.Where(sql.NotIn(s.C(FieldInput), v...))
 	})
 }
 
-// ArgumentsGT applies the GT predicate on the "arguments" field.
-func ArgumentsGT(v string) predicate.TestCase {
+// InputGT applies the GT predicate on the "input" field.
+func InputGT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldArguments), v))
+		s.Where(sql.GT(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsGTE applies the GTE predicate on the "arguments" field.
-func ArgumentsGTE(v string) predicate.TestCase {
+// InputGTE applies the GTE predicate on the "input" field.
+func InputGTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldArguments), v))
+		s.Where(sql.GTE(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsLT applies the LT predicate on the "arguments" field.
-func ArgumentsLT(v string) predicate.TestCase {
+// InputLT applies the LT predicate on the "input" field.
+func InputLT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldArguments), v))
+		s.Where(sql.LT(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsLTE applies the LTE predicate on the "arguments" field.
-func ArgumentsLTE(v string) predicate.TestCase {
+// InputLTE applies the LTE predicate on the "input" field.
+func InputLTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldArguments), v))
+		s.Where(sql.LTE(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsContains applies the Contains predicate on the "arguments" field.
-func ArgumentsContains(v string) predicate.TestCase {
+// InputContains applies the Contains predicate on the "input" field.
+func InputContains(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldArguments), v))
+		s.Where(sql.Contains(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsHasPrefix applies the HasPrefix predicate on the "arguments" field.
-func ArgumentsHasPrefix(v string) predicate.TestCase {
+// InputHasPrefix applies the HasPrefix predicate on the "input" field.
+func InputHasPrefix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldArguments), v))
+		s.Where(sql.HasPrefix(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsHasSuffix applies the HasSuffix predicate on the "arguments" field.
-func ArgumentsHasSuffix(v string) predicate.TestCase {
+// InputHasSuffix applies the HasSuffix predicate on the "input" field.
+func InputHasSuffix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldArguments), v))
+		s.Where(sql.HasSuffix(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsIsNil applies the IsNil predicate on the "arguments" field.
-func ArgumentsIsNil() predicate.TestCase {
+// InputIsNil applies the IsNil predicate on the "input" field.
+func InputIsNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldArguments)))
+		s.Where(sql.IsNull(s.C(FieldInput)))
 	})
 }
 
-// ArgumentsNotNil applies the NotNil predicate on the "arguments" field.
-func ArgumentsNotNil() predicate.TestCase {
+// InputNotNil applies the NotNil predicate on the "input" field.
+func InputNotNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldArguments)))
+		s.Where(sql.NotNull(s.C(FieldInput)))
 	})
 }
 
-// ArgumentsEqualFold applies the EqualFold predicate on the "arguments" field.
-func ArgumentsEqualFold(v string) predicate.TestCase {
+// InputEqualFold applies the EqualFold predicate on the "input" field.
+func InputEqualFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldArguments), v))
+		s.Where(sql.EqualFold(s.C(FieldInput), v))
 	})
 }
 
-// ArgumentsContainsFold applies the ContainsFold predicate on the "arguments" field.
-func ArgumentsContainsFold(v string) predicate.TestCase {
+// InputContainsFold applies the ContainsFold predicate on the "input" field.
+func InputContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldArguments), v))
+		s.Where(sql.ContainsFold(s.C(FieldInput), v))
 	})
 }
 
-// ArgTypeDescriptionEQ applies the EQ predicate on the "arg_type_description" field.
-func ArgTypeDescriptionEQ(v string) predicate.TestCase {
+// InputDescEQ applies the EQ predicate on the "input_desc" field.
+func InputDescEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.EQ(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionNEQ applies the NEQ predicate on the "arg_type_description" field.
-func ArgTypeDescriptionNEQ(v string) predicate.TestCase {
+// InputDescNEQ applies the NEQ predicate on the "input_desc" field.
+func InputDescNEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.NEQ(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionIn applies the In predicate on the "arg_type_description" field.
-func ArgTypeDescriptionIn(vs ...string) predicate.TestCase {
+// InputDescIn applies the In predicate on the "input_desc" field.
+func InputDescIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldArgTypeDescription), v...))
+		s.Where(sql.In(s.C(FieldInputDesc), v...))
 	})
 }
 
-// ArgTypeDescriptionNotIn applies the NotIn predicate on the "arg_type_description" field.
-func ArgTypeDescriptionNotIn(vs ...string) predicate.TestCase {
+// InputDescNotIn applies the NotIn predicate on the "input_desc" field.
+func InputDescNotIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldArgTypeDescription), v...))
+		s.Where(sql.NotIn(s.C(FieldInputDesc), v...))
 	})
 }
 
-// ArgTypeDescriptionGT applies the GT predicate on the "arg_type_description" field.
-func ArgTypeDescriptionGT(v string) predicate.TestCase {
+// InputDescGT applies the GT predicate on the "input_desc" field.
+func InputDescGT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.GT(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionGTE applies the GTE predicate on the "arg_type_description" field.
-func ArgTypeDescriptionGTE(v string) predicate.TestCase {
+// InputDescGTE applies the GTE predicate on the "input_desc" field.
+func InputDescGTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.GTE(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionLT applies the LT predicate on the "arg_type_description" field.
-func ArgTypeDescriptionLT(v string) predicate.TestCase {
+// InputDescLT applies the LT predicate on the "input_desc" field.
+func InputDescLT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.LT(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionLTE applies the LTE predicate on the "arg_type_description" field.
-func ArgTypeDescriptionLTE(v string) predicate.TestCase {
+// InputDescLTE applies the LTE predicate on the "input_desc" field.
+func InputDescLTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.LTE(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionContains applies the Contains predicate on the "arg_type_description" field.
-func ArgTypeDescriptionContains(v string) predicate.TestCase {
+// InputDescContains applies the Contains predicate on the "input_desc" field.
+func InputDescContains(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.Contains(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionHasPrefix applies the HasPrefix predicate on the "arg_type_description" field.
-func ArgTypeDescriptionHasPrefix(v string) predicate.TestCase {
+// InputDescHasPrefix applies the HasPrefix predicate on the "input_desc" field.
+func InputDescHasPrefix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.HasPrefix(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionHasSuffix applies the HasSuffix predicate on the "arg_type_description" field.
-func ArgTypeDescriptionHasSuffix(v string) predicate.TestCase {
+// InputDescHasSuffix applies the HasSuffix predicate on the "input_desc" field.
+func InputDescHasSuffix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.HasSuffix(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionIsNil applies the IsNil predicate on the "arg_type_description" field.
-func ArgTypeDescriptionIsNil() predicate.TestCase {
+// InputDescIsNil applies the IsNil predicate on the "input_desc" field.
+func InputDescIsNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldArgTypeDescription)))
+		s.Where(sql.IsNull(s.C(FieldInputDesc)))
 	})
 }
 
-// ArgTypeDescriptionNotNil applies the NotNil predicate on the "arg_type_description" field.
-func ArgTypeDescriptionNotNil() predicate.TestCase {
+// InputDescNotNil applies the NotNil predicate on the "input_desc" field.
+func InputDescNotNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldArgTypeDescription)))
+		s.Where(sql.NotNull(s.C(FieldInputDesc)))
 	})
 }
 
-// ArgTypeDescriptionEqualFold applies the EqualFold predicate on the "arg_type_description" field.
-func ArgTypeDescriptionEqualFold(v string) predicate.TestCase {
+// InputDescEqualFold applies the EqualFold predicate on the "input_desc" field.
+func InputDescEqualFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.EqualFold(s.C(FieldInputDesc), v))
 	})
 }
 
-// ArgTypeDescriptionContainsFold applies the ContainsFold predicate on the "arg_type_description" field.
-func ArgTypeDescriptionContainsFold(v string) predicate.TestCase {
+// InputDescContainsFold applies the ContainsFold predicate on the "input_desc" field.
+func InputDescContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldArgTypeDescription), v))
+		s.Where(sql.ContainsFold(s.C(FieldInputDesc), v))
 	})
 }
 
-// ExpectationResultEQ applies the EQ predicate on the "expectation_result" field.
-func ExpectationResultEQ(v string) predicate.TestCase {
+// ExpectationEQ applies the EQ predicate on the "expectation" field.
+func ExpectationEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldExpectationResult), v))
+		s.Where(sql.EQ(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultNEQ applies the NEQ predicate on the "expectation_result" field.
-func ExpectationResultNEQ(v string) predicate.TestCase {
+// ExpectationNEQ applies the NEQ predicate on the "expectation" field.
+func ExpectationNEQ(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldExpectationResult), v))
+		s.Where(sql.NEQ(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultIn applies the In predicate on the "expectation_result" field.
-func ExpectationResultIn(vs ...string) predicate.TestCase {
+// ExpectationIn applies the In predicate on the "expectation" field.
+func ExpectationIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldExpectationResult), v...))
+		s.Where(sql.In(s.C(FieldExpectation), v...))
 	})
 }
 
-// ExpectationResultNotIn applies the NotIn predicate on the "expectation_result" field.
-func ExpectationResultNotIn(vs ...string) predicate.TestCase {
+// ExpectationNotIn applies the NotIn predicate on the "expectation" field.
+func ExpectationNotIn(vs ...string) predicate.TestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldExpectationResult), v...))
+		s.Where(sql.NotIn(s.C(FieldExpectation), v...))
 	})
 }
 
-// ExpectationResultGT applies the GT predicate on the "expectation_result" field.
-func ExpectationResultGT(v string) predicate.TestCase {
+// ExpectationGT applies the GT predicate on the "expectation" field.
+func ExpectationGT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldExpectationResult), v))
+		s.Where(sql.GT(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultGTE applies the GTE predicate on the "expectation_result" field.
-func ExpectationResultGTE(v string) predicate.TestCase {
+// ExpectationGTE applies the GTE predicate on the "expectation" field.
+func ExpectationGTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldExpectationResult), v))
+		s.Where(sql.GTE(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultLT applies the LT predicate on the "expectation_result" field.
-func ExpectationResultLT(v string) predicate.TestCase {
+// ExpectationLT applies the LT predicate on the "expectation" field.
+func ExpectationLT(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldExpectationResult), v))
+		s.Where(sql.LT(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultLTE applies the LTE predicate on the "expectation_result" field.
-func ExpectationResultLTE(v string) predicate.TestCase {
+// ExpectationLTE applies the LTE predicate on the "expectation" field.
+func ExpectationLTE(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldExpectationResult), v))
+		s.Where(sql.LTE(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultContains applies the Contains predicate on the "expectation_result" field.
-func ExpectationResultContains(v string) predicate.TestCase {
+// ExpectationContains applies the Contains predicate on the "expectation" field.
+func ExpectationContains(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldExpectationResult), v))
+		s.Where(sql.Contains(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultHasPrefix applies the HasPrefix predicate on the "expectation_result" field.
-func ExpectationResultHasPrefix(v string) predicate.TestCase {
+// ExpectationHasPrefix applies the HasPrefix predicate on the "expectation" field.
+func ExpectationHasPrefix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldExpectationResult), v))
+		s.Where(sql.HasPrefix(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultHasSuffix applies the HasSuffix predicate on the "expectation_result" field.
-func ExpectationResultHasSuffix(v string) predicate.TestCase {
+// ExpectationHasSuffix applies the HasSuffix predicate on the "expectation" field.
+func ExpectationHasSuffix(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldExpectationResult), v))
+		s.Where(sql.HasSuffix(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultIsNil applies the IsNil predicate on the "expectation_result" field.
-func ExpectationResultIsNil() predicate.TestCase {
+// ExpectationIsNil applies the IsNil predicate on the "expectation" field.
+func ExpectationIsNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldExpectationResult)))
+		s.Where(sql.IsNull(s.C(FieldExpectation)))
 	})
 }
 
-// ExpectationResultNotNil applies the NotNil predicate on the "expectation_result" field.
-func ExpectationResultNotNil() predicate.TestCase {
+// ExpectationNotNil applies the NotNil predicate on the "expectation" field.
+func ExpectationNotNil() predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldExpectationResult)))
+		s.Where(sql.NotNull(s.C(FieldExpectation)))
 	})
 }
 
-// ExpectationResultEqualFold applies the EqualFold predicate on the "expectation_result" field.
-func ExpectationResultEqualFold(v string) predicate.TestCase {
+// ExpectationEqualFold applies the EqualFold predicate on the "expectation" field.
+func ExpectationEqualFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldExpectationResult), v))
+		s.Where(sql.EqualFold(s.C(FieldExpectation), v))
 	})
 }
 
-// ExpectationResultContainsFold applies the ContainsFold predicate on the "expectation_result" field.
-func ExpectationResultContainsFold(v string) predicate.TestCase {
+// ExpectationContainsFold applies the ContainsFold predicate on the "expectation" field.
+func ExpectationContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldExpectationResult), v))
+		s.Where(sql.ContainsFold(s.C(FieldExpectation), v))
 	})
 }
 

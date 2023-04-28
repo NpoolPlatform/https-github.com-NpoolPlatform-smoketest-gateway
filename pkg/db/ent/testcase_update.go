@@ -164,63 +164,63 @@ func (tcu *TestCaseUpdate) ClearAPIID() *TestCaseUpdate {
 	return tcu
 }
 
-// SetArguments sets the "arguments" field.
-func (tcu *TestCaseUpdate) SetArguments(s string) *TestCaseUpdate {
-	tcu.mutation.SetArguments(s)
+// SetInput sets the "input" field.
+func (tcu *TestCaseUpdate) SetInput(s string) *TestCaseUpdate {
+	tcu.mutation.SetInput(s)
 	return tcu
 }
 
-// SetNillableArguments sets the "arguments" field if the given value is not nil.
-func (tcu *TestCaseUpdate) SetNillableArguments(s *string) *TestCaseUpdate {
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableInput(s *string) *TestCaseUpdate {
 	if s != nil {
-		tcu.SetArguments(*s)
+		tcu.SetInput(*s)
 	}
 	return tcu
 }
 
-// ClearArguments clears the value of the "arguments" field.
-func (tcu *TestCaseUpdate) ClearArguments() *TestCaseUpdate {
-	tcu.mutation.ClearArguments()
+// ClearInput clears the value of the "input" field.
+func (tcu *TestCaseUpdate) ClearInput() *TestCaseUpdate {
+	tcu.mutation.ClearInput()
 	return tcu
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (tcu *TestCaseUpdate) SetArgTypeDescription(s string) *TestCaseUpdate {
-	tcu.mutation.SetArgTypeDescription(s)
+// SetInputDesc sets the "input_desc" field.
+func (tcu *TestCaseUpdate) SetInputDesc(s string) *TestCaseUpdate {
+	tcu.mutation.SetInputDesc(s)
 	return tcu
 }
 
-// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
-func (tcu *TestCaseUpdate) SetNillableArgTypeDescription(s *string) *TestCaseUpdate {
+// SetNillableInputDesc sets the "input_desc" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableInputDesc(s *string) *TestCaseUpdate {
 	if s != nil {
-		tcu.SetArgTypeDescription(*s)
+		tcu.SetInputDesc(*s)
 	}
 	return tcu
 }
 
-// ClearArgTypeDescription clears the value of the "arg_type_description" field.
-func (tcu *TestCaseUpdate) ClearArgTypeDescription() *TestCaseUpdate {
-	tcu.mutation.ClearArgTypeDescription()
+// ClearInputDesc clears the value of the "input_desc" field.
+func (tcu *TestCaseUpdate) ClearInputDesc() *TestCaseUpdate {
+	tcu.mutation.ClearInputDesc()
 	return tcu
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (tcu *TestCaseUpdate) SetExpectationResult(s string) *TestCaseUpdate {
-	tcu.mutation.SetExpectationResult(s)
+// SetExpectation sets the "expectation" field.
+func (tcu *TestCaseUpdate) SetExpectation(s string) *TestCaseUpdate {
+	tcu.mutation.SetExpectation(s)
 	return tcu
 }
 
-// SetNillableExpectationResult sets the "expectation_result" field if the given value is not nil.
-func (tcu *TestCaseUpdate) SetNillableExpectationResult(s *string) *TestCaseUpdate {
+// SetNillableExpectation sets the "expectation" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableExpectation(s *string) *TestCaseUpdate {
 	if s != nil {
-		tcu.SetExpectationResult(*s)
+		tcu.SetExpectation(*s)
 	}
 	return tcu
 }
 
-// ClearExpectationResult clears the value of the "expectation_result" field.
-func (tcu *TestCaseUpdate) ClearExpectationResult() *TestCaseUpdate {
-	tcu.mutation.ClearExpectationResult()
+// ClearExpectation clears the value of the "expectation" field.
+func (tcu *TestCaseUpdate) ClearExpectation() *TestCaseUpdate {
+	tcu.mutation.ClearExpectation()
 	return tcu
 }
 
@@ -456,43 +456,43 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: testcase.FieldAPIID,
 		})
 	}
-	if value, ok := tcu.mutation.Arguments(); ok {
+	if value, ok := tcu.mutation.Input(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArguments,
+			Column: testcase.FieldInput,
 		})
 	}
-	if tcu.mutation.ArgumentsCleared() {
+	if tcu.mutation.InputCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldArguments,
+			Column: testcase.FieldInput,
 		})
 	}
-	if value, ok := tcu.mutation.ArgTypeDescription(); ok {
+	if value, ok := tcu.mutation.InputDesc(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArgTypeDescription,
+			Column: testcase.FieldInputDesc,
 		})
 	}
-	if tcu.mutation.ArgTypeDescriptionCleared() {
+	if tcu.mutation.InputDescCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldArgTypeDescription,
+			Column: testcase.FieldInputDesc,
 		})
 	}
-	if value, ok := tcu.mutation.ExpectationResult(); ok {
+	if value, ok := tcu.mutation.Expectation(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldExpectationResult,
+			Column: testcase.FieldExpectation,
 		})
 	}
-	if tcu.mutation.ExpectationResultCleared() {
+	if tcu.mutation.ExpectationCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldExpectationResult,
+			Column: testcase.FieldExpectation,
 		})
 	}
 	if value, ok := tcu.mutation.TestCaseType(); ok {
@@ -677,63 +677,63 @@ func (tcuo *TestCaseUpdateOne) ClearAPIID() *TestCaseUpdateOne {
 	return tcuo
 }
 
-// SetArguments sets the "arguments" field.
-func (tcuo *TestCaseUpdateOne) SetArguments(s string) *TestCaseUpdateOne {
-	tcuo.mutation.SetArguments(s)
+// SetInput sets the "input" field.
+func (tcuo *TestCaseUpdateOne) SetInput(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetInput(s)
 	return tcuo
 }
 
-// SetNillableArguments sets the "arguments" field if the given value is not nil.
-func (tcuo *TestCaseUpdateOne) SetNillableArguments(s *string) *TestCaseUpdateOne {
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableInput(s *string) *TestCaseUpdateOne {
 	if s != nil {
-		tcuo.SetArguments(*s)
+		tcuo.SetInput(*s)
 	}
 	return tcuo
 }
 
-// ClearArguments clears the value of the "arguments" field.
-func (tcuo *TestCaseUpdateOne) ClearArguments() *TestCaseUpdateOne {
-	tcuo.mutation.ClearArguments()
+// ClearInput clears the value of the "input" field.
+func (tcuo *TestCaseUpdateOne) ClearInput() *TestCaseUpdateOne {
+	tcuo.mutation.ClearInput()
 	return tcuo
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (tcuo *TestCaseUpdateOne) SetArgTypeDescription(s string) *TestCaseUpdateOne {
-	tcuo.mutation.SetArgTypeDescription(s)
+// SetInputDesc sets the "input_desc" field.
+func (tcuo *TestCaseUpdateOne) SetInputDesc(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetInputDesc(s)
 	return tcuo
 }
 
-// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
-func (tcuo *TestCaseUpdateOne) SetNillableArgTypeDescription(s *string) *TestCaseUpdateOne {
+// SetNillableInputDesc sets the "input_desc" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableInputDesc(s *string) *TestCaseUpdateOne {
 	if s != nil {
-		tcuo.SetArgTypeDescription(*s)
+		tcuo.SetInputDesc(*s)
 	}
 	return tcuo
 }
 
-// ClearArgTypeDescription clears the value of the "arg_type_description" field.
-func (tcuo *TestCaseUpdateOne) ClearArgTypeDescription() *TestCaseUpdateOne {
-	tcuo.mutation.ClearArgTypeDescription()
+// ClearInputDesc clears the value of the "input_desc" field.
+func (tcuo *TestCaseUpdateOne) ClearInputDesc() *TestCaseUpdateOne {
+	tcuo.mutation.ClearInputDesc()
 	return tcuo
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (tcuo *TestCaseUpdateOne) SetExpectationResult(s string) *TestCaseUpdateOne {
-	tcuo.mutation.SetExpectationResult(s)
+// SetExpectation sets the "expectation" field.
+func (tcuo *TestCaseUpdateOne) SetExpectation(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetExpectation(s)
 	return tcuo
 }
 
-// SetNillableExpectationResult sets the "expectation_result" field if the given value is not nil.
-func (tcuo *TestCaseUpdateOne) SetNillableExpectationResult(s *string) *TestCaseUpdateOne {
+// SetNillableExpectation sets the "expectation" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableExpectation(s *string) *TestCaseUpdateOne {
 	if s != nil {
-		tcuo.SetExpectationResult(*s)
+		tcuo.SetExpectation(*s)
 	}
 	return tcuo
 }
 
-// ClearExpectationResult clears the value of the "expectation_result" field.
-func (tcuo *TestCaseUpdateOne) ClearExpectationResult() *TestCaseUpdateOne {
-	tcuo.mutation.ClearExpectationResult()
+// ClearExpectation clears the value of the "expectation" field.
+func (tcuo *TestCaseUpdateOne) ClearExpectation() *TestCaseUpdateOne {
+	tcuo.mutation.ClearExpectation()
 	return tcuo
 }
 
@@ -999,43 +999,43 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 			Column: testcase.FieldAPIID,
 		})
 	}
-	if value, ok := tcuo.mutation.Arguments(); ok {
+	if value, ok := tcuo.mutation.Input(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArguments,
+			Column: testcase.FieldInput,
 		})
 	}
-	if tcuo.mutation.ArgumentsCleared() {
+	if tcuo.mutation.InputCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldArguments,
+			Column: testcase.FieldInput,
 		})
 	}
-	if value, ok := tcuo.mutation.ArgTypeDescription(); ok {
+	if value, ok := tcuo.mutation.InputDesc(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArgTypeDescription,
+			Column: testcase.FieldInputDesc,
 		})
 	}
-	if tcuo.mutation.ArgTypeDescriptionCleared() {
+	if tcuo.mutation.InputDescCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldArgTypeDescription,
+			Column: testcase.FieldInputDesc,
 		})
 	}
-	if value, ok := tcuo.mutation.ExpectationResult(); ok {
+	if value, ok := tcuo.mutation.Expectation(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldExpectationResult,
+			Column: testcase.FieldExpectation,
 		})
 	}
-	if tcuo.mutation.ExpectationResultCleared() {
+	if tcuo.mutation.ExpectationCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: testcase.FieldExpectationResult,
+			Column: testcase.FieldExpectation,
 		})
 	}
 	if value, ok := tcuo.mutation.TestCaseType(); ok {

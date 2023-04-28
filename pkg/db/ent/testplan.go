@@ -26,22 +26,22 @@ type TestPlan struct {
 	Name string `json:"name,omitempty"`
 	// State holds the value of the "state" field.
 	State string `json:"state,omitempty"`
-	// OwnerID holds the value of the "owner_id" field.
-	OwnerID uuid.UUID `json:"owner_id,omitempty"`
-	// ResponsibleUserID holds the value of the "responsible_user_id" field.
-	ResponsibleUserID uuid.UUID `json:"responsible_user_id,omitempty"`
-	// FailedTestCasesCount holds the value of the "failed_test_cases_count" field.
-	FailedTestCasesCount uint32 `json:"failed_test_cases_count,omitempty"`
-	// PassedTestCasesCount holds the value of the "passed_test_cases_count" field.
-	PassedTestCasesCount uint32 `json:"passed_test_cases_count,omitempty"`
-	// SkippedTestCasesCount holds the value of the "skipped_test_cases_count" field.
-	SkippedTestCasesCount uint32 `json:"skipped_test_cases_count,omitempty"`
+	// CreatedBy holds the value of the "created_by" field.
+	CreatedBy uuid.UUID `json:"created_by,omitempty"`
+	// Executor holds the value of the "executor" field.
+	Executor uuid.UUID `json:"executor,omitempty"`
+	// Fails holds the value of the "fails" field.
+	Fails uint32 `json:"fails,omitempty"`
+	// Passes holds the value of the "passes" field.
+	Passes uint32 `json:"passes,omitempty"`
+	// Skips holds the value of the "skips" field.
+	Skips uint32 `json:"skips,omitempty"`
 	// RunDuration holds the value of the "run_duration" field.
 	RunDuration uint32 `json:"run_duration,omitempty"`
 	// Deadline holds the value of the "deadline" field.
 	Deadline uint32 `json:"deadline,omitempty"`
-	// TestResult holds the value of the "test_result" field.
-	TestResult string `json:"test_result,omitempty"`
+	// Result holds the value of the "result" field.
+	Result string `json:"result,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -49,11 +49,11 @@ func (*TestPlan) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case testplan.FieldCreatedAt, testplan.FieldUpdatedAt, testplan.FieldDeletedAt, testplan.FieldFailedTestCasesCount, testplan.FieldPassedTestCasesCount, testplan.FieldSkippedTestCasesCount, testplan.FieldRunDuration, testplan.FieldDeadline:
+		case testplan.FieldCreatedAt, testplan.FieldUpdatedAt, testplan.FieldDeletedAt, testplan.FieldFails, testplan.FieldPasses, testplan.FieldSkips, testplan.FieldRunDuration, testplan.FieldDeadline:
 			values[i] = new(sql.NullInt64)
-		case testplan.FieldName, testplan.FieldState, testplan.FieldTestResult:
+		case testplan.FieldName, testplan.FieldState, testplan.FieldResult:
 			values[i] = new(sql.NullString)
-		case testplan.FieldID, testplan.FieldOwnerID, testplan.FieldResponsibleUserID:
+		case testplan.FieldID, testplan.FieldCreatedBy, testplan.FieldExecutor:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type TestPlan", columns[i])
@@ -106,35 +106,35 @@ func (tp *TestPlan) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				tp.State = value.String
 			}
-		case testplan.FieldOwnerID:
+		case testplan.FieldCreatedBy:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field owner_id", values[i])
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
 			} else if value != nil {
-				tp.OwnerID = *value
+				tp.CreatedBy = *value
 			}
-		case testplan.FieldResponsibleUserID:
+		case testplan.FieldExecutor:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field responsible_user_id", values[i])
+				return fmt.Errorf("unexpected type %T for field executor", values[i])
 			} else if value != nil {
-				tp.ResponsibleUserID = *value
+				tp.Executor = *value
 			}
-		case testplan.FieldFailedTestCasesCount:
+		case testplan.FieldFails:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field failed_test_cases_count", values[i])
+				return fmt.Errorf("unexpected type %T for field fails", values[i])
 			} else if value.Valid {
-				tp.FailedTestCasesCount = uint32(value.Int64)
+				tp.Fails = uint32(value.Int64)
 			}
-		case testplan.FieldPassedTestCasesCount:
+		case testplan.FieldPasses:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field passed_test_cases_count", values[i])
+				return fmt.Errorf("unexpected type %T for field passes", values[i])
 			} else if value.Valid {
-				tp.PassedTestCasesCount = uint32(value.Int64)
+				tp.Passes = uint32(value.Int64)
 			}
-		case testplan.FieldSkippedTestCasesCount:
+		case testplan.FieldSkips:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field skipped_test_cases_count", values[i])
+				return fmt.Errorf("unexpected type %T for field skips", values[i])
 			} else if value.Valid {
-				tp.SkippedTestCasesCount = uint32(value.Int64)
+				tp.Skips = uint32(value.Int64)
 			}
 		case testplan.FieldRunDuration:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -148,11 +148,11 @@ func (tp *TestPlan) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				tp.Deadline = uint32(value.Int64)
 			}
-		case testplan.FieldTestResult:
+		case testplan.FieldResult:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field test_result", values[i])
+				return fmt.Errorf("unexpected type %T for field result", values[i])
 			} else if value.Valid {
-				tp.TestResult = value.String
+				tp.Result = value.String
 			}
 		}
 	}
@@ -197,20 +197,20 @@ func (tp *TestPlan) String() string {
 	builder.WriteString("state=")
 	builder.WriteString(tp.State)
 	builder.WriteString(", ")
-	builder.WriteString("owner_id=")
-	builder.WriteString(fmt.Sprintf("%v", tp.OwnerID))
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", tp.CreatedBy))
 	builder.WriteString(", ")
-	builder.WriteString("responsible_user_id=")
-	builder.WriteString(fmt.Sprintf("%v", tp.ResponsibleUserID))
+	builder.WriteString("executor=")
+	builder.WriteString(fmt.Sprintf("%v", tp.Executor))
 	builder.WriteString(", ")
-	builder.WriteString("failed_test_cases_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.FailedTestCasesCount))
+	builder.WriteString("fails=")
+	builder.WriteString(fmt.Sprintf("%v", tp.Fails))
 	builder.WriteString(", ")
-	builder.WriteString("passed_test_cases_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.PassedTestCasesCount))
+	builder.WriteString("passes=")
+	builder.WriteString(fmt.Sprintf("%v", tp.Passes))
 	builder.WriteString(", ")
-	builder.WriteString("skipped_test_cases_count=")
-	builder.WriteString(fmt.Sprintf("%v", tp.SkippedTestCasesCount))
+	builder.WriteString("skips=")
+	builder.WriteString(fmt.Sprintf("%v", tp.Skips))
 	builder.WriteString(", ")
 	builder.WriteString("run_duration=")
 	builder.WriteString(fmt.Sprintf("%v", tp.RunDuration))
@@ -218,8 +218,8 @@ func (tp *TestPlan) String() string {
 	builder.WriteString("deadline=")
 	builder.WriteString(fmt.Sprintf("%v", tp.Deadline))
 	builder.WriteString(", ")
-	builder.WriteString("test_result=")
-	builder.WriteString(tp.TestResult)
+	builder.WriteString("result=")
+	builder.WriteString(tp.Result)
 	builder.WriteByte(')')
 	return builder.String()
 }

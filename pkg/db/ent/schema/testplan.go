@@ -33,29 +33,29 @@ func (TestPlan) Fields() []ent.Field {
 		field.
 			String("state").
 			Optional().
-			Default(testplan.TestPlanState_DefaultTestPlanState.String()),
+			Default(testplan.TestPlanState_WaitStart.String()),
 		field.
-			UUID("owner_id", uuid.UUID{}).
+			UUID("created_by", uuid.UUID{}).
 			Optional().
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
 		field.
-			UUID("responsible_user_id", uuid.UUID{}).
+			UUID("executor", uuid.UUID{}).
 			Optional().
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
 		field.
-			Uint32("failed_test_cases_count").
+			Uint32("fails").
 			Optional().
 			Default(0),
 		field.
-			Uint32("passed_test_cases_count").
+			Uint32("passes").
 			Optional().
 			Default(0),
 		field.
-			Uint32("skipped_test_cases_count").
+			Uint32("skips").
 			Optional().
 			Default(0),
 		field.
@@ -67,7 +67,7 @@ func (TestPlan) Fields() []ent.Field {
 			Optional().
 			Default(0),
 		field.
-			String("test_result").
+			String("result").
 			Optional().
 			Default(testplan.TestResultState_DefaultTestResultState.String()),
 	}

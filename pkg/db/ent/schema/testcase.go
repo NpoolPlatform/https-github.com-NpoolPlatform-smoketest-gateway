@@ -3,7 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
+	"github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/mixin"
 	"github.com/google/uuid"
 )
@@ -47,15 +47,15 @@ func (TestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
-			Text("arguments").
+			Text("input").
 			Optional().
 			Default(""),
 		field.
-			Text("arg_type_description").
+			Text("input_desc").
 			Optional().
 			Default(""),
 		field.
-			Text("expectation_result").
+			Text("expectation").
 			Optional().
 			Default(""),
 		field.

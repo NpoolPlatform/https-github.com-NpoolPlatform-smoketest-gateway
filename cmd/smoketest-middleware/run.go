@@ -28,7 +28,7 @@ var runCmd = &cli.Command{
 			run,
 			rpcRegister,
 			rpcGatewayRegister,
-			watch,
+			nil,
 		)
 	},
 }
@@ -40,10 +40,6 @@ func run(ctx context.Context) error {
 	if err := db.Init(); err != nil {
 		return err
 	}
-	return nil
-}
-
-func watch(ctx context.Context) error {
 	return nil
 }
 

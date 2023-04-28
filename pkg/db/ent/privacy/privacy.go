@@ -150,28 +150,28 @@ func DenyMutationOperationRule(op ent.Op) MutationRule {
 	return OnMutationOperation(rule, op)
 }
 
-// The DetailQueryRuleFunc type is an adapter to allow the use of ordinary
+// The CondQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type DetailQueryRuleFunc func(context.Context, *ent.DetailQuery) error
+type CondQueryRuleFunc func(context.Context, *ent.CondQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f DetailQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.DetailQuery); ok {
+func (f CondQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.CondQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.DetailQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.CondQuery", q)
 }
 
-// The DetailMutationRuleFunc type is an adapter to allow the use of ordinary
+// The CondMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type DetailMutationRuleFunc func(context.Context, *ent.DetailMutation) error
+type CondMutationRuleFunc func(context.Context, *ent.CondMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f DetailMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.DetailMutation); ok {
+func (f CondMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.CondMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.DetailMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CondMutation", m)
 }
 
 // The ModuleQueryRuleFunc type is an adapter to allow the use of ordinary
@@ -198,52 +198,28 @@ func (f ModuleMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.ModuleMutation", m)
 }
 
-// The PlanRelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
+// The PlanTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
-type PlanRelatedTestCaseQueryRuleFunc func(context.Context, *ent.PlanRelatedTestCaseQuery) error
+type PlanTestCaseQueryRuleFunc func(context.Context, *ent.PlanTestCaseQuery) error
 
 // EvalQuery return f(ctx, q).
-func (f PlanRelatedTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.PlanRelatedTestCaseQuery); ok {
+func (f PlanTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PlanTestCaseQuery); ok {
 		return f(ctx, q)
 	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlanRelatedTestCaseQuery", q)
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PlanTestCaseQuery", q)
 }
 
-// The PlanRelatedTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
+// The PlanTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
 // functions as a mutation rule.
-type PlanRelatedTestCaseMutationRuleFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) error
+type PlanTestCaseMutationRuleFunc func(context.Context, *ent.PlanTestCaseMutation) error
 
 // EvalMutation calls f(ctx, m).
-func (f PlanRelatedTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.PlanRelatedTestCaseMutation); ok {
+func (f PlanTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PlanTestCaseMutation); ok {
 		return f(ctx, m)
 	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlanRelatedTestCaseMutation", m)
-}
-
-// The RelatedTestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type RelatedTestCaseQueryRuleFunc func(context.Context, *ent.RelatedTestCaseQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f RelatedTestCaseQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.RelatedTestCaseQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.RelatedTestCaseQuery", q)
-}
-
-// The RelatedTestCaseMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type RelatedTestCaseMutationRuleFunc func(context.Context, *ent.RelatedTestCaseMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f RelatedTestCaseMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.RelatedTestCaseMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.RelatedTestCaseMutation", m)
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PlanTestCaseMutation", m)
 }
 
 // The TestCaseQueryRuleFunc type is an adapter to allow the use of ordinary
@@ -329,13 +305,11 @@ var _ QueryMutationRule = FilterFunc(nil)
 
 func queryFilter(q ent.Query) (Filter, error) {
 	switch q := q.(type) {
-	case *ent.DetailQuery:
+	case *ent.CondQuery:
 		return q.Filter(), nil
 	case *ent.ModuleQuery:
 		return q.Filter(), nil
-	case *ent.PlanRelatedTestCaseQuery:
-		return q.Filter(), nil
-	case *ent.RelatedTestCaseQuery:
+	case *ent.PlanTestCaseQuery:
 		return q.Filter(), nil
 	case *ent.TestCaseQuery:
 		return q.Filter(), nil
@@ -348,13 +322,11 @@ func queryFilter(q ent.Query) (Filter, error) {
 
 func mutationFilter(m ent.Mutation) (Filter, error) {
 	switch m := m.(type) {
-	case *ent.DetailMutation:
+	case *ent.CondMutation:
 		return m.Filter(), nil
 	case *ent.ModuleMutation:
 		return m.Filter(), nil
-	case *ent.PlanRelatedTestCaseMutation:
-		return m.Filter(), nil
-	case *ent.RelatedTestCaseMutation:
+	case *ent.PlanTestCaseMutation:
 		return m.Filter(), nil
 	case *ent.TestCaseMutation:
 		return m.Filter(), nil

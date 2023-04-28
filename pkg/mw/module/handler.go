@@ -4,18 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	modulemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID          *string
+	ID          *uuid.UUID
 	Name        *string
 	Description *string
-	Conds       *modulemgrpb.Conds
-	Offset      *int32
-	Limit       *int32
+	Conds       *modulecrud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -27,13 +29,13 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	}
 	return handler, nil
 }
-
 func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*id); err != nil {
+		_id, err := uuid.Parse(*id)
+		if err != nil {
 			return err
 		}
-		h.ID = id
+		h.ID = &_id
 		return nil
 	}
 }
@@ -42,6 +44,10 @@ func WithName(name *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if name == nil {
 			return nil
+		}
+		const leastNameLen = 2
+		if len(*name) < leastNameLen {
+			return fmt.Errorf("name %v too short", *name)
 		}
 		h.Name = name
 		return nil
@@ -58,25 +64,39 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *modulemgrpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &modulecrud.Conds{}
 		if conds == nil {
-			return fmt.Errorf("invalid conds")
+			return nil
 		}
-
 		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
 				return err
 			}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
 		}
+		if conds.Name != nil {
+			h.Conds.Name = &cruder.Cond{Op: conds.Name.Op, Val: conds.GetName().GetValue()}
+		}
+		return nil
+	}
+}
 
-		h.Conds = conds
-		h.Offset = &offset
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
 		if limit == 0 {
 			limit = constant.DefaultRowLimit
 		}
-		h.Limit = &limit
-
+		h.Limit = limit
 		return nil
 	}
 }

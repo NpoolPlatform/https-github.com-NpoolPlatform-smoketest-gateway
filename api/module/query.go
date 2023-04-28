@@ -15,11 +15,9 @@ import (
 func (s *Server) GetModules(ctx context.Context, in *npool.GetModulesRequest) (*npool.GetModulesResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithConds(
-			in.GetConds(),
-			in.GetOffset(),
-			in.GetLimit(),
-		),
+		module1.WithConds(in.GetConds()),
+		module1.WithOffset(in.Offset),
+		module1.WithLimit(in.Limit),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
@@ -62,5 +60,30 @@ func (s *Server) GetModule(ctx context.Context, in *npool.GetModuleRequest) (*np
 
 	return &npool.GetModuleResponse{
 		Info: info,
+	}, nil
+}
+
+func (s *Server) GetModuleConds(ctx context.Context, in *npool.GetModuleCondsRequest) (*npool.GetModuleCondsResponse, error) {
+	handler, err := module1.NewHandler(
+		ctx,
+		module1.WithConds(in.Conds),
+	)
+	if err != nil {
+		logger.Sugar().Errorw(
+			"GetModule",
+			"In", in,
+			"error", err,
+		)
+		return &npool.GetModuleCondsResponse{}, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	info, total, err := handler.GetModuleConds(ctx)
+	if err != nil {
+		return &npool.GetModuleCondsResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.GetModuleCondsResponse{
+		Infos: info,
+		Total: total,
 	}, nil
 }
