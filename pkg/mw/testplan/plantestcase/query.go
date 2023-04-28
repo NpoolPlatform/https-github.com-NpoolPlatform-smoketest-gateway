@@ -24,6 +24,7 @@ func (h *queryHandler) selectPlanTestCase(stm *ent.PlanTestCaseQuery) {
 		plantestcase.FieldID,
 		plantestcase.FieldTestPlanID,
 		plantestcase.FieldTestCaseID,
+		plantestcase.FieldInput,
 		plantestcase.FieldOutput,
 		plantestcase.FieldResult,
 		plantestcase.FieldTestUserID,
