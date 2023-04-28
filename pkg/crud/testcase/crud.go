@@ -96,6 +96,7 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 type Conds struct {
 	ID           *cruder.Cond
 	ModuleID     *cruder.Cond
+	ApiID        *cruder.Cond
 	Deprecated   *cruder.Cond
 	TestCaseType *cruder.Cond
 	IDs          *cruder.Cond
@@ -124,6 +125,18 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			q.Where(testcase.ModuleID(moduleID))
 		default:
 			return nil, fmt.Errorf("invalid module id field")
+		}
+	}
+	if conds.ApiID != nil {
+		apiID, ok := conds.ApiID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid api id")
+		}
+		switch conds.ApiID.Op {
+		case cruder.EQ:
+			q.Where(testcase.APIID(apiID))
+		default:
+			return nil, fmt.Errorf("invalid api id field")
 		}
 	}
 	if conds.TestCaseType != nil {

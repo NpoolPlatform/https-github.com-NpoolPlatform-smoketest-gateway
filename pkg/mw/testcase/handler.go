@@ -213,6 +213,13 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.ModuleID = &cruder.Cond{Op: conds.ModuleID.Op, Val: id}
 		}
+		if conds.ApiID != nil {
+			id, err := uuid.Parse(conds.GetApiID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ApiID = &cruder.Cond{Op: conds.ApiID.Op, Val: id}
+		}
 		if conds.TestCaseType != nil {
 			h.Conds.TestCaseType = &cruder.Cond{Op: conds.TestCaseType.Op, Val: conds.TestCaseType}
 		}
