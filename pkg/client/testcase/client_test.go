@@ -11,6 +11,8 @@ import (
 	apicli "github.com/NpoolPlatform/basal-manager/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	commonpb "github.com/NpoolPlatform/message/npool"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
@@ -96,20 +98,6 @@ func createTestCase(t *testing.T) {
 	}
 }
 
-func getTestCase(t *testing.T) {
-	info, err := GetTestCase(context.Background(), ret.ID)
-	if assert.Nil(t, err) {
-		assert.Equal(t, info, &ret)
-	}
-}
-
-func getTestCases(t *testing.T) {
-	infos, _, err := GetTestCases(context.Background(), &npool.Conds{}, 0, 1)
-	if assert.Nil(t, err) {
-		assert.NotEqual(t, len(infos), 0)
-	}
-}
-
 func updateTestCase(t *testing.T) {
 	ret.Name = "用例名称111"
 	ret.Description = "用例描述111"
@@ -136,6 +124,37 @@ func updateTestCase(t *testing.T) {
 	if assert.Nil(t, err) {
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, &ret, info)
+	}
+}
+
+func getTestCase(t *testing.T) {
+	info, err := GetTestCase(context.Background(), ret.ID)
+	if assert.Nil(t, err) {
+		assert.Equal(t, info, &ret)
+	}
+}
+
+func getTestCases(t *testing.T) {
+	infos, _, err := GetTestCases(context.Background(), &npool.Conds{}, 0, 1)
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, len(infos), 0)
+	}
+}
+
+func getTestCaseConds(t *testing.T) {
+	infos, _, err := GetTestCases(context.Background(), &npool.Conds{
+		ID: &commonpb.StringVal{
+			Op:    cruder.EQ,
+			Value: ret.ID,
+		},
+		ModuleID: &commonpb.StringVal{
+			Op:    cruder.EQ,
+			Value: ret.ModuleID,
+		},
+	}, 0, 1)
+
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, len(infos), 0)
 	}
 }
 
@@ -168,6 +187,7 @@ func TestMainOrder(t *testing.T) {
 	t.Run("updateTestCase", updateTestCase)
 	t.Run("getTestCase", getTestCase)
 	t.Run("getTestCases", getTestCases)
+	t.Run("getTestCaseConds", getTestCaseConds)
 	t.Run("deleteTestCase", deleteTestCase)
 
 	patch.Unpatch()
