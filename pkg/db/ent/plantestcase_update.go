@@ -124,6 +124,26 @@ func (ptcu *PlanTestCaseUpdate) ClearTestCaseID() *PlanTestCaseUpdate {
 	return ptcu
 }
 
+// SetInput sets the "input" field.
+func (ptcu *PlanTestCaseUpdate) SetInput(s string) *PlanTestCaseUpdate {
+	ptcu.mutation.SetInput(s)
+	return ptcu
+}
+
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (ptcu *PlanTestCaseUpdate) SetNillableInput(s *string) *PlanTestCaseUpdate {
+	if s != nil {
+		ptcu.SetInput(*s)
+	}
+	return ptcu
+}
+
+// ClearInput clears the value of the "input" field.
+func (ptcu *PlanTestCaseUpdate) ClearInput() *PlanTestCaseUpdate {
+	ptcu.mutation.ClearInput()
+	return ptcu
+}
+
 // SetOutput sets the "output" field.
 func (ptcu *PlanTestCaseUpdate) SetOutput(s string) *PlanTestCaseUpdate {
 	ptcu.mutation.SetOutput(s)
@@ -424,6 +444,19 @@ func (ptcu *PlanTestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: plantestcase.FieldTestCaseID,
 		})
 	}
+	if value, ok := ptcu.mutation.Input(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: plantestcase.FieldInput,
+		})
+	}
+	if ptcu.mutation.InputCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: plantestcase.FieldInput,
+		})
+	}
 	if value, ok := ptcu.mutation.Output(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -629,6 +662,26 @@ func (ptcuo *PlanTestCaseUpdateOne) SetNillableTestCaseID(u *uuid.UUID) *PlanTes
 // ClearTestCaseID clears the value of the "test_case_id" field.
 func (ptcuo *PlanTestCaseUpdateOne) ClearTestCaseID() *PlanTestCaseUpdateOne {
 	ptcuo.mutation.ClearTestCaseID()
+	return ptcuo
+}
+
+// SetInput sets the "input" field.
+func (ptcuo *PlanTestCaseUpdateOne) SetInput(s string) *PlanTestCaseUpdateOne {
+	ptcuo.mutation.SetInput(s)
+	return ptcuo
+}
+
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (ptcuo *PlanTestCaseUpdateOne) SetNillableInput(s *string) *PlanTestCaseUpdateOne {
+	if s != nil {
+		ptcuo.SetInput(*s)
+	}
+	return ptcuo
+}
+
+// ClearInput clears the value of the "input" field.
+func (ptcuo *PlanTestCaseUpdateOne) ClearInput() *PlanTestCaseUpdateOne {
+	ptcuo.mutation.ClearInput()
 	return ptcuo
 }
 
@@ -960,6 +1013,19 @@ func (ptcuo *PlanTestCaseUpdateOne) sqlSave(ctx context.Context) (_node *PlanTes
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Column: plantestcase.FieldTestCaseID,
+		})
+	}
+	if value, ok := ptcuo.mutation.Input(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: plantestcase.FieldInput,
+		})
+	}
+	if ptcuo.mutation.InputCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: plantestcase.FieldInput,
 		})
 	}
 	if value, ok := ptcuo.mutation.Output(); ok {

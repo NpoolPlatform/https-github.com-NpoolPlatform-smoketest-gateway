@@ -1654,6 +1654,7 @@ type PlanTestCaseMutation struct {
 	adddeleted_at   *int32
 	test_plan_id    *uuid.UUID
 	test_case_id    *uuid.UUID
+	input           *string
 	output          *string
 	description     *string
 	test_user_id    *uuid.UUID
@@ -2038,6 +2039,55 @@ func (m *PlanTestCaseMutation) ResetTestCaseID() {
 	delete(m.clearedFields, plantestcase.FieldTestCaseID)
 }
 
+// SetInput sets the "input" field.
+func (m *PlanTestCaseMutation) SetInput(s string) {
+	m.input = &s
+}
+
+// Input returns the value of the "input" field in the mutation.
+func (m *PlanTestCaseMutation) Input() (r string, exists bool) {
+	v := m.input
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInput returns the old "input" field's value of the PlanTestCase entity.
+// If the PlanTestCase object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PlanTestCaseMutation) OldInput(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInput is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInput requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInput: %w", err)
+	}
+	return oldValue.Input, nil
+}
+
+// ClearInput clears the value of the "input" field.
+func (m *PlanTestCaseMutation) ClearInput() {
+	m.input = nil
+	m.clearedFields[plantestcase.FieldInput] = struct{}{}
+}
+
+// InputCleared returns if the "input" field was cleared in this mutation.
+func (m *PlanTestCaseMutation) InputCleared() bool {
+	_, ok := m.clearedFields[plantestcase.FieldInput]
+	return ok
+}
+
+// ResetInput resets all changes to the "input" field.
+func (m *PlanTestCaseMutation) ResetInput() {
+	m.input = nil
+	delete(m.clearedFields, plantestcase.FieldInput)
+}
+
 // SetOutput sets the "output" field.
 func (m *PlanTestCaseMutation) SetOutput(s string) {
 	m.output = &s
@@ -2393,7 +2443,7 @@ func (m *PlanTestCaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PlanTestCaseMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, plantestcase.FieldCreatedAt)
 	}
@@ -2408,6 +2458,9 @@ func (m *PlanTestCaseMutation) Fields() []string {
 	}
 	if m.test_case_id != nil {
 		fields = append(fields, plantestcase.FieldTestCaseID)
+	}
+	if m.input != nil {
+		fields = append(fields, plantestcase.FieldInput)
 	}
 	if m.output != nil {
 		fields = append(fields, plantestcase.FieldOutput)
@@ -2445,6 +2498,8 @@ func (m *PlanTestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.TestPlanID()
 	case plantestcase.FieldTestCaseID:
 		return m.TestCaseID()
+	case plantestcase.FieldInput:
+		return m.Input()
 	case plantestcase.FieldOutput:
 		return m.Output()
 	case plantestcase.FieldDescription:
@@ -2476,6 +2531,8 @@ func (m *PlanTestCaseMutation) OldField(ctx context.Context, name string) (ent.V
 		return m.OldTestPlanID(ctx)
 	case plantestcase.FieldTestCaseID:
 		return m.OldTestCaseID(ctx)
+	case plantestcase.FieldInput:
+		return m.OldInput(ctx)
 	case plantestcase.FieldOutput:
 		return m.OldOutput(ctx)
 	case plantestcase.FieldDescription:
@@ -2531,6 +2588,13 @@ func (m *PlanTestCaseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetTestCaseID(v)
+		return nil
+	case plantestcase.FieldInput:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInput(v)
 		return nil
 	case plantestcase.FieldOutput:
 		v, ok := value.(string)
@@ -2673,6 +2737,9 @@ func (m *PlanTestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(plantestcase.FieldTestCaseID) {
 		fields = append(fields, plantestcase.FieldTestCaseID)
 	}
+	if m.FieldCleared(plantestcase.FieldInput) {
+		fields = append(fields, plantestcase.FieldInput)
+	}
 	if m.FieldCleared(plantestcase.FieldOutput) {
 		fields = append(fields, plantestcase.FieldOutput)
 	}
@@ -2710,6 +2777,9 @@ func (m *PlanTestCaseMutation) ClearField(name string) error {
 		return nil
 	case plantestcase.FieldTestCaseID:
 		m.ClearTestCaseID()
+		return nil
+	case plantestcase.FieldInput:
+		m.ClearInput()
 		return nil
 	case plantestcase.FieldOutput:
 		m.ClearOutput()
@@ -2751,6 +2821,9 @@ func (m *PlanTestCaseMutation) ResetField(name string) error {
 		return nil
 	case plantestcase.FieldTestCaseID:
 		m.ResetTestCaseID()
+		return nil
+	case plantestcase.FieldInput:
+		m.ResetInput()
 		return nil
 	case plantestcase.FieldOutput:
 		m.ResetOutput()

@@ -73,6 +73,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			plantestcase.FieldDeletedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
 			plantestcase.FieldTestPlanID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
 			plantestcase.FieldTestCaseID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
+			plantestcase.FieldInput:       {Type: field.TypeString, Column: plantestcase.FieldInput},
 			plantestcase.FieldOutput:      {Type: field.TypeString, Column: plantestcase.FieldOutput},
 			plantestcase.FieldDescription: {Type: field.TypeString, Column: plantestcase.FieldDescription},
 			plantestcase.FieldTestUserID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestUserID},
@@ -349,6 +350,11 @@ func (f *PlanTestCaseFilter) WhereTestPlanID(p entql.ValueP) {
 // WhereTestCaseID applies the entql [16]byte predicate on the test_case_id field.
 func (f *PlanTestCaseFilter) WhereTestCaseID(p entql.ValueP) {
 	f.Where(p.Field(plantestcase.FieldTestCaseID))
+}
+
+// WhereInput applies the entql string predicate on the input field.
+func (f *PlanTestCaseFilter) WhereInput(p entql.StringP) {
+	f.Where(p.Field(plantestcase.FieldInput))
 }
 
 // WhereOutput applies the entql string predicate on the output field.

@@ -114,6 +114,13 @@ func TestCaseID(v uuid.UUID) predicate.PlanTestCase {
 	})
 }
 
+// Input applies equality check predicate on the "input" field. It's identical to InputEQ.
+func Input(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInput), v))
+	})
+}
+
 // Output applies equality check predicate on the "output" field. It's identical to OutputEQ.
 func Output(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
@@ -501,6 +508,119 @@ func TestCaseIDIsNil() predicate.PlanTestCase {
 func TestCaseIDNotNil() predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldTestCaseID)))
+	})
+}
+
+// InputEQ applies the EQ predicate on the "input" field.
+func InputEQ(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInput), v))
+	})
+}
+
+// InputNEQ applies the NEQ predicate on the "input" field.
+func InputNEQ(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInput), v))
+	})
+}
+
+// InputIn applies the In predicate on the "input" field.
+func InputIn(vs ...string) predicate.PlanTestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldInput), v...))
+	})
+}
+
+// InputNotIn applies the NotIn predicate on the "input" field.
+func InputNotIn(vs ...string) predicate.PlanTestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldInput), v...))
+	})
+}
+
+// InputGT applies the GT predicate on the "input" field.
+func InputGT(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldInput), v))
+	})
+}
+
+// InputGTE applies the GTE predicate on the "input" field.
+func InputGTE(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldInput), v))
+	})
+}
+
+// InputLT applies the LT predicate on the "input" field.
+func InputLT(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldInput), v))
+	})
+}
+
+// InputLTE applies the LTE predicate on the "input" field.
+func InputLTE(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldInput), v))
+	})
+}
+
+// InputContains applies the Contains predicate on the "input" field.
+func InputContains(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldInput), v))
+	})
+}
+
+// InputHasPrefix applies the HasPrefix predicate on the "input" field.
+func InputHasPrefix(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldInput), v))
+	})
+}
+
+// InputHasSuffix applies the HasSuffix predicate on the "input" field.
+func InputHasSuffix(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldInput), v))
+	})
+}
+
+// InputIsNil applies the IsNil predicate on the "input" field.
+func InputIsNil() predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldInput)))
+	})
+}
+
+// InputNotNil applies the NotNil predicate on the "input" field.
+func InputNotNil() predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldInput)))
+	})
+}
+
+// InputEqualFold applies the EqualFold predicate on the "input" field.
+func InputEqualFold(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldInput), v))
+	})
+}
+
+// InputContainsFold applies the ContainsFold predicate on the "input" field.
+func InputContainsFold(v string) predicate.PlanTestCase {
+	return predicate.PlanTestCase(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldInput), v))
 	})
 }
 

@@ -149,28 +149,32 @@ func init() {
 	plantestcaseDescTestCaseID := plantestcaseFields[2].Descriptor()
 	// plantestcase.DefaultTestCaseID holds the default value on creation for the test_case_id field.
 	plantestcase.DefaultTestCaseID = plantestcaseDescTestCaseID.Default.(func() uuid.UUID)
+	// plantestcaseDescInput is the schema descriptor for input field.
+	plantestcaseDescInput := plantestcaseFields[3].Descriptor()
+	// plantestcase.DefaultInput holds the default value on creation for the input field.
+	plantestcase.DefaultInput = plantestcaseDescInput.Default.(string)
 	// plantestcaseDescOutput is the schema descriptor for output field.
-	plantestcaseDescOutput := plantestcaseFields[3].Descriptor()
+	plantestcaseDescOutput := plantestcaseFields[4].Descriptor()
 	// plantestcase.DefaultOutput holds the default value on creation for the output field.
 	plantestcase.DefaultOutput = plantestcaseDescOutput.Default.(string)
 	// plantestcaseDescDescription is the schema descriptor for description field.
-	plantestcaseDescDescription := plantestcaseFields[4].Descriptor()
+	plantestcaseDescDescription := plantestcaseFields[5].Descriptor()
 	// plantestcase.DefaultDescription holds the default value on creation for the description field.
 	plantestcase.DefaultDescription = plantestcaseDescDescription.Default.(string)
 	// plantestcaseDescTestUserID is the schema descriptor for test_user_id field.
-	plantestcaseDescTestUserID := plantestcaseFields[5].Descriptor()
+	plantestcaseDescTestUserID := plantestcaseFields[6].Descriptor()
 	// plantestcase.DefaultTestUserID holds the default value on creation for the test_user_id field.
 	plantestcase.DefaultTestUserID = plantestcaseDescTestUserID.Default.(func() uuid.UUID)
 	// plantestcaseDescRunDuration is the schema descriptor for run_duration field.
-	plantestcaseDescRunDuration := plantestcaseFields[6].Descriptor()
+	plantestcaseDescRunDuration := plantestcaseFields[7].Descriptor()
 	// plantestcase.DefaultRunDuration holds the default value on creation for the run_duration field.
 	plantestcase.DefaultRunDuration = plantestcaseDescRunDuration.Default.(uint32)
 	// plantestcaseDescResult is the schema descriptor for result field.
-	plantestcaseDescResult := plantestcaseFields[7].Descriptor()
+	plantestcaseDescResult := plantestcaseFields[8].Descriptor()
 	// plantestcase.DefaultResult holds the default value on creation for the result field.
 	plantestcase.DefaultResult = plantestcaseDescResult.Default.(string)
 	// plantestcaseDescIndex is the schema descriptor for index field.
-	plantestcaseDescIndex := plantestcaseFields[8].Descriptor()
+	plantestcaseDescIndex := plantestcaseFields[9].Descriptor()
 	// plantestcase.DefaultIndex holds the default value on creation for the index field.
 	plantestcase.DefaultIndex = plantestcaseDescIndex.Default.(uint32)
 	// plantestcaseDescID is the schema descriptor for id field.

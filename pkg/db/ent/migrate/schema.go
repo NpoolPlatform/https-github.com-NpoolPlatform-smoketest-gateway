@@ -49,6 +49,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "test_plan_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "input", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "output", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "test_user_id", Type: field.TypeUUID, Nullable: true},

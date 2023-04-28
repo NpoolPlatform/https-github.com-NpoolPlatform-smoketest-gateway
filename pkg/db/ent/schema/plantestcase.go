@@ -39,6 +39,10 @@ func (PlanTestCase) Fields() []ent.Field {
 				return uuid.UUID{}
 			}),
 		field.
+			Text("input").
+			Optional().
+			Default(""),
+		field.
 			Text("output").
 			Optional().
 			Default(""),

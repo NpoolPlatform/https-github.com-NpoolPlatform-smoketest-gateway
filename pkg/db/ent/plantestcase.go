@@ -26,6 +26,8 @@ type PlanTestCase struct {
 	TestPlanID uuid.UUID `json:"test_plan_id,omitempty"`
 	// TestCaseID holds the value of the "test_case_id" field.
 	TestCaseID uuid.UUID `json:"test_case_id,omitempty"`
+	// Input holds the value of the "input" field.
+	Input string `json:"input,omitempty"`
 	// Output holds the value of the "output" field.
 	Output string `json:"output,omitempty"`
 	// Description holds the value of the "description" field.
@@ -47,7 +49,7 @@ func (*PlanTestCase) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case plantestcase.FieldCreatedAt, plantestcase.FieldUpdatedAt, plantestcase.FieldDeletedAt, plantestcase.FieldRunDuration, plantestcase.FieldIndex:
 			values[i] = new(sql.NullInt64)
-		case plantestcase.FieldOutput, plantestcase.FieldDescription, plantestcase.FieldResult:
+		case plantestcase.FieldInput, plantestcase.FieldOutput, plantestcase.FieldDescription, plantestcase.FieldResult:
 			values[i] = new(sql.NullString)
 		case plantestcase.FieldID, plantestcase.FieldTestPlanID, plantestcase.FieldTestCaseID, plantestcase.FieldTestUserID:
 			values[i] = new(uuid.UUID)
@@ -101,6 +103,12 @@ func (ptc *PlanTestCase) assignValues(columns []string, values []interface{}) er
 				return fmt.Errorf("unexpected type %T for field test_case_id", values[i])
 			} else if value != nil {
 				ptc.TestCaseID = *value
+			}
+		case plantestcase.FieldInput:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field input", values[i])
+			} else if value.Valid {
+				ptc.Input = value.String
 			}
 		case plantestcase.FieldOutput:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -180,6 +188,9 @@ func (ptc *PlanTestCase) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("test_case_id=")
 	builder.WriteString(fmt.Sprintf("%v", ptc.TestCaseID))
+	builder.WriteString(", ")
+	builder.WriteString("input=")
+	builder.WriteString(ptc.Input)
 	builder.WriteString(", ")
 	builder.WriteString("output=")
 	builder.WriteString(ptc.Output)

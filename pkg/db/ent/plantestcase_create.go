@@ -93,6 +93,20 @@ func (ptcc *PlanTestCaseCreate) SetNillableTestCaseID(u *uuid.UUID) *PlanTestCas
 	return ptcc
 }
 
+// SetInput sets the "input" field.
+func (ptcc *PlanTestCaseCreate) SetInput(s string) *PlanTestCaseCreate {
+	ptcc.mutation.SetInput(s)
+	return ptcc
+}
+
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (ptcc *PlanTestCaseCreate) SetNillableInput(s *string) *PlanTestCaseCreate {
+	if s != nil {
+		ptcc.SetInput(*s)
+	}
+	return ptcc
+}
+
 // SetOutput sets the "output" field.
 func (ptcc *PlanTestCaseCreate) SetOutput(s string) *PlanTestCaseCreate {
 	ptcc.mutation.SetOutput(s)
@@ -305,6 +319,10 @@ func (ptcc *PlanTestCaseCreate) defaults() error {
 		v := plantestcase.DefaultTestCaseID()
 		ptcc.mutation.SetTestCaseID(v)
 	}
+	if _, ok := ptcc.mutation.Input(); !ok {
+		v := plantestcase.DefaultInput
+		ptcc.mutation.SetInput(v)
+	}
 	if _, ok := ptcc.mutation.Output(); !ok {
 		v := plantestcase.DefaultOutput
 		ptcc.mutation.SetOutput(v)
@@ -429,6 +447,14 @@ func (ptcc *PlanTestCaseCreate) createSpec() (*PlanTestCase, *sqlgraph.CreateSpe
 			Column: plantestcase.FieldTestCaseID,
 		})
 		_node.TestCaseID = value
+	}
+	if value, ok := ptcc.mutation.Input(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: plantestcase.FieldInput,
+		})
+		_node.Input = value
 	}
 	if value, ok := ptcc.mutation.Output(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -619,6 +645,24 @@ func (u *PlanTestCaseUpsert) UpdateTestCaseID() *PlanTestCaseUpsert {
 // ClearTestCaseID clears the value of the "test_case_id" field.
 func (u *PlanTestCaseUpsert) ClearTestCaseID() *PlanTestCaseUpsert {
 	u.SetNull(plantestcase.FieldTestCaseID)
+	return u
+}
+
+// SetInput sets the "input" field.
+func (u *PlanTestCaseUpsert) SetInput(v string) *PlanTestCaseUpsert {
+	u.Set(plantestcase.FieldInput, v)
+	return u
+}
+
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *PlanTestCaseUpsert) UpdateInput() *PlanTestCaseUpsert {
+	u.SetExcluded(plantestcase.FieldInput)
+	return u
+}
+
+// ClearInput clears the value of the "input" field.
+func (u *PlanTestCaseUpsert) ClearInput() *PlanTestCaseUpsert {
+	u.SetNull(plantestcase.FieldInput)
 	return u
 }
 
@@ -894,6 +938,27 @@ func (u *PlanTestCaseUpsertOne) UpdateTestCaseID() *PlanTestCaseUpsertOne {
 func (u *PlanTestCaseUpsertOne) ClearTestCaseID() *PlanTestCaseUpsertOne {
 	return u.Update(func(s *PlanTestCaseUpsert) {
 		s.ClearTestCaseID()
+	})
+}
+
+// SetInput sets the "input" field.
+func (u *PlanTestCaseUpsertOne) SetInput(v string) *PlanTestCaseUpsertOne {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.SetInput(v)
+	})
+}
+
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertOne) UpdateInput() *PlanTestCaseUpsertOne {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.UpdateInput()
+	})
+}
+
+// ClearInput clears the value of the "input" field.
+func (u *PlanTestCaseUpsertOne) ClearInput() *PlanTestCaseUpsertOne {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.ClearInput()
 	})
 }
 
@@ -1355,6 +1420,27 @@ func (u *PlanTestCaseUpsertBulk) UpdateTestCaseID() *PlanTestCaseUpsertBulk {
 func (u *PlanTestCaseUpsertBulk) ClearTestCaseID() *PlanTestCaseUpsertBulk {
 	return u.Update(func(s *PlanTestCaseUpsert) {
 		s.ClearTestCaseID()
+	})
+}
+
+// SetInput sets the "input" field.
+func (u *PlanTestCaseUpsertBulk) SetInput(v string) *PlanTestCaseUpsertBulk {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.SetInput(v)
+	})
+}
+
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertBulk) UpdateInput() *PlanTestCaseUpsertBulk {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.UpdateInput()
+	})
+}
+
+// ClearInput clears the value of the "input" field.
+func (u *PlanTestCaseUpsertBulk) ClearInput() *PlanTestCaseUpsertBulk {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.ClearInput()
 	})
 }
 
