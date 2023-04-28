@@ -21,6 +21,7 @@ func (s *Server) UpdateTestCase(ctx context.Context, in *npool.UpdateTestCaseReq
 		testcase1.WithInput(req.Input),
 		testcase1.WithInputDesc(req.InputDesc),
 		testcase1.WithExpectation(req.Expectation),
+		testcase1.WithOutputDesc(req.OutputDesc),
 		testcase1.WithDeprecated(req.Deprecated),
 		testcase1.WithTestCaseType(req.TestCaseType),
 	)
