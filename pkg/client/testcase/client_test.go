@@ -46,7 +46,6 @@ func setupAPI(t *testing.T) func(*testing.T) {
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
-		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
@@ -66,6 +65,7 @@ var (
 		Input:           "{}",
 		InputDesc:       "{}",
 		Expectation:     "{}",
+		OutputDesc:      "{}",
 		Deprecated:      false,
 		TestCaseType:    npool.TestCaseType_DefaultTestCaseType,
 		TestCaseTypeStr: npool.TestCaseType_DefaultTestCaseType.String(),
@@ -82,6 +82,7 @@ func createTestCase(t *testing.T) {
 			Input:       &ret.Input,
 			InputDesc:   &ret.InputDesc,
 			Expectation: &ret.Expectation,
+			OutputDesc:  &ret.OutputDesc,
 		}
 	)
 
@@ -115,6 +116,7 @@ func updateTestCase(t *testing.T) {
 	ret.Input = "{\"Name\": \"HelloWorld\"}"
 	ret.InputDesc = "{\"Name\": \"string\"}"
 	ret.Expectation = "{\"ID\": \"xxxxx\", \"Name\": \"HelloWorld\"}"
+	ret.OutputDesc = "{\"ID\": \"string\", \"Name\": \"string\"}"
 	ret.TestCaseType = npool.TestCaseType_Automatic
 	ret.TestCaseTypeStr = npool.TestCaseType_Automatic.String()
 	var (
@@ -125,6 +127,7 @@ func updateTestCase(t *testing.T) {
 			Input:        &ret.Input,
 			InputDesc:    &ret.InputDesc,
 			Expectation:  &ret.Expectation,
+			OutputDesc:   &ret.OutputDesc,
 			TestCaseType: &ret.TestCaseType,
 		}
 	)
