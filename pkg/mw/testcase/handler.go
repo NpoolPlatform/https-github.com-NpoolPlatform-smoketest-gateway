@@ -224,7 +224,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			h.Conds.TestCaseType = &cruder.Cond{Op: conds.TestCaseType.Op, Val: conds.TestCaseType}
 		}
 		if conds.Deprecated != nil {
-			h.Conds.Deprecated = &cruder.Cond{Op: conds.Deprecated.Op, Val: conds.Deprecated}
+			h.Conds.Deprecated = &cruder.Cond{Op: conds.GetDeprecated().GetOp(), Val: conds.GetDeprecated().GetValue()}
 		}
 
 		if len(conds.GetIDs().GetValue()) > 0 {
