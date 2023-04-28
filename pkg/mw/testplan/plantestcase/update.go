@@ -15,6 +15,7 @@ func (h *Handler) UpdatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 			cli.PlanTestCase.UpdateOneID(*h.ID),
 			&crud.Req{
 				ID:          h.ID,
+				Input:       h.Input,
 				Output:      h.Output,
 				Result:      h.Result,
 				TestUserID:  h.TestUserID,
