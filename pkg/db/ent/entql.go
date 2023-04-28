@@ -68,17 +68,17 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "PlanTestCase",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			plantestcase.FieldCreatedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldCreatedAt},
-			plantestcase.FieldUpdatedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldUpdatedAt},
-			plantestcase.FieldDeletedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
-			plantestcase.FieldTestPlanID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
-			plantestcase.FieldTestCaseID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
-			plantestcase.FieldTestCaseOutput: {Type: field.TypeString, Column: plantestcase.FieldTestCaseOutput},
-			plantestcase.FieldDescription:    {Type: field.TypeString, Column: plantestcase.FieldDescription},
-			plantestcase.FieldTestUserID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestUserID},
-			plantestcase.FieldRunDuration:    {Type: field.TypeUint32, Column: plantestcase.FieldRunDuration},
-			plantestcase.FieldResult:         {Type: field.TypeString, Column: plantestcase.FieldResult},
-			plantestcase.FieldIndex:          {Type: field.TypeUint32, Column: plantestcase.FieldIndex},
+			plantestcase.FieldCreatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldCreatedAt},
+			plantestcase.FieldUpdatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldUpdatedAt},
+			plantestcase.FieldDeletedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
+			plantestcase.FieldTestPlanID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
+			plantestcase.FieldTestCaseID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
+			plantestcase.FieldOutput:      {Type: field.TypeString, Column: plantestcase.FieldOutput},
+			plantestcase.FieldDescription: {Type: field.TypeString, Column: plantestcase.FieldDescription},
+			plantestcase.FieldTestUserID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestUserID},
+			plantestcase.FieldRunDuration: {Type: field.TypeUint32, Column: plantestcase.FieldRunDuration},
+			plantestcase.FieldResult:      {Type: field.TypeString, Column: plantestcase.FieldResult},
+			plantestcase.FieldIndex:       {Type: field.TypeUint32, Column: plantestcase.FieldIndex},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -351,9 +351,9 @@ func (f *PlanTestCaseFilter) WhereTestCaseID(p entql.ValueP) {
 	f.Where(p.Field(plantestcase.FieldTestCaseID))
 }
 
-// WhereTestCaseOutput applies the entql string predicate on the test_case_output field.
-func (f *PlanTestCaseFilter) WhereTestCaseOutput(p entql.StringP) {
-	f.Where(p.Field(plantestcase.FieldTestCaseOutput))
+// WhereOutput applies the entql string predicate on the output field.
+func (f *PlanTestCaseFilter) WhereOutput(p entql.StringP) {
+	f.Where(p.Field(plantestcase.FieldOutput))
 }
 
 // WhereDescription applies the entql string predicate on the description field.

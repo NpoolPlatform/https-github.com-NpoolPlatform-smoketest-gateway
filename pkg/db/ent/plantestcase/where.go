@@ -114,10 +114,10 @@ func TestCaseID(v uuid.UUID) predicate.PlanTestCase {
 	})
 }
 
-// TestCaseOutput applies equality check predicate on the "test_case_output" field. It's identical to TestCaseOutputEQ.
-func TestCaseOutput(v string) predicate.PlanTestCase {
+// Output applies equality check predicate on the "output" field. It's identical to OutputEQ.
+func Output(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.EQ(s.C(FieldOutput), v))
 	})
 }
 
@@ -504,116 +504,116 @@ func TestCaseIDNotNil() predicate.PlanTestCase {
 	})
 }
 
-// TestCaseOutputEQ applies the EQ predicate on the "test_case_output" field.
-func TestCaseOutputEQ(v string) predicate.PlanTestCase {
+// OutputEQ applies the EQ predicate on the "output" field.
+func OutputEQ(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.EQ(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputNEQ applies the NEQ predicate on the "test_case_output" field.
-func TestCaseOutputNEQ(v string) predicate.PlanTestCase {
+// OutputNEQ applies the NEQ predicate on the "output" field.
+func OutputNEQ(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.NEQ(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputIn applies the In predicate on the "test_case_output" field.
-func TestCaseOutputIn(vs ...string) predicate.PlanTestCase {
+// OutputIn applies the In predicate on the "output" field.
+func OutputIn(vs ...string) predicate.PlanTestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldTestCaseOutput), v...))
+		s.Where(sql.In(s.C(FieldOutput), v...))
 	})
 }
 
-// TestCaseOutputNotIn applies the NotIn predicate on the "test_case_output" field.
-func TestCaseOutputNotIn(vs ...string) predicate.PlanTestCase {
+// OutputNotIn applies the NotIn predicate on the "output" field.
+func OutputNotIn(vs ...string) predicate.PlanTestCase {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldTestCaseOutput), v...))
+		s.Where(sql.NotIn(s.C(FieldOutput), v...))
 	})
 }
 
-// TestCaseOutputGT applies the GT predicate on the "test_case_output" field.
-func TestCaseOutputGT(v string) predicate.PlanTestCase {
+// OutputGT applies the GT predicate on the "output" field.
+func OutputGT(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.GT(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputGTE applies the GTE predicate on the "test_case_output" field.
-func TestCaseOutputGTE(v string) predicate.PlanTestCase {
+// OutputGTE applies the GTE predicate on the "output" field.
+func OutputGTE(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.GTE(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputLT applies the LT predicate on the "test_case_output" field.
-func TestCaseOutputLT(v string) predicate.PlanTestCase {
+// OutputLT applies the LT predicate on the "output" field.
+func OutputLT(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.LT(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputLTE applies the LTE predicate on the "test_case_output" field.
-func TestCaseOutputLTE(v string) predicate.PlanTestCase {
+// OutputLTE applies the LTE predicate on the "output" field.
+func OutputLTE(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.LTE(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputContains applies the Contains predicate on the "test_case_output" field.
-func TestCaseOutputContains(v string) predicate.PlanTestCase {
+// OutputContains applies the Contains predicate on the "output" field.
+func OutputContains(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.Contains(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputHasPrefix applies the HasPrefix predicate on the "test_case_output" field.
-func TestCaseOutputHasPrefix(v string) predicate.PlanTestCase {
+// OutputHasPrefix applies the HasPrefix predicate on the "output" field.
+func OutputHasPrefix(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.HasPrefix(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputHasSuffix applies the HasSuffix predicate on the "test_case_output" field.
-func TestCaseOutputHasSuffix(v string) predicate.PlanTestCase {
+// OutputHasSuffix applies the HasSuffix predicate on the "output" field.
+func OutputHasSuffix(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.HasSuffix(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputIsNil applies the IsNil predicate on the "test_case_output" field.
-func TestCaseOutputIsNil() predicate.PlanTestCase {
+// OutputIsNil applies the IsNil predicate on the "output" field.
+func OutputIsNil() predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldTestCaseOutput)))
+		s.Where(sql.IsNull(s.C(FieldOutput)))
 	})
 }
 
-// TestCaseOutputNotNil applies the NotNil predicate on the "test_case_output" field.
-func TestCaseOutputNotNil() predicate.PlanTestCase {
+// OutputNotNil applies the NotNil predicate on the "output" field.
+func OutputNotNil() predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldTestCaseOutput)))
+		s.Where(sql.NotNull(s.C(FieldOutput)))
 	})
 }
 
-// TestCaseOutputEqualFold applies the EqualFold predicate on the "test_case_output" field.
-func TestCaseOutputEqualFold(v string) predicate.PlanTestCase {
+// OutputEqualFold applies the EqualFold predicate on the "output" field.
+func OutputEqualFold(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.EqualFold(s.C(FieldOutput), v))
 	})
 }
 
-// TestCaseOutputContainsFold applies the ContainsFold predicate on the "test_case_output" field.
-func TestCaseOutputContainsFold(v string) predicate.PlanTestCase {
+// OutputContainsFold applies the ContainsFold predicate on the "output" field.
+func OutputContainsFold(v string) predicate.PlanTestCase {
 	return predicate.PlanTestCase(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldTestCaseOutput), v))
+		s.Where(sql.ContainsFold(s.C(FieldOutput), v))
 	})
 }
 

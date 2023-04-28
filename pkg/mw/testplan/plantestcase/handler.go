@@ -14,18 +14,18 @@ import (
 )
 
 type Handler struct {
-	ID             *uuid.UUID
-	TestPlanID     *uuid.UUID
-	TestCaseID     *uuid.UUID
-	TestUserID     *uuid.UUID
-	TestCaseOutput *string
-	TestCaseResult *npool.TestCaseResult
-	Description    *string
-	Index          *uint32
-	RunDuration    *uint32
-	Conds          *crud.Conds
-	Offset         int32
-	Limit          int32
+	ID          *uuid.UUID
+	TestPlanID  *uuid.UUID
+	TestCaseID  *uuid.UUID
+	TestUserID  *uuid.UUID
+	Output      *string
+	Result      *npool.TestCaseResult
+	Description *string
+	Index       *uint32
+	RunDuration *uint32
+	Conds       *crud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -120,7 +120,7 @@ func WithOutput(output *string) func(context.Context, *Handler) error {
 		if output == nil {
 			return nil
 		}
-		h.TestCaseOutput = output
+		h.Output = output
 		return nil
 	}
 }
@@ -137,7 +137,7 @@ func WithResult(result *npool.TestCaseResult) func(context.Context, *Handler) er
 		default:
 			return fmt.Errorf("invalid testcase result")
 		}
-		h.TestCaseResult = result
+		h.Result = result
 		return nil
 	}
 }

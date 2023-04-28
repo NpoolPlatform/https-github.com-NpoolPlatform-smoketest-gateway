@@ -1643,29 +1643,29 @@ func (m *ModuleMutation) ResetEdge(name string) error {
 // PlanTestCaseMutation represents an operation that mutates the PlanTestCase nodes in the graph.
 type PlanTestCaseMutation struct {
 	config
-	op               Op
-	typ              string
-	id               *uuid.UUID
-	created_at       *uint32
-	addcreated_at    *int32
-	updated_at       *uint32
-	addupdated_at    *int32
-	deleted_at       *uint32
-	adddeleted_at    *int32
-	test_plan_id     *uuid.UUID
-	test_case_id     *uuid.UUID
-	test_case_output *string
-	description      *string
-	test_user_id     *uuid.UUID
-	run_duration     *uint32
-	addrun_duration  *int32
-	result           *string
-	index            *uint32
-	addindex         *int32
-	clearedFields    map[string]struct{}
-	done             bool
-	oldValue         func(context.Context) (*PlanTestCase, error)
-	predicates       []predicate.PlanTestCase
+	op              Op
+	typ             string
+	id              *uuid.UUID
+	created_at      *uint32
+	addcreated_at   *int32
+	updated_at      *uint32
+	addupdated_at   *int32
+	deleted_at      *uint32
+	adddeleted_at   *int32
+	test_plan_id    *uuid.UUID
+	test_case_id    *uuid.UUID
+	output          *string
+	description     *string
+	test_user_id    *uuid.UUID
+	run_duration    *uint32
+	addrun_duration *int32
+	result          *string
+	index           *uint32
+	addindex        *int32
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*PlanTestCase, error)
+	predicates      []predicate.PlanTestCase
 }
 
 var _ ent.Mutation = (*PlanTestCaseMutation)(nil)
@@ -2038,53 +2038,53 @@ func (m *PlanTestCaseMutation) ResetTestCaseID() {
 	delete(m.clearedFields, plantestcase.FieldTestCaseID)
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (m *PlanTestCaseMutation) SetTestCaseOutput(s string) {
-	m.test_case_output = &s
+// SetOutput sets the "output" field.
+func (m *PlanTestCaseMutation) SetOutput(s string) {
+	m.output = &s
 }
 
-// TestCaseOutput returns the value of the "test_case_output" field in the mutation.
-func (m *PlanTestCaseMutation) TestCaseOutput() (r string, exists bool) {
-	v := m.test_case_output
+// Output returns the value of the "output" field in the mutation.
+func (m *PlanTestCaseMutation) Output() (r string, exists bool) {
+	v := m.output
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldTestCaseOutput returns the old "test_case_output" field's value of the PlanTestCase entity.
+// OldOutput returns the old "output" field's value of the PlanTestCase entity.
 // If the PlanTestCase object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PlanTestCaseMutation) OldTestCaseOutput(ctx context.Context) (v string, err error) {
+func (m *PlanTestCaseMutation) OldOutput(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTestCaseOutput is only allowed on UpdateOne operations")
+		return v, errors.New("OldOutput is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTestCaseOutput requires an ID field in the mutation")
+		return v, errors.New("OldOutput requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTestCaseOutput: %w", err)
+		return v, fmt.Errorf("querying old value for OldOutput: %w", err)
 	}
-	return oldValue.TestCaseOutput, nil
+	return oldValue.Output, nil
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (m *PlanTestCaseMutation) ClearTestCaseOutput() {
-	m.test_case_output = nil
-	m.clearedFields[plantestcase.FieldTestCaseOutput] = struct{}{}
+// ClearOutput clears the value of the "output" field.
+func (m *PlanTestCaseMutation) ClearOutput() {
+	m.output = nil
+	m.clearedFields[plantestcase.FieldOutput] = struct{}{}
 }
 
-// TestCaseOutputCleared returns if the "test_case_output" field was cleared in this mutation.
-func (m *PlanTestCaseMutation) TestCaseOutputCleared() bool {
-	_, ok := m.clearedFields[plantestcase.FieldTestCaseOutput]
+// OutputCleared returns if the "output" field was cleared in this mutation.
+func (m *PlanTestCaseMutation) OutputCleared() bool {
+	_, ok := m.clearedFields[plantestcase.FieldOutput]
 	return ok
 }
 
-// ResetTestCaseOutput resets all changes to the "test_case_output" field.
-func (m *PlanTestCaseMutation) ResetTestCaseOutput() {
-	m.test_case_output = nil
-	delete(m.clearedFields, plantestcase.FieldTestCaseOutput)
+// ResetOutput resets all changes to the "output" field.
+func (m *PlanTestCaseMutation) ResetOutput() {
+	m.output = nil
+	delete(m.clearedFields, plantestcase.FieldOutput)
 }
 
 // SetDescription sets the "description" field.
@@ -2409,8 +2409,8 @@ func (m *PlanTestCaseMutation) Fields() []string {
 	if m.test_case_id != nil {
 		fields = append(fields, plantestcase.FieldTestCaseID)
 	}
-	if m.test_case_output != nil {
-		fields = append(fields, plantestcase.FieldTestCaseOutput)
+	if m.output != nil {
+		fields = append(fields, plantestcase.FieldOutput)
 	}
 	if m.description != nil {
 		fields = append(fields, plantestcase.FieldDescription)
@@ -2445,8 +2445,8 @@ func (m *PlanTestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.TestPlanID()
 	case plantestcase.FieldTestCaseID:
 		return m.TestCaseID()
-	case plantestcase.FieldTestCaseOutput:
-		return m.TestCaseOutput()
+	case plantestcase.FieldOutput:
+		return m.Output()
 	case plantestcase.FieldDescription:
 		return m.Description()
 	case plantestcase.FieldTestUserID:
@@ -2476,8 +2476,8 @@ func (m *PlanTestCaseMutation) OldField(ctx context.Context, name string) (ent.V
 		return m.OldTestPlanID(ctx)
 	case plantestcase.FieldTestCaseID:
 		return m.OldTestCaseID(ctx)
-	case plantestcase.FieldTestCaseOutput:
-		return m.OldTestCaseOutput(ctx)
+	case plantestcase.FieldOutput:
+		return m.OldOutput(ctx)
 	case plantestcase.FieldDescription:
 		return m.OldDescription(ctx)
 	case plantestcase.FieldTestUserID:
@@ -2532,12 +2532,12 @@ func (m *PlanTestCaseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetTestCaseID(v)
 		return nil
-	case plantestcase.FieldTestCaseOutput:
+	case plantestcase.FieldOutput:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetTestCaseOutput(v)
+		m.SetOutput(v)
 		return nil
 	case plantestcase.FieldDescription:
 		v, ok := value.(string)
@@ -2673,8 +2673,8 @@ func (m *PlanTestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(plantestcase.FieldTestCaseID) {
 		fields = append(fields, plantestcase.FieldTestCaseID)
 	}
-	if m.FieldCleared(plantestcase.FieldTestCaseOutput) {
-		fields = append(fields, plantestcase.FieldTestCaseOutput)
+	if m.FieldCleared(plantestcase.FieldOutput) {
+		fields = append(fields, plantestcase.FieldOutput)
 	}
 	if m.FieldCleared(plantestcase.FieldDescription) {
 		fields = append(fields, plantestcase.FieldDescription)
@@ -2711,8 +2711,8 @@ func (m *PlanTestCaseMutation) ClearField(name string) error {
 	case plantestcase.FieldTestCaseID:
 		m.ClearTestCaseID()
 		return nil
-	case plantestcase.FieldTestCaseOutput:
-		m.ClearTestCaseOutput()
+	case plantestcase.FieldOutput:
+		m.ClearOutput()
 		return nil
 	case plantestcase.FieldDescription:
 		m.ClearDescription()
@@ -2752,8 +2752,8 @@ func (m *PlanTestCaseMutation) ResetField(name string) error {
 	case plantestcase.FieldTestCaseID:
 		m.ResetTestCaseID()
 		return nil
-	case plantestcase.FieldTestCaseOutput:
-		m.ResetTestCaseOutput()
+	case plantestcase.FieldOutput:
+		m.ResetOutput()
 		return nil
 	case plantestcase.FieldDescription:
 		m.ResetDescription()

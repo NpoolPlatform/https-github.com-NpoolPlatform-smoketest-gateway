@@ -11,16 +11,16 @@ import (
 )
 
 type Req struct {
-	ID             *uuid.UUID
-	TestPlanID     *uuid.UUID
-	TestCaseID     *uuid.UUID
-	TestCaseOutput *string
-	Description    *string
-	RunDuration    *uint32
-	TestUserID     *uuid.UUID
-	Result         *npool.TestCaseResult
-	Index          *uint32
-	DeletedAt      *uint32
+	ID          *uuid.UUID
+	TestPlanID  *uuid.UUID
+	TestCaseID  *uuid.UUID
+	Output      *string
+	Description *string
+	RunDuration *uint32
+	TestUserID  *uuid.UUID
+	Result      *npool.TestCaseResult
+	Index       *uint32
+	DeletedAt   *uint32
 }
 
 func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
@@ -36,8 +36,8 @@ func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
 	if req.Description != nil {
 		c.SetDescription(*req.Description)
 	}
-	if req.TestCaseOutput != nil {
-		c.SetTestCaseOutput(*req.TestCaseOutput)
+	if req.Output != nil {
+		c.SetOutput(*req.Output)
 	}
 	if req.RunDuration != nil {
 		c.SetRunDuration(*req.RunDuration)
@@ -58,8 +58,8 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 	if req.Description != nil {
 		u.SetDescription(*req.Description)
 	}
-	if req.TestCaseOutput != nil {
-		u.SetTestCaseOutput(*req.TestCaseOutput)
+	if req.Output != nil {
+		u.SetOutput(*req.Output)
 	}
 	if req.RunDuration != nil {
 		u.SetRunDuration(*req.RunDuration)

@@ -149,10 +149,10 @@ func init() {
 	plantestcaseDescTestCaseID := plantestcaseFields[2].Descriptor()
 	// plantestcase.DefaultTestCaseID holds the default value on creation for the test_case_id field.
 	plantestcase.DefaultTestCaseID = plantestcaseDescTestCaseID.Default.(func() uuid.UUID)
-	// plantestcaseDescTestCaseOutput is the schema descriptor for test_case_output field.
-	plantestcaseDescTestCaseOutput := plantestcaseFields[3].Descriptor()
-	// plantestcase.DefaultTestCaseOutput holds the default value on creation for the test_case_output field.
-	plantestcase.DefaultTestCaseOutput = plantestcaseDescTestCaseOutput.Default.(string)
+	// plantestcaseDescOutput is the schema descriptor for output field.
+	plantestcaseDescOutput := plantestcaseFields[3].Descriptor()
+	// plantestcase.DefaultOutput holds the default value on creation for the output field.
+	plantestcase.DefaultOutput = plantestcaseDescOutput.Default.(string)
 	// plantestcaseDescDescription is the schema descriptor for description field.
 	plantestcaseDescDescription := plantestcaseFields[4].Descriptor()
 	// plantestcase.DefaultDescription holds the default value on creation for the description field.

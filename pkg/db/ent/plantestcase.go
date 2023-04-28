@@ -26,8 +26,8 @@ type PlanTestCase struct {
 	TestPlanID uuid.UUID `json:"test_plan_id,omitempty"`
 	// TestCaseID holds the value of the "test_case_id" field.
 	TestCaseID uuid.UUID `json:"test_case_id,omitempty"`
-	// TestCaseOutput holds the value of the "test_case_output" field.
-	TestCaseOutput string `json:"test_case_output,omitempty"`
+	// Output holds the value of the "output" field.
+	Output string `json:"output,omitempty"`
 	// Description holds the value of the "description" field.
 	Description string `json:"description,omitempty"`
 	// TestUserID holds the value of the "test_user_id" field.
@@ -47,7 +47,7 @@ func (*PlanTestCase) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case plantestcase.FieldCreatedAt, plantestcase.FieldUpdatedAt, plantestcase.FieldDeletedAt, plantestcase.FieldRunDuration, plantestcase.FieldIndex:
 			values[i] = new(sql.NullInt64)
-		case plantestcase.FieldTestCaseOutput, plantestcase.FieldDescription, plantestcase.FieldResult:
+		case plantestcase.FieldOutput, plantestcase.FieldDescription, plantestcase.FieldResult:
 			values[i] = new(sql.NullString)
 		case plantestcase.FieldID, plantestcase.FieldTestPlanID, plantestcase.FieldTestCaseID, plantestcase.FieldTestUserID:
 			values[i] = new(uuid.UUID)
@@ -102,11 +102,11 @@ func (ptc *PlanTestCase) assignValues(columns []string, values []interface{}) er
 			} else if value != nil {
 				ptc.TestCaseID = *value
 			}
-		case plantestcase.FieldTestCaseOutput:
+		case plantestcase.FieldOutput:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field test_case_output", values[i])
+				return fmt.Errorf("unexpected type %T for field output", values[i])
 			} else if value.Valid {
-				ptc.TestCaseOutput = value.String
+				ptc.Output = value.String
 			}
 		case plantestcase.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -181,8 +181,8 @@ func (ptc *PlanTestCase) String() string {
 	builder.WriteString("test_case_id=")
 	builder.WriteString(fmt.Sprintf("%v", ptc.TestCaseID))
 	builder.WriteString(", ")
-	builder.WriteString("test_case_output=")
-	builder.WriteString(ptc.TestCaseOutput)
+	builder.WriteString("output=")
+	builder.WriteString(ptc.Output)
 	builder.WriteString(", ")
 	builder.WriteString("description=")
 	builder.WriteString(ptc.Description)

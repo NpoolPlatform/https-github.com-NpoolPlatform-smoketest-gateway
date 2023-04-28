@@ -93,16 +93,16 @@ func (ptcc *PlanTestCaseCreate) SetNillableTestCaseID(u *uuid.UUID) *PlanTestCas
 	return ptcc
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (ptcc *PlanTestCaseCreate) SetTestCaseOutput(s string) *PlanTestCaseCreate {
-	ptcc.mutation.SetTestCaseOutput(s)
+// SetOutput sets the "output" field.
+func (ptcc *PlanTestCaseCreate) SetOutput(s string) *PlanTestCaseCreate {
+	ptcc.mutation.SetOutput(s)
 	return ptcc
 }
 
-// SetNillableTestCaseOutput sets the "test_case_output" field if the given value is not nil.
-func (ptcc *PlanTestCaseCreate) SetNillableTestCaseOutput(s *string) *PlanTestCaseCreate {
+// SetNillableOutput sets the "output" field if the given value is not nil.
+func (ptcc *PlanTestCaseCreate) SetNillableOutput(s *string) *PlanTestCaseCreate {
 	if s != nil {
-		ptcc.SetTestCaseOutput(*s)
+		ptcc.SetOutput(*s)
 	}
 	return ptcc
 }
@@ -305,9 +305,9 @@ func (ptcc *PlanTestCaseCreate) defaults() error {
 		v := plantestcase.DefaultTestCaseID()
 		ptcc.mutation.SetTestCaseID(v)
 	}
-	if _, ok := ptcc.mutation.TestCaseOutput(); !ok {
-		v := plantestcase.DefaultTestCaseOutput
-		ptcc.mutation.SetTestCaseOutput(v)
+	if _, ok := ptcc.mutation.Output(); !ok {
+		v := plantestcase.DefaultOutput
+		ptcc.mutation.SetOutput(v)
 	}
 	if _, ok := ptcc.mutation.Description(); !ok {
 		v := plantestcase.DefaultDescription
@@ -430,13 +430,13 @@ func (ptcc *PlanTestCaseCreate) createSpec() (*PlanTestCase, *sqlgraph.CreateSpe
 		})
 		_node.TestCaseID = value
 	}
-	if value, ok := ptcc.mutation.TestCaseOutput(); ok {
+	if value, ok := ptcc.mutation.Output(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: plantestcase.FieldTestCaseOutput,
+			Column: plantestcase.FieldOutput,
 		})
-		_node.TestCaseOutput = value
+		_node.Output = value
 	}
 	if value, ok := ptcc.mutation.Description(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -622,21 +622,21 @@ func (u *PlanTestCaseUpsert) ClearTestCaseID() *PlanTestCaseUpsert {
 	return u
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (u *PlanTestCaseUpsert) SetTestCaseOutput(v string) *PlanTestCaseUpsert {
-	u.Set(plantestcase.FieldTestCaseOutput, v)
+// SetOutput sets the "output" field.
+func (u *PlanTestCaseUpsert) SetOutput(v string) *PlanTestCaseUpsert {
+	u.Set(plantestcase.FieldOutput, v)
 	return u
 }
 
-// UpdateTestCaseOutput sets the "test_case_output" field to the value that was provided on create.
-func (u *PlanTestCaseUpsert) UpdateTestCaseOutput() *PlanTestCaseUpsert {
-	u.SetExcluded(plantestcase.FieldTestCaseOutput)
+// UpdateOutput sets the "output" field to the value that was provided on create.
+func (u *PlanTestCaseUpsert) UpdateOutput() *PlanTestCaseUpsert {
+	u.SetExcluded(plantestcase.FieldOutput)
 	return u
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (u *PlanTestCaseUpsert) ClearTestCaseOutput() *PlanTestCaseUpsert {
-	u.SetNull(plantestcase.FieldTestCaseOutput)
+// ClearOutput clears the value of the "output" field.
+func (u *PlanTestCaseUpsert) ClearOutput() *PlanTestCaseUpsert {
+	u.SetNull(plantestcase.FieldOutput)
 	return u
 }
 
@@ -897,24 +897,24 @@ func (u *PlanTestCaseUpsertOne) ClearTestCaseID() *PlanTestCaseUpsertOne {
 	})
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (u *PlanTestCaseUpsertOne) SetTestCaseOutput(v string) *PlanTestCaseUpsertOne {
+// SetOutput sets the "output" field.
+func (u *PlanTestCaseUpsertOne) SetOutput(v string) *PlanTestCaseUpsertOne {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.SetTestCaseOutput(v)
+		s.SetOutput(v)
 	})
 }
 
-// UpdateTestCaseOutput sets the "test_case_output" field to the value that was provided on create.
-func (u *PlanTestCaseUpsertOne) UpdateTestCaseOutput() *PlanTestCaseUpsertOne {
+// UpdateOutput sets the "output" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertOne) UpdateOutput() *PlanTestCaseUpsertOne {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.UpdateTestCaseOutput()
+		s.UpdateOutput()
 	})
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (u *PlanTestCaseUpsertOne) ClearTestCaseOutput() *PlanTestCaseUpsertOne {
+// ClearOutput clears the value of the "output" field.
+func (u *PlanTestCaseUpsertOne) ClearOutput() *PlanTestCaseUpsertOne {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.ClearTestCaseOutput()
+		s.ClearOutput()
 	})
 }
 
@@ -1358,24 +1358,24 @@ func (u *PlanTestCaseUpsertBulk) ClearTestCaseID() *PlanTestCaseUpsertBulk {
 	})
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (u *PlanTestCaseUpsertBulk) SetTestCaseOutput(v string) *PlanTestCaseUpsertBulk {
+// SetOutput sets the "output" field.
+func (u *PlanTestCaseUpsertBulk) SetOutput(v string) *PlanTestCaseUpsertBulk {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.SetTestCaseOutput(v)
+		s.SetOutput(v)
 	})
 }
 
-// UpdateTestCaseOutput sets the "test_case_output" field to the value that was provided on create.
-func (u *PlanTestCaseUpsertBulk) UpdateTestCaseOutput() *PlanTestCaseUpsertBulk {
+// UpdateOutput sets the "output" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertBulk) UpdateOutput() *PlanTestCaseUpsertBulk {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.UpdateTestCaseOutput()
+		s.UpdateOutput()
 	})
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (u *PlanTestCaseUpsertBulk) ClearTestCaseOutput() *PlanTestCaseUpsertBulk {
+// ClearOutput clears the value of the "output" field.
+func (u *PlanTestCaseUpsertBulk) ClearOutput() *PlanTestCaseUpsertBulk {
 	return u.Update(func(s *PlanTestCaseUpsert) {
-		s.ClearTestCaseOutput()
+		s.ClearOutput()
 	})
 }
 
