@@ -115,7 +115,7 @@ func WithTestUserID(userID *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
+func WithOutput(output *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if output == nil {
 			return nil
@@ -125,7 +125,7 @@ func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
+func WithResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return nil
