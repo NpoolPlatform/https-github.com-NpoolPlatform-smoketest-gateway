@@ -165,9 +165,9 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createTestCase", createTestCase)
+	t.Run("updateTestCase", updateTestCase)
 	t.Run("getTestCase", getTestCase)
 	t.Run("getTestCases", getTestCases)
-	t.Run("updateTestCase", updateTestCase)
 	t.Run("deleteTestCase", deleteTestCase)
 
 	patch.Unpatch()
