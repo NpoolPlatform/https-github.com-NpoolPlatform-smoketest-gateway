@@ -23,6 +23,7 @@ type Handler struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
+	OutputDesc   *string
 	TestCaseType *npool.TestCaseType
 	Deprecated   *bool
 	Conds        *crud.Conds
@@ -81,6 +82,20 @@ func WithExpectation(expectation *string) func(context.Context, *Handler) error 
 			return err
 		}
 		h.Expectation = expectation
+		return nil
+	}
+}
+
+func WithOutputDesc(outputDesc *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if outputDesc == nil {
+			return nil
+		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*outputDesc), &r); err != nil {
+			return err
+		}
+		h.OutputDesc = outputDesc
 		return nil
 	}
 }

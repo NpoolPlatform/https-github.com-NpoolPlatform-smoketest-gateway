@@ -2,6 +2,7 @@ package plantestcase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -18,6 +19,7 @@ type Handler struct {
 	TestPlanID  *uuid.UUID
 	TestCaseID  *uuid.UUID
 	TestUserID  *uuid.UUID
+	Input       *string
 	Output      *string
 	Result      *npool.TestCaseResult
 	Description *string
@@ -111,6 +113,20 @@ func WithTestUserID(userID *string) func(context.Context, *Handler) error {
 		}
 
 		h.TestUserID = &_userID
+		return nil
+	}
+}
+
+func WithInput(input *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if input == nil {
+			return nil
+		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*input), &r); err != nil {
+			return err
+		}
+		h.Input = input
 		return nil
 	}
 }
