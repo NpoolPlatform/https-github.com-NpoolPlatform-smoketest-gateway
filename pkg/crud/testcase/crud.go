@@ -114,7 +114,7 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 		}
 	}
 	if conds.ModuleID != nil {
-		moduleID, ok := conds.ID.Val.(uuid.UUID)
+		moduleID, ok := conds.ModuleID.Val.(uuid.UUID)
 		if !ok {
 			return nil, fmt.Errorf("invalid module id")
 		}
