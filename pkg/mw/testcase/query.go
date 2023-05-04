@@ -31,6 +31,7 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldInput,
 		enttestcase.FieldInputDesc,
 		enttestcase.FieldExpectation,
+		enttestcase.FieldOutputDesc,
 		enttestcase.FieldDeprecated,
 		enttestcase.FieldCreatedAt,
 		enttestcase.FieldUpdatedAt,

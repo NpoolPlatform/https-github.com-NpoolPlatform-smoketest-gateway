@@ -19,6 +19,7 @@ type Req struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
+	OutputDesc   *string
 	TestCaseType *npool.TestCaseType
 	Deprecated   *bool
 	DeletedAt    *uint32
@@ -49,6 +50,9 @@ func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
 	if req.Expectation != nil {
 		c.SetExpectation(*req.Expectation)
 	}
+	if req.OutputDesc != nil {
+		c.SetOutputDesc(*req.OutputDesc)
+	}
 	if req.TestCaseType != nil {
 		c.SetTestCaseType(req.TestCaseType.String())
 	}
@@ -74,6 +78,9 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 	if req.Expectation != nil {
 		u.SetExpectation(*req.Expectation)
 	}
+	if req.OutputDesc != nil {
+		u.SetOutputDesc(*req.OutputDesc)
+	}
 	if req.TestCaseType != nil {
 		u.SetTestCaseType(req.TestCaseType.String())
 	}
@@ -89,11 +96,12 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 type Conds struct {
 	ID         *cruder.Cond
 	ModuleID   *cruder.Cond
+	ApiID      *cruder.Cond //nolint
 	Deprecated *cruder.Cond
 	IDs        *cruder.Cond
 }
 
-func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) {
+func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) { //nolint
 	if conds.ID != nil {
 		id, ok := conds.ID.Val.(uuid.UUID)
 		if !ok {
@@ -107,7 +115,7 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 		}
 	}
 	if conds.ModuleID != nil {
-		moduleID, ok := conds.ID.Val.(uuid.UUID)
+		moduleID, ok := conds.ModuleID.Val.(uuid.UUID)
 		if !ok {
 			return nil, fmt.Errorf("invalid module id")
 		}
@@ -116,6 +124,18 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			q.Where(testcase.ModuleID(moduleID))
 		default:
 			return nil, fmt.Errorf("invalid module id field")
+		}
+	}
+	if conds.ApiID != nil {
+		apiID, ok := conds.ApiID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid api id")
+		}
+		switch conds.ApiID.Op {
+		case cruder.EQ:
+			q.Where(testcase.APIID(apiID))
+		default:
+			return nil, fmt.Errorf("invalid api id field")
 		}
 	}
 	if conds.Deprecated != nil {

@@ -22,8 +22,10 @@ const (
 	FieldTestPlanID = "test_plan_id"
 	// FieldTestCaseID holds the string denoting the test_case_id field in the database.
 	FieldTestCaseID = "test_case_id"
-	// FieldTestCaseOutput holds the string denoting the test_case_output field in the database.
-	FieldTestCaseOutput = "test_case_output"
+	// FieldInput holds the string denoting the input field in the database.
+	FieldInput = "input"
+	// FieldOutput holds the string denoting the output field in the database.
+	FieldOutput = "output"
 	// FieldDescription holds the string denoting the description field in the database.
 	FieldDescription = "description"
 	// FieldTestUserID holds the string denoting the test_user_id field in the database.
@@ -46,7 +48,8 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldTestPlanID,
 	FieldTestCaseID,
-	FieldTestCaseOutput,
+	FieldInput,
+	FieldOutput,
 	FieldDescription,
 	FieldTestUserID,
 	FieldRunDuration,
@@ -85,8 +88,10 @@ var (
 	DefaultTestPlanID func() uuid.UUID
 	// DefaultTestCaseID holds the default value on creation for the "test_case_id" field.
 	DefaultTestCaseID func() uuid.UUID
-	// DefaultTestCaseOutput holds the default value on creation for the "test_case_output" field.
-	DefaultTestCaseOutput string
+	// DefaultInput holds the default value on creation for the "input" field.
+	DefaultInput string
+	// DefaultOutput holds the default value on creation for the "output" field.
+	DefaultOutput string
 	// DefaultDescription holds the default value on creation for the "description" field.
 	DefaultDescription string
 	// DefaultTestUserID holds the default value on creation for the "test_user_id" field.

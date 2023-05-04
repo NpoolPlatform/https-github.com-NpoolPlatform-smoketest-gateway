@@ -224,6 +224,26 @@ func (tcu *TestCaseUpdate) ClearExpectation() *TestCaseUpdate {
 	return tcu
 }
 
+// SetOutputDesc sets the "output_desc" field.
+func (tcu *TestCaseUpdate) SetOutputDesc(s string) *TestCaseUpdate {
+	tcu.mutation.SetOutputDesc(s)
+	return tcu
+}
+
+// SetNillableOutputDesc sets the "output_desc" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableOutputDesc(s *string) *TestCaseUpdate {
+	if s != nil {
+		tcu.SetOutputDesc(*s)
+	}
+	return tcu
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (tcu *TestCaseUpdate) ClearOutputDesc() *TestCaseUpdate {
+	tcu.mutation.ClearOutputDesc()
+	return tcu
+}
+
 // SetTestCaseType sets the "test_case_type" field.
 func (tcu *TestCaseUpdate) SetTestCaseType(s string) *TestCaseUpdate {
 	tcu.mutation.SetTestCaseType(s)
@@ -495,6 +515,19 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: testcase.FieldExpectation,
 		})
 	}
+	if value, ok := tcu.mutation.OutputDesc(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldOutputDesc,
+		})
+	}
+	if tcu.mutation.OutputDescCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldOutputDesc,
+		})
+	}
 	if value, ok := tcu.mutation.TestCaseType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -734,6 +767,26 @@ func (tcuo *TestCaseUpdateOne) SetNillableExpectation(s *string) *TestCaseUpdate
 // ClearExpectation clears the value of the "expectation" field.
 func (tcuo *TestCaseUpdateOne) ClearExpectation() *TestCaseUpdateOne {
 	tcuo.mutation.ClearExpectation()
+	return tcuo
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (tcuo *TestCaseUpdateOne) SetOutputDesc(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetOutputDesc(s)
+	return tcuo
+}
+
+// SetNillableOutputDesc sets the "output_desc" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableOutputDesc(s *string) *TestCaseUpdateOne {
+	if s != nil {
+		tcuo.SetOutputDesc(*s)
+	}
+	return tcuo
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (tcuo *TestCaseUpdateOne) ClearOutputDesc() *TestCaseUpdateOne {
+	tcuo.mutation.ClearOutputDesc()
 	return tcuo
 }
 
@@ -1036,6 +1089,19 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testcase.FieldExpectation,
+		})
+	}
+	if value, ok := tcuo.mutation.OutputDesc(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldOutputDesc,
+		})
+	}
+	if tcuo.mutation.OutputDescCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldOutputDesc,
 		})
 	}
 	if value, ok := tcuo.mutation.TestCaseType(); ok {

@@ -14,13 +14,14 @@ func (h *Handler) UpdatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 		if _, err := crud.UpdateSet(
 			cli.PlanTestCase.UpdateOneID(*h.ID),
 			&crud.Req{
-				ID:             h.ID,
-				TestCaseOutput: h.TestCaseOutput,
-				Result:         h.TestCaseResult,
-				TestUserID:     h.TestUserID,
-				Index:          h.Index,
-				RunDuration:    h.RunDuration,
-				Description:    h.Description,
+				ID:          h.ID,
+				Input:       h.Input,
+				Output:      h.Output,
+				Result:      h.Result,
+				TestUserID:  h.TestUserID,
+				Index:       h.Index,
+				RunDuration: h.RunDuration,
+				Description: h.Description,
 			},
 		).Save(_ctx); err != nil {
 			return err

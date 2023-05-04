@@ -23,6 +23,7 @@ type Handler struct {
 	Input        *string
 	InputDesc    *string
 	Expectation  *string
+	OutputDesc   *string
 	TestCaseType *npool.TestCaseType
 	Deprecated   *bool
 	Conds        *crud.Conds
@@ -81,6 +82,20 @@ func WithExpectation(expectation *string) func(context.Context, *Handler) error 
 			return err
 		}
 		h.Expectation = expectation
+		return nil
+	}
+}
+
+func WithOutputDesc(outputDesc *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if outputDesc == nil {
+			return nil
+		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*outputDesc), &r); err != nil {
+			return err
+		}
+		h.OutputDesc = outputDesc
 		return nil
 	}
 }
@@ -198,9 +213,15 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 			}
 			h.Conds.ModuleID = &cruder.Cond{Op: conds.ModuleID.Op, Val: id}
 		}
-
+		if conds.ApiID != nil {
+			id, err := uuid.Parse(conds.GetApiID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ApiID = &cruder.Cond{Op: conds.ApiID.Op, Val: id}
+		}
 		if conds.Deprecated != nil {
-			h.Conds.Deprecated = &cruder.Cond{Op: conds.Deprecated.Op, Val: conds.Deprecated}
+			h.Conds.Deprecated = &cruder.Cond{Op: conds.GetDeprecated().GetOp(), Val: conds.GetDeprecated().GetValue()}
 		}
 
 		if len(conds.GetIDs().GetValue()) > 0 {

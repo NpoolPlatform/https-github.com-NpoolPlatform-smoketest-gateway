@@ -124,23 +124,43 @@ func (ptcu *PlanTestCaseUpdate) ClearTestCaseID() *PlanTestCaseUpdate {
 	return ptcu
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (ptcu *PlanTestCaseUpdate) SetTestCaseOutput(s string) *PlanTestCaseUpdate {
-	ptcu.mutation.SetTestCaseOutput(s)
+// SetInput sets the "input" field.
+func (ptcu *PlanTestCaseUpdate) SetInput(s string) *PlanTestCaseUpdate {
+	ptcu.mutation.SetInput(s)
 	return ptcu
 }
 
-// SetNillableTestCaseOutput sets the "test_case_output" field if the given value is not nil.
-func (ptcu *PlanTestCaseUpdate) SetNillableTestCaseOutput(s *string) *PlanTestCaseUpdate {
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (ptcu *PlanTestCaseUpdate) SetNillableInput(s *string) *PlanTestCaseUpdate {
 	if s != nil {
-		ptcu.SetTestCaseOutput(*s)
+		ptcu.SetInput(*s)
 	}
 	return ptcu
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (ptcu *PlanTestCaseUpdate) ClearTestCaseOutput() *PlanTestCaseUpdate {
-	ptcu.mutation.ClearTestCaseOutput()
+// ClearInput clears the value of the "input" field.
+func (ptcu *PlanTestCaseUpdate) ClearInput() *PlanTestCaseUpdate {
+	ptcu.mutation.ClearInput()
+	return ptcu
+}
+
+// SetOutput sets the "output" field.
+func (ptcu *PlanTestCaseUpdate) SetOutput(s string) *PlanTestCaseUpdate {
+	ptcu.mutation.SetOutput(s)
+	return ptcu
+}
+
+// SetNillableOutput sets the "output" field if the given value is not nil.
+func (ptcu *PlanTestCaseUpdate) SetNillableOutput(s *string) *PlanTestCaseUpdate {
+	if s != nil {
+		ptcu.SetOutput(*s)
+	}
+	return ptcu
+}
+
+// ClearOutput clears the value of the "output" field.
+func (ptcu *PlanTestCaseUpdate) ClearOutput() *PlanTestCaseUpdate {
+	ptcu.mutation.ClearOutput()
 	return ptcu
 }
 
@@ -424,17 +444,30 @@ func (ptcu *PlanTestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: plantestcase.FieldTestCaseID,
 		})
 	}
-	if value, ok := ptcu.mutation.TestCaseOutput(); ok {
+	if value, ok := ptcu.mutation.Input(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: plantestcase.FieldTestCaseOutput,
+			Column: plantestcase.FieldInput,
 		})
 	}
-	if ptcu.mutation.TestCaseOutputCleared() {
+	if ptcu.mutation.InputCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: plantestcase.FieldTestCaseOutput,
+			Column: plantestcase.FieldInput,
+		})
+	}
+	if value, ok := ptcu.mutation.Output(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: plantestcase.FieldOutput,
+		})
+	}
+	if ptcu.mutation.OutputCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: plantestcase.FieldOutput,
 		})
 	}
 	if value, ok := ptcu.mutation.Description(); ok {
@@ -632,23 +665,43 @@ func (ptcuo *PlanTestCaseUpdateOne) ClearTestCaseID() *PlanTestCaseUpdateOne {
 	return ptcuo
 }
 
-// SetTestCaseOutput sets the "test_case_output" field.
-func (ptcuo *PlanTestCaseUpdateOne) SetTestCaseOutput(s string) *PlanTestCaseUpdateOne {
-	ptcuo.mutation.SetTestCaseOutput(s)
+// SetInput sets the "input" field.
+func (ptcuo *PlanTestCaseUpdateOne) SetInput(s string) *PlanTestCaseUpdateOne {
+	ptcuo.mutation.SetInput(s)
 	return ptcuo
 }
 
-// SetNillableTestCaseOutput sets the "test_case_output" field if the given value is not nil.
-func (ptcuo *PlanTestCaseUpdateOne) SetNillableTestCaseOutput(s *string) *PlanTestCaseUpdateOne {
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (ptcuo *PlanTestCaseUpdateOne) SetNillableInput(s *string) *PlanTestCaseUpdateOne {
 	if s != nil {
-		ptcuo.SetTestCaseOutput(*s)
+		ptcuo.SetInput(*s)
 	}
 	return ptcuo
 }
 
-// ClearTestCaseOutput clears the value of the "test_case_output" field.
-func (ptcuo *PlanTestCaseUpdateOne) ClearTestCaseOutput() *PlanTestCaseUpdateOne {
-	ptcuo.mutation.ClearTestCaseOutput()
+// ClearInput clears the value of the "input" field.
+func (ptcuo *PlanTestCaseUpdateOne) ClearInput() *PlanTestCaseUpdateOne {
+	ptcuo.mutation.ClearInput()
+	return ptcuo
+}
+
+// SetOutput sets the "output" field.
+func (ptcuo *PlanTestCaseUpdateOne) SetOutput(s string) *PlanTestCaseUpdateOne {
+	ptcuo.mutation.SetOutput(s)
+	return ptcuo
+}
+
+// SetNillableOutput sets the "output" field if the given value is not nil.
+func (ptcuo *PlanTestCaseUpdateOne) SetNillableOutput(s *string) *PlanTestCaseUpdateOne {
+	if s != nil {
+		ptcuo.SetOutput(*s)
+	}
+	return ptcuo
+}
+
+// ClearOutput clears the value of the "output" field.
+func (ptcuo *PlanTestCaseUpdateOne) ClearOutput() *PlanTestCaseUpdateOne {
+	ptcuo.mutation.ClearOutput()
 	return ptcuo
 }
 
@@ -962,17 +1015,30 @@ func (ptcuo *PlanTestCaseUpdateOne) sqlSave(ctx context.Context) (_node *PlanTes
 			Column: plantestcase.FieldTestCaseID,
 		})
 	}
-	if value, ok := ptcuo.mutation.TestCaseOutput(); ok {
+	if value, ok := ptcuo.mutation.Input(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: plantestcase.FieldTestCaseOutput,
+			Column: plantestcase.FieldInput,
 		})
 	}
-	if ptcuo.mutation.TestCaseOutputCleared() {
+	if ptcuo.mutation.InputCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: plantestcase.FieldTestCaseOutput,
+			Column: plantestcase.FieldInput,
+		})
+	}
+	if value, ok := ptcuo.mutation.Output(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: plantestcase.FieldOutput,
+		})
+	}
+	if ptcuo.mutation.OutputCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: plantestcase.FieldOutput,
 		})
 	}
 	if value, ok := ptcuo.mutation.Description(); ok {

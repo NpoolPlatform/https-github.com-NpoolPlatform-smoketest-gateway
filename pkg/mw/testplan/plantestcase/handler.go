@@ -2,6 +2,7 @@ package plantestcase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
@@ -14,18 +15,19 @@ import (
 )
 
 type Handler struct {
-	ID             *uuid.UUID
-	TestPlanID     *uuid.UUID
-	TestCaseID     *uuid.UUID
-	TestUserID     *uuid.UUID
-	TestCaseOutput *string
-	TestCaseResult *npool.TestCaseResult
-	Description    *string
-	Index          *uint32
-	RunDuration    *uint32
-	Conds          *crud.Conds
-	Offset         int32
-	Limit          int32
+	ID          *uuid.UUID
+	TestPlanID  *uuid.UUID
+	TestCaseID  *uuid.UUID
+	TestUserID  *uuid.UUID
+	Input       *string
+	Output      *string
+	Result      *npool.TestCaseResult
+	Description *string
+	Index       *uint32
+	RunDuration *uint32
+	Conds       *crud.Conds
+	Offset      int32
+	Limit       int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -115,17 +117,31 @@ func WithTestUserID(userID *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseOutput(output *string) func(context.Context, *Handler) error {
+func WithInput(input *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if output == nil {
+		if input == nil {
 			return nil
 		}
-		h.TestCaseOutput = output
+		var r interface{}
+		if err := json.Unmarshal([]byte(*input), &r); err != nil {
+			return err
+		}
+		h.Input = input
 		return nil
 	}
 }
 
-func WithTestCaseResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
+func WithOutput(output *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if output == nil {
+			return nil
+		}
+		h.Output = output
+		return nil
+	}
+}
+
+func WithResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
 			return nil
@@ -137,7 +153,7 @@ func WithTestCaseResult(result *npool.TestCaseResult) func(context.Context, *Han
 		default:
 			return fmt.Errorf("invalid testcase result")
 		}
-		h.TestCaseResult = result
+		h.Result = result
 		return nil
 	}
 }

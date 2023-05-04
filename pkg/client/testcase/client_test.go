@@ -11,6 +11,8 @@ import (
 	apicli "github.com/NpoolPlatform/basal-manager/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	commonpb "github.com/NpoolPlatform/message/npool"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
@@ -46,7 +48,6 @@ func setupAPI(t *testing.T) func(*testing.T) {
 		Method:      &_api.Method,
 		Path:        &_api.Path,
 		PathPrefix:  &_api.PathPrefix,
-		Domains:     _api.Domains,
 	})
 
 	assert.Nil(t, err)
@@ -66,6 +67,7 @@ var (
 		Input:           "{}",
 		InputDesc:       "{}",
 		Expectation:     "{}",
+		OutputDesc:      "{}",
 		Deprecated:      false,
 		TestCaseType:    npool.TestCaseType_DefaultTestCaseType,
 		TestCaseTypeStr: npool.TestCaseType_DefaultTestCaseType.String(),
@@ -82,6 +84,7 @@ func createTestCase(t *testing.T) {
 			Input:       &ret.Input,
 			InputDesc:   &ret.InputDesc,
 			Expectation: &ret.Expectation,
+			OutputDesc:  &ret.OutputDesc,
 		}
 	)
 
@@ -92,6 +95,35 @@ func createTestCase(t *testing.T) {
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
+	}
+}
+
+func updateTestCase(t *testing.T) {
+	ret.Name = "用例名称111"
+	ret.Description = "用例描述111"
+	ret.Input = "{\"Name\": \"HelloWorld\"}"
+	ret.InputDesc = "{\"Name\": \"string\"}"
+	ret.Expectation = "{\"ID\": \"xxxxx\", \"Name\": \"HelloWorld\"}"
+	ret.OutputDesc = "{\"ID\": \"string\", \"Name\": \"string\"}"
+	ret.TestCaseType = npool.TestCaseType_Automatic
+	ret.TestCaseTypeStr = npool.TestCaseType_Automatic.String()
+	var (
+		req = &npool.TestCaseReq{
+			ID:           &ret.ID,
+			Name:         &ret.Name,
+			Description:  &ret.Description,
+			Input:        &ret.Input,
+			InputDesc:    &ret.InputDesc,
+			Expectation:  &ret.Expectation,
+			OutputDesc:   &ret.OutputDesc,
+			TestCaseType: &ret.TestCaseType,
+		}
+	)
+
+	info, err := UpdateTestCase(context.Background(), req)
+	if assert.Nil(t, err) {
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, &ret, info)
 	}
 }
 
@@ -109,30 +141,28 @@ func getTestCases(t *testing.T) {
 	}
 }
 
-func updateTestCase(t *testing.T) {
-	ret.Name = "用例名称111"
-	ret.Description = "用例描述111"
-	ret.Input = "{\"Name\": \"HelloWorld\"}"
-	ret.InputDesc = "{\"Name\": \"string\"}"
-	ret.Expectation = "{\"ID\": \"xxxxx\", \"Name\": \"HelloWorld\"}"
-	ret.TestCaseType = npool.TestCaseType_Automatic
-	ret.TestCaseTypeStr = npool.TestCaseType_Automatic.String()
-	var (
-		req = &npool.TestCaseReq{
-			ID:           &ret.ID,
-			Name:         &ret.Name,
-			Description:  &ret.Description,
-			Input:        &ret.Input,
-			InputDesc:    &ret.InputDesc,
-			Expectation:  &ret.Expectation,
-			TestCaseType: &ret.TestCaseType,
-		}
-	)
+func getTestCaseConds(t *testing.T) {
+	infos, _, err := GetTestCases(context.Background(), &npool.Conds{
+		ID: &commonpb.StringVal{
+			Op:    cruder.EQ,
+			Value: ret.ID,
+		},
+		ModuleID: &commonpb.StringVal{
+			Op:    cruder.EQ,
+			Value: ret.ModuleID,
+		},
+		ApiID: &commonpb.StringVal{
+			Op:    cruder.EQ,
+			Value: ret.ApiID,
+		},
+		Deprecated: &commonpb.BoolVal{
+			Op:    cruder.EQ,
+			Value: ret.Deprecated,
+		},
+	}, 0, 1)
 
-	info, err := UpdateTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
-		ret.UpdatedAt = info.UpdatedAt
-		assert.Equal(t, &ret, info)
+		assert.NotEqual(t, len(infos), 0)
 	}
 }
 
@@ -162,9 +192,10 @@ func TestMainOrder(t *testing.T) {
 	})
 
 	t.Run("createTestCase", createTestCase)
+	t.Run("updateTestCase", updateTestCase)
 	t.Run("getTestCase", getTestCase)
 	t.Run("getTestCases", getTestCases)
-	t.Run("updateTestCase", updateTestCase)
+	t.Run("getTestCaseConds", getTestCaseConds)
 	t.Run("deleteTestCase", deleteTestCase)
 
 	patch.Unpatch()

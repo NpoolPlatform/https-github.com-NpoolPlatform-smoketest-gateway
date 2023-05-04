@@ -17,6 +17,7 @@ func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 				TestPlanID: h.TestPlanID,
 				TestCaseID: h.TestCaseID,
 				Index:      h.Index,
+				Input:      h.Input,
 			},
 		).Save(_ctx)
 		if err != nil {

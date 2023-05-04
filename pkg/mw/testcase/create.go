@@ -80,6 +80,7 @@ func (h *createHandler) createTestCase(ctx context.Context) error {
 				ApiID:        h.ApiID,
 				ModuleID:     h.ModuleID,
 				Expectation:  h.Expectation,
+				OutputDesc:   h.OutputDesc,
 				TestCaseType: h.TestCaseType,
 			},
 		).Save(ctx)

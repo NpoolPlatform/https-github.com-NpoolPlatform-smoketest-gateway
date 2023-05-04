@@ -4,22 +4,23 @@ import (
 	"context"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
-	testcasecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
 
 func (h *Handler) UpdateTestCase(ctx context.Context) (info *npool.TestCase, err error) {
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if _, err := testcasecrud.UpdateSet(
+		if _, err := crud.UpdateSet(
 			cli.TestCase.UpdateOneID(*h.ID),
-			&testcasecrud.Req{
+			&crud.Req{
 				ID:           h.ID,
 				Name:         h.Name,
 				Description:  h.Description,
 				Input:        h.Input,
 				InputDesc:    h.InputDesc,
 				Expectation:  h.Expectation,
+				OutputDesc:   h.OutputDesc,
 				TestCaseType: h.TestCaseType,
 				Deprecated:   h.Deprecated,
 			},

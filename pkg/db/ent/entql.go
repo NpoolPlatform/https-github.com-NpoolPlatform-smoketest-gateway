@@ -68,17 +68,18 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "PlanTestCase",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			plantestcase.FieldCreatedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldCreatedAt},
-			plantestcase.FieldUpdatedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldUpdatedAt},
-			plantestcase.FieldDeletedAt:      {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
-			plantestcase.FieldTestPlanID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
-			plantestcase.FieldTestCaseID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
-			plantestcase.FieldTestCaseOutput: {Type: field.TypeString, Column: plantestcase.FieldTestCaseOutput},
-			plantestcase.FieldDescription:    {Type: field.TypeString, Column: plantestcase.FieldDescription},
-			plantestcase.FieldTestUserID:     {Type: field.TypeUUID, Column: plantestcase.FieldTestUserID},
-			plantestcase.FieldRunDuration:    {Type: field.TypeUint32, Column: plantestcase.FieldRunDuration},
-			plantestcase.FieldResult:         {Type: field.TypeString, Column: plantestcase.FieldResult},
-			plantestcase.FieldIndex:          {Type: field.TypeUint32, Column: plantestcase.FieldIndex},
+			plantestcase.FieldCreatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldCreatedAt},
+			plantestcase.FieldUpdatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldUpdatedAt},
+			plantestcase.FieldDeletedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
+			plantestcase.FieldTestPlanID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
+			plantestcase.FieldTestCaseID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
+			plantestcase.FieldInput:       {Type: field.TypeString, Column: plantestcase.FieldInput},
+			plantestcase.FieldOutput:      {Type: field.TypeString, Column: plantestcase.FieldOutput},
+			plantestcase.FieldDescription: {Type: field.TypeString, Column: plantestcase.FieldDescription},
+			plantestcase.FieldTestUserID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestUserID},
+			plantestcase.FieldRunDuration: {Type: field.TypeUint32, Column: plantestcase.FieldRunDuration},
+			plantestcase.FieldResult:      {Type: field.TypeString, Column: plantestcase.FieldResult},
+			plantestcase.FieldIndex:       {Type: field.TypeUint32, Column: plantestcase.FieldIndex},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -102,6 +103,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testcase.FieldInput:        {Type: field.TypeString, Column: testcase.FieldInput},
 			testcase.FieldInputDesc:    {Type: field.TypeString, Column: testcase.FieldInputDesc},
 			testcase.FieldExpectation:  {Type: field.TypeString, Column: testcase.FieldExpectation},
+			testcase.FieldOutputDesc:   {Type: field.TypeString, Column: testcase.FieldOutputDesc},
 			testcase.FieldTestCaseType: {Type: field.TypeString, Column: testcase.FieldTestCaseType},
 			testcase.FieldDeprecated:   {Type: field.TypeBool, Column: testcase.FieldDeprecated},
 		},
@@ -351,9 +353,14 @@ func (f *PlanTestCaseFilter) WhereTestCaseID(p entql.ValueP) {
 	f.Where(p.Field(plantestcase.FieldTestCaseID))
 }
 
-// WhereTestCaseOutput applies the entql string predicate on the test_case_output field.
-func (f *PlanTestCaseFilter) WhereTestCaseOutput(p entql.StringP) {
-	f.Where(p.Field(plantestcase.FieldTestCaseOutput))
+// WhereInput applies the entql string predicate on the input field.
+func (f *PlanTestCaseFilter) WhereInput(p entql.StringP) {
+	f.Where(p.Field(plantestcase.FieldInput))
+}
+
+// WhereOutput applies the entql string predicate on the output field.
+func (f *PlanTestCaseFilter) WhereOutput(p entql.StringP) {
+	f.Where(p.Field(plantestcase.FieldOutput))
 }
 
 // WhereDescription applies the entql string predicate on the description field.
@@ -469,6 +476,11 @@ func (f *TestCaseFilter) WhereInputDesc(p entql.StringP) {
 // WhereExpectation applies the entql string predicate on the expectation field.
 func (f *TestCaseFilter) WhereExpectation(p entql.StringP) {
 	f.Where(p.Field(testcase.FieldExpectation))
+}
+
+// WhereOutputDesc applies the entql string predicate on the output_desc field.
+func (f *TestCaseFilter) WhereOutputDesc(p entql.StringP) {
+	f.Where(p.Field(testcase.FieldOutputDesc))
 }
 
 // WhereTestCaseType applies the entql string predicate on the test_case_type field.

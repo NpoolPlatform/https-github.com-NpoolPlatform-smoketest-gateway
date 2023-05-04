@@ -149,28 +149,32 @@ func init() {
 	plantestcaseDescTestCaseID := plantestcaseFields[2].Descriptor()
 	// plantestcase.DefaultTestCaseID holds the default value on creation for the test_case_id field.
 	plantestcase.DefaultTestCaseID = plantestcaseDescTestCaseID.Default.(func() uuid.UUID)
-	// plantestcaseDescTestCaseOutput is the schema descriptor for test_case_output field.
-	plantestcaseDescTestCaseOutput := plantestcaseFields[3].Descriptor()
-	// plantestcase.DefaultTestCaseOutput holds the default value on creation for the test_case_output field.
-	plantestcase.DefaultTestCaseOutput = plantestcaseDescTestCaseOutput.Default.(string)
+	// plantestcaseDescInput is the schema descriptor for input field.
+	plantestcaseDescInput := plantestcaseFields[3].Descriptor()
+	// plantestcase.DefaultInput holds the default value on creation for the input field.
+	plantestcase.DefaultInput = plantestcaseDescInput.Default.(string)
+	// plantestcaseDescOutput is the schema descriptor for output field.
+	plantestcaseDescOutput := plantestcaseFields[4].Descriptor()
+	// plantestcase.DefaultOutput holds the default value on creation for the output field.
+	plantestcase.DefaultOutput = plantestcaseDescOutput.Default.(string)
 	// plantestcaseDescDescription is the schema descriptor for description field.
-	plantestcaseDescDescription := plantestcaseFields[4].Descriptor()
+	plantestcaseDescDescription := plantestcaseFields[5].Descriptor()
 	// plantestcase.DefaultDescription holds the default value on creation for the description field.
 	plantestcase.DefaultDescription = plantestcaseDescDescription.Default.(string)
 	// plantestcaseDescTestUserID is the schema descriptor for test_user_id field.
-	plantestcaseDescTestUserID := plantestcaseFields[5].Descriptor()
+	plantestcaseDescTestUserID := plantestcaseFields[6].Descriptor()
 	// plantestcase.DefaultTestUserID holds the default value on creation for the test_user_id field.
 	plantestcase.DefaultTestUserID = plantestcaseDescTestUserID.Default.(func() uuid.UUID)
 	// plantestcaseDescRunDuration is the schema descriptor for run_duration field.
-	plantestcaseDescRunDuration := plantestcaseFields[6].Descriptor()
+	plantestcaseDescRunDuration := plantestcaseFields[7].Descriptor()
 	// plantestcase.DefaultRunDuration holds the default value on creation for the run_duration field.
 	plantestcase.DefaultRunDuration = plantestcaseDescRunDuration.Default.(uint32)
 	// plantestcaseDescResult is the schema descriptor for result field.
-	plantestcaseDescResult := plantestcaseFields[7].Descriptor()
+	plantestcaseDescResult := plantestcaseFields[8].Descriptor()
 	// plantestcase.DefaultResult holds the default value on creation for the result field.
 	plantestcase.DefaultResult = plantestcaseDescResult.Default.(string)
 	// plantestcaseDescIndex is the schema descriptor for index field.
-	plantestcaseDescIndex := plantestcaseFields[8].Descriptor()
+	plantestcaseDescIndex := plantestcaseFields[9].Descriptor()
 	// plantestcase.DefaultIndex holds the default value on creation for the index field.
 	plantestcase.DefaultIndex = plantestcaseDescIndex.Default.(uint32)
 	// plantestcaseDescID is the schema descriptor for id field.
@@ -233,12 +237,16 @@ func init() {
 	testcaseDescExpectation := testcaseFields[7].Descriptor()
 	// testcase.DefaultExpectation holds the default value on creation for the expectation field.
 	testcase.DefaultExpectation = testcaseDescExpectation.Default.(string)
+	// testcaseDescOutputDesc is the schema descriptor for output_desc field.
+	testcaseDescOutputDesc := testcaseFields[8].Descriptor()
+	// testcase.DefaultOutputDesc holds the default value on creation for the output_desc field.
+	testcase.DefaultOutputDesc = testcaseDescOutputDesc.Default.(string)
 	// testcaseDescTestCaseType is the schema descriptor for test_case_type field.
-	testcaseDescTestCaseType := testcaseFields[8].Descriptor()
+	testcaseDescTestCaseType := testcaseFields[9].Descriptor()
 	// testcase.DefaultTestCaseType holds the default value on creation for the test_case_type field.
 	testcase.DefaultTestCaseType = testcaseDescTestCaseType.Default.(string)
 	// testcaseDescDeprecated is the schema descriptor for deprecated field.
-	testcaseDescDeprecated := testcaseFields[9].Descriptor()
+	testcaseDescDeprecated := testcaseFields[10].Descriptor()
 	// testcase.DefaultDeprecated holds the default value on creation for the deprecated field.
 	testcase.DefaultDeprecated = testcaseDescDeprecated.Default.(bool)
 	// testcaseDescID is the schema descriptor for id field.
