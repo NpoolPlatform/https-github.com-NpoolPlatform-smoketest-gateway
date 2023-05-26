@@ -73,6 +73,7 @@ func (h *createHandler) createTestCase(ctx context.Context) error {
 		info, err := crud.CreateSet(
 			cli.TestCase.Create(),
 			&crud.Req{
+				ID:           h.ID,
 				Name:         h.Name,
 				Description:  h.Description,
 				Input:        h.Input,
