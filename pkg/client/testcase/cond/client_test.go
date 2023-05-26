@@ -8,10 +8,10 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apicli "github.com/NpoolPlatform/basal-manager/pkg/client/api"
+	apicli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mgr/v1/api"
+	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mw/v1/api"
 	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
