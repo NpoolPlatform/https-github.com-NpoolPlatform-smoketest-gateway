@@ -16,11 +16,11 @@ import (
 )
 
 type Server struct {
-	smoketest.UnimplementedManagerServer
+	smoketest.UnimplementedMiddlewareServer
 }
 
 func Register(server grpc.ServiceRegistrar) {
-	smoketest.RegisterManagerServer(server, &Server{})
+	smoketest.RegisterMiddlewareServer(server, &Server{})
 	testcase.Register(server)
 	cond.Register(server)
 	module.Register(server)
@@ -29,7 +29,7 @@ func Register(server grpc.ServiceRegistrar) {
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
-	if err := smoketest.RegisterManagerHandlerFromEndpoint(context.Background(), mux, endpoint, opts); err != nil {
+	if err := smoketest.RegisterMiddlewareHandlerFromEndpoint(context.Background(), mux, endpoint, opts); err != nil {
 		return err
 	}
 	return nil

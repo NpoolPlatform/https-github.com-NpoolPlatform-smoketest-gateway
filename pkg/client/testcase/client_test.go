@@ -12,8 +12,8 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	commonpb "github.com/NpoolPlatform/message/npool"
 	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mw/v1/api"
+	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
@@ -143,19 +143,19 @@ func getTestCases(t *testing.T) {
 
 func getTestCaseConds(t *testing.T) {
 	infos, _, err := GetTestCases(context.Background(), &npool.Conds{
-		ID: &commonpb.StringVal{
+		ID: &basetypes.StringVal{
 			Op:    cruder.EQ,
 			Value: ret.ID,
 		},
-		ModuleID: &commonpb.StringVal{
+		ModuleID: &basetypes.StringVal{
 			Op:    cruder.EQ,
 			Value: ret.ModuleID,
 		},
-		ApiID: &commonpb.StringVal{
+		ApiID: &basetypes.StringVal{
 			Op:    cruder.EQ,
 			Value: ret.ApiID,
 		},
-		Deprecated: &commonpb.BoolVal{
+		Deprecated: &basetypes.BoolVal{
 			Op:    cruder.EQ,
 			Value: ret.Deprecated,
 		},
