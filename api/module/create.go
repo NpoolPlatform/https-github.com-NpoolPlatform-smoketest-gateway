@@ -12,10 +12,11 @@ import (
 )
 
 func (s *Server) CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.CreateModuleResponse, error) {
+	req := in.GetInfo()
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithName(&in.Name),
-		module1.WithDescription(in.Description),
+		module1.WithName(req.Name),
+		module1.WithDescription(req.Description),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

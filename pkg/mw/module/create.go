@@ -4,11 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/module"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
-	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/mgr/module/crud"
 )
 
 type createHandler struct {
@@ -22,23 +21,6 @@ func (h *createHandler) validate() error {
 	return nil
 }
 
-func (h *createHandler) createModule(ctx context.Context, tx *ent.Tx) error {
-	info, err := modulecrud.CreateSet(
-		tx.Module.Create(),
-		&module.ModuleReq{
-			Name:        h.Name,
-			Description: h.Description,
-		},
-	).Save(ctx)
-	if err != nil {
-		return err
-	}
-
-	id := info.ID.String()
-	h.ID = &id
-	return nil
-}
-
 func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err error) {
 	handler := &createHandler{
 		Handler: h,
@@ -48,10 +30,23 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		return nil, err
 	}
 
-	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		if err := handler.createModule(_ctx, tx); err != nil {
+	if exist, err := h.ExistModuleByName(ctx); exist {
+		return nil, err
+	}
+
+	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
+		info, err := crud.CreateSet(
+			cli.Module.Create(),
+			&crud.Req{
+				Name:        h.Name,
+				Description: h.Description,
+			},
+		).Save(ctx)
+		if err != nil {
 			return err
 		}
+
+		h.ID = &info.ID
 		return nil
 	})
 	if err != nil {

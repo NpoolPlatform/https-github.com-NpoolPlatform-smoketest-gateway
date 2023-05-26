@@ -26,12 +26,14 @@ const (
 	FieldModuleID = "module_id"
 	// FieldAPIID holds the string denoting the api_id field in the database.
 	FieldAPIID = "api_id"
-	// FieldArguments holds the string denoting the arguments field in the database.
-	FieldArguments = "arguments"
-	// FieldArgTypeDescription holds the string denoting the arg_type_description field in the database.
-	FieldArgTypeDescription = "arg_type_description"
-	// FieldExpectationResult holds the string denoting the expectation_result field in the database.
-	FieldExpectationResult = "expectation_result"
+	// FieldInput holds the string denoting the input field in the database.
+	FieldInput = "input"
+	// FieldInputDesc holds the string denoting the input_desc field in the database.
+	FieldInputDesc = "input_desc"
+	// FieldExpectation holds the string denoting the expectation field in the database.
+	FieldExpectation = "expectation"
+	// FieldOutputDesc holds the string denoting the output_desc field in the database.
+	FieldOutputDesc = "output_desc"
 	// FieldTestCaseType holds the string denoting the test_case_type field in the database.
 	FieldTestCaseType = "test_case_type"
 	// FieldDeprecated holds the string denoting the deprecated field in the database.
@@ -50,9 +52,10 @@ var Columns = []string{
 	FieldDescription,
 	FieldModuleID,
 	FieldAPIID,
-	FieldArguments,
-	FieldArgTypeDescription,
-	FieldExpectationResult,
+	FieldInput,
+	FieldInputDesc,
+	FieldExpectation,
+	FieldOutputDesc,
 	FieldTestCaseType,
 	FieldDeprecated,
 }
@@ -92,12 +95,14 @@ var (
 	DefaultModuleID func() uuid.UUID
 	// DefaultAPIID holds the default value on creation for the "api_id" field.
 	DefaultAPIID func() uuid.UUID
-	// DefaultArguments holds the default value on creation for the "arguments" field.
-	DefaultArguments string
-	// DefaultArgTypeDescription holds the default value on creation for the "arg_type_description" field.
-	DefaultArgTypeDescription string
-	// DefaultExpectationResult holds the default value on creation for the "expectation_result" field.
-	DefaultExpectationResult string
+	// DefaultInput holds the default value on creation for the "input" field.
+	DefaultInput string
+	// DefaultInputDesc holds the default value on creation for the "input_desc" field.
+	DefaultInputDesc string
+	// DefaultExpectation holds the default value on creation for the "expectation" field.
+	DefaultExpectation string
+	// DefaultOutputDesc holds the default value on creation for the "output_desc" field.
+	DefaultOutputDesc string
 	// DefaultTestCaseType holds the default value on creation for the "test_case_type" field.
 	DefaultTestCaseType string
 	// DefaultDeprecated holds the default value on creation for the "deprecated" field.

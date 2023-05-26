@@ -9,15 +9,15 @@ import (
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 )
 
-// The DetailFunc type is an adapter to allow the use of ordinary
-// function as Detail mutator.
-type DetailFunc func(context.Context, *ent.DetailMutation) (ent.Value, error)
+// The CondFunc type is an adapter to allow the use of ordinary
+// function as Cond mutator.
+type CondFunc func(context.Context, *ent.CondMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f DetailFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.DetailMutation)
+func (f CondFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.CondMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.DetailMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CondMutation", m)
 	}
 	return f(ctx, mv)
 }
@@ -35,28 +35,15 @@ func (f ModuleFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return f(ctx, mv)
 }
 
-// The PlanRelatedTestCaseFunc type is an adapter to allow the use of ordinary
-// function as PlanRelatedTestCase mutator.
-type PlanRelatedTestCaseFunc func(context.Context, *ent.PlanRelatedTestCaseMutation) (ent.Value, error)
+// The PlanTestCaseFunc type is an adapter to allow the use of ordinary
+// function as PlanTestCase mutator.
+type PlanTestCaseFunc func(context.Context, *ent.PlanTestCaseMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f PlanRelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.PlanRelatedTestCaseMutation)
+func (f PlanTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PlanTestCaseMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanRelatedTestCaseMutation", m)
-	}
-	return f(ctx, mv)
-}
-
-// The RelatedTestCaseFunc type is an adapter to allow the use of ordinary
-// function as RelatedTestCase mutator.
-type RelatedTestCaseFunc func(context.Context, *ent.RelatedTestCaseMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f RelatedTestCaseFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.RelatedTestCaseMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RelatedTestCaseMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PlanTestCaseMutation", m)
 	}
 	return f(ctx, mv)
 }

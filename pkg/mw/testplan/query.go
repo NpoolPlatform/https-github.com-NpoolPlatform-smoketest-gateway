@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"entgo.io/ent/dialect/sql"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent"
 	enttestplan "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
-	"github.com/google/uuid"
 )
 
 type queryHandler struct {
@@ -23,23 +22,19 @@ func (h *queryHandler) selectTestPlan(stm *ent.TestPlanQuery) {
 	h.stm = stm.Select(
 		enttestplan.FieldID,
 		enttestplan.FieldName,
-		// enttestplan.FieldState,
-		enttestplan.FieldOwnerID,
-		enttestplan.FieldResponsibleUserID,
-		enttestplan.FieldFailedTestCasesCount,
-		enttestplan.FieldPassedTestCasesCount,
-		enttestplan.FieldSkippedTestCasesCount,
+		enttestplan.FieldState,
+		enttestplan.FieldCreatedBy,
+		enttestplan.FieldExecutor,
+		enttestplan.FieldPasses,
+		enttestplan.FieldSkips,
+		enttestplan.FieldFails,
 		enttestplan.FieldRunDuration,
 		enttestplan.FieldDeadline,
-		// enttestplan.FieldTestResult,
+		enttestplan.FieldResult,
 		enttestplan.FieldDeadline,
 		enttestplan.FieldCreatedAt,
 		enttestplan.FieldUpdatedAt,
 	)
-}
-
-func (h *queryHandler) queryJoin() {
-	h.stm.Modify(func(s *sql.Selector) {})
 }
 
 func (h *queryHandler) queryTestPlan(cli *ent.Client) error {
@@ -50,7 +45,7 @@ func (h *queryHandler) queryTestPlan(cli *ent.Client) error {
 		cli.TestPlan.
 			Query().
 			Where(
-				enttestplan.ID(uuid.MustParse(*h.ID)),
+				enttestplan.ID(*h.ID),
 				enttestplan.DeletedAt(0),
 			),
 	)
@@ -58,15 +53,9 @@ func (h *queryHandler) queryTestPlan(cli *ent.Client) error {
 }
 
 func (h *queryHandler) queryTestPlanByConds(ctx context.Context, cli *ent.Client) (err error) {
-	if h.Conds == nil {
-		return fmt.Errorf("invalid conds")
-	}
-
-	stm := cli.TestPlan.Query()
-	if h.Conds.ID != nil {
-		stm = stm.Where(
-			enttestplan.ID(uuid.MustParse(h.Conds.GetID().GetValue())),
-		)
+	stm, err := crud.SetQueryConds(cli.TestPlan.Query(), h.Conds)
+	if err != nil {
+		return err
 	}
 
 	total, err := stm.Count(ctx)
@@ -84,6 +73,13 @@ func (h *queryHandler) scan(ctx context.Context) error {
 	return h.stm.Scan(ctx, &h.infos)
 }
 
+func (h *queryHandler) formalize() {
+	for _, info := range h.infos {
+		info.State = npool.TestPlanState(npool.TestPlanState_value[info.StateStr])
+		info.Result = npool.TestResultState(npool.TestResultState_value[info.ResultStr])
+	}
+}
+
 func (h *Handler) GetTestPlans(ctx context.Context) ([]*npool.TestPlan, uint32, error) {
 	handler := &queryHandler{
 		Handler: h,
@@ -92,7 +88,10 @@ func (h *Handler) GetTestPlans(ctx context.Context) ([]*npool.TestPlan, uint32, 
 		if err := handler.queryTestPlanByConds(ctx, cli); err != nil {
 			return err
 		}
-		handler.queryJoin()
+		handler.
+			stm.
+			Offset(int(h.Offset)).
+			Limit(int(h.Limit))
 		if err := handler.scan(_ctx); err != nil {
 			return err
 		}
@@ -101,7 +100,7 @@ func (h *Handler) GetTestPlans(ctx context.Context) ([]*npool.TestPlan, uint32, 
 	if err != nil {
 		return nil, 0, err
 	}
-
+	handler.formalize()
 	return handler.infos, handler.total, nil
 }
 
@@ -122,5 +121,10 @@ func (h *Handler) GetTestPlan(ctx context.Context) (info *npool.TestPlan, err er
 	if err != nil {
 		return
 	}
+	if len(handler.infos) == 0 {
+		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+	}
+
+	handler.formalize()
 	return handler.infos[0], nil
 }

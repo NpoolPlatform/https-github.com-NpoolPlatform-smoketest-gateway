@@ -2,7 +2,6 @@ package testcase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
@@ -14,19 +13,17 @@ import (
 
 func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseRequest) (*npool.CreateTestCaseResponse, error) {
 	req := in.GetInfo()
-	if in.Info.GetModuleID() == "" && in.Info.GetModuleName() == "" {
-		logger.Sugar().Errorw("CreateTestCase", "Need ModuleID or ModuleName")
-		return nil, fmt.Errorf("module id or module name needed")
-	}
 
 	handler, err := testcase1.NewHandler(
 		ctx,
 		testcase1.WithName(req.Name),
-		testcase1.WithApiID(req.ApiID),
+		testcase1.WithDescription(req.Description),
 		testcase1.WithModuleName(req.ModuleName),
-		testcase1.WithArgTypeDescription(req.ArgTypeDescription),
-		testcase1.WithExpectationResult(req.ExpectationResult),
-		testcase1.WithArguments(req.Arguments),
+		testcase1.WithApiID(req.ApiID),
+		testcase1.WithInput(req.Input),
+		testcase1.WithInputDesc(req.InputDesc),
+		testcase1.WithExpectation(req.Expectation),
+		testcase1.WithOutputDesc(req.OutputDesc),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

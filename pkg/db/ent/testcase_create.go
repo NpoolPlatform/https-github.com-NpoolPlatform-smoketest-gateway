@@ -121,44 +121,58 @@ func (tcc *TestCaseCreate) SetNillableAPIID(u *uuid.UUID) *TestCaseCreate {
 	return tcc
 }
 
-// SetArguments sets the "arguments" field.
-func (tcc *TestCaseCreate) SetArguments(s string) *TestCaseCreate {
-	tcc.mutation.SetArguments(s)
+// SetInput sets the "input" field.
+func (tcc *TestCaseCreate) SetInput(s string) *TestCaseCreate {
+	tcc.mutation.SetInput(s)
 	return tcc
 }
 
-// SetNillableArguments sets the "arguments" field if the given value is not nil.
-func (tcc *TestCaseCreate) SetNillableArguments(s *string) *TestCaseCreate {
+// SetNillableInput sets the "input" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableInput(s *string) *TestCaseCreate {
 	if s != nil {
-		tcc.SetArguments(*s)
+		tcc.SetInput(*s)
 	}
 	return tcc
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (tcc *TestCaseCreate) SetArgTypeDescription(s string) *TestCaseCreate {
-	tcc.mutation.SetArgTypeDescription(s)
+// SetInputDesc sets the "input_desc" field.
+func (tcc *TestCaseCreate) SetInputDesc(s string) *TestCaseCreate {
+	tcc.mutation.SetInputDesc(s)
 	return tcc
 }
 
-// SetNillableArgTypeDescription sets the "arg_type_description" field if the given value is not nil.
-func (tcc *TestCaseCreate) SetNillableArgTypeDescription(s *string) *TestCaseCreate {
+// SetNillableInputDesc sets the "input_desc" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableInputDesc(s *string) *TestCaseCreate {
 	if s != nil {
-		tcc.SetArgTypeDescription(*s)
+		tcc.SetInputDesc(*s)
 	}
 	return tcc
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (tcc *TestCaseCreate) SetExpectationResult(s string) *TestCaseCreate {
-	tcc.mutation.SetExpectationResult(s)
+// SetExpectation sets the "expectation" field.
+func (tcc *TestCaseCreate) SetExpectation(s string) *TestCaseCreate {
+	tcc.mutation.SetExpectation(s)
 	return tcc
 }
 
-// SetNillableExpectationResult sets the "expectation_result" field if the given value is not nil.
-func (tcc *TestCaseCreate) SetNillableExpectationResult(s *string) *TestCaseCreate {
+// SetNillableExpectation sets the "expectation" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableExpectation(s *string) *TestCaseCreate {
 	if s != nil {
-		tcc.SetExpectationResult(*s)
+		tcc.SetExpectation(*s)
+	}
+	return tcc
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (tcc *TestCaseCreate) SetOutputDesc(s string) *TestCaseCreate {
+	tcc.mutation.SetOutputDesc(s)
+	return tcc
+}
+
+// SetNillableOutputDesc sets the "output_desc" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableOutputDesc(s *string) *TestCaseCreate {
+	if s != nil {
+		tcc.SetOutputDesc(*s)
 	}
 	return tcc
 }
@@ -327,17 +341,21 @@ func (tcc *TestCaseCreate) defaults() error {
 		v := testcase.DefaultAPIID()
 		tcc.mutation.SetAPIID(v)
 	}
-	if _, ok := tcc.mutation.Arguments(); !ok {
-		v := testcase.DefaultArguments
-		tcc.mutation.SetArguments(v)
+	if _, ok := tcc.mutation.Input(); !ok {
+		v := testcase.DefaultInput
+		tcc.mutation.SetInput(v)
 	}
-	if _, ok := tcc.mutation.ArgTypeDescription(); !ok {
-		v := testcase.DefaultArgTypeDescription
-		tcc.mutation.SetArgTypeDescription(v)
+	if _, ok := tcc.mutation.InputDesc(); !ok {
+		v := testcase.DefaultInputDesc
+		tcc.mutation.SetInputDesc(v)
 	}
-	if _, ok := tcc.mutation.ExpectationResult(); !ok {
-		v := testcase.DefaultExpectationResult
-		tcc.mutation.SetExpectationResult(v)
+	if _, ok := tcc.mutation.Expectation(); !ok {
+		v := testcase.DefaultExpectation
+		tcc.mutation.SetExpectation(v)
+	}
+	if _, ok := tcc.mutation.OutputDesc(); !ok {
+		v := testcase.DefaultOutputDesc
+		tcc.mutation.SetOutputDesc(v)
 	}
 	if _, ok := tcc.mutation.TestCaseType(); !ok {
 		v := testcase.DefaultTestCaseType
@@ -461,29 +479,37 @@ func (tcc *TestCaseCreate) createSpec() (*TestCase, *sqlgraph.CreateSpec) {
 		})
 		_node.APIID = value
 	}
-	if value, ok := tcc.mutation.Arguments(); ok {
+	if value, ok := tcc.mutation.Input(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArguments,
+			Column: testcase.FieldInput,
 		})
-		_node.Arguments = value
+		_node.Input = value
 	}
-	if value, ok := tcc.mutation.ArgTypeDescription(); ok {
+	if value, ok := tcc.mutation.InputDesc(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldArgTypeDescription,
+			Column: testcase.FieldInputDesc,
 		})
-		_node.ArgTypeDescription = value
+		_node.InputDesc = value
 	}
-	if value, ok := tcc.mutation.ExpectationResult(); ok {
+	if value, ok := tcc.mutation.Expectation(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: testcase.FieldExpectationResult,
+			Column: testcase.FieldExpectation,
 		})
-		_node.ExpectationResult = value
+		_node.Expectation = value
+	}
+	if value, ok := tcc.mutation.OutputDesc(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldOutputDesc,
+		})
+		_node.OutputDesc = value
 	}
 	if value, ok := tcc.mutation.TestCaseType(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -681,57 +707,75 @@ func (u *TestCaseUpsert) ClearAPIID() *TestCaseUpsert {
 	return u
 }
 
-// SetArguments sets the "arguments" field.
-func (u *TestCaseUpsert) SetArguments(v string) *TestCaseUpsert {
-	u.Set(testcase.FieldArguments, v)
+// SetInput sets the "input" field.
+func (u *TestCaseUpsert) SetInput(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldInput, v)
 	return u
 }
 
-// UpdateArguments sets the "arguments" field to the value that was provided on create.
-func (u *TestCaseUpsert) UpdateArguments() *TestCaseUpsert {
-	u.SetExcluded(testcase.FieldArguments)
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateInput() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldInput)
 	return u
 }
 
-// ClearArguments clears the value of the "arguments" field.
-func (u *TestCaseUpsert) ClearArguments() *TestCaseUpsert {
-	u.SetNull(testcase.FieldArguments)
+// ClearInput clears the value of the "input" field.
+func (u *TestCaseUpsert) ClearInput() *TestCaseUpsert {
+	u.SetNull(testcase.FieldInput)
 	return u
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (u *TestCaseUpsert) SetArgTypeDescription(v string) *TestCaseUpsert {
-	u.Set(testcase.FieldArgTypeDescription, v)
+// SetInputDesc sets the "input_desc" field.
+func (u *TestCaseUpsert) SetInputDesc(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldInputDesc, v)
 	return u
 }
 
-// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
-func (u *TestCaseUpsert) UpdateArgTypeDescription() *TestCaseUpsert {
-	u.SetExcluded(testcase.FieldArgTypeDescription)
+// UpdateInputDesc sets the "input_desc" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateInputDesc() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldInputDesc)
 	return u
 }
 
-// ClearArgTypeDescription clears the value of the "arg_type_description" field.
-func (u *TestCaseUpsert) ClearArgTypeDescription() *TestCaseUpsert {
-	u.SetNull(testcase.FieldArgTypeDescription)
+// ClearInputDesc clears the value of the "input_desc" field.
+func (u *TestCaseUpsert) ClearInputDesc() *TestCaseUpsert {
+	u.SetNull(testcase.FieldInputDesc)
 	return u
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (u *TestCaseUpsert) SetExpectationResult(v string) *TestCaseUpsert {
-	u.Set(testcase.FieldExpectationResult, v)
+// SetExpectation sets the "expectation" field.
+func (u *TestCaseUpsert) SetExpectation(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldExpectation, v)
 	return u
 }
 
-// UpdateExpectationResult sets the "expectation_result" field to the value that was provided on create.
-func (u *TestCaseUpsert) UpdateExpectationResult() *TestCaseUpsert {
-	u.SetExcluded(testcase.FieldExpectationResult)
+// UpdateExpectation sets the "expectation" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateExpectation() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldExpectation)
 	return u
 }
 
-// ClearExpectationResult clears the value of the "expectation_result" field.
-func (u *TestCaseUpsert) ClearExpectationResult() *TestCaseUpsert {
-	u.SetNull(testcase.FieldExpectationResult)
+// ClearExpectation clears the value of the "expectation" field.
+func (u *TestCaseUpsert) ClearExpectation() *TestCaseUpsert {
+	u.SetNull(testcase.FieldExpectation)
+	return u
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsert) SetOutputDesc(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldOutputDesc, v)
+	return u
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateOutputDesc() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldOutputDesc)
+	return u
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsert) ClearOutputDesc() *TestCaseUpsert {
+	u.SetNull(testcase.FieldOutputDesc)
 	return u
 }
 
@@ -968,66 +1012,87 @@ func (u *TestCaseUpsertOne) ClearAPIID() *TestCaseUpsertOne {
 	})
 }
 
-// SetArguments sets the "arguments" field.
-func (u *TestCaseUpsertOne) SetArguments(v string) *TestCaseUpsertOne {
+// SetInput sets the "input" field.
+func (u *TestCaseUpsertOne) SetInput(v string) *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetArguments(v)
+		s.SetInput(v)
 	})
 }
 
-// UpdateArguments sets the "arguments" field to the value that was provided on create.
-func (u *TestCaseUpsertOne) UpdateArguments() *TestCaseUpsertOne {
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateInput() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateArguments()
+		s.UpdateInput()
 	})
 }
 
-// ClearArguments clears the value of the "arguments" field.
-func (u *TestCaseUpsertOne) ClearArguments() *TestCaseUpsertOne {
+// ClearInput clears the value of the "input" field.
+func (u *TestCaseUpsertOne) ClearInput() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearArguments()
+		s.ClearInput()
 	})
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (u *TestCaseUpsertOne) SetArgTypeDescription(v string) *TestCaseUpsertOne {
+// SetInputDesc sets the "input_desc" field.
+func (u *TestCaseUpsertOne) SetInputDesc(v string) *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetArgTypeDescription(v)
+		s.SetInputDesc(v)
 	})
 }
 
-// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
-func (u *TestCaseUpsertOne) UpdateArgTypeDescription() *TestCaseUpsertOne {
+// UpdateInputDesc sets the "input_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateInputDesc() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateArgTypeDescription()
+		s.UpdateInputDesc()
 	})
 }
 
-// ClearArgTypeDescription clears the value of the "arg_type_description" field.
-func (u *TestCaseUpsertOne) ClearArgTypeDescription() *TestCaseUpsertOne {
+// ClearInputDesc clears the value of the "input_desc" field.
+func (u *TestCaseUpsertOne) ClearInputDesc() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearArgTypeDescription()
+		s.ClearInputDesc()
 	})
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (u *TestCaseUpsertOne) SetExpectationResult(v string) *TestCaseUpsertOne {
+// SetExpectation sets the "expectation" field.
+func (u *TestCaseUpsertOne) SetExpectation(v string) *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetExpectationResult(v)
+		s.SetExpectation(v)
 	})
 }
 
-// UpdateExpectationResult sets the "expectation_result" field to the value that was provided on create.
-func (u *TestCaseUpsertOne) UpdateExpectationResult() *TestCaseUpsertOne {
+// UpdateExpectation sets the "expectation" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateExpectation() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateExpectationResult()
+		s.UpdateExpectation()
 	})
 }
 
-// ClearExpectationResult clears the value of the "expectation_result" field.
-func (u *TestCaseUpsertOne) ClearExpectationResult() *TestCaseUpsertOne {
+// ClearExpectation clears the value of the "expectation" field.
+func (u *TestCaseUpsertOne) ClearExpectation() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearExpectationResult()
+		s.ClearExpectation()
+	})
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsertOne) SetOutputDesc(v string) *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetOutputDesc(v)
+	})
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateOutputDesc() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateOutputDesc()
+	})
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsertOne) ClearOutputDesc() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearOutputDesc()
 	})
 }
 
@@ -1436,66 +1501,87 @@ func (u *TestCaseUpsertBulk) ClearAPIID() *TestCaseUpsertBulk {
 	})
 }
 
-// SetArguments sets the "arguments" field.
-func (u *TestCaseUpsertBulk) SetArguments(v string) *TestCaseUpsertBulk {
+// SetInput sets the "input" field.
+func (u *TestCaseUpsertBulk) SetInput(v string) *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetArguments(v)
+		s.SetInput(v)
 	})
 }
 
-// UpdateArguments sets the "arguments" field to the value that was provided on create.
-func (u *TestCaseUpsertBulk) UpdateArguments() *TestCaseUpsertBulk {
+// UpdateInput sets the "input" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateInput() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateArguments()
+		s.UpdateInput()
 	})
 }
 
-// ClearArguments clears the value of the "arguments" field.
-func (u *TestCaseUpsertBulk) ClearArguments() *TestCaseUpsertBulk {
+// ClearInput clears the value of the "input" field.
+func (u *TestCaseUpsertBulk) ClearInput() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearArguments()
+		s.ClearInput()
 	})
 }
 
-// SetArgTypeDescription sets the "arg_type_description" field.
-func (u *TestCaseUpsertBulk) SetArgTypeDescription(v string) *TestCaseUpsertBulk {
+// SetInputDesc sets the "input_desc" field.
+func (u *TestCaseUpsertBulk) SetInputDesc(v string) *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetArgTypeDescription(v)
+		s.SetInputDesc(v)
 	})
 }
 
-// UpdateArgTypeDescription sets the "arg_type_description" field to the value that was provided on create.
-func (u *TestCaseUpsertBulk) UpdateArgTypeDescription() *TestCaseUpsertBulk {
+// UpdateInputDesc sets the "input_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateInputDesc() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateArgTypeDescription()
+		s.UpdateInputDesc()
 	})
 }
 
-// ClearArgTypeDescription clears the value of the "arg_type_description" field.
-func (u *TestCaseUpsertBulk) ClearArgTypeDescription() *TestCaseUpsertBulk {
+// ClearInputDesc clears the value of the "input_desc" field.
+func (u *TestCaseUpsertBulk) ClearInputDesc() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearArgTypeDescription()
+		s.ClearInputDesc()
 	})
 }
 
-// SetExpectationResult sets the "expectation_result" field.
-func (u *TestCaseUpsertBulk) SetExpectationResult(v string) *TestCaseUpsertBulk {
+// SetExpectation sets the "expectation" field.
+func (u *TestCaseUpsertBulk) SetExpectation(v string) *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.SetExpectationResult(v)
+		s.SetExpectation(v)
 	})
 }
 
-// UpdateExpectationResult sets the "expectation_result" field to the value that was provided on create.
-func (u *TestCaseUpsertBulk) UpdateExpectationResult() *TestCaseUpsertBulk {
+// UpdateExpectation sets the "expectation" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateExpectation() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.UpdateExpectationResult()
+		s.UpdateExpectation()
 	})
 }
 
-// ClearExpectationResult clears the value of the "expectation_result" field.
-func (u *TestCaseUpsertBulk) ClearExpectationResult() *TestCaseUpsertBulk {
+// ClearExpectation clears the value of the "expectation" field.
+func (u *TestCaseUpsertBulk) ClearExpectation() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
-		s.ClearExpectationResult()
+		s.ClearExpectation()
+	})
+}
+
+// SetOutputDesc sets the "output_desc" field.
+func (u *TestCaseUpsertBulk) SetOutputDesc(v string) *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetOutputDesc(v)
+	})
+}
+
+// UpdateOutputDesc sets the "output_desc" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateOutputDesc() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateOutputDesc()
+	})
+}
+
+// ClearOutputDesc clears the value of the "output_desc" field.
+func (u *TestCaseUpsertBulk) ClearOutputDesc() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearOutputDesc()
 	})
 }
 

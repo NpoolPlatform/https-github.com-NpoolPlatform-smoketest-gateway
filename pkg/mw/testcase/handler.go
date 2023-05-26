@@ -2,29 +2,33 @@ package testcase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
-	testcasemgrpb "github.com/NpoolPlatform/message/npool/smoketest/mgr/v1/testcase"
+	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
+	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID                 *string
-	Name               *string
-	Description        *string
-	ModuleID           *string
-	ModuleName         *string
-	ApiID              *string //nolint
-	Arguments          *string
-	ArgTypeDescription *string
-	ExpectationResult  *string
-	TestCaseType       *testcasemgrpb.TestCaseType
-	Deprecated         *bool
-	Conds              *testcasemgrpb.Conds
-	Offset             *int32
-	Limit              *int32
+	ID           *uuid.UUID
+	Name         *string
+	Description  *string
+	ModuleID     *uuid.UUID
+	ModuleName   *string
+	ApiID        *uuid.UUID //nolint
+	Input        *string
+	InputDesc    *string
+	Expectation  *string
+	OutputDesc   *string
+	TestCaseType *npool.TestCaseType
+	Deprecated   *bool
+	Conds        *crud.Conds
+	Offset       int32
+	Limit        int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -37,79 +41,13 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-//nolint
-func WithApiID(apiID *string) func(context.Context, *Handler) error {
+func WithID(id *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*apiID); err != nil {
-			return err
-		}
-
-		_, err := apimwcli.ExistAPI(ctx, *apiID)
+		_id, err := uuid.Parse(*id)
 		if err != nil {
 			return err
 		}
-
-		h.ApiID = apiID
-		return nil
-	}
-}
-
-func WithID(testCaseID *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*testCaseID); err != nil {
-			return err
-		}
-		h.ID = testCaseID
-		return nil
-	}
-}
-
-func WithModuleID(moduleID *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if _, err := uuid.Parse(*moduleID); err != nil {
-			return err
-		}
-		h.ModuleID = moduleID
-		return nil
-	}
-}
-
-func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if moduleName == nil {
-			return nil
-		}
-		h.ModuleName = moduleName
-		return nil
-	}
-}
-
-func WithExpectationResult(expectationResult *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if expectationResult == nil {
-			return nil
-		}
-		h.ExpectationResult = expectationResult
-		return nil
-	}
-}
-
-func WithArguments(arguments *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if arguments == nil {
-			return nil
-		}
-		h.Arguments = arguments
-		return nil
-	}
-}
-
-func WithArgTypeDescription(description *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if description == nil {
-			return nil
-		}
-		h.ArgTypeDescription = description
+		h.ID = &_id
 		return nil
 	}
 }
@@ -134,31 +72,60 @@ func WithDescription(description *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithConds(conds *testcasemgrpb.Conds, offset, limit int32) func(context.Context, *Handler) error {
+func WithExpectation(expectation *string) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if conds == nil {
-			return fmt.Errorf("invalid conds")
+		if expectation == nil {
+			return nil
+		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*expectation), &r); err != nil {
+			return err
+		}
+		h.Expectation = expectation
+		return nil
+	}
+}
+
+func WithOutputDesc(outputDesc *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if outputDesc == nil {
+			return nil
+		}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*outputDesc), &r); err != nil {
+			return err
+		}
+		h.OutputDesc = outputDesc
+		return nil
+	}
+}
+
+func WithInput(input *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if input == nil {
+			return nil
 		}
 
-		if conds.ID != nil {
-			if _, err := uuid.Parse(conds.GetID().GetValue()); err != nil {
-				return err
-			}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*input), &r); err != nil {
+			return err
+		}
+		h.Input = input
+		return nil
+	}
+}
+
+func WithInputDesc(inputDesc *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if inputDesc == nil {
+			return nil
 		}
 
-		if conds.ModuleID != nil {
-			if _, err := uuid.Parse(conds.GetModuleID().GetValue()); err != nil {
-				return err
-			}
+		var r interface{}
+		if err := json.Unmarshal([]byte(*inputDesc), &r); err != nil {
+			return err
 		}
-
-		h.Conds = conds
-		h.Offset = &offset
-		if limit == 0 {
-			limit = constant.DefaultRowLimit
-		}
-		h.Limit = &limit
-
+		h.InputDesc = inputDesc
 		return nil
 	}
 }
@@ -173,12 +140,118 @@ func WithDeprecated(deprecated *bool) func(context.Context, *Handler) error {
 	}
 }
 
-func WithTestCaseType(testCaseType *testcasemgrpb.TestCaseType) func(context.Context, *Handler) error {
+func WithTestCaseType(testCaseType *npool.TestCaseType) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if testCaseType == nil {
 			return nil
 		}
+		switch *testCaseType {
+		case npool.TestCaseType_Manual:
+		case npool.TestCaseType_Automatic:
+		default:
+			return fmt.Errorf("invalid testcase type")
+		}
 		h.TestCaseType = testCaseType
+		return nil
+	}
+}
+
+//nolint
+func WithApiID(apiID *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		_apiID, err := uuid.Parse(*apiID)
+		if err != nil {
+			return err
+		}
+
+		exist, err := apimwcli.ExistAPI(ctx, *apiID)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid api id")
+		}
+
+		h.ApiID = &_apiID
+		return nil
+	}
+}
+
+func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if moduleName == nil {
+			return fmt.Errorf("invalid module name")
+		}
+		const leastNameLen = 2
+		if len(*moduleName) < leastNameLen {
+			return fmt.Errorf("name %v too short", *moduleName)
+		}
+		h.ModuleName = moduleName
+		return nil
+	}
+}
+
+func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Conds = &crud.Conds{}
+		if conds == nil {
+			return nil
+		}
+
+		if conds.ID != nil {
+			id, err := uuid.Parse(conds.GetID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
+		}
+
+		if conds.ModuleID != nil {
+			id, err := uuid.Parse(conds.GetModuleID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ModuleID = &cruder.Cond{Op: conds.ModuleID.Op, Val: id}
+		}
+		if conds.ApiID != nil {
+			id, err := uuid.Parse(conds.GetApiID().GetValue())
+			if err != nil {
+				return err
+			}
+			h.Conds.ApiID = &cruder.Cond{Op: conds.ApiID.Op, Val: id}
+		}
+		if conds.Deprecated != nil {
+			h.Conds.Deprecated = &cruder.Cond{Op: conds.GetDeprecated().GetOp(), Val: conds.GetDeprecated().GetValue()}
+		}
+
+		if len(conds.GetIDs().GetValue()) > 0 {
+			ids := []uuid.UUID{}
+			for _, id := range conds.GetIDs().GetValue() {
+				_id, err := uuid.Parse(id)
+				if err != nil {
+					return err
+				}
+				ids = append(ids, _id)
+			}
+			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: ids}
+		}
+		return nil
+	}
+}
+
+func WithOffset(offset int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		h.Offset = offset
+		return nil
+	}
+}
+
+func WithLimit(limit int32) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if limit == 0 {
+			limit = constant.DefaultRowLimit
+		}
+		h.Limit = limit
 		return nil
 	}
 }

@@ -114,38 +114,38 @@ func State(v string) predicate.TestPlan {
 	})
 }
 
-// OwnerID applies equality check predicate on the "owner_id" field. It's identical to OwnerIDEQ.
-func OwnerID(v uuid.UUID) predicate.TestPlan {
+// CreatedBy applies equality check predicate on the "created_by" field. It's identical to CreatedByEQ.
+func CreatedBy(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldOwnerID), v))
+		s.Where(sql.EQ(s.C(FieldCreatedBy), v))
 	})
 }
 
-// ResponsibleUserID applies equality check predicate on the "responsible_user_id" field. It's identical to ResponsibleUserIDEQ.
-func ResponsibleUserID(v uuid.UUID) predicate.TestPlan {
+// Executor applies equality check predicate on the "executor" field. It's identical to ExecutorEQ.
+func Executor(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.EQ(s.C(FieldExecutor), v))
 	})
 }
 
-// FailedTestCasesCount applies equality check predicate on the "failed_test_cases_count" field. It's identical to FailedTestCasesCountEQ.
-func FailedTestCasesCount(v uint32) predicate.TestPlan {
+// Fails applies equality check predicate on the "fails" field. It's identical to FailsEQ.
+func Fails(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldFails), v))
 	})
 }
 
-// PassedTestCasesCount applies equality check predicate on the "passed_test_cases_count" field. It's identical to PassedTestCasesCountEQ.
-func PassedTestCasesCount(v uint32) predicate.TestPlan {
+// Passes applies equality check predicate on the "passes" field. It's identical to PassesEQ.
+func Passes(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldPasses), v))
 	})
 }
 
-// SkippedTestCasesCount applies equality check predicate on the "skipped_test_cases_count" field. It's identical to SkippedTestCasesCountEQ.
-func SkippedTestCasesCount(v uint32) predicate.TestPlan {
+// Skips applies equality check predicate on the "skips" field. It's identical to SkipsEQ.
+func Skips(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldSkips), v))
 	})
 }
 
@@ -163,10 +163,10 @@ func Deadline(v uint32) predicate.TestPlan {
 	})
 }
 
-// TestResult applies equality check predicate on the "test_result" field. It's identical to TestResultEQ.
-func TestResult(v string) predicate.TestPlan {
+// Result applies equality check predicate on the "result" field. It's identical to ResultEQ.
+func Result(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestResult), v))
+		s.Where(sql.EQ(s.C(FieldResult), v))
 	})
 }
 
@@ -588,393 +588,393 @@ func StateContainsFold(v string) predicate.TestPlan {
 	})
 }
 
-// OwnerIDEQ applies the EQ predicate on the "owner_id" field.
-func OwnerIDEQ(v uuid.UUID) predicate.TestPlan {
+// CreatedByEQ applies the EQ predicate on the "created_by" field.
+func CreatedByEQ(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldOwnerID), v))
+		s.Where(sql.EQ(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDNEQ applies the NEQ predicate on the "owner_id" field.
-func OwnerIDNEQ(v uuid.UUID) predicate.TestPlan {
+// CreatedByNEQ applies the NEQ predicate on the "created_by" field.
+func CreatedByNEQ(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldOwnerID), v))
+		s.Where(sql.NEQ(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDIn applies the In predicate on the "owner_id" field.
-func OwnerIDIn(vs ...uuid.UUID) predicate.TestPlan {
+// CreatedByIn applies the In predicate on the "created_by" field.
+func CreatedByIn(vs ...uuid.UUID) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldOwnerID), v...))
+		s.Where(sql.In(s.C(FieldCreatedBy), v...))
 	})
 }
 
-// OwnerIDNotIn applies the NotIn predicate on the "owner_id" field.
-func OwnerIDNotIn(vs ...uuid.UUID) predicate.TestPlan {
+// CreatedByNotIn applies the NotIn predicate on the "created_by" field.
+func CreatedByNotIn(vs ...uuid.UUID) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldOwnerID), v...))
+		s.Where(sql.NotIn(s.C(FieldCreatedBy), v...))
 	})
 }
 
-// OwnerIDGT applies the GT predicate on the "owner_id" field.
-func OwnerIDGT(v uuid.UUID) predicate.TestPlan {
+// CreatedByGT applies the GT predicate on the "created_by" field.
+func CreatedByGT(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldOwnerID), v))
+		s.Where(sql.GT(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDGTE applies the GTE predicate on the "owner_id" field.
-func OwnerIDGTE(v uuid.UUID) predicate.TestPlan {
+// CreatedByGTE applies the GTE predicate on the "created_by" field.
+func CreatedByGTE(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldOwnerID), v))
+		s.Where(sql.GTE(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDLT applies the LT predicate on the "owner_id" field.
-func OwnerIDLT(v uuid.UUID) predicate.TestPlan {
+// CreatedByLT applies the LT predicate on the "created_by" field.
+func CreatedByLT(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldOwnerID), v))
+		s.Where(sql.LT(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDLTE applies the LTE predicate on the "owner_id" field.
-func OwnerIDLTE(v uuid.UUID) predicate.TestPlan {
+// CreatedByLTE applies the LTE predicate on the "created_by" field.
+func CreatedByLTE(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldOwnerID), v))
+		s.Where(sql.LTE(s.C(FieldCreatedBy), v))
 	})
 }
 
-// OwnerIDIsNil applies the IsNil predicate on the "owner_id" field.
-func OwnerIDIsNil() predicate.TestPlan {
+// CreatedByIsNil applies the IsNil predicate on the "created_by" field.
+func CreatedByIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldOwnerID)))
+		s.Where(sql.IsNull(s.C(FieldCreatedBy)))
 	})
 }
 
-// OwnerIDNotNil applies the NotNil predicate on the "owner_id" field.
-func OwnerIDNotNil() predicate.TestPlan {
+// CreatedByNotNil applies the NotNil predicate on the "created_by" field.
+func CreatedByNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldOwnerID)))
+		s.Where(sql.NotNull(s.C(FieldCreatedBy)))
 	})
 }
 
-// ResponsibleUserIDEQ applies the EQ predicate on the "responsible_user_id" field.
-func ResponsibleUserIDEQ(v uuid.UUID) predicate.TestPlan {
+// ExecutorEQ applies the EQ predicate on the "executor" field.
+func ExecutorEQ(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.EQ(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDNEQ applies the NEQ predicate on the "responsible_user_id" field.
-func ResponsibleUserIDNEQ(v uuid.UUID) predicate.TestPlan {
+// ExecutorNEQ applies the NEQ predicate on the "executor" field.
+func ExecutorNEQ(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.NEQ(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDIn applies the In predicate on the "responsible_user_id" field.
-func ResponsibleUserIDIn(vs ...uuid.UUID) predicate.TestPlan {
+// ExecutorIn applies the In predicate on the "executor" field.
+func ExecutorIn(vs ...uuid.UUID) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldResponsibleUserID), v...))
+		s.Where(sql.In(s.C(FieldExecutor), v...))
 	})
 }
 
-// ResponsibleUserIDNotIn applies the NotIn predicate on the "responsible_user_id" field.
-func ResponsibleUserIDNotIn(vs ...uuid.UUID) predicate.TestPlan {
+// ExecutorNotIn applies the NotIn predicate on the "executor" field.
+func ExecutorNotIn(vs ...uuid.UUID) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldResponsibleUserID), v...))
+		s.Where(sql.NotIn(s.C(FieldExecutor), v...))
 	})
 }
 
-// ResponsibleUserIDGT applies the GT predicate on the "responsible_user_id" field.
-func ResponsibleUserIDGT(v uuid.UUID) predicate.TestPlan {
+// ExecutorGT applies the GT predicate on the "executor" field.
+func ExecutorGT(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.GT(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDGTE applies the GTE predicate on the "responsible_user_id" field.
-func ResponsibleUserIDGTE(v uuid.UUID) predicate.TestPlan {
+// ExecutorGTE applies the GTE predicate on the "executor" field.
+func ExecutorGTE(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.GTE(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDLT applies the LT predicate on the "responsible_user_id" field.
-func ResponsibleUserIDLT(v uuid.UUID) predicate.TestPlan {
+// ExecutorLT applies the LT predicate on the "executor" field.
+func ExecutorLT(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.LT(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDLTE applies the LTE predicate on the "responsible_user_id" field.
-func ResponsibleUserIDLTE(v uuid.UUID) predicate.TestPlan {
+// ExecutorLTE applies the LTE predicate on the "executor" field.
+func ExecutorLTE(v uuid.UUID) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldResponsibleUserID), v))
+		s.Where(sql.LTE(s.C(FieldExecutor), v))
 	})
 }
 
-// ResponsibleUserIDIsNil applies the IsNil predicate on the "responsible_user_id" field.
-func ResponsibleUserIDIsNil() predicate.TestPlan {
+// ExecutorIsNil applies the IsNil predicate on the "executor" field.
+func ExecutorIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldResponsibleUserID)))
+		s.Where(sql.IsNull(s.C(FieldExecutor)))
 	})
 }
 
-// ResponsibleUserIDNotNil applies the NotNil predicate on the "responsible_user_id" field.
-func ResponsibleUserIDNotNil() predicate.TestPlan {
+// ExecutorNotNil applies the NotNil predicate on the "executor" field.
+func ExecutorNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldResponsibleUserID)))
+		s.Where(sql.NotNull(s.C(FieldExecutor)))
 	})
 }
 
-// FailedTestCasesCountEQ applies the EQ predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountEQ(v uint32) predicate.TestPlan {
+// FailsEQ applies the EQ predicate on the "fails" field.
+func FailsEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountNEQ applies the NEQ predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountNEQ(v uint32) predicate.TestPlan {
+// FailsNEQ applies the NEQ predicate on the "fails" field.
+func FailsNEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.NEQ(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountIn applies the In predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountIn(vs ...uint32) predicate.TestPlan {
+// FailsIn applies the In predicate on the "fails" field.
+func FailsIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldFailedTestCasesCount), v...))
+		s.Where(sql.In(s.C(FieldFails), v...))
 	})
 }
 
-// FailedTestCasesCountNotIn applies the NotIn predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountNotIn(vs ...uint32) predicate.TestPlan {
+// FailsNotIn applies the NotIn predicate on the "fails" field.
+func FailsNotIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldFailedTestCasesCount), v...))
+		s.Where(sql.NotIn(s.C(FieldFails), v...))
 	})
 }
 
-// FailedTestCasesCountGT applies the GT predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountGT(v uint32) predicate.TestPlan {
+// FailsGT applies the GT predicate on the "fails" field.
+func FailsGT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.GT(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountGTE applies the GTE predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountGTE(v uint32) predicate.TestPlan {
+// FailsGTE applies the GTE predicate on the "fails" field.
+func FailsGTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.GTE(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountLT applies the LT predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountLT(v uint32) predicate.TestPlan {
+// FailsLT applies the LT predicate on the "fails" field.
+func FailsLT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.LT(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountLTE applies the LTE predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountLTE(v uint32) predicate.TestPlan {
+// FailsLTE applies the LTE predicate on the "fails" field.
+func FailsLTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldFailedTestCasesCount), v))
+		s.Where(sql.LTE(s.C(FieldFails), v))
 	})
 }
 
-// FailedTestCasesCountIsNil applies the IsNil predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountIsNil() predicate.TestPlan {
+// FailsIsNil applies the IsNil predicate on the "fails" field.
+func FailsIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldFailedTestCasesCount)))
+		s.Where(sql.IsNull(s.C(FieldFails)))
 	})
 }
 
-// FailedTestCasesCountNotNil applies the NotNil predicate on the "failed_test_cases_count" field.
-func FailedTestCasesCountNotNil() predicate.TestPlan {
+// FailsNotNil applies the NotNil predicate on the "fails" field.
+func FailsNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldFailedTestCasesCount)))
+		s.Where(sql.NotNull(s.C(FieldFails)))
 	})
 }
 
-// PassedTestCasesCountEQ applies the EQ predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountEQ(v uint32) predicate.TestPlan {
+// PassesEQ applies the EQ predicate on the "passes" field.
+func PassesEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountNEQ applies the NEQ predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountNEQ(v uint32) predicate.TestPlan {
+// PassesNEQ applies the NEQ predicate on the "passes" field.
+func PassesNEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.NEQ(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountIn applies the In predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountIn(vs ...uint32) predicate.TestPlan {
+// PassesIn applies the In predicate on the "passes" field.
+func PassesIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldPassedTestCasesCount), v...))
+		s.Where(sql.In(s.C(FieldPasses), v...))
 	})
 }
 
-// PassedTestCasesCountNotIn applies the NotIn predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountNotIn(vs ...uint32) predicate.TestPlan {
+// PassesNotIn applies the NotIn predicate on the "passes" field.
+func PassesNotIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldPassedTestCasesCount), v...))
+		s.Where(sql.NotIn(s.C(FieldPasses), v...))
 	})
 }
 
-// PassedTestCasesCountGT applies the GT predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountGT(v uint32) predicate.TestPlan {
+// PassesGT applies the GT predicate on the "passes" field.
+func PassesGT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.GT(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountGTE applies the GTE predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountGTE(v uint32) predicate.TestPlan {
+// PassesGTE applies the GTE predicate on the "passes" field.
+func PassesGTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.GTE(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountLT applies the LT predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountLT(v uint32) predicate.TestPlan {
+// PassesLT applies the LT predicate on the "passes" field.
+func PassesLT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.LT(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountLTE applies the LTE predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountLTE(v uint32) predicate.TestPlan {
+// PassesLTE applies the LTE predicate on the "passes" field.
+func PassesLTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldPassedTestCasesCount), v))
+		s.Where(sql.LTE(s.C(FieldPasses), v))
 	})
 }
 
-// PassedTestCasesCountIsNil applies the IsNil predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountIsNil() predicate.TestPlan {
+// PassesIsNil applies the IsNil predicate on the "passes" field.
+func PassesIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldPassedTestCasesCount)))
+		s.Where(sql.IsNull(s.C(FieldPasses)))
 	})
 }
 
-// PassedTestCasesCountNotNil applies the NotNil predicate on the "passed_test_cases_count" field.
-func PassedTestCasesCountNotNil() predicate.TestPlan {
+// PassesNotNil applies the NotNil predicate on the "passes" field.
+func PassesNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldPassedTestCasesCount)))
+		s.Where(sql.NotNull(s.C(FieldPasses)))
 	})
 }
 
-// SkippedTestCasesCountEQ applies the EQ predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountEQ(v uint32) predicate.TestPlan {
+// SkipsEQ applies the EQ predicate on the "skips" field.
+func SkipsEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.EQ(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountNEQ applies the NEQ predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountNEQ(v uint32) predicate.TestPlan {
+// SkipsNEQ applies the NEQ predicate on the "skips" field.
+func SkipsNEQ(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.NEQ(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountIn applies the In predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountIn(vs ...uint32) predicate.TestPlan {
+// SkipsIn applies the In predicate on the "skips" field.
+func SkipsIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldSkippedTestCasesCount), v...))
+		s.Where(sql.In(s.C(FieldSkips), v...))
 	})
 }
 
-// SkippedTestCasesCountNotIn applies the NotIn predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountNotIn(vs ...uint32) predicate.TestPlan {
+// SkipsNotIn applies the NotIn predicate on the "skips" field.
+func SkipsNotIn(vs ...uint32) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldSkippedTestCasesCount), v...))
+		s.Where(sql.NotIn(s.C(FieldSkips), v...))
 	})
 }
 
-// SkippedTestCasesCountGT applies the GT predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountGT(v uint32) predicate.TestPlan {
+// SkipsGT applies the GT predicate on the "skips" field.
+func SkipsGT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.GT(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountGTE applies the GTE predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountGTE(v uint32) predicate.TestPlan {
+// SkipsGTE applies the GTE predicate on the "skips" field.
+func SkipsGTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.GTE(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountLT applies the LT predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountLT(v uint32) predicate.TestPlan {
+// SkipsLT applies the LT predicate on the "skips" field.
+func SkipsLT(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.LT(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountLTE applies the LTE predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountLTE(v uint32) predicate.TestPlan {
+// SkipsLTE applies the LTE predicate on the "skips" field.
+func SkipsLTE(v uint32) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldSkippedTestCasesCount), v))
+		s.Where(sql.LTE(s.C(FieldSkips), v))
 	})
 }
 
-// SkippedTestCasesCountIsNil applies the IsNil predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountIsNil() predicate.TestPlan {
+// SkipsIsNil applies the IsNil predicate on the "skips" field.
+func SkipsIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldSkippedTestCasesCount)))
+		s.Where(sql.IsNull(s.C(FieldSkips)))
 	})
 }
 
-// SkippedTestCasesCountNotNil applies the NotNil predicate on the "skipped_test_cases_count" field.
-func SkippedTestCasesCountNotNil() predicate.TestPlan {
+// SkipsNotNil applies the NotNil predicate on the "skips" field.
+func SkipsNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldSkippedTestCasesCount)))
+		s.Where(sql.NotNull(s.C(FieldSkips)))
 	})
 }
 
@@ -1134,116 +1134,116 @@ func DeadlineNotNil() predicate.TestPlan {
 	})
 }
 
-// TestResultEQ applies the EQ predicate on the "test_result" field.
-func TestResultEQ(v string) predicate.TestPlan {
+// ResultEQ applies the EQ predicate on the "result" field.
+func ResultEQ(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldTestResult), v))
+		s.Where(sql.EQ(s.C(FieldResult), v))
 	})
 }
 
-// TestResultNEQ applies the NEQ predicate on the "test_result" field.
-func TestResultNEQ(v string) predicate.TestPlan {
+// ResultNEQ applies the NEQ predicate on the "result" field.
+func ResultNEQ(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldTestResult), v))
+		s.Where(sql.NEQ(s.C(FieldResult), v))
 	})
 }
 
-// TestResultIn applies the In predicate on the "test_result" field.
-func TestResultIn(vs ...string) predicate.TestPlan {
+// ResultIn applies the In predicate on the "result" field.
+func ResultIn(vs ...string) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldTestResult), v...))
+		s.Where(sql.In(s.C(FieldResult), v...))
 	})
 }
 
-// TestResultNotIn applies the NotIn predicate on the "test_result" field.
-func TestResultNotIn(vs ...string) predicate.TestPlan {
+// ResultNotIn applies the NotIn predicate on the "result" field.
+func ResultNotIn(vs ...string) predicate.TestPlan {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldTestResult), v...))
+		s.Where(sql.NotIn(s.C(FieldResult), v...))
 	})
 }
 
-// TestResultGT applies the GT predicate on the "test_result" field.
-func TestResultGT(v string) predicate.TestPlan {
+// ResultGT applies the GT predicate on the "result" field.
+func ResultGT(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldTestResult), v))
+		s.Where(sql.GT(s.C(FieldResult), v))
 	})
 }
 
-// TestResultGTE applies the GTE predicate on the "test_result" field.
-func TestResultGTE(v string) predicate.TestPlan {
+// ResultGTE applies the GTE predicate on the "result" field.
+func ResultGTE(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldTestResult), v))
+		s.Where(sql.GTE(s.C(FieldResult), v))
 	})
 }
 
-// TestResultLT applies the LT predicate on the "test_result" field.
-func TestResultLT(v string) predicate.TestPlan {
+// ResultLT applies the LT predicate on the "result" field.
+func ResultLT(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldTestResult), v))
+		s.Where(sql.LT(s.C(FieldResult), v))
 	})
 }
 
-// TestResultLTE applies the LTE predicate on the "test_result" field.
-func TestResultLTE(v string) predicate.TestPlan {
+// ResultLTE applies the LTE predicate on the "result" field.
+func ResultLTE(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldTestResult), v))
+		s.Where(sql.LTE(s.C(FieldResult), v))
 	})
 }
 
-// TestResultContains applies the Contains predicate on the "test_result" field.
-func TestResultContains(v string) predicate.TestPlan {
+// ResultContains applies the Contains predicate on the "result" field.
+func ResultContains(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldTestResult), v))
+		s.Where(sql.Contains(s.C(FieldResult), v))
 	})
 }
 
-// TestResultHasPrefix applies the HasPrefix predicate on the "test_result" field.
-func TestResultHasPrefix(v string) predicate.TestPlan {
+// ResultHasPrefix applies the HasPrefix predicate on the "result" field.
+func ResultHasPrefix(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldTestResult), v))
+		s.Where(sql.HasPrefix(s.C(FieldResult), v))
 	})
 }
 
-// TestResultHasSuffix applies the HasSuffix predicate on the "test_result" field.
-func TestResultHasSuffix(v string) predicate.TestPlan {
+// ResultHasSuffix applies the HasSuffix predicate on the "result" field.
+func ResultHasSuffix(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldTestResult), v))
+		s.Where(sql.HasSuffix(s.C(FieldResult), v))
 	})
 }
 
-// TestResultIsNil applies the IsNil predicate on the "test_result" field.
-func TestResultIsNil() predicate.TestPlan {
+// ResultIsNil applies the IsNil predicate on the "result" field.
+func ResultIsNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldTestResult)))
+		s.Where(sql.IsNull(s.C(FieldResult)))
 	})
 }
 
-// TestResultNotNil applies the NotNil predicate on the "test_result" field.
-func TestResultNotNil() predicate.TestPlan {
+// ResultNotNil applies the NotNil predicate on the "result" field.
+func ResultNotNil() predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldTestResult)))
+		s.Where(sql.NotNull(s.C(FieldResult)))
 	})
 }
 
-// TestResultEqualFold applies the EqualFold predicate on the "test_result" field.
-func TestResultEqualFold(v string) predicate.TestPlan {
+// ResultEqualFold applies the EqualFold predicate on the "result" field.
+func ResultEqualFold(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldTestResult), v))
+		s.Where(sql.EqualFold(s.C(FieldResult), v))
 	})
 }
 
-// TestResultContainsFold applies the ContainsFold predicate on the "test_result" field.
-func TestResultContainsFold(v string) predicate.TestPlan {
+// ResultContainsFold applies the ContainsFold predicate on the "result" field.
+func ResultContainsFold(v string) predicate.TestPlan {
 	return predicate.TestPlan(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldTestResult), v))
+		s.Where(sql.ContainsFold(s.C(FieldResult), v))
 	})
 }
 
