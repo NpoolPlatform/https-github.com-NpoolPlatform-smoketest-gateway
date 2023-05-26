@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 
-	"github.com/NpoolPlatform/message/npool/servicetmpl"
+	smoketest "github.com/NpoolPlatform/message/npool/smoketest/mw/v1"
 
 	"github.com/NpoolPlatform/smoketest-middleware/api/module"
 	"github.com/NpoolPlatform/smoketest-middleware/api/testcase"
@@ -16,11 +16,11 @@ import (
 )
 
 type Server struct {
-	servicetmpl.UnimplementedManagerServer
+	smoketest.UnimplementedManagerServer
 }
 
 func Register(server grpc.ServiceRegistrar) {
-	servicetmpl.RegisterManagerServer(server, &Server{})
+	smoketest.RegisterManagerServer(server, &Server{})
 	testcase.Register(server)
 	cond.Register(server)
 	module.Register(server)
@@ -29,7 +29,7 @@ func Register(server grpc.ServiceRegistrar) {
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
-	if err := servicetmpl.RegisterManagerHandlerFromEndpoint(context.Background(), mux, endpoint, opts); err != nil {
+	if err := smoketest.RegisterManagerHandlerFromEndpoint(context.Background(), mux, endpoint, opts); err != nil {
 		return err
 	}
 	return nil
