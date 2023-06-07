@@ -34,6 +34,7 @@ func (h *Handler) CreateTestPlan(ctx context.Context) (info *npool.TestPlan, err
 		info, err := crud.CreateSet(
 			cli.TestPlan.Create(),
 			&crud.Req{
+				ID:        h.ID,
 				Name:      h.Name,
 				CreatedBy: h.CreatedBy,
 				Executor:  h.Executor,
