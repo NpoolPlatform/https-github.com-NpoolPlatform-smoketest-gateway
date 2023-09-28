@@ -218,7 +218,7 @@ func TestMainOrder(t *testing.T) {
 	tpTeardown := setupTestPlan(t)
 	defer tpTeardown(t)
 
-	patch := monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
+	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
 	monkey.Patch(grpc2.GetGRPCConnV1, func(service string, recvMsgBytes int, tags ...string) (*grpc.ClientConn, error) {
@@ -230,6 +230,4 @@ func TestMainOrder(t *testing.T) {
 	t.Run("getPlanTestCase", getPlanTestCase)
 	t.Run("getPlanTestCases", getPlanTestCases)
 	t.Run("deletePlanTestCase", deletePlanTestCase)
-
-	patch.Unpatch()
 }
