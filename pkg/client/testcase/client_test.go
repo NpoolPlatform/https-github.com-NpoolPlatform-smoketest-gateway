@@ -8,11 +8,9 @@ import (
 	"testing"
 
 	"bou.ke/monkey"
-	apicli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	apimgrpb "github.com/NpoolPlatform/message/npool/basal/mw/v1/api"
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
@@ -32,38 +30,11 @@ func init() {
 }
 
 var (
-	_api = apimgrpb.API{
-		ServiceName: uuid.NewString(),
-		Protocol:    apimgrpb.Protocol_HTTP,
-		Method:      apimgrpb.Method_POST,
-		Path:        uuid.NewString(),
-		PathPrefix:  uuid.NewString(),
-	}
-)
-
-func setupAPI(t *testing.T) func(*testing.T) {
-	info, err := apicli.CreateAPI(context.Background(), &apimgrpb.APIReq{
-		ServiceName: &_api.ServiceName,
-		Protocol:    &_api.Protocol,
-		Method:      &_api.Method,
-		Path:        &_api.Path,
-		PathPrefix:  &_api.PathPrefix,
-	})
-
-	assert.Nil(t, err)
-	assert.NotNil(t, info)
-
-	ret.ApiID = info.ID
-	return func(*testing.T) {
-		_, _ = apicli.DeleteAPI(context.Background(), info.ID)
-	}
-}
-
-var (
 	ret = npool.TestCase{
 		Name:            uuid.NewString(),
 		Description:     uuid.NewString(),
 		ModuleName:      uuid.NewString(),
+		ApiID:           uuid.NewString(),
 		Input:           "{}",
 		InputDesc:       "{}",
 		Expectation:     "{}",
@@ -183,9 +154,6 @@ func TestMainOrder(t *testing.T) {
 	}
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
-
-	teardown := setupAPI(t)
-	defer teardown(t)
 
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
