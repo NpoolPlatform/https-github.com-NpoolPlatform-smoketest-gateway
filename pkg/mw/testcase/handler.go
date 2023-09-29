@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	apimwcli "github.com/NpoolPlatform/basal-middleware/pkg/client/api"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
@@ -166,15 +165,6 @@ func WithApiID(apiID *string) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-
-		exist, err := apimwcli.ExistAPI(ctx, *apiID)
-		if err != nil {
-			return err
-		}
-		if !exist {
-			return fmt.Errorf("invalid api id")
-		}
-
 		h.ApiID = &_apiID
 		return nil
 	}
