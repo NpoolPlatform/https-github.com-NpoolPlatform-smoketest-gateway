@@ -58,6 +58,7 @@ func (h *queryHandler) queryJoinTestCase(s *sql.Selector) {
 		).
 		AppendSelect(
 			sql.As(t1.C(enttestcase.FieldName), "test_case_name"),
+			sql.As(t1.C(enttestcase.FieldAPIID), "test_case_api_id"),
 			sql.As(t1.C(enttestcase.FieldTestCaseType), "test_case_type"),
 			sql.As(t1.C(enttestcase.FieldTestCaseClass), "test_case_class"),
 		)
