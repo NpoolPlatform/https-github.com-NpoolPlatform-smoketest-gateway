@@ -16,11 +16,11 @@ func (s *Server) CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanReq
 
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(req.ID),
-		testplan1.WithName(req.Name),
-		testplan1.WithCreatedBy(req.CreatedBy),
-		testplan1.WithExecutor(req.Executor),
-		testplan1.WithDeadline(req.Deadline),
+		testplan1.WithID(req.ID, false),
+		testplan1.WithName(req.Name, true),
+		testplan1.WithCreatedBy(req.CreatedBy, true),
+		testplan1.WithExecutor(req.Executor, true),
+		testplan1.WithDeadline(req.Deadline, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

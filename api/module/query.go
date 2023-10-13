@@ -42,7 +42,7 @@ func (s *Server) GetModules(ctx context.Context, in *npool.GetModulesRequest) (*
 func (s *Server) GetModule(ctx context.Context, in *npool.GetModuleRequest) (*npool.GetModuleResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(&in.ID),
+		module1.WithID(&in.ID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
@@ -60,30 +60,5 @@ func (s *Server) GetModule(ctx context.Context, in *npool.GetModuleRequest) (*np
 
 	return &npool.GetModuleResponse{
 		Info: info,
-	}, nil
-}
-
-func (s *Server) GetModuleConds(ctx context.Context, in *npool.GetModuleCondsRequest) (*npool.GetModuleCondsResponse, error) {
-	handler, err := module1.NewHandler(
-		ctx,
-		module1.WithConds(in.Conds),
-	)
-	if err != nil {
-		logger.Sugar().Errorw(
-			"GetModule",
-			"In", in,
-			"error", err,
-		)
-		return &npool.GetModuleCondsResponse{}, status.Error(codes.InvalidArgument, err.Error())
-	}
-
-	info, total, err := handler.GetModuleConds(ctx)
-	if err != nil {
-		return &npool.GetModuleCondsResponse{}, status.Error(codes.Internal, err.Error())
-	}
-
-	return &npool.GetModuleCondsResponse{
-		Infos: info,
-		Total: total,
 	}, nil
 }

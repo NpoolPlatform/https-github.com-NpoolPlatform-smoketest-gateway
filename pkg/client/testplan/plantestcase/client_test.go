@@ -6,15 +6,18 @@ import (
 	"os"
 	"strconv"
 	"testing"
+	"time"
 
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
-	testplanpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
+	modulemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
+	testcasemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	testplanmwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
-	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
-	testplan1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan"
+	module1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
+	testplan1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testplan"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -32,70 +35,76 @@ func init() {
 }
 
 var (
-	tc = testcasepb.TestCase{
-		ApiID:      uuid.NewString(),
-		Name:       uuid.NewString(),
-		ModuleName: uuid.NewString(),
+	ret = npool.PlanTestCase{
+		ID:               uuid.NewString(),
+		TestPlanID:       uuid.NewString(),
+		TestCaseID:       uuid.NewString(),
+		TestCaseName:     uuid.NewString(),
+		TestCaseType:     testcasemwpb.TestCaseType_Automatic,
+		TestCaseTypeStr:  testcasemwpb.TestCaseType_Automatic.String(),
+		TestCaseClass:    testcasemwpb.TestCaseClass_Interface,
+		TestCaseClassStr: testcasemwpb.TestCaseClass_Interface.String(),
+		ModuleID:         uuid.NewString(),
+		ModuleName:       uuid.NewString(),
+		Index:            10,
+		Input:            "{}",
+	}
+	testCase = testcasemwpb.TestCase{
+		ApiID:         uuid.NewString(),
+		Name:          ret.TestCaseName,
+		ModuleID:      ret.ModuleID,
+		ModuleName:    ret.ModuleName,
+		TestCaseType:  ret.TestCaseType,
+		TestCaseClass: ret.TestCaseClass,
+	}
+	testPlan = testplanmwpb.TestPlan{
+		Name:      uuid.NewString(),
+		CreatedBy: uuid.NewString(),
+		Executor:  uuid.NewString(),
+		State:     testplanmwpb.TestPlanState_WaitStart,
+		StateStr:  testplanmwpb.TestPlanState_WaitStart.String(),
+		Deadline:  uint32(time.Now().Unix() + 60*60*24),
 	}
 )
 
 func setupTestCase(t *testing.T) func(*testing.T) {
-	handler, err := testcase1.NewHandler(
-		context.Background(),
-		testcase1.WithName(&tc.Name),
-		testcase1.WithModuleName(&tc.ModuleName),
-		testcase1.WithApiID(&tc.ApiID),
-	)
+	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
+		ID:   &testCase.ModuleID,
+		Name: &testCase.ModuleName,
+	})
 	assert.Nil(t, err)
-	assert.NotNil(t, handler)
 
-	info, err := handler.CreateTestCase(context.Background())
+	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		ID:            &ret.TestCaseID,
+		ModuleID:      &testCase.ModuleID,
+		ApiID:         &testCase.ApiID,
+		Name:          &testCase.Name,
+		TestCaseType:  &testCase.TestCaseType,
+		TestCaseClass: &testCase.TestCaseClass,
+	})
 	assert.Nil(t, err)
-	assert.NotNil(t, info)
 
-	ret.TestCaseID = info.ID
 	return func(*testing.T) {
-		_, _ = handler.DeleteTestCase(context.Background())
+		_, _ = testcase1.DeleteTestCase(context.Background(), ret.TestCaseID)
+		_, _ = module1.DeleteModule(context.Background(), testCase.ModuleID)
 	}
 }
-
-var (
-	tp = testplanpb.TestPlan{
-		Name:      uuid.NewString(),
-		CreatedBy: uuid.NewString(),
-		Executor:  uuid.NewString(),
-		State:     testplanpb.TestPlanState_WaitStart,
-		StateStr:  testplanpb.TestPlanState_WaitStart.String(),
-	}
-)
 
 func setupTestPlan(t *testing.T) func(*testing.T) {
-	handler, err := testplan1.NewHandler(
-		context.Background(),
-		testplan1.WithName(&tp.Name),
-		testplan1.WithCreatedBy(&tp.CreatedBy),
-		testplan1.WithExecutor(&tp.Executor),
-		testplan1.WithState(&tp.State),
-	)
+	_, err := testplan1.CreateTestPlan(context.Background(), &testplanmwpb.TestPlanReq{
+		ID:        &ret.TestPlanID,
+		Name:      &testPlan.Name,
+		CreatedBy: &testPlan.CreatedBy,
+		Executor:  &testPlan.Executor,
+		State:     &testPlan.State,
+		Deadline:  &testPlan.Deadline,
+	})
 	assert.Nil(t, err)
-	assert.NotNil(t, handler)
 
-	testplan, err := handler.CreateTestPlan(context.Background())
-	assert.Nil(t, err)
-	assert.NotNil(t, testplan)
-
-	ret.TestPlanID = testplan.ID
 	return func(*testing.T) {
-		_, _ = handler.DeleteTestPlan(context.Background())
+		_, _ = testplan1.DeleteTestPlan(context.Background(), ret.TestPlanID)
 	}
 }
-
-var (
-	ret = npool.PlanTestCase{
-		Index: 10,
-		Input: "{}",
-	}
-)
 
 func createPlanTestCase(t *testing.T) {
 	var (
@@ -178,19 +187,18 @@ func TestMainOrder(t *testing.T) {
 	}
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
-
-	tcTeardown := setupTestCase(t)
-	defer tcTeardown(t)
-
-	tpTeardown := setupTestPlan(t)
-	defer tpTeardown(t)
-
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
 	monkey.Patch(grpc2.GetGRPCConnV1, func(service string, recvMsgBytes int, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	tcTeardown := setupTestCase(t)
+	defer tcTeardown(t)
+
+	tpTeardown := setupTestPlan(t)
+	defer tpTeardown(t)
 
 	t.Run("createPlanTestCase", createPlanTestCase)
 	t.Run("updatePlanTestCase", updatePlanTestCase)

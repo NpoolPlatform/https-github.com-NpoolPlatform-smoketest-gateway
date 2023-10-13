@@ -13,12 +13,19 @@ import (
 
 func (s *Server) UpdateCond(ctx context.Context, in *npool.UpdateCondRequest) (*npool.UpdateCondResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"UpdateCond",
+			"Req", req,
+		)
+		return &npool.UpdateCondResponse{}, status.Error(codes.InvalidArgument, "Info is empty")
+	}
 	handler, err := cond1.NewHandler(
 		ctx,
-		cond1.WithID(req.ID),
-		cond1.WithIndex(req.Index),
-		cond1.WithArgumentMap(req.ArgumentMap),
-		cond1.WithCondType(req.CondType),
+		cond1.WithID(req.ID, true),
+		cond1.WithIndex(req.Index, false),
+		cond1.WithArgumentMap(req.ArgumentMap, false),
+		cond1.WithCondType(req.CondType, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

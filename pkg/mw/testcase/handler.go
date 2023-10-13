@@ -9,25 +9,26 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase"
+	module1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/module"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	ID           *uuid.UUID
-	Name         *string
-	Description  *string
-	ModuleID     *uuid.UUID
-	ModuleName   *string
-	ApiID        *uuid.UUID //nolint
-	Input        *string
-	InputDesc    *string
-	Expectation  *string
-	OutputDesc   *string
-	TestCaseType *npool.TestCaseType
-	Deprecated   *bool
-	Conds        *crud.Conds
-	Offset       int32
-	Limit        int32
+	ID            *uuid.UUID
+	Name          *string
+	Description   *string
+	ModuleID      *uuid.UUID
+	ApiID         *uuid.UUID //nolint
+	Input         *string
+	InputDesc     *string
+	Expectation   *string
+	OutputDesc    *string
+	TestCaseType  *npool.TestCaseType
+	TestCaseClass *npool.TestCaseClass
+	Deprecated    *bool
+	Conds         *crud.Conds
+	Offset        int32
+	Limit         int32
 }
 
 func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) error) (*Handler, error) {
@@ -40,9 +41,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string) func(context.Context, *Handler) error {
+func WithID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
 			return nil
 		}
 		_id, err := uuid.Parse(*id)
@@ -54,29 +58,61 @@ func WithID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithName(name *string) func(context.Context, *Handler) error {
+func WithName(name *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if name == nil {
+			if must {
+				return fmt.Errorf("invalid name")
+			}
 			return nil
+		}
+		const leastNameLen = 2
+		if len(*name) < leastNameLen {
+			return fmt.Errorf("name %v too short", *name)
 		}
 		h.Name = name
 		return nil
 	}
 }
 
-func WithDescription(description *string) func(context.Context, *Handler) error {
+func WithDescription(description *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if description == nil {
-			return nil
-		}
 		h.Description = description
 		return nil
 	}
 }
 
-func WithExpectation(expectation *string) func(context.Context, *Handler) error {
+func WithModuleID(id *string, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		handler, err := module1.NewHandler(
+			ctx,
+			module1.WithID(id, true),
+		)
+		if err != nil {
+			return err
+		}
+		exist, err := handler.ExistModule(ctx)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid module")
+		}
+		_id, err := uuid.Parse(*id)
+		if err != nil {
+			return err
+		}
+		h.ModuleID = &_id
+		return nil
+	}
+}
+
+func WithExpectation(expectation *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if expectation == nil {
+			if must {
+				return fmt.Errorf("invalid expectation")
+			}
 			return nil
 		}
 		var r interface{}
@@ -88,9 +124,12 @@ func WithExpectation(expectation *string) func(context.Context, *Handler) error 
 	}
 }
 
-func WithOutputDesc(outputDesc *string) func(context.Context, *Handler) error {
+func WithOutputDesc(outputDesc *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if outputDesc == nil {
+			if must {
+				return fmt.Errorf("invalid outputdesc")
+			}
 			return nil
 		}
 		var r interface{}
@@ -102,9 +141,12 @@ func WithOutputDesc(outputDesc *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithInput(input *string) func(context.Context, *Handler) error {
+func WithInput(input *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if input == nil {
+			if must {
+				return fmt.Errorf("invalid input")
+			}
 			return nil
 		}
 
@@ -117,9 +159,12 @@ func WithInput(input *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithInputDesc(inputDesc *string) func(context.Context, *Handler) error {
+func WithInputDesc(inputDesc *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if inputDesc == nil {
+			if must {
+				return fmt.Errorf("invalid inputdesc")
+			}
 			return nil
 		}
 
@@ -132,19 +177,19 @@ func WithInputDesc(inputDesc *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithDeprecated(deprecated *bool) func(context.Context, *Handler) error {
+func WithDeprecated(deprecated *bool, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if deprecated == nil {
-			return nil
-		}
 		h.Deprecated = deprecated
 		return nil
 	}
 }
 
-func WithTestCaseType(testCaseType *npool.TestCaseType) func(context.Context, *Handler) error {
+func WithTestCaseType(testCaseType *npool.TestCaseType, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if testCaseType == nil {
+			if must {
+				return fmt.Errorf("invalid testcasetype")
+			}
 			return nil
 		}
 		switch *testCaseType {
@@ -158,28 +203,39 @@ func WithTestCaseType(testCaseType *npool.TestCaseType) func(context.Context, *H
 	}
 }
 
-//nolint
-func WithApiID(apiID *string) func(context.Context, *Handler) error {
+func WithTestCaseClass(testCaseClass *npool.TestCaseClass, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		if testCaseClass == nil {
+			if must {
+				return fmt.Errorf("invalid testcaseclass")
+			}
+			return nil
+		}
+		switch *testCaseClass {
+		case npool.TestCaseClass_Functionality:
+		case npool.TestCaseClass_Interface:
+		default:
+			return fmt.Errorf("invalid testcase class")
+		}
+		h.TestCaseClass = testCaseClass
+		return nil
+	}
+}
+
+//nolint
+func WithApiID(apiID *string, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if apiID == nil {
+			if must {
+				return fmt.Errorf("invalid apiid")
+			}
+			return nil
+		}
 		_apiID, err := uuid.Parse(*apiID)
 		if err != nil {
 			return err
 		}
 		h.ApiID = &_apiID
-		return nil
-	}
-}
-
-func WithModuleName(moduleName *string) func(context.Context, *Handler) error {
-	return func(ctx context.Context, h *Handler) error {
-		if moduleName == nil {
-			return fmt.Errorf("invalid module name")
-		}
-		const leastNameLen = 2
-		if len(*moduleName) < leastNameLen {
-			return fmt.Errorf("name %v too short", *moduleName)
-		}
-		h.ModuleName = moduleName
 		return nil
 	}
 }

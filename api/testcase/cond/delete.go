@@ -14,7 +14,7 @@ func (s *Server) DeleteCond(ctx context.Context, in *npool.DeleteCondRequest) (*
 	id := in.GetInfo().GetID()
 	handler, err := cond1.NewHandler(
 		ctx,
-		cond1.WithID(&id),
+		cond1.WithID(&id, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

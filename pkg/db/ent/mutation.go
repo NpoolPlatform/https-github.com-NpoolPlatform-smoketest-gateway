@@ -2898,29 +2898,30 @@ func (m *PlanTestCaseMutation) ResetEdge(name string) error {
 // TestCaseMutation represents an operation that mutates the TestCase nodes in the graph.
 type TestCaseMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *uuid.UUID
-	created_at     *uint32
-	addcreated_at  *int32
-	updated_at     *uint32
-	addupdated_at  *int32
-	deleted_at     *uint32
-	adddeleted_at  *int32
-	name           *string
-	description    *string
-	module_id      *uuid.UUID
-	api_id         *uuid.UUID
-	input          *string
-	input_desc     *string
-	expectation    *string
-	output_desc    *string
-	test_case_type *string
-	deprecated     *bool
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*TestCase, error)
-	predicates     []predicate.TestCase
+	op              Op
+	typ             string
+	id              *uuid.UUID
+	created_at      *uint32
+	addcreated_at   *int32
+	updated_at      *uint32
+	addupdated_at   *int32
+	deleted_at      *uint32
+	adddeleted_at   *int32
+	name            *string
+	description     *string
+	module_id       *uuid.UUID
+	api_id          *uuid.UUID
+	input           *string
+	input_desc      *string
+	expectation     *string
+	output_desc     *string
+	test_case_type  *string
+	test_case_class *string
+	deprecated      *bool
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*TestCase, error)
+	predicates      []predicate.TestCase
 }
 
 var _ ent.Mutation = (*TestCaseMutation)(nil)
@@ -3636,6 +3637,55 @@ func (m *TestCaseMutation) ResetTestCaseType() {
 	delete(m.clearedFields, testcase.FieldTestCaseType)
 }
 
+// SetTestCaseClass sets the "test_case_class" field.
+func (m *TestCaseMutation) SetTestCaseClass(s string) {
+	m.test_case_class = &s
+}
+
+// TestCaseClass returns the value of the "test_case_class" field in the mutation.
+func (m *TestCaseMutation) TestCaseClass() (r string, exists bool) {
+	v := m.test_case_class
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTestCaseClass returns the old "test_case_class" field's value of the TestCase entity.
+// If the TestCase object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *TestCaseMutation) OldTestCaseClass(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTestCaseClass is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTestCaseClass requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTestCaseClass: %w", err)
+	}
+	return oldValue.TestCaseClass, nil
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (m *TestCaseMutation) ClearTestCaseClass() {
+	m.test_case_class = nil
+	m.clearedFields[testcase.FieldTestCaseClass] = struct{}{}
+}
+
+// TestCaseClassCleared returns if the "test_case_class" field was cleared in this mutation.
+func (m *TestCaseMutation) TestCaseClassCleared() bool {
+	_, ok := m.clearedFields[testcase.FieldTestCaseClass]
+	return ok
+}
+
+// ResetTestCaseClass resets all changes to the "test_case_class" field.
+func (m *TestCaseMutation) ResetTestCaseClass() {
+	m.test_case_class = nil
+	delete(m.clearedFields, testcase.FieldTestCaseClass)
+}
+
 // SetDeprecated sets the "deprecated" field.
 func (m *TestCaseMutation) SetDeprecated(b bool) {
 	m.deprecated = &b
@@ -3704,7 +3754,7 @@ func (m *TestCaseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *TestCaseMutation) Fields() []string {
-	fields := make([]string, 0, 13)
+	fields := make([]string, 0, 14)
 	if m.created_at != nil {
 		fields = append(fields, testcase.FieldCreatedAt)
 	}
@@ -3741,6 +3791,9 @@ func (m *TestCaseMutation) Fields() []string {
 	if m.test_case_type != nil {
 		fields = append(fields, testcase.FieldTestCaseType)
 	}
+	if m.test_case_class != nil {
+		fields = append(fields, testcase.FieldTestCaseClass)
+	}
 	if m.deprecated != nil {
 		fields = append(fields, testcase.FieldDeprecated)
 	}
@@ -3776,6 +3829,8 @@ func (m *TestCaseMutation) Field(name string) (ent.Value, bool) {
 		return m.OutputDesc()
 	case testcase.FieldTestCaseType:
 		return m.TestCaseType()
+	case testcase.FieldTestCaseClass:
+		return m.TestCaseClass()
 	case testcase.FieldDeprecated:
 		return m.Deprecated()
 	}
@@ -3811,6 +3866,8 @@ func (m *TestCaseMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldOutputDesc(ctx)
 	case testcase.FieldTestCaseType:
 		return m.OldTestCaseType(ctx)
+	case testcase.FieldTestCaseClass:
+		return m.OldTestCaseClass(ctx)
 	case testcase.FieldDeprecated:
 		return m.OldDeprecated(ctx)
 	}
@@ -3905,6 +3962,13 @@ func (m *TestCaseMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetTestCaseType(v)
+		return nil
+	case testcase.FieldTestCaseClass:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTestCaseClass(v)
 		return nil
 	case testcase.FieldDeprecated:
 		v, ok := value.(bool)
@@ -4009,6 +4073,9 @@ func (m *TestCaseMutation) ClearedFields() []string {
 	if m.FieldCleared(testcase.FieldTestCaseType) {
 		fields = append(fields, testcase.FieldTestCaseType)
 	}
+	if m.FieldCleared(testcase.FieldTestCaseClass) {
+		fields = append(fields, testcase.FieldTestCaseClass)
+	}
 	if m.FieldCleared(testcase.FieldDeprecated) {
 		fields = append(fields, testcase.FieldDeprecated)
 	}
@@ -4052,6 +4119,9 @@ func (m *TestCaseMutation) ClearField(name string) error {
 		return nil
 	case testcase.FieldTestCaseType:
 		m.ClearTestCaseType()
+		return nil
+	case testcase.FieldTestCaseClass:
+		m.ClearTestCaseClass()
 		return nil
 	case testcase.FieldDeprecated:
 		m.ClearDeprecated()
@@ -4099,6 +4169,9 @@ func (m *TestCaseMutation) ResetField(name string) error {
 		return nil
 	case testcase.FieldTestCaseType:
 		m.ResetTestCaseType()
+		return nil
+	case testcase.FieldTestCaseClass:
+		m.ResetTestCaseClass()
 		return nil
 	case testcase.FieldDeprecated:
 		m.ResetDeprecated()

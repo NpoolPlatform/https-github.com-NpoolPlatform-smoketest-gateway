@@ -14,15 +14,16 @@ func (h *Handler) UpdateTestCase(ctx context.Context) (info *npool.TestCase, err
 		if _, err := crud.UpdateSet(
 			cli.TestCase.UpdateOneID(*h.ID),
 			&crud.Req{
-				ID:           h.ID,
-				Name:         h.Name,
-				Description:  h.Description,
-				Input:        h.Input,
-				InputDesc:    h.InputDesc,
-				Expectation:  h.Expectation,
-				OutputDesc:   h.OutputDesc,
-				TestCaseType: h.TestCaseType,
-				Deprecated:   h.Deprecated,
+				ID:            h.ID,
+				Name:          h.Name,
+				Description:   h.Description,
+				Input:         h.Input,
+				InputDesc:     h.InputDesc,
+				Expectation:   h.Expectation,
+				OutputDesc:    h.OutputDesc,
+				TestCaseType:  h.TestCaseType,
+				TestCaseClass: h.TestCaseClass,
+				Deprecated:    h.Deprecated,
 			},
 		).Save(_ctx); err != nil {
 			return err

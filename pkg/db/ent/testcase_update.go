@@ -264,6 +264,26 @@ func (tcu *TestCaseUpdate) ClearTestCaseType() *TestCaseUpdate {
 	return tcu
 }
 
+// SetTestCaseClass sets the "test_case_class" field.
+func (tcu *TestCaseUpdate) SetTestCaseClass(s string) *TestCaseUpdate {
+	tcu.mutation.SetTestCaseClass(s)
+	return tcu
+}
+
+// SetNillableTestCaseClass sets the "test_case_class" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableTestCaseClass(s *string) *TestCaseUpdate {
+	if s != nil {
+		tcu.SetTestCaseClass(*s)
+	}
+	return tcu
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (tcu *TestCaseUpdate) ClearTestCaseClass() *TestCaseUpdate {
+	tcu.mutation.ClearTestCaseClass()
+	return tcu
+}
+
 // SetDeprecated sets the "deprecated" field.
 func (tcu *TestCaseUpdate) SetDeprecated(b bool) *TestCaseUpdate {
 	tcu.mutation.SetDeprecated(b)
@@ -541,6 +561,19 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: testcase.FieldTestCaseType,
 		})
 	}
+	if value, ok := tcu.mutation.TestCaseClass(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldTestCaseClass,
+		})
+	}
+	if tcu.mutation.TestCaseClassCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldTestCaseClass,
+		})
+	}
 	if value, ok := tcu.mutation.Deprecated(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
@@ -807,6 +840,26 @@ func (tcuo *TestCaseUpdateOne) SetNillableTestCaseType(s *string) *TestCaseUpdat
 // ClearTestCaseType clears the value of the "test_case_type" field.
 func (tcuo *TestCaseUpdateOne) ClearTestCaseType() *TestCaseUpdateOne {
 	tcuo.mutation.ClearTestCaseType()
+	return tcuo
+}
+
+// SetTestCaseClass sets the "test_case_class" field.
+func (tcuo *TestCaseUpdateOne) SetTestCaseClass(s string) *TestCaseUpdateOne {
+	tcuo.mutation.SetTestCaseClass(s)
+	return tcuo
+}
+
+// SetNillableTestCaseClass sets the "test_case_class" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableTestCaseClass(s *string) *TestCaseUpdateOne {
+	if s != nil {
+		tcuo.SetTestCaseClass(*s)
+	}
+	return tcuo
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (tcuo *TestCaseUpdateOne) ClearTestCaseClass() *TestCaseUpdateOne {
+	tcuo.mutation.ClearTestCaseClass()
 	return tcuo
 }
 
@@ -1115,6 +1168,19 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: testcase.FieldTestCaseType,
+		})
+	}
+	if value, ok := tcuo.mutation.TestCaseClass(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldTestCaseClass,
+		})
+	}
+	if tcuo.mutation.TestCaseClassCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: testcase.FieldTestCaseClass,
 		})
 	}
 	if value, ok := tcuo.mutation.Deprecated(); ok {

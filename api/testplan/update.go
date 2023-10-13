@@ -15,16 +15,16 @@ func (s *Server) UpdateTestPlan(ctx context.Context, in *npool.UpdateTestPlanReq
 	req := in.GetInfo()
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(req.ID),
-		testplan1.WithName(req.Name),
-		testplan1.WithExecutor(req.Executor),
-		testplan1.WithState(req.State),
-		testplan1.WithDeadline(req.Deadline),
-		testplan1.WithFails(req.Fails),
-		testplan1.WithSkips(req.Skips),
-		testplan1.WithPasses(req.Passes),
-		testplan1.WithResult(req.Result),
-		testplan1.WithRunDuration(req.RunDuration),
+		testplan1.WithID(req.ID, true),
+		testplan1.WithName(req.Name, false),
+		testplan1.WithExecutor(req.Executor, false),
+		testplan1.WithState(req.State, false),
+		testplan1.WithDeadline(req.Deadline, false),
+		testplan1.WithFails(req.Fails, false),
+		testplan1.WithSkips(req.Skips, false),
+		testplan1.WithPasses(req.Passes, false),
+		testplan1.WithResult(req.Result, false),
+		testplan1.WithRunDuration(req.RunDuration, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

@@ -9,7 +9,7 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testcase/cond"
-	tc "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
 	"github.com/google/uuid"
 )
 
@@ -35,9 +35,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string) func(context.Context, *Handler) error {
+func WithID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
 			return nil
 		}
 		_id, err := uuid.Parse(*id)
@@ -50,56 +53,63 @@ func WithID(id *string) func(context.Context, *Handler) error {
 }
 
 //nolint
-func WithTestCaseID(id *string) func(context.Context, *Handler) error {
+func WithTestCaseID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		handler, err := testcase1.NewHandler(
+			ctx,
+			testcase1.WithID(id, true),
+		)
+		if err != nil {
+			return err
+		}
+		exist, err := handler.ExistTestCase(ctx)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid testcase")
+		}
 		_id, err := uuid.Parse(*id)
 		if err != nil {
 			return err
 		}
-
-		type TestCaseHandler struct {
-			tc.Handler
-		}
-
-		testcase := &TestCaseHandler{}
-		testcase.ID = &_id
-
-		if _, err := testcase.ExistTestCase(ctx); err != nil {
-			return err
-		}
-
 		h.TestCaseID = &_id
 		return nil
 	}
 }
 
 //nolint
-func WithCondTestCaseID(id *string) func(context.Context, *Handler) error {
+func WithCondTestCaseID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		handler, err := testcase1.NewHandler(
+			ctx,
+			testcase1.WithID(id, true),
+		)
+		if err != nil {
+			return err
+		}
+		exist, err := handler.ExistTestCase(ctx)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid testcase")
+		}
 		_id, err := uuid.Parse(*id)
 		if err != nil {
 			return err
 		}
-
-		type TestCaseHandler struct {
-			tc.Handler
-		}
-
-		testcase := &TestCaseHandler{}
-		testcase.ID = &_id
-
-		if _, err := testcase.ExistTestCase(ctx); err != nil {
-			return err
-		}
-
 		h.CondTestCaseID = &_id
 		return nil
 	}
 }
 
-func WithCondType(_type *npool.CondType) func(context.Context, *Handler) error {
+func WithCondType(_type *npool.CondType, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if _type == nil {
+			if must {
+				return fmt.Errorf("invalid type")
+			}
 			return nil
 		}
 		switch *_type {
@@ -114,19 +124,19 @@ func WithCondType(_type *npool.CondType) func(context.Context, *Handler) error {
 	}
 }
 
-func WithIndex(index *uint32) func(context.Context, *Handler) error {
+func WithIndex(index *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if index == nil {
-			return nil
-		}
 		h.Index = index
 		return nil
 	}
 }
 
-func WithArgumentMap(argMap *string) func(context.Context, *Handler) error {
+func WithArgumentMap(argMap *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if argMap == nil {
+			if must {
+				return fmt.Errorf("invalid argmap")
+			}
 			return nil
 		}
 		var r interface{}

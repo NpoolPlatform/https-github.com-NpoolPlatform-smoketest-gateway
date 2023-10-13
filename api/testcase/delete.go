@@ -12,8 +12,11 @@ import (
 )
 
 func (s *Server) DeleteTestCase(ctx context.Context, in *npool.DeleteTestCaseRequest) (*npool.DeleteTestCaseResponse, error) {
-	req := in.GetInfo()
-	handler, err := testcase1.NewHandler(ctx, testcase1.WithID(req.ID))
+	id := in.GetInfo().GetID()
+	handler, err := testcase1.NewHandler(
+		ctx,
+		testcase1.WithID(&id, true),
+	)
 	if err != nil {
 		logger.Sugar().Errorw(
 			"DeleteTestCase",
@@ -25,6 +28,11 @@ func (s *Server) DeleteTestCase(ctx context.Context, in *npool.DeleteTestCaseReq
 
 	info, err := handler.DeleteTestCase(ctx)
 	if err != nil {
+		logger.Sugar().Errorw(
+			"DeleteTestCase",
+			"Req", in,
+			"Error", err,
+		)
 		return &npool.DeleteTestCaseResponse{}, status.Error(codes.Aborted, err.Error())
 	}
 

@@ -131,22 +131,6 @@ func ExistModule(ctx context.Context, id string) (bool, error) {
 	return info.(bool), nil
 }
 
-func ExistModuleByName(ctx context.Context, name string) (bool, error) {
-	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.ExistModuleByName(ctx, &npool.ExistModuleByNameRequest{
-			Name: name,
-		})
-		if err != nil {
-			return nil, err
-		}
-		return resp.Info, nil
-	})
-	if err != nil {
-		return false, err
-	}
-	return info.(bool), nil
-}
-
 func ExistModuleConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistModuleConds(ctx, &npool.ExistModuleCondsRequest{
@@ -161,22 +145,4 @@ func ExistModuleConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 		return false, err
 	}
 	return info.(bool), nil
-}
-
-func GetModuleConds(ctx context.Context, conds *npool.Conds) ([]*npool.Module, uint32, error) {
-	var total uint32
-	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
-		resp, err := cli.GetModuleConds(ctx, &npool.GetModuleCondsRequest{Conds: conds})
-		if err != nil {
-			return nil, err
-		}
-
-		total = resp.GetTotal()
-		return resp.Infos, nil
-	})
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return infos.([]*npool.Module), total, nil
 }

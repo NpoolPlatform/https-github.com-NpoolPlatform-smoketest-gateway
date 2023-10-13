@@ -40,6 +40,8 @@ type TestCase struct {
 	OutputDesc string `json:"output_desc,omitempty"`
 	// TestCaseType holds the value of the "test_case_type" field.
 	TestCaseType string `json:"test_case_type,omitempty"`
+	// TestCaseClass holds the value of the "test_case_class" field.
+	TestCaseClass string `json:"test_case_class,omitempty"`
 	// Deprecated holds the value of the "deprecated" field.
 	Deprecated bool `json:"deprecated,omitempty"`
 }
@@ -53,7 +55,7 @@ func (*TestCase) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case testcase.FieldCreatedAt, testcase.FieldUpdatedAt, testcase.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case testcase.FieldName, testcase.FieldDescription, testcase.FieldInput, testcase.FieldInputDesc, testcase.FieldExpectation, testcase.FieldOutputDesc, testcase.FieldTestCaseType:
+		case testcase.FieldName, testcase.FieldDescription, testcase.FieldInput, testcase.FieldInputDesc, testcase.FieldExpectation, testcase.FieldOutputDesc, testcase.FieldTestCaseType, testcase.FieldTestCaseClass:
 			values[i] = new(sql.NullString)
 		case testcase.FieldID, testcase.FieldModuleID, testcase.FieldAPIID:
 			values[i] = new(uuid.UUID)
@@ -150,6 +152,12 @@ func (tc *TestCase) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				tc.TestCaseType = value.String
 			}
+		case testcase.FieldTestCaseClass:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field test_case_class", values[i])
+			} else if value.Valid {
+				tc.TestCaseClass = value.String
+			}
 		case testcase.FieldDeprecated:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field deprecated", values[i])
@@ -219,6 +227,9 @@ func (tc *TestCase) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("test_case_type=")
 	builder.WriteString(tc.TestCaseType)
+	builder.WriteString(", ")
+	builder.WriteString("test_case_class=")
+	builder.WriteString(tc.TestCaseClass)
 	builder.WriteString(", ")
 	builder.WriteString("deprecated=")
 	builder.WriteString(fmt.Sprintf("%v", tc.Deprecated))

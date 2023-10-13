@@ -10,41 +10,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-//nolint
-func (s *Server) ExistModuleByName(ctx context.Context, in *npool.ExistModuleByNameRequest) (*npool.ExistModuleByNameResponse, error) {
-	handler, err := module1.NewHandler(
-		ctx,
-		module1.WithName(&in.Name),
-	)
-	if err != nil {
-		logger.Sugar().Errorw(
-			"ExistModule",
-			"In", in,
-			"Error", err,
-		)
-		return &npool.ExistModuleByNameResponse{}, status.Error(codes.Aborted, err.Error())
-	}
-
-	exist, err := handler.ExistModuleByName(ctx)
-	if err != nil {
-		logger.Sugar().Errorw(
-			"ExistModule",
-			"In", in,
-			"Error", err,
-		)
-		return &npool.ExistModuleByNameResponse{}, status.Error(codes.Aborted, err.Error())
-	}
-
-	return &npool.ExistModuleByNameResponse{
-		Info: exist,
-	}, nil
-}
-
-//nolint
 func (s *Server) ExistModule(ctx context.Context, in *npool.ExistModuleRequest) (*npool.ExistModuleResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(&in.ID),
+		module1.WithID(&in.ID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

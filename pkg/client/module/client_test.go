@@ -90,13 +90,6 @@ func existModule(t *testing.T) {
 	}
 }
 
-func existModuleByName(t *testing.T) {
-	exist, err := ExistModuleByName(context.Background(), ret.Name)
-	if assert.Nil(t, err) {
-		assert.True(t, exist)
-	}
-}
-
 func deleteModule(t *testing.T) {
 	info, err := DeleteModule(context.Background(), ret.ID)
 	if assert.Nil(t, err) {
@@ -126,7 +119,6 @@ func TestMainOrder(t *testing.T) {
 	t.Run("updateModule", updateModule)
 	t.Run("getModule", getModule)
 	t.Run("existModule", existModule)
-	t.Run("existModuleByName", existModuleByName)
 	t.Run("getModules", getModules)
 	t.Run("deleteModule", deleteModule)
 }

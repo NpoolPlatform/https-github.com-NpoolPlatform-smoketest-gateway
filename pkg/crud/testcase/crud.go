@@ -11,18 +11,19 @@ import (
 )
 
 type Req struct {
-	ID           *uuid.UUID
-	Name         *string
-	Description  *string
-	ModuleID     *uuid.UUID
-	ApiID        *uuid.UUID //nolint
-	Input        *string
-	InputDesc    *string
-	Expectation  *string
-	OutputDesc   *string
-	TestCaseType *npool.TestCaseType
-	Deprecated   *bool
-	DeletedAt    *uint32
+	ID            *uuid.UUID
+	Name          *string
+	Description   *string
+	ModuleID      *uuid.UUID
+	ApiID         *uuid.UUID //nolint
+	Input         *string
+	InputDesc     *string
+	Expectation   *string
+	OutputDesc    *string
+	TestCaseType  *npool.TestCaseType
+	TestCaseClass *npool.TestCaseClass
+	Deprecated    *bool
+	DeletedAt     *uint32
 }
 
 func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
@@ -56,6 +57,9 @@ func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
 	if req.TestCaseType != nil {
 		c.SetTestCaseType(req.TestCaseType.String())
 	}
+	if req.TestCaseClass != nil {
+		c.SetTestCaseClass(req.TestCaseClass.String())
+	}
 	if req.Deprecated != nil {
 		c.SetDeprecated(*req.Deprecated)
 	}
@@ -83,6 +87,9 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 	}
 	if req.TestCaseType != nil {
 		u.SetTestCaseType(req.TestCaseType.String())
+	}
+	if req.TestCaseClass != nil {
+		u.SetTestCaseClass(req.TestCaseClass.String())
 	}
 	if req.Deprecated != nil {
 		u.SetDeprecated(*req.Deprecated)

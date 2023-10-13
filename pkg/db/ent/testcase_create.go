@@ -191,6 +191,20 @@ func (tcc *TestCaseCreate) SetNillableTestCaseType(s *string) *TestCaseCreate {
 	return tcc
 }
 
+// SetTestCaseClass sets the "test_case_class" field.
+func (tcc *TestCaseCreate) SetTestCaseClass(s string) *TestCaseCreate {
+	tcc.mutation.SetTestCaseClass(s)
+	return tcc
+}
+
+// SetNillableTestCaseClass sets the "test_case_class" field if the given value is not nil.
+func (tcc *TestCaseCreate) SetNillableTestCaseClass(s *string) *TestCaseCreate {
+	if s != nil {
+		tcc.SetTestCaseClass(*s)
+	}
+	return tcc
+}
+
 // SetDeprecated sets the "deprecated" field.
 func (tcc *TestCaseCreate) SetDeprecated(b bool) *TestCaseCreate {
 	tcc.mutation.SetDeprecated(b)
@@ -361,6 +375,10 @@ func (tcc *TestCaseCreate) defaults() error {
 		v := testcase.DefaultTestCaseType
 		tcc.mutation.SetTestCaseType(v)
 	}
+	if _, ok := tcc.mutation.TestCaseClass(); !ok {
+		v := testcase.DefaultTestCaseClass
+		tcc.mutation.SetTestCaseClass(v)
+	}
 	if _, ok := tcc.mutation.Deprecated(); !ok {
 		v := testcase.DefaultDeprecated
 		tcc.mutation.SetDeprecated(v)
@@ -518,6 +536,14 @@ func (tcc *TestCaseCreate) createSpec() (*TestCase, *sqlgraph.CreateSpec) {
 			Column: testcase.FieldTestCaseType,
 		})
 		_node.TestCaseType = value
+	}
+	if value, ok := tcc.mutation.TestCaseClass(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: testcase.FieldTestCaseClass,
+		})
+		_node.TestCaseClass = value
 	}
 	if value, ok := tcc.mutation.Deprecated(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -794,6 +820,24 @@ func (u *TestCaseUpsert) UpdateTestCaseType() *TestCaseUpsert {
 // ClearTestCaseType clears the value of the "test_case_type" field.
 func (u *TestCaseUpsert) ClearTestCaseType() *TestCaseUpsert {
 	u.SetNull(testcase.FieldTestCaseType)
+	return u
+}
+
+// SetTestCaseClass sets the "test_case_class" field.
+func (u *TestCaseUpsert) SetTestCaseClass(v string) *TestCaseUpsert {
+	u.Set(testcase.FieldTestCaseClass, v)
+	return u
+}
+
+// UpdateTestCaseClass sets the "test_case_class" field to the value that was provided on create.
+func (u *TestCaseUpsert) UpdateTestCaseClass() *TestCaseUpsert {
+	u.SetExcluded(testcase.FieldTestCaseClass)
+	return u
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (u *TestCaseUpsert) ClearTestCaseClass() *TestCaseUpsert {
+	u.SetNull(testcase.FieldTestCaseClass)
 	return u
 }
 
@@ -1114,6 +1158,27 @@ func (u *TestCaseUpsertOne) UpdateTestCaseType() *TestCaseUpsertOne {
 func (u *TestCaseUpsertOne) ClearTestCaseType() *TestCaseUpsertOne {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearTestCaseType()
+	})
+}
+
+// SetTestCaseClass sets the "test_case_class" field.
+func (u *TestCaseUpsertOne) SetTestCaseClass(v string) *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetTestCaseClass(v)
+	})
+}
+
+// UpdateTestCaseClass sets the "test_case_class" field to the value that was provided on create.
+func (u *TestCaseUpsertOne) UpdateTestCaseClass() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateTestCaseClass()
+	})
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (u *TestCaseUpsertOne) ClearTestCaseClass() *TestCaseUpsertOne {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearTestCaseClass()
 	})
 }
 
@@ -1603,6 +1668,27 @@ func (u *TestCaseUpsertBulk) UpdateTestCaseType() *TestCaseUpsertBulk {
 func (u *TestCaseUpsertBulk) ClearTestCaseType() *TestCaseUpsertBulk {
 	return u.Update(func(s *TestCaseUpsert) {
 		s.ClearTestCaseType()
+	})
+}
+
+// SetTestCaseClass sets the "test_case_class" field.
+func (u *TestCaseUpsertBulk) SetTestCaseClass(v string) *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.SetTestCaseClass(v)
+	})
+}
+
+// UpdateTestCaseClass sets the "test_case_class" field to the value that was provided on create.
+func (u *TestCaseUpsertBulk) UpdateTestCaseClass() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.UpdateTestCaseClass()
+	})
+}
+
+// ClearTestCaseClass clears the value of the "test_case_class" field.
+func (u *TestCaseUpsertBulk) ClearTestCaseClass() *TestCaseUpsertBulk {
+	return u.Update(func(s *TestCaseUpsert) {
+		s.ClearTestCaseClass()
 	})
 }
 

@@ -163,6 +163,13 @@ func TestCaseType(v string) predicate.TestCase {
 	})
 }
 
+// TestCaseClass applies equality check predicate on the "test_case_class" field. It's identical to TestCaseClassEQ.
+func TestCaseClass(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTestCaseClass), v))
+	})
+}
+
 // Deprecated applies equality check predicate on the "deprecated" field. It's identical to DeprecatedEQ.
 func Deprecated(v bool) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
@@ -1306,6 +1313,119 @@ func TestCaseTypeEqualFold(v string) predicate.TestCase {
 func TestCaseTypeContainsFold(v string) predicate.TestCase {
 	return predicate.TestCase(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldTestCaseType), v))
+	})
+}
+
+// TestCaseClassEQ applies the EQ predicate on the "test_case_class" field.
+func TestCaseClassEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassNEQ applies the NEQ predicate on the "test_case_class" field.
+func TestCaseClassNEQ(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassIn applies the In predicate on the "test_case_class" field.
+func TestCaseClassIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTestCaseClass), v...))
+	})
+}
+
+// TestCaseClassNotIn applies the NotIn predicate on the "test_case_class" field.
+func TestCaseClassNotIn(vs ...string) predicate.TestCase {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTestCaseClass), v...))
+	})
+}
+
+// TestCaseClassGT applies the GT predicate on the "test_case_class" field.
+func TestCaseClassGT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassGTE applies the GTE predicate on the "test_case_class" field.
+func TestCaseClassGTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassLT applies the LT predicate on the "test_case_class" field.
+func TestCaseClassLT(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassLTE applies the LTE predicate on the "test_case_class" field.
+func TestCaseClassLTE(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassContains applies the Contains predicate on the "test_case_class" field.
+func TestCaseClassContains(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassHasPrefix applies the HasPrefix predicate on the "test_case_class" field.
+func TestCaseClassHasPrefix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassHasSuffix applies the HasSuffix predicate on the "test_case_class" field.
+func TestCaseClassHasSuffix(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassIsNil applies the IsNil predicate on the "test_case_class" field.
+func TestCaseClassIsNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldTestCaseClass)))
+	})
+}
+
+// TestCaseClassNotNil applies the NotNil predicate on the "test_case_class" field.
+func TestCaseClassNotNil() predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldTestCaseClass)))
+	})
+}
+
+// TestCaseClassEqualFold applies the EqualFold predicate on the "test_case_class" field.
+func TestCaseClassEqualFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldTestCaseClass), v))
+	})
+}
+
+// TestCaseClassContainsFold applies the ContainsFold predicate on the "test_case_class" field.
+func TestCaseClassContainsFold(v string) predicate.TestCase {
+	return predicate.TestCase(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldTestCaseClass), v))
 	})
 }
 
