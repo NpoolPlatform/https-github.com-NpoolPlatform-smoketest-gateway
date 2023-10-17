@@ -2,7 +2,6 @@ package module
 
 import (
 	"context"
-	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
@@ -29,9 +28,6 @@ func (h *queryHandler) selectModule(stm *ent.ModuleQuery) {
 }
 
 func (h *queryHandler) queryModule(cli *ent.Client) error {
-	if h.ID == nil {
-		return fmt.Errorf("invalid module id")
-	}
 	h.selectModule(
 		cli.Module.
 			Query().
@@ -105,33 +101,11 @@ func (h *Handler) GetModule(ctx context.Context) (info *npool.Module, err error)
 		return nil
 	})
 	if err != nil {
-		return
+		return nil, err
 	}
 	if len(handler.infos) == 0 {
-		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+		return nil, nil
 	}
 
 	return handler.infos[0], nil
-}
-
-func (h *Handler) GetModuleConds(ctx context.Context) ([]*npool.Module, uint32, error) {
-	handler := &queryHandler{
-		Handler: h,
-	}
-
-	err := db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if err := handler.queryModulesByConds(_ctx, cli); err != nil {
-			return err
-		}
-
-		if err := handler.scan(_ctx); err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return handler.infos, handler.total, nil
 }

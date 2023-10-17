@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
@@ -10,8 +11,12 @@ import (
 )
 
 func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err error) {
-	if exist, err := h.ExistModuleByName(ctx); err != nil || exist {
+	exist, err := h.ExistModuleByName(ctx)
+	if err != nil {
 		return nil, err
+	}
+	if exist {
+		return nil, fmt.Errorf("module exist")
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {

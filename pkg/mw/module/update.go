@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
@@ -19,8 +20,12 @@ func (h *Handler) UpdateModule(ctx context.Context) (info *npool.Module, err err
 	req := &crud.Req{}
 	if h.Name != nil {
 		if info.Name != *h.Name {
-			if exist, err := h.ExistModuleByName(ctx); exist {
+			exist, err := h.ExistModuleByName(ctx)
+			if err != nil {
 				return nil, err
+			}
+			if exist {
+				return nil, fmt.Errorf("modulename exist")
 			}
 			req.Name = h.Name
 		}
