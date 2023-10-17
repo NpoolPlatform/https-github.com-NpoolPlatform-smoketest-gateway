@@ -44,13 +44,14 @@ var (
 		TestCaseTypeStr:  testcasemwpb.TestCaseType_Automatic.String(),
 		TestCaseClass:    testcasemwpb.TestCaseClass_Interface,
 		TestCaseClassStr: testcasemwpb.TestCaseClass_Interface.String(),
+		TestCaseApiID:    uuid.NewString(),
 		ModuleID:         uuid.NewString(),
 		ModuleName:       uuid.NewString(),
 		Index:            10,
 		Input:            "{}",
 	}
 	testCase = testcasemwpb.TestCase{
-		ApiID:         uuid.NewString(),
+		ApiID:         ret.TestCaseApiID,
 		Name:          ret.TestCaseName,
 		ModuleID:      ret.ModuleID,
 		ModuleName:    ret.ModuleName,
