@@ -13,16 +13,23 @@ import (
 
 func (s *Server) UpdatePlanTestCase(ctx context.Context, in *npool.UpdatePlanTestCaseRequest) (*npool.UpdatePlanTestCaseResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"UpdatePlanTestCase",
+			"Req", req,
+		)
+		return &npool.UpdatePlanTestCaseResponse{}, status.Error(codes.InvalidArgument, "Info is empty")
+	}
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(req.ID),
-		plantestcase1.WithTestUserID(req.TestUserID),
-		plantestcase1.WithOutput(req.Output),
-		plantestcase1.WithInput(req.Input),
-		plantestcase1.WithRunDuration(req.RunDuration),
-		plantestcase1.WithResult(req.Result),
-		plantestcase1.WithIndex(req.Index),
-		plantestcase1.WithDescription(req.Description),
+		plantestcase1.WithID(req.ID, true),
+		plantestcase1.WithTestUserID(req.TestUserID, false),
+		plantestcase1.WithOutput(req.Output, false),
+		plantestcase1.WithInput(req.Input, false),
+		plantestcase1.WithRunDuration(req.RunDuration, false),
+		plantestcase1.WithResult(req.Result, false),
+		plantestcase1.WithIndex(req.Index, false),
+		plantestcase1.WithDescription(req.Description, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

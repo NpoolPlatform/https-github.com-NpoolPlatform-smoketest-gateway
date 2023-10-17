@@ -28,6 +28,7 @@ func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 		enttestcase.FieldAPIID,
 		enttestcase.FieldModuleID,
 		enttestcase.FieldTestCaseType,
+		enttestcase.FieldTestCaseClass,
 		enttestcase.FieldInput,
 		enttestcase.FieldInputDesc,
 		enttestcase.FieldExpectation,
@@ -96,6 +97,7 @@ func (h *queryHandler) scan(ctx context.Context) error {
 func (h *queryHandler) formalize() {
 	for _, info := range h.infos {
 		info.TestCaseType = npool.TestCaseType(npool.TestCaseType_value[info.TestCaseTypeStr])
+		info.TestCaseClass = npool.TestCaseClass(npool.TestCaseClass_value[info.TestCaseClassStr])
 	}
 }
 

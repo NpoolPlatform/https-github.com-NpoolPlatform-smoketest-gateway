@@ -36,6 +36,8 @@ const (
 	FieldOutputDesc = "output_desc"
 	// FieldTestCaseType holds the string denoting the test_case_type field in the database.
 	FieldTestCaseType = "test_case_type"
+	// FieldTestCaseClass holds the string denoting the test_case_class field in the database.
+	FieldTestCaseClass = "test_case_class"
 	// FieldDeprecated holds the string denoting the deprecated field in the database.
 	FieldDeprecated = "deprecated"
 	// Table holds the table name of the testcase in the database.
@@ -57,6 +59,7 @@ var Columns = []string{
 	FieldExpectation,
 	FieldOutputDesc,
 	FieldTestCaseType,
+	FieldTestCaseClass,
 	FieldDeprecated,
 }
 
@@ -105,6 +108,8 @@ var (
 	DefaultOutputDesc string
 	// DefaultTestCaseType holds the default value on creation for the "test_case_type" field.
 	DefaultTestCaseType string
+	// DefaultTestCaseClass holds the default value on creation for the "test_case_class" field.
+	DefaultTestCaseClass string
 	// DefaultDeprecated holds the default value on creation for the "deprecated" field.
 	DefaultDeprecated bool
 	// DefaultID holds the default value on creation for the "id" field.

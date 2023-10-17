@@ -245,8 +245,12 @@ func init() {
 	testcaseDescTestCaseType := testcaseFields[9].Descriptor()
 	// testcase.DefaultTestCaseType holds the default value on creation for the test_case_type field.
 	testcase.DefaultTestCaseType = testcaseDescTestCaseType.Default.(string)
+	// testcaseDescTestCaseClass is the schema descriptor for test_case_class field.
+	testcaseDescTestCaseClass := testcaseFields[10].Descriptor()
+	// testcase.DefaultTestCaseClass holds the default value on creation for the test_case_class field.
+	testcase.DefaultTestCaseClass = testcaseDescTestCaseClass.Default.(string)
 	// testcaseDescDeprecated is the schema descriptor for deprecated field.
-	testcaseDescDeprecated := testcaseFields[10].Descriptor()
+	testcaseDescDeprecated := testcaseFields[11].Descriptor()
 	// testcase.DefaultDeprecated holds the default value on creation for the deprecated field.
 	testcase.DefaultDeprecated = testcaseDescDeprecated.Default.(bool)
 	// testcaseDescID is the schema descriptor for id field.

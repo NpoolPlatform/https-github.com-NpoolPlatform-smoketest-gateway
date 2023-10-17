@@ -14,7 +14,7 @@ func (s *Server) DeletePlanTestCase(ctx context.Context, in *npool.DeletePlanTes
 	id := in.GetInfo().GetID()
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(&id),
+		plantestcase1.WithID(&id, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

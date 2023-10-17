@@ -39,9 +39,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string) func(context.Context, *Handler) error {
+func WithID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
 			return nil
 		}
 		_id, err := uuid.Parse(*id)
@@ -53,9 +56,12 @@ func WithID(id *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithName(name *string) func(context.Context, *Handler) error {
+func WithName(name *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if name == nil {
+			if must {
+				return fmt.Errorf("invalid name")
+			}
 			return nil
 		}
 		const leastNameLen = 4
@@ -67,8 +73,14 @@ func WithName(name *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithCreatedBy(createdBy *string) func(context.Context, *Handler) error {
+func WithCreatedBy(createdBy *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		if createdBy == nil {
+			if must {
+				return fmt.Errorf("invalid createdby")
+			}
+			return nil
+		}
 		_createdBy, err := uuid.Parse(*createdBy)
 		if err != nil {
 			return err
@@ -78,9 +90,12 @@ func WithCreatedBy(createdBy *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
+func WithDeadline(deadline *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if deadline == nil {
+			if must {
+				return fmt.Errorf("invalid deadline")
+			}
 			return nil
 		}
 		if *deadline <= uint32(time.Now().Unix()) {
@@ -92,9 +107,12 @@ func WithDeadline(deadline *uint32) func(context.Context, *Handler) error {
 	}
 }
 
-func WithState(state *npool.TestPlanState) func(context.Context, *Handler) error {
+func WithState(state *npool.TestPlanState, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if state == nil {
+			if must {
+				return fmt.Errorf("invalid state")
+			}
 			return nil
 		}
 		switch *state {
@@ -110,9 +128,12 @@ func WithState(state *npool.TestPlanState) func(context.Context, *Handler) error
 	}
 }
 
-func WithExecutor(executor *string) func(context.Context, *Handler) error {
+func WithExecutor(executor *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if executor == nil {
+			if must {
+				return fmt.Errorf("invalid executor")
+			}
 			return nil
 		}
 		_executor, err := uuid.Parse(*executor)
@@ -125,9 +146,12 @@ func WithExecutor(executor *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithResult(result *npool.TestResultState) func(context.Context, *Handler) error {
+func WithResult(result *npool.TestResultState, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
+			if must {
+				return fmt.Errorf("invalid result")
+			}
 			return nil
 		}
 		switch *result {
@@ -141,41 +165,29 @@ func WithResult(result *npool.TestResultState) func(context.Context, *Handler) e
 	}
 }
 
-func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
+func WithRunDuration(duration *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if duration == nil {
-			return nil
-		}
 		h.RunDuration = duration
 		return nil
 	}
 }
 
-func WithFails(fails *uint32) func(context.Context, *Handler) error {
+func WithFails(fails *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if fails == nil {
-			return nil
-		}
 		h.Fails = fails
 		return nil
 	}
 }
 
-func WithPasses(passes *uint32) func(context.Context, *Handler) error {
+func WithPasses(passes *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if passes == nil {
-			return nil
-		}
 		h.Passes = passes
 		return nil
 	}
 }
 
-func WithSkips(skips *uint32) func(context.Context, *Handler) error {
+func WithSkips(skips *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if skips == nil {
-			return nil
-		}
 		h.Skips = skips
 		return nil
 	}

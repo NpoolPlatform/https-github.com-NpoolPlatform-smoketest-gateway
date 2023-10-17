@@ -9,8 +9,8 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	constant "github.com/NpoolPlatform/smoketest-middleware/pkg/const"
 	crud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/testplan/plantestcase"
-	testcasemw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
-	testplanmw "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	testplan1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testplan"
 	"github.com/google/uuid"
 )
 
@@ -40,9 +40,12 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string) func(context.Context, *Handler) error {
+func WithID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
 			return nil
 		}
 		_id, err := uuid.Parse(*id)
@@ -55,56 +58,63 @@ func WithID(id *string) func(context.Context, *Handler) error {
 }
 
 //nolint
-func WithTestPlanID(planID *string) func(context.Context, *Handler) error {
+func WithTestPlanID(planID *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		handler, err := testplan1.NewHandler(
+			ctx,
+			testplan1.WithID(planID, true),
+		)
+		if err != nil {
+			return err
+		}
+		exist, err := handler.ExistTestPlan(ctx)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid testplan")
+		}
 		_planID, err := uuid.Parse(*planID)
 		if err != nil {
 			return err
 		}
-
-		type TestPlanHandler struct {
-			testplanmw.Handler
-		}
-
-		testplan := &TestPlanHandler{}
-		testplan.ID = &_planID
-
-		if _, err := testplan.ExistTestPlan(ctx); err != nil {
-			return err
-		}
-
 		h.TestPlanID = &_planID
 		return nil
 	}
 }
 
 //nolint
-func WithTestCaseID(testCaseID *string) func(context.Context, *Handler) error {
+func WithTestCaseID(testCaseID *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
+		handler, err := testcase1.NewHandler(
+			ctx,
+			testcase1.WithID(testCaseID, true),
+		)
+		if err != nil {
+			return err
+		}
+		exist, err := handler.ExistTestCase(ctx)
+		if err != nil {
+			return err
+		}
+		if !exist {
+			return fmt.Errorf("invalid testcase")
+		}
 		_testCaseID, err := uuid.Parse(*testCaseID)
 		if err != nil {
 			return err
 		}
-
-		type TestCaseHandler struct {
-			testcasemw.Handler
-		}
-
-		testcase := &TestCaseHandler{}
-		testcase.ID = &_testCaseID
-
-		if _, err := testcase.ExistTestCase(ctx); err != nil {
-			return err
-		}
-
 		h.TestCaseID = &_testCaseID
 		return nil
 	}
 }
 
-func WithTestUserID(userID *string) func(context.Context, *Handler) error {
+func WithTestUserID(userID *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if userID == nil {
+			if must {
+				return fmt.Errorf("invalid testuserid")
+			}
 			return nil
 		}
 		_userID, err := uuid.Parse(*userID)
@@ -117,9 +127,12 @@ func WithTestUserID(userID *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithInput(input *string) func(context.Context, *Handler) error {
+func WithInput(input *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if input == nil {
+			if must {
+				return fmt.Errorf("invalid input")
+			}
 			return nil
 		}
 		var r interface{}
@@ -131,9 +144,12 @@ func WithInput(input *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithOutput(output *string) func(context.Context, *Handler) error {
+func WithOutput(output *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if output == nil {
+			if must {
+				return fmt.Errorf("invalid output")
+			}
 			return nil
 		}
 		h.Output = output
@@ -141,9 +157,12 @@ func WithOutput(output *string) func(context.Context, *Handler) error {
 	}
 }
 
-func WithResult(result *npool.TestCaseResult) func(context.Context, *Handler) error {
+func WithResult(result *npool.TestCaseResult, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if result == nil {
+			if must {
+				return fmt.Errorf("invalid result")
+			}
 			return nil
 		}
 		switch *result {
@@ -158,31 +177,22 @@ func WithResult(result *npool.TestCaseResult) func(context.Context, *Handler) er
 	}
 }
 
-func WithRunDuration(duration *uint32) func(context.Context, *Handler) error {
+func WithRunDuration(duration *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if duration == nil {
-			return nil
-		}
 		h.RunDuration = duration
 		return nil
 	}
 }
 
-func WithIndex(index *uint32) func(context.Context, *Handler) error {
+func WithIndex(index *uint32, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if index == nil {
-			return nil
-		}
 		h.Index = index
 		return nil
 	}
 }
 
-func WithDescription(description *string) func(context.Context, *Handler) error {
+func WithDescription(description *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
-		if description == nil {
-			return nil
-		}
 		h.Description = description
 		return nil
 	}

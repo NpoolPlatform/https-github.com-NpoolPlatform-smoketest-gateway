@@ -13,13 +13,20 @@ import (
 
 func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTestCaseRequest) (*npool.CreatePlanTestCaseResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"CreatePlanTestCase",
+			"Req", in,
+		)
+		return &npool.CreatePlanTestCaseResponse{}, status.Error(codes.InvalidArgument, "Info is empty")
+	}
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(req.ID),
-		plantestcase1.WithTestPlanID(req.TestPlanID),
-		plantestcase1.WithTestCaseID(req.TestCaseID),
-		plantestcase1.WithIndex(req.Index),
-		plantestcase1.WithInput(req.Input),
+		plantestcase1.WithID(req.ID, false),
+		plantestcase1.WithTestPlanID(req.TestPlanID, true),
+		plantestcase1.WithTestCaseID(req.TestCaseID, true),
+		plantestcase1.WithIndex(req.Index, false),
+		plantestcase1.WithInput(req.Input, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

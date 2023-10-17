@@ -42,7 +42,7 @@ func (s *Server) GetTestPlans(ctx context.Context, in *npool.GetTestPlansRequest
 func (s *Server) GetTestPlan(ctx context.Context, in *npool.GetTestPlanRequest) (*npool.GetTestPlanResponse, error) {
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(&in.ID),
+		testplan1.WithID(&in.ID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

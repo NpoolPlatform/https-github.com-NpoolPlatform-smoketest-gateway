@@ -78,6 +78,7 @@ var (
 		{Name: "expectation", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "output_desc", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
 		{Name: "test_case_type", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseType"},
+		{Name: "test_case_class", Type: field.TypeString, Nullable: true, Default: "DefaultTestCaseClass"},
 		{Name: "deprecated", Type: field.TypeBool, Nullable: true, Default: false},
 	}
 	// TestCasesTable holds the schema information for the "test_cases" table.

@@ -10,9 +10,11 @@ import (
 	"bou.ke/monkey"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	testcasepb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	modulemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
+	testcasemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase/cond"
-	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/mw/testcase"
+	module1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
+	testcase1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/testcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -30,44 +32,55 @@ func init() {
 }
 
 var (
-	tc = testcasepb.TestCase{
-		ApiID:      uuid.NewString(),
-		Name:       uuid.NewString(),
-		ModuleName: uuid.NewString(),
-	}
-)
-
-func setupTestCase(t *testing.T) func(*testing.T) {
-	handler, err := testcase1.NewHandler(
-		context.Background(),
-		testcase1.WithName(&tc.Name),
-		testcase1.WithModuleName(&tc.ModuleName),
-		testcase1.WithApiID(&tc.ApiID),
-	)
-	assert.Nil(t, err)
-	assert.NotNil(t, handler)
-
-	info, err := handler.CreateTestCase(context.Background())
-	assert.Nil(t, err)
-	assert.NotNil(t, info)
-
-	ret.TestCaseID = info.ID
-	ret.CondTestCaseID = info.ID
-	return func(*testing.T) {
-		_, _ = handler.DeleteTestCase(context.Background())
-	}
-}
-
-var (
 	ret = npool.Cond{
-		TestCaseID:     tc.ID,
-		CondTestCaseID: tc.ID,
+		TestCaseID:     uuid.NewString(),
+		CondTestCaseID: uuid.NewString(),
 		CondType:       npool.CondType_PreCondition,
 		CondTypeStr:    npool.CondType_PreCondition.String(),
 		Index:          100,
 		ArgumentMap:    "{}",
 	}
+	testCase = testcasemwpb.TestCase{
+		ApiID:         uuid.NewString(),
+		Name:          uuid.NewString(),
+		ModuleID:      uuid.NewString(),
+		TestCaseType:  testcasemwpb.TestCaseType_Automatic,
+		TestCaseClass: testcasemwpb.TestCaseClass_Interface,
+	}
 )
+
+func setupTestCase(t *testing.T) func(*testing.T) {
+	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
+		ID:   &testCase.ModuleID,
+		Name: &testCase.ModuleID,
+	})
+	assert.Nil(t, err)
+
+	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		ID:            &ret.TestCaseID,
+		Name:          &testCase.Name,
+		ApiID:         &testCase.ApiID,
+		ModuleID:      &testCase.ModuleID,
+		TestCaseType:  &testCase.TestCaseType,
+		TestCaseClass: &testCase.TestCaseClass,
+	})
+	assert.Nil(t, err)
+
+	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		ID:            &ret.CondTestCaseID,
+		Name:          &testCase.Name,
+		ApiID:         &testCase.ApiID,
+		ModuleID:      &testCase.ModuleID,
+		TestCaseType:  &testCase.TestCaseType,
+		TestCaseClass: &testCase.TestCaseClass,
+	})
+	assert.Nil(t, err)
+
+	return func(*testing.T) {
+		_, _ = testcase1.DeleteTestCase(context.Background(), ret.CondTestCaseID)
+		_, _ = testcase1.DeleteTestCase(context.Background(), ret.TestCaseID)
+	}
+}
 
 func createCond(t *testing.T) {
 	var (
@@ -142,16 +155,15 @@ func TestMainOrder(t *testing.T) {
 	}
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
-
-	teardown := setupTestCase(t)
-	defer teardown(t)
-
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
 	monkey.Patch(grpc2.GetGRPCConnV1, func(service string, recvMsgBytes int, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	teardown := setupTestCase(t)
+	defer teardown(t)
 
 	t.Run("createCond", createCond)
 	t.Run("updateCond", updateCond)

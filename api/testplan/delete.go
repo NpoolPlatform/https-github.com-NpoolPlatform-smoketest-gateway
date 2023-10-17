@@ -14,7 +14,7 @@ func (s *Server) DeleteTestPlan(ctx context.Context, in *npool.DeleteTestPlanReq
 	id := in.GetInfo().GetID()
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(&id),
+		testplan1.WithID(&id, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

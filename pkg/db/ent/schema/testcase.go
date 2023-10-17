@@ -67,6 +67,10 @@ func (TestCase) Fields() []ent.Field {
 			Optional().
 			Default(testcase.TestCaseType_DefaultTestCaseType.String()),
 		field.
+			String("test_case_class").
+			Optional().
+			Default(testcase.TestCaseClass_DefaultTestCaseClass.String()),
+		field.
 			Bool("deprecated").
 			Optional().
 			Default(false),

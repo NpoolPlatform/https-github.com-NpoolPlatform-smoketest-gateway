@@ -14,7 +14,7 @@ func (s *Server) DeleteModule(ctx context.Context, in *npool.DeleteModuleRequest
 	id := in.GetInfo().GetID()
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(&id),
+		module1.WithID(&id, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

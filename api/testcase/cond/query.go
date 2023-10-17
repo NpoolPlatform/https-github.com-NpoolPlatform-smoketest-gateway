@@ -42,7 +42,7 @@ func (s *Server) GetConds(ctx context.Context, in *npool.GetCondsRequest) (*npoo
 func (s *Server) GetCond(ctx context.Context, in *npool.GetCondRequest) (*npool.GetCondResponse, error) {
 	handler, err := cond1.NewHandler(
 		ctx,
-		cond1.WithID(&in.ID),
+		cond1.WithID(&in.ID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

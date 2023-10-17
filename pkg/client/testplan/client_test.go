@@ -35,6 +35,7 @@ var (
 		Executor:  uuid.NewString(),
 		State:     npool.TestPlanState_WaitStart,
 		StateStr:  npool.TestPlanState_WaitStart.String(),
+		Deadline:  uint32(time.Now().Unix() + 60*60*24),
 	}
 )
 
@@ -44,6 +45,7 @@ func createTestPlan(t *testing.T) {
 			Name:      &ret.Name,
 			CreatedBy: &ret.CreatedBy,
 			Executor:  &ret.Executor,
+			Deadline:  &ret.Deadline,
 		}
 	)
 

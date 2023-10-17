@@ -12,7 +12,9 @@ import (
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	modulemwpb "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testcase"
+	module1 "github.com/NpoolPlatform/smoketest-middleware/pkg/client/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/testinit"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -31,31 +33,48 @@ func init() {
 
 var (
 	ret = npool.TestCase{
-		Name:            uuid.NewString(),
-		Description:     uuid.NewString(),
-		ModuleName:      uuid.NewString(),
-		ApiID:           uuid.NewString(),
-		Input:           "{}",
-		InputDesc:       "{}",
-		Expectation:     "{}",
-		OutputDesc:      "{}",
-		Deprecated:      false,
-		TestCaseType:    npool.TestCaseType_DefaultTestCaseType,
-		TestCaseTypeStr: npool.TestCaseType_DefaultTestCaseType.String(),
+		Name:             uuid.NewString(),
+		Description:      uuid.NewString(),
+		ModuleID:         uuid.NewString(),
+		ModuleName:       uuid.NewString(),
+		ApiID:            uuid.NewString(),
+		Input:            "{}",
+		InputDesc:        "{}",
+		Expectation:      "{}",
+		OutputDesc:       "{}",
+		Deprecated:       false,
+		TestCaseType:     npool.TestCaseType_Automatic,
+		TestCaseTypeStr:  npool.TestCaseType_Automatic.String(),
+		TestCaseClass:    npool.TestCaseClass_Interface,
+		TestCaseClassStr: npool.TestCaseClass_Interface.String(),
 	}
 )
+
+func setup(t *testing.T) func(*testing.T) {
+	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
+		ID:   &ret.ModuleID,
+		Name: &ret.ModuleName,
+	})
+	assert.Nil(t, err)
+
+	return func(*testing.T) {
+		_, _ = module1.DeleteModule(context.Background(), ret.ModuleID)
+	}
+}
 
 func createTestCase(t *testing.T) {
 	var (
 		req = &npool.TestCaseReq{
-			Name:        &ret.Name,
-			Description: &ret.Description,
-			ModuleName:  &ret.ModuleName,
-			ApiID:       &ret.ApiID,
-			Input:       &ret.Input,
-			InputDesc:   &ret.InputDesc,
-			Expectation: &ret.Expectation,
-			OutputDesc:  &ret.OutputDesc,
+			Name:          &ret.Name,
+			Description:   &ret.Description,
+			ModuleID:      &ret.ModuleID,
+			ApiID:         &ret.ApiID,
+			Input:         &ret.Input,
+			InputDesc:     &ret.InputDesc,
+			Expectation:   &ret.Expectation,
+			OutputDesc:    &ret.OutputDesc,
+			TestCaseType:  &ret.TestCaseType,
+			TestCaseClass: &ret.TestCaseClass,
 		}
 	)
 
@@ -154,13 +173,15 @@ func TestMainOrder(t *testing.T) {
 	}
 
 	gport := config.GetIntValueWithNameSpace("", config.KeyGRPCPort)
-
 	monkey.Patch(grpc2.GetGRPCConn, func(service string, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
 	monkey.Patch(grpc2.GetGRPCConnV1, func(service string, recvMsgBytes int, tags ...string) (*grpc.ClientConn, error) {
 		return grpc.Dial(fmt.Sprintf("localhost:%v", gport), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	})
+
+	teardown := setup(t)
+	defer teardown(t)
 
 	t.Run("createTestCase", createTestCase)
 	t.Run("updateTestCase", updateTestCase)

@@ -13,10 +13,18 @@ import (
 
 func (s *Server) CreateModule(ctx context.Context, in *npool.CreateModuleRequest) (*npool.CreateModuleResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"CreateModule",
+			"Req", in,
+		)
+		return &npool.CreateModuleResponse{}, status.Error(codes.InvalidArgument, "Info is empty")
+	}
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithName(req.Name),
-		module1.WithDescription(req.Description),
+		module1.WithID(req.ID, false),
+		module1.WithName(req.Name, true),
+		module1.WithDescription(req.Description, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

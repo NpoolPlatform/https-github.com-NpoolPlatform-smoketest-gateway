@@ -13,11 +13,18 @@ import (
 
 func (s *Server) UpdateModule(ctx context.Context, in *npool.UpdateModuleRequest) (*npool.UpdateModuleResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"UpdateModule",
+			"Req", req,
+		)
+		return &npool.UpdateModuleResponse{}, status.Error(codes.InvalidArgument, "Info is empty")
+	}
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(req.ID),
-		module1.WithName(req.Name),
-		module1.WithDescription(req.Description),
+		module1.WithID(req.ID, true),
+		module1.WithName(req.Name, false),
+		module1.WithDescription(req.Description, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
