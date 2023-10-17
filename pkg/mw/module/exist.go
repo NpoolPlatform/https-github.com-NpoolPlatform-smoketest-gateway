@@ -2,7 +2,6 @@ package module
 
 import (
 	"context"
-	"fmt"
 
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
@@ -12,9 +11,6 @@ import (
 
 //nolint
 func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error) {
-	if h.Name == nil {
-		return false, fmt.Errorf("invalid name")
-	}
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		exist, err = cli.
 			Module.
@@ -29,19 +25,11 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 	if err != nil {
 		return false, err
 	}
-
-	if !exist && err == nil {
-		return exist, fmt.Errorf("name %v not exist", *h.Name)
-	}
-
 	return exist, nil
 }
 
 //nolint
 func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
-	if h.ID == nil {
-		return false, fmt.Errorf("invalid id")
-	}
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		exist, err = cli.
 			Module.
@@ -56,10 +44,6 @@ func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 	if err != nil {
 		return false, err
 	}
-	if !exist && err == nil {
-		return exist, fmt.Errorf("id %v not exist", *h.ID)
-	}
-
 	return exist, nil
 }
 
@@ -76,9 +60,5 @@ func (h *Handler) ExistModuleConds(ctx context.Context) (exist bool, err error) 
 	if err != nil {
 		return false, err
 	}
-	if !exist && err == nil {
-		return exist, fmt.Errorf("id %v not exist", *h.ID)
-	}
-
 	return exist, nil
 }

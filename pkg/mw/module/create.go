@@ -10,7 +10,7 @@ import (
 )
 
 func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err error) {
-	if exist, err := h.ExistModuleByName(ctx); exist {
+	if exist, err := h.ExistModuleByName(ctx); err != nil || exist {
 		return nil, err
 	}
 
