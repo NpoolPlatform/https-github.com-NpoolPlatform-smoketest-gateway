@@ -9,7 +9,6 @@ import (
 	entmodule "github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 )
 
-//nolint
 func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error) {
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		exist, err = cli.
@@ -28,7 +27,6 @@ func (h *Handler) ExistModuleByName(ctx context.Context) (exist bool, err error)
 	return exist, nil
 }
 
-//nolint
 func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		exist, err = cli.
