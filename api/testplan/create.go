@@ -19,8 +19,8 @@ func (s *Server) CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanReq
 		testplan1.WithID(req.ID, false),
 		testplan1.WithName(req.Name, true),
 		testplan1.WithCreatedBy(req.CreatedBy, true),
-		testplan1.WithExecutor(req.Executor, true),
-		testplan1.WithDeadline(req.Deadline, true),
+		testplan1.WithExecutor(req.Executor, false),
+		testplan1.WithDeadline(req.Deadline, false),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
