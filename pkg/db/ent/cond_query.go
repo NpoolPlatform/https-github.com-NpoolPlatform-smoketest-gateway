@@ -14,7 +14,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/cond"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
-	"github.com/google/uuid"
 )
 
 // CondQuery is the builder for querying Cond entities.
@@ -87,8 +86,8 @@ func (cq *CondQuery) FirstX(ctx context.Context) *Cond {
 
 // FirstID returns the first Cond ID from the query.
 // Returns a *NotFoundError when no Cond ID was found.
-func (cq *CondQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (cq *CondQuery) FirstID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = cq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -100,7 +99,7 @@ func (cq *CondQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (cq *CondQuery) FirstIDX(ctx context.Context) uuid.UUID {
+func (cq *CondQuery) FirstIDX(ctx context.Context) uint32 {
 	id, err := cq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -138,8 +137,8 @@ func (cq *CondQuery) OnlyX(ctx context.Context) *Cond {
 // OnlyID is like Only, but returns the only Cond ID in the query.
 // Returns a *NotSingularError when more than one Cond ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (cq *CondQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (cq *CondQuery) OnlyID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = cq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -155,7 +154,7 @@ func (cq *CondQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (cq *CondQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (cq *CondQuery) OnlyIDX(ctx context.Context) uint32 {
 	id, err := cq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -181,8 +180,8 @@ func (cq *CondQuery) AllX(ctx context.Context) []*Cond {
 }
 
 // IDs executes the query and returns a list of Cond IDs.
-func (cq *CondQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (cq *CondQuery) IDs(ctx context.Context) ([]uint32, error) {
+	var ids []uint32
 	if err := cq.Select(cond.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -190,7 +189,7 @@ func (cq *CondQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (cq *CondQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (cq *CondQuery) IDsX(ctx context.Context) []uint32 {
 	ids, err := cq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -377,7 +376,7 @@ func (cq *CondQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   cond.Table,
 			Columns: cond.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: cond.FieldID,
 			},
 		},

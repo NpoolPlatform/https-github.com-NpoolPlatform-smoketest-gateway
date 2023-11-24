@@ -14,7 +14,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
-	"github.com/google/uuid"
 )
 
 // PlanTestCaseQuery is the builder for querying PlanTestCase entities.
@@ -87,8 +86,8 @@ func (ptcq *PlanTestCaseQuery) FirstX(ctx context.Context) *PlanTestCase {
 
 // FirstID returns the first PlanTestCase ID from the query.
 // Returns a *NotFoundError when no PlanTestCase ID was found.
-func (ptcq *PlanTestCaseQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (ptcq *PlanTestCaseQuery) FirstID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = ptcq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -100,7 +99,7 @@ func (ptcq *PlanTestCaseQuery) FirstID(ctx context.Context) (id uuid.UUID, err e
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (ptcq *PlanTestCaseQuery) FirstIDX(ctx context.Context) uuid.UUID {
+func (ptcq *PlanTestCaseQuery) FirstIDX(ctx context.Context) uint32 {
 	id, err := ptcq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -138,8 +137,8 @@ func (ptcq *PlanTestCaseQuery) OnlyX(ctx context.Context) *PlanTestCase {
 // OnlyID is like Only, but returns the only PlanTestCase ID in the query.
 // Returns a *NotSingularError when more than one PlanTestCase ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (ptcq *PlanTestCaseQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (ptcq *PlanTestCaseQuery) OnlyID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = ptcq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -155,7 +154,7 @@ func (ptcq *PlanTestCaseQuery) OnlyID(ctx context.Context) (id uuid.UUID, err er
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (ptcq *PlanTestCaseQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (ptcq *PlanTestCaseQuery) OnlyIDX(ctx context.Context) uint32 {
 	id, err := ptcq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -181,8 +180,8 @@ func (ptcq *PlanTestCaseQuery) AllX(ctx context.Context) []*PlanTestCase {
 }
 
 // IDs executes the query and returns a list of PlanTestCase IDs.
-func (ptcq *PlanTestCaseQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (ptcq *PlanTestCaseQuery) IDs(ctx context.Context) ([]uint32, error) {
+	var ids []uint32
 	if err := ptcq.Select(plantestcase.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -190,7 +189,7 @@ func (ptcq *PlanTestCaseQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (ptcq *PlanTestCaseQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (ptcq *PlanTestCaseQuery) IDsX(ctx context.Context) []uint32 {
 	ids, err := ptcq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -377,7 +376,7 @@ func (ptcq *PlanTestCaseQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   plantestcase.Table,
 			Columns: plantestcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: plantestcase.FieldID,
 			},
 		},

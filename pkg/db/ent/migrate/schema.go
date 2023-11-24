@@ -10,10 +10,11 @@ import (
 var (
 	// CondsColumns holds the columns for the "conds" table.
 	CondsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeUint32, Increment: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
 		{Name: "cond_type", Type: field.TypeString, Nullable: true, Default: "DefaultCondType"},
 		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "cond_test_case_id", Type: field.TypeUUID, Nullable: true},
@@ -25,13 +26,21 @@ var (
 		Name:       "conds",
 		Columns:    CondsColumns,
 		PrimaryKey: []*schema.Column{CondsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "cond_ent_id",
+				Unique:  true,
+				Columns: []*schema.Column{CondsColumns[4]},
+			},
+		},
 	}
 	// ModulesColumns holds the columns for the "modules" table.
 	ModulesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeUint32, Increment: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 	}
@@ -40,13 +49,21 @@ var (
 		Name:       "modules",
 		Columns:    ModulesColumns,
 		PrimaryKey: []*schema.Column{ModulesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "module_ent_id",
+				Unique:  true,
+				Columns: []*schema.Column{ModulesColumns[4]},
+			},
+		},
 	}
 	// PlanTestCasesColumns holds the columns for the "plan_test_cases" table.
 	PlanTestCasesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeUint32, Increment: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
 		{Name: "test_plan_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "test_case_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "input", Type: field.TypeString, Nullable: true, Size: 2147483647, Default: ""},
@@ -62,13 +79,21 @@ var (
 		Name:       "plan_test_cases",
 		Columns:    PlanTestCasesColumns,
 		PrimaryKey: []*schema.Column{PlanTestCasesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "plantestcase_ent_id",
+				Unique:  true,
+				Columns: []*schema.Column{PlanTestCasesColumns[4]},
+			},
+		},
 	}
 	// TestCasesColumns holds the columns for the "test_cases" table.
 	TestCasesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeUint32, Increment: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "description", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "module_id", Type: field.TypeUUID, Nullable: true},
@@ -86,13 +111,21 @@ var (
 		Name:       "test_cases",
 		Columns:    TestCasesColumns,
 		PrimaryKey: []*schema.Column{TestCasesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "testcase_ent_id",
+				Unique:  true,
+				Columns: []*schema.Column{TestCasesColumns[4]},
+			},
+		},
 	}
 	// TestPlansColumns holds the columns for the "test_plans" table.
 	TestPlansColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "id", Type: field.TypeUint32, Increment: true},
 		{Name: "created_at", Type: field.TypeUint32},
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "ent_id", Type: field.TypeUUID, Unique: true},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "state", Type: field.TypeString, Nullable: true, Default: "WaitStart"},
 		{Name: "created_by", Type: field.TypeUUID, Nullable: true},
@@ -109,6 +142,13 @@ var (
 		Name:       "test_plans",
 		Columns:    TestPlansColumns,
 		PrimaryKey: []*schema.Column{TestPlansColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "testplan_ent_id",
+				Unique:  true,
+				Columns: []*schema.Column{TestPlansColumns[4]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{

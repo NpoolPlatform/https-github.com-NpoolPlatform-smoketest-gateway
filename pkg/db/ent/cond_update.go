@@ -84,6 +84,20 @@ func (cu *CondUpdate) AddDeletedAt(u int32) *CondUpdate {
 	return cu
 }
 
+// SetEntID sets the "ent_id" field.
+func (cu *CondUpdate) SetEntID(u uuid.UUID) *CondUpdate {
+	cu.mutation.SetEntID(u)
+	return cu
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (cu *CondUpdate) SetNillableEntID(u *uuid.UUID) *CondUpdate {
+	if u != nil {
+		cu.SetEntID(*u)
+	}
+	return cu
+}
+
 // SetCondType sets the "cond_type" field.
 func (cu *CondUpdate) SetCondType(s string) *CondUpdate {
 	cu.mutation.SetCondType(s)
@@ -277,7 +291,7 @@ func (cu *CondUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   cond.Table,
 			Columns: cond.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: cond.FieldID,
 			},
 		},
@@ -329,6 +343,13 @@ func (cu *CondUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: cond.FieldDeletedAt,
+		})
+	}
+	if value, ok := cu.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: cond.FieldEntID,
 		})
 	}
 	if value, ok := cu.mutation.CondType(); ok {
@@ -476,6 +497,20 @@ func (cuo *CondUpdateOne) SetNillableDeletedAt(u *uint32) *CondUpdateOne {
 // AddDeletedAt adds u to the "deleted_at" field.
 func (cuo *CondUpdateOne) AddDeletedAt(u int32) *CondUpdateOne {
 	cuo.mutation.AddDeletedAt(u)
+	return cuo
+}
+
+// SetEntID sets the "ent_id" field.
+func (cuo *CondUpdateOne) SetEntID(u uuid.UUID) *CondUpdateOne {
+	cuo.mutation.SetEntID(u)
+	return cuo
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (cuo *CondUpdateOne) SetNillableEntID(u *uuid.UUID) *CondUpdateOne {
+	if u != nil {
+		cuo.SetEntID(*u)
+	}
 	return cuo
 }
 
@@ -685,7 +720,7 @@ func (cuo *CondUpdateOne) sqlSave(ctx context.Context) (_node *Cond, err error) 
 			Table:   cond.Table,
 			Columns: cond.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: cond.FieldID,
 			},
 		},
@@ -754,6 +789,13 @@ func (cuo *CondUpdateOne) sqlSave(ctx context.Context) (_node *Cond, err error) 
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: cond.FieldDeletedAt,
+		})
+	}
+	if value, ok := cuo.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: cond.FieldEntID,
 		})
 	}
 	if value, ok := cuo.mutation.CondType(); ok {

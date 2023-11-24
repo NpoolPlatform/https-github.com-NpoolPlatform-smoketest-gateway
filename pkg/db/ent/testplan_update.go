@@ -84,6 +84,20 @@ func (tpu *TestPlanUpdate) AddDeletedAt(u int32) *TestPlanUpdate {
 	return tpu
 }
 
+// SetEntID sets the "ent_id" field.
+func (tpu *TestPlanUpdate) SetEntID(u uuid.UUID) *TestPlanUpdate {
+	tpu.mutation.SetEntID(u)
+	return tpu
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (tpu *TestPlanUpdate) SetNillableEntID(u *uuid.UUID) *TestPlanUpdate {
+	if u != nil {
+		tpu.SetEntID(*u)
+	}
+	return tpu
+}
+
 // SetName sets the "name" field.
 func (tpu *TestPlanUpdate) SetName(s string) *TestPlanUpdate {
 	tpu.mutation.SetName(s)
@@ -405,7 +419,7 @@ func (tpu *TestPlanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testplan.FieldID,
 			},
 		},
@@ -457,6 +471,13 @@ func (tpu *TestPlanUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: testplan.FieldDeletedAt,
+		})
+	}
+	if value, ok := tpu.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: testplan.FieldEntID,
 		})
 	}
 	if value, ok := tpu.mutation.Name(); ok {
@@ -697,6 +718,20 @@ func (tpuo *TestPlanUpdateOne) SetNillableDeletedAt(u *uint32) *TestPlanUpdateOn
 // AddDeletedAt adds u to the "deleted_at" field.
 func (tpuo *TestPlanUpdateOne) AddDeletedAt(u int32) *TestPlanUpdateOne {
 	tpuo.mutation.AddDeletedAt(u)
+	return tpuo
+}
+
+// SetEntID sets the "ent_id" field.
+func (tpuo *TestPlanUpdateOne) SetEntID(u uuid.UUID) *TestPlanUpdateOne {
+	tpuo.mutation.SetEntID(u)
+	return tpuo
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (tpuo *TestPlanUpdateOne) SetNillableEntID(u *uuid.UUID) *TestPlanUpdateOne {
+	if u != nil {
+		tpuo.SetEntID(*u)
+	}
 	return tpuo
 }
 
@@ -1034,7 +1069,7 @@ func (tpuo *TestPlanUpdateOne) sqlSave(ctx context.Context) (_node *TestPlan, er
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testplan.FieldID,
 			},
 		},
@@ -1103,6 +1138,13 @@ func (tpuo *TestPlanUpdateOne) sqlSave(ctx context.Context) (_node *TestPlan, er
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: testplan.FieldDeletedAt,
+		})
+	}
+	if value, ok := tpuo.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: testplan.FieldEntID,
 		})
 	}
 	if value, ok := tpuo.mutation.Name(); ok {

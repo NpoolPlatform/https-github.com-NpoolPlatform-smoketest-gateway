@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 
-	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -61,6 +60,20 @@ func (ptcc *PlanTestCaseCreate) SetDeletedAt(u uint32) *PlanTestCaseCreate {
 func (ptcc *PlanTestCaseCreate) SetNillableDeletedAt(u *uint32) *PlanTestCaseCreate {
 	if u != nil {
 		ptcc.SetDeletedAt(*u)
+	}
+	return ptcc
+}
+
+// SetEntID sets the "ent_id" field.
+func (ptcc *PlanTestCaseCreate) SetEntID(u uuid.UUID) *PlanTestCaseCreate {
+	ptcc.mutation.SetEntID(u)
+	return ptcc
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (ptcc *PlanTestCaseCreate) SetNillableEntID(u *uuid.UUID) *PlanTestCaseCreate {
+	if u != nil {
+		ptcc.SetEntID(*u)
 	}
 	return ptcc
 }
@@ -192,16 +205,8 @@ func (ptcc *PlanTestCaseCreate) SetNillableIndex(u *uint32) *PlanTestCaseCreate 
 }
 
 // SetID sets the "id" field.
-func (ptcc *PlanTestCaseCreate) SetID(u uuid.UUID) *PlanTestCaseCreate {
+func (ptcc *PlanTestCaseCreate) SetID(u uint32) *PlanTestCaseCreate {
 	ptcc.mutation.SetID(u)
-	return ptcc
-}
-
-// SetNillableID sets the "id" field if the given value is not nil.
-func (ptcc *PlanTestCaseCreate) SetNillableID(u *uuid.UUID) *PlanTestCaseCreate {
-	if u != nil {
-		ptcc.SetID(*u)
-	}
 	return ptcc
 }
 
@@ -305,6 +310,13 @@ func (ptcc *PlanTestCaseCreate) defaults() error {
 		v := plantestcase.DefaultDeletedAt()
 		ptcc.mutation.SetDeletedAt(v)
 	}
+	if _, ok := ptcc.mutation.EntID(); !ok {
+		if plantestcase.DefaultEntID == nil {
+			return fmt.Errorf("ent: uninitialized plantestcase.DefaultEntID (forgotten import ent/runtime?)")
+		}
+		v := plantestcase.DefaultEntID()
+		ptcc.mutation.SetEntID(v)
+	}
 	if _, ok := ptcc.mutation.TestPlanID(); !ok {
 		if plantestcase.DefaultTestPlanID == nil {
 			return fmt.Errorf("ent: uninitialized plantestcase.DefaultTestPlanID (forgotten import ent/runtime?)")
@@ -350,13 +362,6 @@ func (ptcc *PlanTestCaseCreate) defaults() error {
 		v := plantestcase.DefaultIndex
 		ptcc.mutation.SetIndex(v)
 	}
-	if _, ok := ptcc.mutation.ID(); !ok {
-		if plantestcase.DefaultID == nil {
-			return fmt.Errorf("ent: uninitialized plantestcase.DefaultID (forgotten import ent/runtime?)")
-		}
-		v := plantestcase.DefaultID()
-		ptcc.mutation.SetID(v)
-	}
 	return nil
 }
 
@@ -371,6 +376,9 @@ func (ptcc *PlanTestCaseCreate) check() error {
 	if _, ok := ptcc.mutation.DeletedAt(); !ok {
 		return &ValidationError{Name: "deleted_at", err: errors.New(`ent: missing required field "PlanTestCase.deleted_at"`)}
 	}
+	if _, ok := ptcc.mutation.EntID(); !ok {
+		return &ValidationError{Name: "ent_id", err: errors.New(`ent: missing required field "PlanTestCase.ent_id"`)}
+	}
 	return nil
 }
 
@@ -382,12 +390,9 @@ func (ptcc *PlanTestCaseCreate) sqlSave(ctx context.Context) (*PlanTestCase, err
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
-			_node.ID = *id
-		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
-			return nil, err
-		}
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = uint32(id)
 	}
 	return _node, nil
 }
@@ -398,7 +403,7 @@ func (ptcc *PlanTestCaseCreate) createSpec() (*PlanTestCase, *sqlgraph.CreateSpe
 		_spec = &sqlgraph.CreateSpec{
 			Table: plantestcase.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: plantestcase.FieldID,
 			},
 		}
@@ -406,7 +411,7 @@ func (ptcc *PlanTestCaseCreate) createSpec() (*PlanTestCase, *sqlgraph.CreateSpe
 	_spec.OnConflict = ptcc.conflict
 	if id, ok := ptcc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = &id
+		_spec.ID.Value = id
 	}
 	if value, ok := ptcc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -431,6 +436,14 @@ func (ptcc *PlanTestCaseCreate) createSpec() (*PlanTestCase, *sqlgraph.CreateSpe
 			Column: plantestcase.FieldDeletedAt,
 		})
 		_node.DeletedAt = value
+	}
+	if value, ok := ptcc.mutation.EntID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: plantestcase.FieldEntID,
+		})
+		_node.EntID = value
 	}
 	if value, ok := ptcc.mutation.TestPlanID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -609,6 +622,18 @@ func (u *PlanTestCaseUpsert) UpdateDeletedAt() *PlanTestCaseUpsert {
 // AddDeletedAt adds v to the "deleted_at" field.
 func (u *PlanTestCaseUpsert) AddDeletedAt(v uint32) *PlanTestCaseUpsert {
 	u.Add(plantestcase.FieldDeletedAt, v)
+	return u
+}
+
+// SetEntID sets the "ent_id" field.
+func (u *PlanTestCaseUpsert) SetEntID(v uuid.UUID) *PlanTestCaseUpsert {
+	u.Set(plantestcase.FieldEntID, v)
+	return u
+}
+
+// UpdateEntID sets the "ent_id" field to the value that was provided on create.
+func (u *PlanTestCaseUpsert) UpdateEntID() *PlanTestCaseUpsert {
+	u.SetExcluded(plantestcase.FieldEntID)
 	return u
 }
 
@@ -899,6 +924,20 @@ func (u *PlanTestCaseUpsertOne) UpdateDeletedAt() *PlanTestCaseUpsertOne {
 	})
 }
 
+// SetEntID sets the "ent_id" field.
+func (u *PlanTestCaseUpsertOne) SetEntID(v uuid.UUID) *PlanTestCaseUpsertOne {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.SetEntID(v)
+	})
+}
+
+// UpdateEntID sets the "ent_id" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertOne) UpdateEntID() *PlanTestCaseUpsertOne {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.UpdateEntID()
+	})
+}
+
 // SetTestPlanID sets the "test_plan_id" field.
 func (u *PlanTestCaseUpsertOne) SetTestPlanID(v uuid.UUID) *PlanTestCaseUpsertOne {
 	return u.Update(func(s *PlanTestCaseUpsert) {
@@ -1118,12 +1157,7 @@ func (u *PlanTestCaseUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *PlanTestCaseUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
-	if u.create.driver.Dialect() == dialect.MySQL {
-		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
-		// fields from the database since MySQL does not support the RETURNING clause.
-		return id, errors.New("ent: PlanTestCaseUpsertOne.ID is not supported by MySQL driver. Use PlanTestCaseUpsertOne.Exec instead")
-	}
+func (u *PlanTestCaseUpsertOne) ID(ctx context.Context) (id uint32, err error) {
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -1132,7 +1166,7 @@ func (u *PlanTestCaseUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *PlanTestCaseUpsertOne) IDX(ctx context.Context) uuid.UUID {
+func (u *PlanTestCaseUpsertOne) IDX(ctx context.Context) uint32 {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -1183,6 +1217,10 @@ func (ptccb *PlanTestCaseCreateBulk) Save(ctx context.Context) ([]*PlanTestCase,
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = uint32(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -1378,6 +1416,20 @@ func (u *PlanTestCaseUpsertBulk) AddDeletedAt(v uint32) *PlanTestCaseUpsertBulk 
 func (u *PlanTestCaseUpsertBulk) UpdateDeletedAt() *PlanTestCaseUpsertBulk {
 	return u.Update(func(s *PlanTestCaseUpsert) {
 		s.UpdateDeletedAt()
+	})
+}
+
+// SetEntID sets the "ent_id" field.
+func (u *PlanTestCaseUpsertBulk) SetEntID(v uuid.UUID) *PlanTestCaseUpsertBulk {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.SetEntID(v)
+	})
+}
+
+// UpdateEntID sets the "ent_id" field to the value that was provided on create.
+func (u *PlanTestCaseUpsertBulk) UpdateEntID() *PlanTestCaseUpsertBulk {
+	return u.Update(func(s *PlanTestCaseUpsert) {
+		s.UpdateEntID()
 	})
 }
 

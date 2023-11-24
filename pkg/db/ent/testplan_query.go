@@ -14,7 +14,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testplan"
-	"github.com/google/uuid"
 )
 
 // TestPlanQuery is the builder for querying TestPlan entities.
@@ -87,8 +86,8 @@ func (tpq *TestPlanQuery) FirstX(ctx context.Context) *TestPlan {
 
 // FirstID returns the first TestPlan ID from the query.
 // Returns a *NotFoundError when no TestPlan ID was found.
-func (tpq *TestPlanQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (tpq *TestPlanQuery) FirstID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = tpq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -100,7 +99,7 @@ func (tpq *TestPlanQuery) FirstID(ctx context.Context) (id uuid.UUID, err error)
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (tpq *TestPlanQuery) FirstIDX(ctx context.Context) uuid.UUID {
+func (tpq *TestPlanQuery) FirstIDX(ctx context.Context) uint32 {
 	id, err := tpq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -138,8 +137,8 @@ func (tpq *TestPlanQuery) OnlyX(ctx context.Context) *TestPlan {
 // OnlyID is like Only, but returns the only TestPlan ID in the query.
 // Returns a *NotSingularError when more than one TestPlan ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (tpq *TestPlanQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (tpq *TestPlanQuery) OnlyID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = tpq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -155,7 +154,7 @@ func (tpq *TestPlanQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) 
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (tpq *TestPlanQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (tpq *TestPlanQuery) OnlyIDX(ctx context.Context) uint32 {
 	id, err := tpq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -181,8 +180,8 @@ func (tpq *TestPlanQuery) AllX(ctx context.Context) []*TestPlan {
 }
 
 // IDs executes the query and returns a list of TestPlan IDs.
-func (tpq *TestPlanQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (tpq *TestPlanQuery) IDs(ctx context.Context) ([]uint32, error) {
+	var ids []uint32
 	if err := tpq.Select(testplan.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -190,7 +189,7 @@ func (tpq *TestPlanQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (tpq *TestPlanQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (tpq *TestPlanQuery) IDsX(ctx context.Context) []uint32 {
 	ids, err := tpq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -377,7 +376,7 @@ func (tpq *TestPlanQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testplan.FieldID,
 			},
 		},

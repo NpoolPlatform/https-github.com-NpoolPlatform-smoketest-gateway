@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // ModuleUpdate is the builder for updating Module entities.
@@ -80,6 +81,20 @@ func (mu *ModuleUpdate) SetNillableDeletedAt(u *uint32) *ModuleUpdate {
 // AddDeletedAt adds u to the "deleted_at" field.
 func (mu *ModuleUpdate) AddDeletedAt(u int32) *ModuleUpdate {
 	mu.mutation.AddDeletedAt(u)
+	return mu
+}
+
+// SetEntID sets the "ent_id" field.
+func (mu *ModuleUpdate) SetEntID(u uuid.UUID) *ModuleUpdate {
+	mu.mutation.SetEntID(u)
+	return mu
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (mu *ModuleUpdate) SetNillableEntID(u *uuid.UUID) *ModuleUpdate {
+	if u != nil {
+		mu.SetEntID(*u)
+	}
 	return mu
 }
 
@@ -209,7 +224,7 @@ func (mu *ModuleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   module.Table,
 			Columns: module.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: module.FieldID,
 			},
 		},
@@ -261,6 +276,13 @@ func (mu *ModuleUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: module.FieldDeletedAt,
+		})
+	}
+	if value, ok := mu.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: module.FieldEntID,
 		})
 	}
 	if value, ok := mu.mutation.Name(); ok {
@@ -362,6 +384,20 @@ func (muo *ModuleUpdateOne) SetNillableDeletedAt(u *uint32) *ModuleUpdateOne {
 // AddDeletedAt adds u to the "deleted_at" field.
 func (muo *ModuleUpdateOne) AddDeletedAt(u int32) *ModuleUpdateOne {
 	muo.mutation.AddDeletedAt(u)
+	return muo
+}
+
+// SetEntID sets the "ent_id" field.
+func (muo *ModuleUpdateOne) SetEntID(u uuid.UUID) *ModuleUpdateOne {
+	muo.mutation.SetEntID(u)
+	return muo
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (muo *ModuleUpdateOne) SetNillableEntID(u *uuid.UUID) *ModuleUpdateOne {
+	if u != nil {
+		muo.SetEntID(*u)
+	}
 	return muo
 }
 
@@ -504,7 +540,7 @@ func (muo *ModuleUpdateOne) sqlSave(ctx context.Context) (_node *Module, err err
 			Table:   module.Table,
 			Columns: module.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: module.FieldID,
 			},
 		},
@@ -573,6 +609,13 @@ func (muo *ModuleUpdateOne) sqlSave(ctx context.Context) (_node *Module, err err
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: module.FieldDeletedAt,
+		})
+	}
+	if value, ok := muo.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: module.FieldEntID,
 		})
 	}
 	if value, ok := muo.mutation.Name(); ok {

@@ -3,6 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+	crudermixin "github.com/NpoolPlatform/libent-cruder/pkg/mixin"
 	plantestcase "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/testplan/plantestcase"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/mixin"
 	"github.com/google/uuid"
@@ -16,16 +17,13 @@ type PlanTestCase struct {
 func (PlanTestCase) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
+		crudermixin.AutoIDMixin{},
 	}
 }
 
 // Fields of the PlanTestCase.
 func (PlanTestCase) Fields() []ent.Field {
 	return []ent.Field{
-		field.
-			UUID("id", uuid.UUID{}).
-			Default(uuid.New).
-			Unique(),
 		field.
 			UUID("test_plan_id", uuid.UUID{}).
 			Optional().

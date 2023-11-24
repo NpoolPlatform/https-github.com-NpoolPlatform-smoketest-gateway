@@ -14,7 +14,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/testcase"
-	"github.com/google/uuid"
 )
 
 // TestCaseQuery is the builder for querying TestCase entities.
@@ -87,8 +86,8 @@ func (tcq *TestCaseQuery) FirstX(ctx context.Context) *TestCase {
 
 // FirstID returns the first TestCase ID from the query.
 // Returns a *NotFoundError when no TestCase ID was found.
-func (tcq *TestCaseQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (tcq *TestCaseQuery) FirstID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = tcq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -100,7 +99,7 @@ func (tcq *TestCaseQuery) FirstID(ctx context.Context) (id uuid.UUID, err error)
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (tcq *TestCaseQuery) FirstIDX(ctx context.Context) uuid.UUID {
+func (tcq *TestCaseQuery) FirstIDX(ctx context.Context) uint32 {
 	id, err := tcq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -138,8 +137,8 @@ func (tcq *TestCaseQuery) OnlyX(ctx context.Context) *TestCase {
 // OnlyID is like Only, but returns the only TestCase ID in the query.
 // Returns a *NotSingularError when more than one TestCase ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (tcq *TestCaseQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (tcq *TestCaseQuery) OnlyID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = tcq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -155,7 +154,7 @@ func (tcq *TestCaseQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) 
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (tcq *TestCaseQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (tcq *TestCaseQuery) OnlyIDX(ctx context.Context) uint32 {
 	id, err := tcq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -181,8 +180,8 @@ func (tcq *TestCaseQuery) AllX(ctx context.Context) []*TestCase {
 }
 
 // IDs executes the query and returns a list of TestCase IDs.
-func (tcq *TestCaseQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (tcq *TestCaseQuery) IDs(ctx context.Context) ([]uint32, error) {
+	var ids []uint32
 	if err := tcq.Select(testcase.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -190,7 +189,7 @@ func (tcq *TestCaseQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (tcq *TestCaseQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (tcq *TestCaseQuery) IDsX(ctx context.Context) []uint32 {
 	ids, err := tcq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -377,7 +376,7 @@ func (tcq *TestCaseQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testcase.FieldID,
 			},
 		},

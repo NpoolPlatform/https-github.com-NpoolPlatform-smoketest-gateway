@@ -84,6 +84,20 @@ func (tcu *TestCaseUpdate) AddDeletedAt(u int32) *TestCaseUpdate {
 	return tcu
 }
 
+// SetEntID sets the "ent_id" field.
+func (tcu *TestCaseUpdate) SetEntID(u uuid.UUID) *TestCaseUpdate {
+	tcu.mutation.SetEntID(u)
+	return tcu
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (tcu *TestCaseUpdate) SetNillableEntID(u *uuid.UUID) *TestCaseUpdate {
+	if u != nil {
+		tcu.SetEntID(*u)
+	}
+	return tcu
+}
+
 // SetName sets the "name" field.
 func (tcu *TestCaseUpdate) SetName(s string) *TestCaseUpdate {
 	tcu.mutation.SetName(s)
@@ -390,7 +404,7 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testcase.FieldID,
 			},
 		},
@@ -442,6 +456,13 @@ func (tcu *TestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: testcase.FieldDeletedAt,
+		})
+	}
+	if value, ok := tcu.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: testcase.FieldEntID,
 		})
 	}
 	if value, ok := tcu.mutation.Name(); ok {
@@ -660,6 +681,20 @@ func (tcuo *TestCaseUpdateOne) SetNillableDeletedAt(u *uint32) *TestCaseUpdateOn
 // AddDeletedAt adds u to the "deleted_at" field.
 func (tcuo *TestCaseUpdateOne) AddDeletedAt(u int32) *TestCaseUpdateOne {
 	tcuo.mutation.AddDeletedAt(u)
+	return tcuo
+}
+
+// SetEntID sets the "ent_id" field.
+func (tcuo *TestCaseUpdateOne) SetEntID(u uuid.UUID) *TestCaseUpdateOne {
+	tcuo.mutation.SetEntID(u)
+	return tcuo
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (tcuo *TestCaseUpdateOne) SetNillableEntID(u *uuid.UUID) *TestCaseUpdateOne {
+	if u != nil {
+		tcuo.SetEntID(*u)
+	}
 	return tcuo
 }
 
@@ -982,7 +1017,7 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testcase.FieldID,
 			},
 		},
@@ -1051,6 +1086,13 @@ func (tcuo *TestCaseUpdateOne) sqlSave(ctx context.Context) (_node *TestCase, er
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: testcase.FieldDeletedAt,
+		})
+	}
+	if value, ok := tcuo.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: testcase.FieldEntID,
 		})
 	}
 	if value, ok := tcuo.mutation.Name(); ok {

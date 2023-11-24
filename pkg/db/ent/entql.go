@@ -23,7 +23,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   cond.Table,
 			Columns: cond.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: cond.FieldID,
 			},
 		},
@@ -32,6 +32,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			cond.FieldCreatedAt:      {Type: field.TypeUint32, Column: cond.FieldCreatedAt},
 			cond.FieldUpdatedAt:      {Type: field.TypeUint32, Column: cond.FieldUpdatedAt},
 			cond.FieldDeletedAt:      {Type: field.TypeUint32, Column: cond.FieldDeletedAt},
+			cond.FieldEntID:          {Type: field.TypeUUID, Column: cond.FieldEntID},
 			cond.FieldCondType:       {Type: field.TypeString, Column: cond.FieldCondType},
 			cond.FieldTestCaseID:     {Type: field.TypeUUID, Column: cond.FieldTestCaseID},
 			cond.FieldCondTestCaseID: {Type: field.TypeUUID, Column: cond.FieldCondTestCaseID},
@@ -44,7 +45,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   module.Table,
 			Columns: module.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: module.FieldID,
 			},
 		},
@@ -53,6 +54,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			module.FieldCreatedAt:   {Type: field.TypeUint32, Column: module.FieldCreatedAt},
 			module.FieldUpdatedAt:   {Type: field.TypeUint32, Column: module.FieldUpdatedAt},
 			module.FieldDeletedAt:   {Type: field.TypeUint32, Column: module.FieldDeletedAt},
+			module.FieldEntID:       {Type: field.TypeUUID, Column: module.FieldEntID},
 			module.FieldName:        {Type: field.TypeString, Column: module.FieldName},
 			module.FieldDescription: {Type: field.TypeString, Column: module.FieldDescription},
 		},
@@ -62,7 +64,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   plantestcase.Table,
 			Columns: plantestcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: plantestcase.FieldID,
 			},
 		},
@@ -71,6 +73,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			plantestcase.FieldCreatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldCreatedAt},
 			plantestcase.FieldUpdatedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldUpdatedAt},
 			plantestcase.FieldDeletedAt:   {Type: field.TypeUint32, Column: plantestcase.FieldDeletedAt},
+			plantestcase.FieldEntID:       {Type: field.TypeUUID, Column: plantestcase.FieldEntID},
 			plantestcase.FieldTestPlanID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestPlanID},
 			plantestcase.FieldTestCaseID:  {Type: field.TypeUUID, Column: plantestcase.FieldTestCaseID},
 			plantestcase.FieldInput:       {Type: field.TypeString, Column: plantestcase.FieldInput},
@@ -87,7 +90,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   testcase.Table,
 			Columns: testcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testcase.FieldID,
 			},
 		},
@@ -96,6 +99,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testcase.FieldCreatedAt:     {Type: field.TypeUint32, Column: testcase.FieldCreatedAt},
 			testcase.FieldUpdatedAt:     {Type: field.TypeUint32, Column: testcase.FieldUpdatedAt},
 			testcase.FieldDeletedAt:     {Type: field.TypeUint32, Column: testcase.FieldDeletedAt},
+			testcase.FieldEntID:         {Type: field.TypeUUID, Column: testcase.FieldEntID},
 			testcase.FieldName:          {Type: field.TypeString, Column: testcase.FieldName},
 			testcase.FieldDescription:   {Type: field.TypeString, Column: testcase.FieldDescription},
 			testcase.FieldModuleID:      {Type: field.TypeUUID, Column: testcase.FieldModuleID},
@@ -114,7 +118,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   testplan.Table,
 			Columns: testplan.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: testplan.FieldID,
 			},
 		},
@@ -123,6 +127,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			testplan.FieldCreatedAt:   {Type: field.TypeUint32, Column: testplan.FieldCreatedAt},
 			testplan.FieldUpdatedAt:   {Type: field.TypeUint32, Column: testplan.FieldUpdatedAt},
 			testplan.FieldDeletedAt:   {Type: field.TypeUint32, Column: testplan.FieldDeletedAt},
+			testplan.FieldEntID:       {Type: field.TypeUUID, Column: testplan.FieldEntID},
 			testplan.FieldName:        {Type: field.TypeString, Column: testplan.FieldName},
 			testplan.FieldState:       {Type: field.TypeString, Column: testplan.FieldState},
 			testplan.FieldCreatedBy:   {Type: field.TypeUUID, Column: testplan.FieldCreatedBy},
@@ -179,8 +184,8 @@ func (f *CondFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *CondFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql uint32 predicate on the id field.
+func (f *CondFilter) WhereID(p entql.Uint32P) {
 	f.Where(p.Field(cond.FieldID))
 }
 
@@ -197,6 +202,11 @@ func (f *CondFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *CondFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(cond.FieldDeletedAt))
+}
+
+// WhereEntID applies the entql [16]byte predicate on the ent_id field.
+func (f *CondFilter) WhereEntID(p entql.ValueP) {
+	f.Where(p.Field(cond.FieldEntID))
 }
 
 // WhereCondType applies the entql string predicate on the cond_type field.
@@ -259,8 +269,8 @@ func (f *ModuleFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *ModuleFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql uint32 predicate on the id field.
+func (f *ModuleFilter) WhereID(p entql.Uint32P) {
 	f.Where(p.Field(module.FieldID))
 }
 
@@ -277,6 +287,11 @@ func (f *ModuleFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *ModuleFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(module.FieldDeletedAt))
+}
+
+// WhereEntID applies the entql [16]byte predicate on the ent_id field.
+func (f *ModuleFilter) WhereEntID(p entql.ValueP) {
+	f.Where(p.Field(module.FieldEntID))
 }
 
 // WhereName applies the entql string predicate on the name field.
@@ -324,8 +339,8 @@ func (f *PlanTestCaseFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *PlanTestCaseFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql uint32 predicate on the id field.
+func (f *PlanTestCaseFilter) WhereID(p entql.Uint32P) {
 	f.Where(p.Field(plantestcase.FieldID))
 }
 
@@ -342,6 +357,11 @@ func (f *PlanTestCaseFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *PlanTestCaseFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(plantestcase.FieldDeletedAt))
+}
+
+// WhereEntID applies the entql [16]byte predicate on the ent_id field.
+func (f *PlanTestCaseFilter) WhereEntID(p entql.ValueP) {
+	f.Where(p.Field(plantestcase.FieldEntID))
 }
 
 // WhereTestPlanID applies the entql [16]byte predicate on the test_plan_id field.
@@ -424,8 +444,8 @@ func (f *TestCaseFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *TestCaseFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql uint32 predicate on the id field.
+func (f *TestCaseFilter) WhereID(p entql.Uint32P) {
 	f.Where(p.Field(testcase.FieldID))
 }
 
@@ -442,6 +462,11 @@ func (f *TestCaseFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *TestCaseFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(testcase.FieldDeletedAt))
+}
+
+// WhereEntID applies the entql [16]byte predicate on the ent_id field.
+func (f *TestCaseFilter) WhereEntID(p entql.ValueP) {
+	f.Where(p.Field(testcase.FieldEntID))
 }
 
 // WhereName applies the entql string predicate on the name field.
@@ -534,8 +559,8 @@ func (f *TestPlanFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *TestPlanFilter) WhereID(p entql.ValueP) {
+// WhereID applies the entql uint32 predicate on the id field.
+func (f *TestPlanFilter) WhereID(p entql.Uint32P) {
 	f.Where(p.Field(testplan.FieldID))
 }
 
@@ -552,6 +577,11 @@ func (f *TestPlanFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *TestPlanFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(testplan.FieldDeletedAt))
+}
+
+// WhereEntID applies the entql [16]byte predicate on the ent_id field.
+func (f *TestPlanFilter) WhereEntID(p entql.ValueP) {
+	f.Where(p.Field(testplan.FieldEntID))
 }
 
 // WhereName applies the entql string predicate on the name field.

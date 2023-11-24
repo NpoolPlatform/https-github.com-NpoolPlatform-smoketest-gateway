@@ -84,6 +84,20 @@ func (ptcu *PlanTestCaseUpdate) AddDeletedAt(u int32) *PlanTestCaseUpdate {
 	return ptcu
 }
 
+// SetEntID sets the "ent_id" field.
+func (ptcu *PlanTestCaseUpdate) SetEntID(u uuid.UUID) *PlanTestCaseUpdate {
+	ptcu.mutation.SetEntID(u)
+	return ptcu
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (ptcu *PlanTestCaseUpdate) SetNillableEntID(u *uuid.UUID) *PlanTestCaseUpdate {
+	if u != nil {
+		ptcu.SetEntID(*u)
+	}
+	return ptcu
+}
+
 // SetTestPlanID sets the "test_plan_id" field.
 func (ptcu *PlanTestCaseUpdate) SetTestPlanID(u uuid.UUID) *PlanTestCaseUpdate {
 	ptcu.mutation.SetTestPlanID(u)
@@ -364,7 +378,7 @@ func (ptcu *PlanTestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Table:   plantestcase.Table,
 			Columns: plantestcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: plantestcase.FieldID,
 			},
 		},
@@ -416,6 +430,13 @@ func (ptcu *PlanTestCaseUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: plantestcase.FieldDeletedAt,
+		})
+	}
+	if value, ok := ptcu.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: plantestcase.FieldEntID,
 		})
 	}
 	if value, ok := ptcu.mutation.TestPlanID(); ok {
@@ -622,6 +643,20 @@ func (ptcuo *PlanTestCaseUpdateOne) SetNillableDeletedAt(u *uint32) *PlanTestCas
 // AddDeletedAt adds u to the "deleted_at" field.
 func (ptcuo *PlanTestCaseUpdateOne) AddDeletedAt(u int32) *PlanTestCaseUpdateOne {
 	ptcuo.mutation.AddDeletedAt(u)
+	return ptcuo
+}
+
+// SetEntID sets the "ent_id" field.
+func (ptcuo *PlanTestCaseUpdateOne) SetEntID(u uuid.UUID) *PlanTestCaseUpdateOne {
+	ptcuo.mutation.SetEntID(u)
+	return ptcuo
+}
+
+// SetNillableEntID sets the "ent_id" field if the given value is not nil.
+func (ptcuo *PlanTestCaseUpdateOne) SetNillableEntID(u *uuid.UUID) *PlanTestCaseUpdateOne {
+	if u != nil {
+		ptcuo.SetEntID(*u)
+	}
 	return ptcuo
 }
 
@@ -918,7 +953,7 @@ func (ptcuo *PlanTestCaseUpdateOne) sqlSave(ctx context.Context) (_node *PlanTes
 			Table:   plantestcase.Table,
 			Columns: plantestcase.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: plantestcase.FieldID,
 			},
 		},
@@ -987,6 +1022,13 @@ func (ptcuo *PlanTestCaseUpdateOne) sqlSave(ctx context.Context) (_node *PlanTes
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: plantestcase.FieldDeletedAt,
+		})
+	}
+	if value, ok := ptcuo.mutation.EntID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: plantestcase.FieldEntID,
 		})
 	}
 	if value, ok := ptcuo.mutation.TestPlanID(); ok {
