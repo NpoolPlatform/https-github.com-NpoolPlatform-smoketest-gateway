@@ -22,7 +22,7 @@ func (s *Server) CreatePlanTestCase(ctx context.Context, in *npool.CreatePlanTes
 	}
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(req.ID, false),
+		plantestcase1.WithEntID(req.EntID, false),
 		plantestcase1.WithTestPlanID(req.TestPlanID, true),
 		plantestcase1.WithTestCaseID(req.TestCaseID, true),
 		plantestcase1.WithIndex(req.Index, false),

@@ -36,7 +36,7 @@ func init() {
 
 var (
 	ret = npool.PlanTestCase{
-		ID:               uuid.NewString(),
+		EntID:            uuid.NewString(),
 		TestPlanID:       uuid.NewString(),
 		TestCaseID:       uuid.NewString(),
 		TestCaseName:     uuid.NewString(),
@@ -69,14 +69,14 @@ var (
 )
 
 func setupTestCase(t *testing.T) func(*testing.T) {
-	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
-		ID:   &testCase.ModuleID,
-		Name: &testCase.ModuleName,
+	info1, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
+		EntID: &testCase.ModuleID,
+		Name:  &testCase.ModuleName,
 	})
 	assert.Nil(t, err)
 
-	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
-		ID:            &ret.TestCaseID,
+	info2, err := testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		EntID:         &ret.TestCaseID,
 		ModuleID:      &testCase.ModuleID,
 		ApiID:         &testCase.ApiID,
 		Name:          &testCase.Name,
@@ -86,14 +86,14 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 
 	return func(*testing.T) {
-		_, _ = testcase1.DeleteTestCase(context.Background(), ret.TestCaseID)
-		_, _ = module1.DeleteModule(context.Background(), testCase.ModuleID)
+		_, _ = testcase1.DeleteTestCase(context.Background(), info2.ID)
+		_, _ = module1.DeleteModule(context.Background(), info1.ID)
 	}
 }
 
 func setupTestPlan(t *testing.T) func(*testing.T) {
-	_, err := testplan1.CreateTestPlan(context.Background(), &testplanmwpb.TestPlanReq{
-		ID:        &ret.TestPlanID,
+	info, err := testplan1.CreateTestPlan(context.Background(), &testplanmwpb.TestPlanReq{
+		EntID:     &ret.TestPlanID,
 		Name:      &testPlan.Name,
 		CreatedBy: &testPlan.CreatedBy,
 		Executor:  &testPlan.Executor,
@@ -103,7 +103,7 @@ func setupTestPlan(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 
 	return func(*testing.T) {
-		_, _ = testplan1.DeleteTestPlan(context.Background(), ret.TestPlanID)
+		_, _ = testplan1.DeleteTestPlan(context.Background(), info.ID)
 	}
 }
 
@@ -120,6 +120,7 @@ func createPlanTestCase(t *testing.T) {
 	info, err := CreatePlanTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.EntID = info.EntID
 		ret.TestUserID = info.TestUserID
 		ret.Output = info.Output
 		ret.Description = info.Description
@@ -158,7 +159,7 @@ func updatePlanTestCase(t *testing.T) {
 }
 
 func getPlanTestCase(t *testing.T) {
-	info, err := GetPlanTestCase(context.Background(), ret.ID)
+	info, err := GetPlanTestCase(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.Equal(t, info, &ret)
 	}
@@ -177,7 +178,7 @@ func deletePlanTestCase(t *testing.T) {
 		assert.Equal(t, info, &ret)
 	}
 
-	info, err = GetPlanTestCase(context.Background(), ret.ID)
+	info, err = GetPlanTestCase(context.Background(), ret.EntID)
 	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }

@@ -35,6 +35,7 @@ func (h *queryHandler) queryJoinMyself(s *sql.Selector) {
 			t.C(entplantestcase.FieldID),
 		).
 		AppendSelect(
+			sql.As(t.C(entplantestcase.FieldEntID), "ent_id"),
 			sql.As(t.C(entplantestcase.FieldTestPlanID), "test_plan_id"),
 			sql.As(t.C(entplantestcase.FieldTestCaseID), "test_case_id"),
 			sql.As(t.C(entplantestcase.FieldInput), "input"),
@@ -54,7 +55,7 @@ func (h *queryHandler) queryJoinTestCase(s *sql.Selector) {
 	s.LeftJoin(t1).
 		On(
 			s.C(entplantestcase.FieldTestCaseID),
-			t1.C(enttestcase.FieldID),
+			t1.C(enttestcase.FieldEntID),
 		).
 		AppendSelect(
 			sql.As(t1.C(enttestcase.FieldName), "test_case_name"),
@@ -66,10 +67,10 @@ func (h *queryHandler) queryJoinTestCase(s *sql.Selector) {
 	s.LeftJoin(t2).
 		On(
 			t1.C(enttestcase.FieldModuleID),
-			t2.C(entmodule.FieldID),
+			t2.C(entmodule.FieldEntID),
 		).
 		AppendSelect(
-			sql.As(t2.C(entmodule.FieldID), "module_id"),
+			sql.As(t2.C(entmodule.FieldEntID), "module_id"),
 			sql.As(t2.C(entmodule.FieldName), "module_name"),
 		)
 }
@@ -88,17 +89,17 @@ func (h *queryHandler) queryJoin() {
 }
 
 func (h *queryHandler) queryPlanTestCase(cli *ent.Client) error {
-	if h.ID == nil {
+	if h.ID == nil && h.EntID == nil {
 		return fmt.Errorf("invalid plantestcase id")
 	}
-	h.stmSelect = h.selectPlanTestCase(
-		cli.PlanTestCase.
-			Query().
-			Where(
-				entplantestcase.ID(*h.ID),
-				entplantestcase.DeletedAt(0),
-			),
-	)
+	stm := cli.PlanTestCase.Query().Where(entplantestcase.DeletedAt(0))
+	if h.ID != nil {
+		stm.Where(entplantestcase.ID(*h.ID))
+	}
+	if h.EntID != nil {
+		stm.Where(entplantestcase.EntID(*h.EntID))
+	}
+	h.stmSelect = h.selectPlanTestCase(stm)
 	return nil
 }
 
@@ -180,7 +181,7 @@ func (h *Handler) GetPlanTestCase(ctx context.Context) (info *npool.PlanTestCase
 		return
 	}
 	if len(handler.infos) == 0 {
-		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+		return nil, fmt.Errorf("plantestcase not exist")
 	}
 
 	handler.formalize()

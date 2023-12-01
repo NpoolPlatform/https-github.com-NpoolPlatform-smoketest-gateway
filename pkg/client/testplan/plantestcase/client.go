@@ -47,7 +47,7 @@ func CreatePlanTestCase(ctx context.Context, in *npool.PlanTestCaseReq) (*npool.
 func GetPlanTestCase(ctx context.Context, id string) (*npool.PlanTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetPlanTestCase(ctx, &npool.GetPlanTestCaseRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -81,7 +81,7 @@ func GetPlanTestCases(ctx context.Context, conds *npool.Conds, offset, limit int
 	return infos.([]*npool.PlanTestCase), total, nil
 }
 
-func DeletePlanTestCase(ctx context.Context, id string) (*npool.PlanTestCase, error) {
+func DeletePlanTestCase(ctx context.Context, id uint32) (*npool.PlanTestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeletePlanTestCase(ctx, &npool.DeletePlanTestCaseRequest{
 			Info: &npool.PlanTestCaseReq{
