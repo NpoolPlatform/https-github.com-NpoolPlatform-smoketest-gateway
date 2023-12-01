@@ -45,7 +45,7 @@ func CreateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan
 func GetTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlan(ctx, &npool.GetTestPlanRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -79,7 +79,7 @@ func GetTestPlans(ctx context.Context, conds *npool.Conds, offset, limit int32) 
 	return infos.([]*npool.TestPlan), total, nil
 }
 
-func DeleteTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
+func DeleteTestPlan(ctx context.Context, id uint32) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestPlan(ctx, &npool.DeleteTestPlanRequest{
 			Info: &npool.TestPlanReq{
@@ -116,7 +116,7 @@ func UpdateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan
 func ExistTestPlan(ctx context.Context, id string) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistTestPlan(ctx, &npool.ExistTestPlanRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err

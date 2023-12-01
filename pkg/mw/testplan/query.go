@@ -21,6 +21,7 @@ type queryHandler struct {
 func (h *queryHandler) selectTestPlan(stm *ent.TestPlanQuery) {
 	h.stm = stm.Select(
 		enttestplan.FieldID,
+		enttestplan.FieldEntID,
 		enttestplan.FieldName,
 		enttestplan.FieldState,
 		enttestplan.FieldCreatedBy,
@@ -38,17 +39,17 @@ func (h *queryHandler) selectTestPlan(stm *ent.TestPlanQuery) {
 }
 
 func (h *queryHandler) queryTestPlan(cli *ent.Client) error {
-	if h.ID == nil {
+	if h.ID == nil && h.EntID == nil {
 		return fmt.Errorf("invalid testplan id")
 	}
-	h.selectTestPlan(
-		cli.TestPlan.
-			Query().
-			Where(
-				enttestplan.ID(*h.ID),
-				enttestplan.DeletedAt(0),
-			),
-	)
+	stm := cli.TestPlan.Query().Where(enttestplan.DeletedAt(0))
+	if h.ID != nil {
+		stm.Where(enttestplan.ID(*h.ID))
+	}
+	if h.EntID != nil {
+		stm.Where(enttestplan.EntID(*h.EntID))
+	}
+	h.selectTestPlan(stm)
 	return nil
 }
 
@@ -122,7 +123,7 @@ func (h *Handler) GetTestPlan(ctx context.Context) (info *npool.TestPlan, err er
 		return
 	}
 	if len(handler.infos) == 0 {
-		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+		return nil, fmt.Errorf("testplan not exist")
 	}
 
 	handler.formalize()

@@ -52,6 +52,7 @@ func createTestPlan(t *testing.T) {
 	info, err := CreateTestPlan(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.EntID = info.EntID
 		ret.Result = info.Result
 		ret.ResultStr = info.ResultStr
 		ret.CreatedAt = info.CreatedAt
@@ -92,7 +93,7 @@ func updateTestPlan(t *testing.T) {
 }
 
 func getTestPlan(t *testing.T) {
-	info, err := GetTestPlan(context.Background(), ret.ID)
+	info, err := GetTestPlan(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.Equal(t, info, &ret)
 	}
@@ -111,7 +112,7 @@ func deleteTestPlan(t *testing.T) {
 		assert.Equal(t, info, &ret)
 	}
 
-	info, err = GetTestPlan(context.Background(), ret.ID)
+	info, err = GetTestPlan(context.Background(), ret.EntID)
 	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }

@@ -13,7 +13,7 @@ import (
 func (s *Server) ExistTestPlan(ctx context.Context, in *npool.ExistTestPlanRequest) (*npool.ExistTestPlanResponse, error) {
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(&in.ID, true),
+		testplan1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(
