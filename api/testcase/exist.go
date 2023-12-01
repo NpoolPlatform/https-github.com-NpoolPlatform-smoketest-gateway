@@ -13,7 +13,7 @@ import (
 func (s *Server) ExistTestCase(ctx context.Context, in *npool.ExistTestCaseRequest) (*npool.ExistTestCaseResponse, error) {
 	handler, err := testcase1.NewHandler(
 		ctx,
-		testcase1.WithID(&in.ID, true),
+		testcase1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

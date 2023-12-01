@@ -41,7 +41,7 @@ func (s *Server) GetTestCases(ctx context.Context, in *npool.GetTestCasesRequest
 func (s *Server) GetTestCase(ctx context.Context, in *npool.GetTestCaseRequest) (*npool.GetTestCaseResponse, error) {
 	handler, err := testcase1.NewHandler(
 		ctx,
-		testcase1.WithID(&in.ID, true),
+		testcase1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

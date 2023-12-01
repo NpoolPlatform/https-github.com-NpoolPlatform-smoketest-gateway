@@ -23,7 +23,7 @@ func (s *Server) CreateTestCase(ctx context.Context, in *npool.CreateTestCaseReq
 
 	handler, err := testcase1.NewHandler(
 		ctx,
-		testcase1.WithID(req.ID, false),
+		testcase1.WithEntID(req.EntID, false),
 		testcase1.WithName(req.Name, true),
 		testcase1.WithDescription(req.Description, false),
 		testcase1.WithModuleID(req.ModuleID, true),

@@ -51,14 +51,14 @@ var (
 )
 
 func setup(t *testing.T) func(*testing.T) {
-	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
-		ID:   &ret.ModuleID,
-		Name: &ret.ModuleName,
+	info, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
+		EntID: &ret.ModuleID,
+		Name:  &ret.ModuleName,
 	})
 	assert.Nil(t, err)
 
 	return func(*testing.T) {
-		_, _ = module1.DeleteModule(context.Background(), ret.ModuleID)
+		_, _ = module1.DeleteModule(context.Background(), info.ID)
 	}
 }
 
@@ -81,6 +81,7 @@ func createTestCase(t *testing.T) {
 	info, err := CreateTestCase(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.EntID = info.EntID
 		ret.ModuleID = info.ModuleID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
@@ -118,7 +119,7 @@ func updateTestCase(t *testing.T) {
 }
 
 func getTestCase(t *testing.T) {
-	info, err := GetTestCase(context.Background(), ret.ID)
+	info, err := GetTestCase(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.Equal(t, info, &ret)
 	}
@@ -133,9 +134,9 @@ func getTestCases(t *testing.T) {
 
 func getTestCaseConds(t *testing.T) {
 	infos, _, err := GetTestCases(context.Background(), &npool.Conds{
-		ID: &basetypes.StringVal{
+		EntID: &basetypes.StringVal{
 			Op:    cruder.EQ,
-			Value: ret.ID,
+			Value: ret.EntID,
 		},
 		ModuleID: &basetypes.StringVal{
 			Op:    cruder.EQ,
@@ -162,7 +163,7 @@ func deleteTestCase(t *testing.T) {
 		assert.Equal(t, info, &ret)
 	}
 
-	info, err = GetTestCase(context.Background(), ret.ID)
+	info, err = GetTestCase(context.Background(), ret.EntID)
 	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }

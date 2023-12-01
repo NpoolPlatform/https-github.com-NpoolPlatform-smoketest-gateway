@@ -11,7 +11,8 @@ import (
 )
 
 type Req struct {
-	ID            *uuid.UUID
+	ID            *uint32
+	EntID         *uuid.UUID
 	Name          *string
 	Description   *string
 	ModuleID      *uuid.UUID
@@ -27,8 +28,8 @@ type Req struct {
 }
 
 func CreateSet(c *ent.TestCaseCreate, req *Req) *ent.TestCaseCreate {
-	if req.ID != nil {
-		c.SetID(*req.ID)
+	if req.EntID != nil {
+		c.SetEntID(*req.EntID)
 	}
 	if req.Name != nil {
 		c.SetName(*req.Name)
@@ -102,15 +103,17 @@ func UpdateSet(u *ent.TestCaseUpdateOne, req *Req) *ent.TestCaseUpdateOne {
 
 type Conds struct {
 	ID         *cruder.Cond
+	EntID      *cruder.Cond
 	ModuleID   *cruder.Cond
 	ApiID      *cruder.Cond //nolint
 	Deprecated *cruder.Cond
 	IDs        *cruder.Cond
+	EntIDs     *cruder.Cond
 }
 
 func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, error) { //nolint
 	if conds.ID != nil {
-		id, ok := conds.ID.Val.(uuid.UUID)
+		id, ok := conds.ID.Val.(uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid id")
 		}
@@ -119,6 +122,18 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			q.Where(testcase.ID(id))
 		default:
 			return nil, fmt.Errorf("invalid id field")
+		}
+	}
+	if conds.EntID != nil {
+		id, ok := conds.EntID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntID.Op {
+		case cruder.EQ:
+			q.Where(testcase.EntID(id))
+		default:
+			return nil, fmt.Errorf("invalid entid field")
 		}
 	}
 	if conds.ModuleID != nil {
@@ -158,7 +173,7 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 		}
 	}
 	if conds.IDs != nil {
-		ids, ok := conds.IDs.Val.([]uuid.UUID)
+		ids, ok := conds.IDs.Val.([]uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid ids")
 		}
@@ -167,6 +182,18 @@ func SetQueryConds(q *ent.TestCaseQuery, conds *Conds) (*ent.TestCaseQuery, erro
 			q.Where(testcase.IDIn(ids...))
 		default:
 			return nil, fmt.Errorf("invalid testcase id filed")
+		}
+	}
+	if conds.EntIDs != nil {
+		ids, ok := conds.EntIDs.Val.([]uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entids")
+		}
+		switch conds.EntIDs.Op {
+		case cruder.IN:
+			q.Where(testcase.EntIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid testcase entid filed")
 		}
 	}
 	return q, nil

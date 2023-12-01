@@ -47,7 +47,7 @@ func CreateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase
 func GetTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestCase(ctx, &npool.GetTestCaseRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -81,7 +81,7 @@ func GetTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) 
 	return infos.([]*npool.TestCase), total, nil
 }
 
-func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
+func DeleteTestCase(ctx context.Context, id uint32) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
 			Info: &npool.TestCaseReq{
@@ -118,7 +118,7 @@ func UpdateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase
 func ExistTestCase(ctx context.Context, id string) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistTestCase(ctx, &npool.ExistTestCaseRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
