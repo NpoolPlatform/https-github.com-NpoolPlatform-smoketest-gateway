@@ -11,7 +11,8 @@ import (
 )
 
 type Req struct {
-	ID             *uuid.UUID
+	ID             *uint32
+	EntID          *uuid.UUID
 	CondType       *npool.CondType
 	TestCaseID     *uuid.UUID
 	CondTestCaseID *uuid.UUID
@@ -21,8 +22,8 @@ type Req struct {
 }
 
 func CreateSet(c *ent.CondCreate, req *Req) *ent.CondCreate {
-	if req.ID != nil {
-		c.SetID(*req.ID)
+	if req.EntID != nil {
+		c.SetEntID(*req.EntID)
 	}
 	if req.CondType != nil {
 		c.SetCondType(req.CondType.String())
@@ -60,6 +61,7 @@ func UpdateSet(u *ent.CondUpdateOne, req *Req) *ent.CondUpdateOne {
 
 type Conds struct {
 	ID             *cruder.Cond
+	EntID          *cruder.Cond
 	TestCaseID     *cruder.Cond
 	CondTestCaseID *cruder.Cond
 	CondType       *cruder.Cond
@@ -71,7 +73,7 @@ func SetQueryConds(q *ent.CondQuery, conds *Conds) (*ent.CondQuery, error) {
 		return q, nil
 	}
 	if conds.ID != nil {
-		id, ok := conds.ID.Val.(uuid.UUID)
+		id, ok := conds.ID.Val.(uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid id")
 		}
@@ -80,6 +82,18 @@ func SetQueryConds(q *ent.CondQuery, conds *Conds) (*ent.CondQuery, error) {
 			q.Where(cond.ID(id))
 		default:
 			return nil, fmt.Errorf("invalid id field")
+		}
+	}
+	if conds.EntID != nil {
+		id, ok := conds.EntID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntID.Op {
+		case cruder.EQ:
+			q.Where(cond.EntID(id))
+		default:
+			return nil, fmt.Errorf("invalid entid field")
 		}
 	}
 	if conds.TestCaseID != nil {

@@ -46,7 +46,7 @@ func CreateCond(ctx context.Context, in *npool.CondReq) (*npool.Cond, error) {
 func GetCond(ctx context.Context, id string) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetCond(ctx, &npool.GetCondRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -80,7 +80,7 @@ func GetConds(ctx context.Context, conds *npool.Conds, offset, limit int32) ([]*
 	return infos.([]*npool.Cond), total, nil
 }
 
-func DeleteCond(ctx context.Context, id string) (*npool.Cond, error) {
+func DeleteCond(ctx context.Context, id uint32) (*npool.Cond, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteCond(ctx, &npool.DeleteCondRequest{
 			Info: &npool.CondReq{
