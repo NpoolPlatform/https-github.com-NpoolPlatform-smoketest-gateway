@@ -15,6 +15,9 @@ func (h *Handler) UpdateModule(ctx context.Context) (info *npool.Module, err err
 	if err != nil {
 		return nil, err
 	}
+	if info == nil {
+		return nil, nil
+	}
 
 	// determine whether name is the same as before
 	req := &crud.Req{}

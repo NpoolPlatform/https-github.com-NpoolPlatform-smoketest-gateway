@@ -10,15 +10,16 @@ import (
 )
 
 type Req struct {
-	ID          *uuid.UUID
+	ID          *uint32
+	EntID       *uuid.UUID
 	Name        *string
 	Description *string
 	DeletedAt   *uint32
 }
 
 func CreateSet(c *ent.ModuleCreate, req *Req) *ent.ModuleCreate {
-	if req.ID != nil {
-		c.SetID(*req.ID)
+	if req.EntID != nil {
+		c.SetEntID(*req.EntID)
 	}
 	if req.Name != nil {
 		c.SetName(*req.Name)
@@ -43,9 +44,11 @@ func UpdateSet(u *ent.ModuleUpdateOne, req *Req) *ent.ModuleUpdateOne {
 }
 
 type Conds struct {
-	ID   *cruder.Cond
-	Name *cruder.Cond
-	IDs  *cruder.Cond
+	ID     *cruder.Cond
+	EntID  *cruder.Cond
+	Name   *cruder.Cond
+	IDs    *cruder.Cond
+	EntIDs *cruder.Cond
 }
 
 //nolint:nolintlint,gocyclo
@@ -54,7 +57,7 @@ func SetQueryConds(q *ent.ModuleQuery, conds *Conds) (*ent.ModuleQuery, error) {
 		return q, nil
 	}
 	if conds.ID != nil {
-		id, ok := conds.ID.Val.(uuid.UUID)
+		id, ok := conds.ID.Val.(uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid id")
 		}
@@ -63,6 +66,18 @@ func SetQueryConds(q *ent.ModuleQuery, conds *Conds) (*ent.ModuleQuery, error) {
 			q.Where(module.ID(id))
 		default:
 			return nil, fmt.Errorf("invalid module id field")
+		}
+	}
+	if conds.EntID != nil {
+		id, ok := conds.EntID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntID.Op {
+		case cruder.EQ:
+			q.Where(module.EntID(id))
+		default:
+			return nil, fmt.Errorf("invalid module entid field")
 		}
 	}
 	if conds.Name != nil {
@@ -74,15 +89,27 @@ func SetQueryConds(q *ent.ModuleQuery, conds *Conds) (*ent.ModuleQuery, error) {
 		}
 	}
 	if conds.IDs != nil {
-		ids, ok := conds.IDs.Val.([]uuid.UUID)
+		ids, ok := conds.IDs.Val.([]uint32)
 		if !ok {
-			return nil, fmt.Errorf("invalid id")
+			return nil, fmt.Errorf("invalid ids")
 		}
 		switch conds.IDs.Op {
 		case cruder.IN:
 			q.Where(module.IDIn(ids...))
 		default:
 			return nil, fmt.Errorf("invalid module ids field")
+		}
+	}
+	if conds.EntIDs != nil {
+		ids, ok := conds.EntIDs.Val.([]uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntIDs.Op {
+		case cruder.IN:
+			q.Where(module.EntIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid module entids field")
 		}
 	}
 	return q, nil

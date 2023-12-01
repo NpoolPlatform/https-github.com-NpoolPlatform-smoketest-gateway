@@ -47,7 +47,7 @@ func CreateModule(ctx context.Context, in *npool.ModuleReq) (*npool.Module, erro
 func GetModule(ctx context.Context, id string) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetModule(ctx, &npool.GetModuleRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -81,7 +81,7 @@ func GetModules(ctx context.Context, conds *npool.Conds, offset, limit int32) ([
 	return infos.([]*npool.Module), total, nil
 }
 
-func DeleteModule(ctx context.Context, id string) (*npool.Module, error) {
+func DeleteModule(ctx context.Context, id uint32) (*npool.Module, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteModule(ctx, &npool.DeleteModuleRequest{
 			Info: &npool.ModuleReq{
@@ -118,7 +118,7 @@ func UpdateModule(ctx context.Context, in *npool.ModuleReq) (*npool.Module, erro
 func ExistModule(ctx context.Context, id string) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistModule(ctx, &npool.ExistModuleRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err

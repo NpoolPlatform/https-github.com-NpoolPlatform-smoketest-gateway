@@ -33,7 +33,7 @@ func (h *Handler) ExistModule(ctx context.Context) (exist bool, err error) {
 			Module.
 			Query().
 			Where(
-				entmodule.ID(*h.ID),
+				entmodule.EntID(*h.EntID),
 				entmodule.DeletedAt(0),
 			).
 			Exist(_ctx)
