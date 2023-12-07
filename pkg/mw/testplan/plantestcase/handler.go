@@ -247,7 +247,15 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.Result != nil {
-			h.Conds.Result = &cruder.Cond{Op: conds.Result.Op, Val: conds.Result}
+			switch conds.GetResult().GetValue() {
+			case uint32(npool.TestCaseResult_Passed):
+			case uint32(npool.TestCaseResult_Failed):
+			case uint32(npool.TestCaseResult_Skipped):
+			default:
+				return fmt.Errorf("invalid testplanstate")
+			}
+			_state := conds.GetResult().GetValue()
+			h.Conds.Result = &cruder.Cond{Op: conds.GetResult().GetOp(), Val: npool.TestCaseResult(_state)}
 		}
 
 		if len(conds.GetTestPlanIDs().GetValue()) > 0 {

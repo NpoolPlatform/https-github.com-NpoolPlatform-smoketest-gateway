@@ -143,13 +143,13 @@ func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQue
 		}
 	}
 	if conds.Result != nil {
-		result, ok := conds.Result.Val.(string)
+		result, ok := conds.Result.Val.(npool.TestCaseResult)
 		if !ok {
 			return nil, fmt.Errorf("invalid result")
 		}
 		switch conds.Result.Op {
 		case cruder.EQ:
-			q.Where(plantestcase.Result(result))
+			q.Where(plantestcase.Result(result.String()))
 		default:
 			return nil, fmt.Errorf("invalid result field")
 		}
