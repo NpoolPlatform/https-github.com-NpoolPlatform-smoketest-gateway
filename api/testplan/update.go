@@ -13,6 +13,13 @@ import (
 
 func (s *Server) UpdateTestPlan(ctx context.Context, in *npool.UpdateTestPlanRequest) (*npool.UpdateTestPlanResponse, error) {
 	req := in.GetInfo()
+	if req == nil {
+		logger.Sugar().Errorw(
+			"UpdateTestPlan",
+			"In", in,
+		)
+		return &npool.UpdateTestPlanResponse{}, status.Error(codes.Aborted, "Info is empty")
+	}
 	handler, err := testplan1.NewHandler(
 		ctx,
 		testplan1.WithID(req.ID, true),
