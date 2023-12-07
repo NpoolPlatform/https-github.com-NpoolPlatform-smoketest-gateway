@@ -299,7 +299,7 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 				}
 				ids = append(ids, _id)
 			}
-			h.Conds.IDs = &cruder.Cond{Op: conds.GetEntIDs().GetOp(), Val: ids}
+			h.Conds.EntIDs = &cruder.Cond{Op: conds.GetEntIDs().GetOp(), Val: ids}
 		}
 		if len(conds.GetIDs().GetValue()) > 0 {
 			h.Conds.IDs = &cruder.Cond{Op: conds.GetIDs().GetOp(), Val: conds.GetIDs().GetValue()}
