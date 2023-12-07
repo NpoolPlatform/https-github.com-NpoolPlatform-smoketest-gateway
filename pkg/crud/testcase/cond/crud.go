@@ -121,13 +121,13 @@ func SetQueryConds(q *ent.CondQuery, conds *Conds) (*ent.CondQuery, error) {
 		}
 	}
 	if conds.CondType != nil {
-		condType, ok := conds.CondType.Val.(string)
+		condType, ok := conds.CondType.Val.(npool.CondType)
 		if !ok {
 			return nil, fmt.Errorf("invalid cond type")
 		}
 		switch conds.CondType.Op {
 		case cruder.EQ:
-			q.Where(cond.CondType(condType))
+			q.Where(cond.CondType(condType.String()))
 		default:
 			return nil, fmt.Errorf("invalid cond type")
 		}

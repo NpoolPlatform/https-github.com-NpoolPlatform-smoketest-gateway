@@ -197,7 +197,14 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.CondType != nil {
-			h.Conds.CondType = &cruder.Cond{Op: conds.CondType.Op, Val: conds.CondType}
+			switch conds.GetCondType().GetValue() {
+			case uint32(npool.CondType_PreCondition):
+			case uint32(npool.CondType_Cleaner):
+			default:
+				return fmt.Errorf("invalid condtype")
+			}
+			condType := conds.GetCondType().GetValue()
+			h.Conds.CondType = &cruder.Cond{Op: conds.GetCondType().GetOp(), Val: npool.CondType(condType)}
 		}
 		return nil
 	}
