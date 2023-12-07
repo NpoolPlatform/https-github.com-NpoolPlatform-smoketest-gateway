@@ -157,13 +157,13 @@ func SetQueryConds(q *ent.TestPlanQuery, conds *Conds) (*ent.TestPlanQuery, erro
 	}
 
 	if conds.State != nil {
-		state, ok := conds.State.Val.(string)
+		state, ok := conds.State.Val.(npool.TestPlanState)
 		if !ok {
 			return nil, fmt.Errorf("invalid state")
 		}
 		switch conds.State.Op {
 		case cruder.EQ:
-			q.Where(testplan.State(state))
+			q.Where(testplan.State(state.String()))
 		default:
 			return nil, fmt.Errorf("invalid deprecated field")
 		}
