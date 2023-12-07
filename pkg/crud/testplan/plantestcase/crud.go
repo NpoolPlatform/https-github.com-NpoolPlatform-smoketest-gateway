@@ -72,6 +72,9 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 	if req.RunDuration != nil {
 		u.SetRunDuration(*req.RunDuration)
 	}
+	if req.TestUserID != nil {
+		u.SetTestUserID(*req.TestUserID)
+	}
 	if req.Result != nil {
 		u.SetResult(req.Result.String())
 	}
