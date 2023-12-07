@@ -81,9 +81,13 @@ func SetQueryConds(q *ent.ModuleQuery, conds *Conds) (*ent.ModuleQuery, error) {
 		}
 	}
 	if conds.Name != nil {
+		name, ok := conds.Name.Val.(string)
+		if !ok {
+			return nil, fmt.Errorf("invalid name")
+		}
 		switch conds.Name.Op {
 		case cruder.EQ:
-			q.Where(module.Name(conds.Name.Op))
+			q.Where(module.Name(name))
 		default:
 			return nil, fmt.Errorf("invalid module name field")
 		}
