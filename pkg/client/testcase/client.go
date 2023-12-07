@@ -3,6 +3,7 @@ package testcase
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -129,4 +130,29 @@ func ExistTestCase(ctx context.Context, id string) (bool, error) {
 		return false, err
 	}
 	return info.(bool), nil
+}
+
+func GetTestCaseOnly(ctx context.Context, conds *npool.Conds) (*npool.TestCase, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetTestCases(ctx, &npool.GetTestCasesRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.TestCase)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.TestCase)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.TestCase)[0], nil
 }

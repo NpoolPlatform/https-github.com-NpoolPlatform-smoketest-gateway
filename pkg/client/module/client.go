@@ -3,6 +3,7 @@ package module
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -145,4 +146,29 @@ func ExistModuleConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 		return false, err
 	}
 	return info.(bool), nil
+}
+
+func GetModuleOnly(ctx context.Context, conds *npool.Conds) (*npool.Module, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetModules(ctx, &npool.GetModulesRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.Module)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.Module)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.Module)[0], nil
 }

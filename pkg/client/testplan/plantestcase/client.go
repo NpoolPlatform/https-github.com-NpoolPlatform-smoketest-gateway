@@ -3,6 +3,7 @@ package plantestcase
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -113,4 +114,29 @@ func UpdatePlanTestCase(ctx context.Context, in *npool.PlanTestCaseReq) (*npool.
 		return nil, err
 	}
 	return info.(*npool.PlanTestCase), nil
+}
+
+func GetPlanTestCaseOnly(ctx context.Context, conds *npool.Conds) (*npool.PlanTestCase, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetPlanTestCases(ctx, &npool.GetPlanTestCasesRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.PlanTestCase)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.PlanTestCase)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.PlanTestCase)[0], nil
 }

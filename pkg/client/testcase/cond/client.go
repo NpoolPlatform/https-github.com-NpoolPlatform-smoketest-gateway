@@ -2,6 +2,7 @@ package cond
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -112,4 +113,29 @@ func UpdateCond(ctx context.Context, in *npool.CondReq) (*npool.Cond, error) {
 		return nil, err
 	}
 	return info.(*npool.Cond), nil
+}
+
+func GetCondOnly(ctx context.Context, conds *npool.Conds) (*npool.Cond, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetConds(ctx, &npool.GetCondsRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.Cond)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.Cond)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.Cond)[0], nil
 }
