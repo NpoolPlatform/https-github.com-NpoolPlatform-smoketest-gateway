@@ -23,6 +23,7 @@ type queryHandler struct {
 func (h *queryHandler) selectTestCase(stm *ent.TestCaseQuery) {
 	h.stm = stm.Select(
 		enttestcase.FieldID,
+		enttestcase.FieldEntID,
 		enttestcase.FieldName,
 		enttestcase.FieldDescription,
 		enttestcase.FieldAPIID,
@@ -44,10 +45,10 @@ func (h *queryHandler) queryJoinModule(s *sql.Selector) {
 	s.LeftJoin(t).
 		On(
 			s.C(enttestcase.FieldModuleID),
-			t.C(entmodule.FieldID),
+			t.C(entmodule.FieldEntID),
 		).
 		AppendSelect(
-			sql.As(t.C(entmodule.FieldID), "module_id"),
+			sql.As(t.C(entmodule.FieldEntID), "module_id"),
 			sql.As(t.C(entmodule.FieldName), "module_name"),
 		)
 }
@@ -59,17 +60,17 @@ func (h *queryHandler) queryJoin() {
 }
 
 func (h *queryHandler) queryTestCase(cli *ent.Client) error {
-	if h.ID == nil {
+	if h.ID == nil && h.EntID == nil {
 		return fmt.Errorf("invalid testcase id")
 	}
-	h.selectTestCase(
-		cli.TestCase.
-			Query().
-			Where(
-				enttestcase.ID(*h.ID),
-				enttestcase.DeletedAt(0),
-			),
-	)
+	stm := cli.TestCase.Query().Where(enttestcase.DeletedAt(0))
+	if h.ID != nil {
+		stm.Where(enttestcase.ID(*h.ID))
+	}
+	if h.EntID != nil {
+		stm.Where(enttestcase.EntID(*h.EntID))
+	}
+	h.selectTestCase(stm)
 	return nil
 }
 
@@ -146,7 +147,7 @@ func (h *Handler) GetTestCase(ctx context.Context) (info *npool.TestCase, err er
 		return
 	}
 	if len(handler.infos) == 0 {
-		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+		return nil, fmt.Errorf("testCase not exist")
 	}
 
 	handler.formalize()

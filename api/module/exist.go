@@ -13,7 +13,7 @@ import (
 func (s *Server) ExistModule(ctx context.Context, in *npool.ExistModuleRequest) (*npool.ExistModuleResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(&in.ID, true),
+		module1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

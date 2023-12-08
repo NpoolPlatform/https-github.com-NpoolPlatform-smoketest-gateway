@@ -13,10 +13,16 @@ import (
 
 func (s *Server) CreateTestPlan(ctx context.Context, in *npool.CreateTestPlanRequest) (*npool.CreateTestPlanResponse, error) {
 	req := in.GetInfo()
-
+	if req == nil {
+		logger.Sugar().Errorw(
+			"CreateTestPlan",
+			"In", in,
+		)
+		return &npool.CreateTestPlanResponse{}, status.Error(codes.Aborted, "Info is empty")
+	}
 	handler, err := testplan1.NewHandler(
 		ctx,
-		testplan1.WithID(req.ID, false),
+		testplan1.WithEntID(req.EntID, false),
 		testplan1.WithName(req.Name, true),
 		testplan1.WithCreatedBy(req.CreatedBy, true),
 		testplan1.WithExecutor(req.Executor, false),

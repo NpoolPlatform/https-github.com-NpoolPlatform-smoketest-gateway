@@ -15,7 +15,8 @@ import (
 )
 
 type Handler struct {
-	ID          *uuid.UUID
+	ID          *uint32
+	EntID       *uuid.UUID
 	TestPlanID  *uuid.UUID
 	TestCaseID  *uuid.UUID
 	TestUserID  *uuid.UUID
@@ -40,11 +41,24 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string, must bool) func(context.Context, *Handler) error {
+func WithID(u *uint32, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if u == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
+			return nil
+		}
+		h.ID = u
+		return nil
+	}
+}
+
+func WithEntID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
 			if must {
-				return fmt.Errorf("invalid id")
+				return fmt.Errorf("invalid entid")
 			}
 			return nil
 		}
@@ -52,7 +66,7 @@ func WithID(id *string, must bool) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-		h.ID = &_id
+		h.EntID = &_id
 		return nil
 	}
 }
@@ -62,7 +76,7 @@ func WithTestPlanID(planID *string, must bool) func(context.Context, *Handler) e
 	return func(ctx context.Context, h *Handler) error {
 		handler, err := testplan1.NewHandler(
 			ctx,
-			testplan1.WithID(planID, true),
+			testplan1.WithEntID(planID, true),
 		)
 		if err != nil {
 			return err
@@ -88,7 +102,7 @@ func WithTestCaseID(testCaseID *string, must bool) func(context.Context, *Handle
 	return func(ctx context.Context, h *Handler) error {
 		handler, err := testcase1.NewHandler(
 			ctx,
-			testcase1.WithID(testCaseID, true),
+			testcase1.WithEntID(testCaseID, true),
 		)
 		if err != nil {
 			return err
@@ -198,6 +212,7 @@ func WithDescription(description *string, must bool) func(context.Context, *Hand
 	}
 }
 
+//nolint:gocyclo
 func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		h.Conds = &crud.Conds{}
@@ -206,11 +221,14 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.ID != nil {
-			id, err := uuid.Parse(conds.GetID().GetValue())
+			h.Conds.ID = &cruder.Cond{Op: conds.GetID().GetOp(), Val: conds.GetID().GetValue()}
+		}
+		if conds.EntID != nil {
+			id, err := uuid.Parse(conds.GetEntID().GetValue())
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
+			h.Conds.EntID = &cruder.Cond{Op: conds.GetEntID().GetOp(), Val: id}
 		}
 
 		if conds.TestPlanID != nil {
@@ -230,7 +248,15 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.Result != nil {
-			h.Conds.Result = &cruder.Cond{Op: conds.Result.Op, Val: conds.Result}
+			switch conds.GetResult().GetValue() {
+			case uint32(npool.TestCaseResult_Passed):
+			case uint32(npool.TestCaseResult_Failed):
+			case uint32(npool.TestCaseResult_Skipped):
+			default:
+				return fmt.Errorf("invalid testplanstate")
+			}
+			_state := conds.GetResult().GetValue()
+			h.Conds.Result = &cruder.Cond{Op: conds.GetResult().GetOp(), Val: npool.TestCaseResult(_state)}
 		}
 
 		if len(conds.GetTestPlanIDs().GetValue()) > 0 {

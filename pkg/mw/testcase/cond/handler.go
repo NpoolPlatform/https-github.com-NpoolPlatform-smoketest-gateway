@@ -14,7 +14,8 @@ import (
 )
 
 type Handler struct {
-	ID             *uuid.UUID
+	ID             *uint32
+	EntID          *uuid.UUID
 	TestCaseID     *uuid.UUID
 	CondTestCaseID *uuid.UUID
 	CondType       *npool.CondType
@@ -35,11 +36,24 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string, must bool) func(context.Context, *Handler) error {
+func WithID(u *uint32, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if u == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
+			return nil
+		}
+		h.ID = u
+		return nil
+	}
+}
+
+func WithEntID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
 			if must {
-				return fmt.Errorf("invalid id")
+				return fmt.Errorf("invalid entid")
 			}
 			return nil
 		}
@@ -47,7 +61,7 @@ func WithID(id *string, must bool) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-		h.ID = &_id
+		h.EntID = &_id
 		return nil
 	}
 }
@@ -57,7 +71,7 @@ func WithTestCaseID(id *string, must bool) func(context.Context, *Handler) error
 	return func(ctx context.Context, h *Handler) error {
 		handler, err := testcase1.NewHandler(
 			ctx,
-			testcase1.WithID(id, true),
+			testcase1.WithEntID(id, true),
 		)
 		if err != nil {
 			return err
@@ -83,7 +97,7 @@ func WithCondTestCaseID(id *string, must bool) func(context.Context, *Handler) e
 	return func(ctx context.Context, h *Handler) error {
 		handler, err := testcase1.NewHandler(
 			ctx,
-			testcase1.WithID(id, true),
+			testcase1.WithEntID(id, true),
 		)
 		if err != nil {
 			return err
@@ -156,11 +170,14 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 		h.Conds = &crud.Conds{}
 		if conds.ID != nil {
-			id, err := uuid.Parse(conds.GetID().GetValue())
+			h.Conds.ID = &cruder.Cond{Op: conds.GetID().GetOp(), Val: conds.GetID().GetValue()}
+		}
+		if conds.EntID != nil {
+			id, err := uuid.Parse(conds.GetEntID().GetValue())
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
+			h.Conds.EntID = &cruder.Cond{Op: conds.GetEntID().GetOp(), Val: id}
 		}
 
 		if conds.TestCaseID != nil {
@@ -180,7 +197,14 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.CondType != nil {
-			h.Conds.CondType = &cruder.Cond{Op: conds.CondType.Op, Val: conds.CondType}
+			switch conds.GetCondType().GetValue() {
+			case uint32(npool.CondType_PreCondition):
+			case uint32(npool.CondType_Cleaner):
+			default:
+				return fmt.Errorf("invalid condtype")
+			}
+			condType := conds.GetCondType().GetValue()
+			h.Conds.CondType = &cruder.Cond{Op: conds.GetCondType().GetOp(), Val: npool.CondType(condType)}
 		}
 		return nil
 	}

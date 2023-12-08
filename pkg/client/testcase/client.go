@@ -3,6 +3,7 @@ package testcase
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -47,7 +48,7 @@ func CreateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase
 func GetTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestCase(ctx, &npool.GetTestCaseRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -81,7 +82,7 @@ func GetTestCases(ctx context.Context, conds *npool.Conds, offset, limit int32) 
 	return infos.([]*npool.TestCase), total, nil
 }
 
-func DeleteTestCase(ctx context.Context, id string) (*npool.TestCase, error) {
+func DeleteTestCase(ctx context.Context, id uint32) (*npool.TestCase, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestCase(ctx, &npool.DeleteTestCaseRequest{
 			Info: &npool.TestCaseReq{
@@ -118,7 +119,7 @@ func UpdateTestCase(ctx context.Context, in *npool.TestCaseReq) (*npool.TestCase
 func ExistTestCase(ctx context.Context, id string) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistTestCase(ctx, &npool.ExistTestCaseRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -129,4 +130,29 @@ func ExistTestCase(ctx context.Context, id string) (bool, error) {
 		return false, err
 	}
 	return info.(bool), nil
+}
+
+func GetTestCaseOnly(ctx context.Context, conds *npool.Conds) (*npool.TestCase, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetTestCases(ctx, &npool.GetTestCasesRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.TestCase)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.TestCase)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.TestCase)[0], nil
 }

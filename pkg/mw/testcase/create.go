@@ -17,7 +17,7 @@ func (h *createHandler) createTestCase(ctx context.Context, cli *ent.Client) err
 	info, err := crud.CreateSet(
 		cli.TestCase.Create(),
 		&crud.Req{
-			ID:            h.ID,
+			EntID:         h.EntID,
 			Name:          h.Name,
 			Description:   h.Description,
 			Input:         h.Input,
@@ -34,6 +34,7 @@ func (h *createHandler) createTestCase(ctx context.Context, cli *ent.Client) err
 		return err
 	}
 	h.ID = &info.ID
+	h.EntID = &info.EntID
 	return nil
 }
 

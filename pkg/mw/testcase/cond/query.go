@@ -21,6 +21,7 @@ type queryHandler struct {
 func (h *queryHandler) selectCond(stm *ent.CondQuery) {
 	h.stm = stm.Select(
 		entcond.FieldID,
+		entcond.FieldEntID,
 		entcond.FieldTestCaseID,
 		entcond.FieldCondTestCaseID,
 		entcond.FieldCondType,
@@ -32,17 +33,17 @@ func (h *queryHandler) selectCond(stm *ent.CondQuery) {
 }
 
 func (h *queryHandler) queryCond(cli *ent.Client) error {
-	if h.ID == nil {
+	if h.ID == nil && h.EntID == nil {
 		return fmt.Errorf("invalid module id")
 	}
-	h.selectCond(
-		cli.Cond.
-			Query().
-			Where(
-				entcond.ID(*h.ID),
-				entcond.DeletedAt(0),
-			),
-	)
+	stm := cli.Cond.Query().Where(entcond.DeletedAt(0))
+	if h.ID != nil {
+		stm.Where(entcond.ID(*h.ID))
+	}
+	if h.EntID != nil {
+		stm.Where(entcond.EntID(*h.EntID))
+	}
+	h.selectCond(stm)
 	return nil
 }
 
@@ -105,7 +106,7 @@ func (h *Handler) GetCond(ctx context.Context) (info *npool.Cond, err error) {
 	}
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		if err := handler.queryCond(cli); err != nil {
+		if err := handler.queryCond(cli.Debug()); err != nil {
 			return err
 		}
 		if err := handler.scan(_ctx); err != nil {
@@ -117,7 +118,7 @@ func (h *Handler) GetCond(ctx context.Context) (info *npool.Cond, err error) {
 		return
 	}
 	if len(handler.infos) == 0 {
-		return nil, fmt.Errorf("id %v not exist", *handler.ID)
+		return nil, fmt.Errorf("cond not exist")
 	}
 
 	handler.formalize()

@@ -2,6 +2,7 @@ package module
 
 import (
 	"context"
+	"fmt"
 
 	npool "github.com/NpoolPlatform/message/npool/smoketest/mw/v1/module"
 	modulecrud "github.com/NpoolPlatform/smoketest-middleware/pkg/crud/module"
@@ -20,6 +21,7 @@ type queryHandler struct {
 func (h *queryHandler) selectModule(stm *ent.ModuleQuery) {
 	h.stm = stm.Select(
 		entmodule.FieldID,
+		entmodule.FieldEntID,
 		entmodule.FieldName,
 		entmodule.FieldDescription,
 		entmodule.FieldCreatedAt,
@@ -28,14 +30,17 @@ func (h *queryHandler) selectModule(stm *ent.ModuleQuery) {
 }
 
 func (h *queryHandler) queryModule(cli *ent.Client) error {
-	h.selectModule(
-		cli.Module.
-			Query().
-			Where(
-				entmodule.ID(*h.ID),
-				entmodule.DeletedAt(0),
-			),
-	)
+	if h.ID == nil && h.EntID == nil {
+		return fmt.Errorf("invalid id")
+	}
+	stm := cli.Module.Query().Where(entmodule.DeletedAt(0))
+	if h.ID != nil {
+		stm.Where(entmodule.ID(*h.ID))
+	}
+	if h.EntID != nil {
+		stm.Where(entmodule.EntID(*h.EntID))
+	}
+	h.selectModule(stm)
 	return nil
 }
 

@@ -14,7 +14,7 @@ func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 		info, err := crud.CreateSet(
 			cli.PlanTestCase.Create(),
 			&crud.Req{
-				ID:         h.ID,
+				EntID:      h.EntID,
 				TestPlanID: h.TestPlanID,
 				TestCaseID: h.TestCaseID,
 				Index:      h.Index,
@@ -26,6 +26,7 @@ func (h *Handler) CreatePlanTestCase(ctx context.Context) (info *npool.PlanTestC
 		}
 
 		h.ID = &info.ID
+		h.EntID = &info.EntID
 		return nil
 	})
 

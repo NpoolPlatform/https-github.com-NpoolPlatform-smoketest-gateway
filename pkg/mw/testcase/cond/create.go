@@ -30,7 +30,7 @@ func (h *Handler) CreateCond(ctx context.Context) (info *npool.Cond, err error) 
 		info, err := crud.CreateSet(
 			cli.Cond.Create(),
 			&crud.Req{
-				ID:             h.ID,
+				EntID:          h.EntID,
 				TestCaseID:     h.TestCaseID,
 				CondTestCaseID: h.CondTestCaseID,
 				CondType:       h.CondType,
@@ -42,6 +42,7 @@ func (h *Handler) CreateCond(ctx context.Context) (info *npool.Cond, err error) 
 			return err
 		}
 
+		h.EntID = &info.EntID
 		h.ID = &info.ID
 		return nil
 	})

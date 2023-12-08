@@ -42,7 +42,7 @@ func (s *Server) GetModules(ctx context.Context, in *npool.GetModulesRequest) (*
 func (s *Server) GetModule(ctx context.Context, in *npool.GetModuleRequest) (*npool.GetModuleResponse, error) {
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(&in.ID, true),
+		module1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

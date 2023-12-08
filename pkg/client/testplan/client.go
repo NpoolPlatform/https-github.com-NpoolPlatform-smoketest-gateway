@@ -3,6 +3,7 @@ package testplan
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
@@ -45,7 +46,7 @@ func CreateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan
 func GetTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.GetTestPlan(ctx, &npool.GetTestPlanRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -79,7 +80,7 @@ func GetTestPlans(ctx context.Context, conds *npool.Conds, offset, limit int32) 
 	return infos.([]*npool.TestPlan), total, nil
 }
 
-func DeleteTestPlan(ctx context.Context, id string) (*npool.TestPlan, error) {
+func DeleteTestPlan(ctx context.Context, id uint32) (*npool.TestPlan, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.DeleteTestPlan(ctx, &npool.DeleteTestPlanRequest{
 			Info: &npool.TestPlanReq{
@@ -116,7 +117,7 @@ func UpdateTestPlan(ctx context.Context, in *npool.TestPlanReq) (*npool.TestPlan
 func ExistTestPlan(ctx context.Context, id string) (bool, error) {
 	info, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
 		resp, err := cli.ExistTestPlan(ctx, &npool.ExistTestPlanRequest{
-			ID: id,
+			EntID: id,
 		})
 		if err != nil {
 			return nil, err
@@ -127,4 +128,29 @@ func ExistTestPlan(ctx context.Context, id string) (bool, error) {
 		return false, err
 	}
 	return info.(bool), nil
+}
+
+func GetTestPlanOnly(ctx context.Context, conds *npool.Conds) (*npool.TestPlan, error) {
+	const limit = 2
+	infos, err := do(ctx, func(_ctx context.Context, cli npool.MiddlewareClient) (cruder.Any, error) {
+		resp, err := cli.GetTestPlans(ctx, &npool.GetTestPlansRequest{
+			Conds:  conds,
+			Offset: 0,
+			Limit:  limit,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Infos, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if len(infos.([]*npool.TestPlan)) == 0 {
+		return nil, nil
+	}
+	if len(infos.([]*npool.TestPlan)) > 1 {
+		return nil, fmt.Errorf("too many records")
+	}
+	return infos.([]*npool.TestPlan)[0], nil
 }

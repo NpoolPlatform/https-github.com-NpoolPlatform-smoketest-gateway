@@ -22,7 +22,7 @@ func (s *Server) CreateCond(ctx context.Context, in *npool.CreateCondRequest) (*
 	}
 	handler, err := cond1.NewHandler(
 		ctx,
-		cond1.WithID(req.ID, false),
+		cond1.WithEntID(req.EntID, false),
 		cond1.WithTestCaseID(req.TestCaseID, true),
 		cond1.WithCondTestCaseID(req.CondTestCaseID, true),
 		cond1.WithCondType(req.CondType, true),

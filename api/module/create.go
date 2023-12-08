@@ -22,7 +22,7 @@ func (s *Server) CreateModule(ctx context.Context, in *npool.CreateModuleRequest
 	}
 	handler, err := module1.NewHandler(
 		ctx,
-		module1.WithID(req.ID, false),
+		module1.WithEntID(req.EntID, false),
 		module1.WithName(req.Name, true),
 		module1.WithDescription(req.Description, false),
 	)

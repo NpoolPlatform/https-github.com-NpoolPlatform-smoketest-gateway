@@ -23,7 +23,7 @@ func (h *Handler) CreateModule(ctx context.Context) (info *npool.Module, err err
 		info, err := crud.CreateSet(
 			cli.Module.Create(),
 			&crud.Req{
-				ID:          h.ID,
+				EntID:       h.EntID,
 				Name:        h.Name,
 				Description: h.Description,
 			},

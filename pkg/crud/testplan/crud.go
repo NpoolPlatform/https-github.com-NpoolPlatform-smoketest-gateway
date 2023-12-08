@@ -11,7 +11,8 @@ import (
 )
 
 type Req struct {
-	ID          *uuid.UUID
+	ID          *uint32
+	EntID       *uuid.UUID
 	Name        *string
 	State       *npool.TestPlanState
 	CreatedBy   *uuid.UUID
@@ -26,8 +27,8 @@ type Req struct {
 }
 
 func CreateSet(c *ent.TestPlanCreate, req *Req) *ent.TestPlanCreate {
-	if req.ID != nil {
-		c.SetID(*req.ID)
+	if req.EntID != nil {
+		c.SetEntID(*req.EntID)
 	}
 	if req.Name != nil {
 		c.SetName(*req.Name)
@@ -98,14 +99,16 @@ func UpdateSet(u *ent.TestPlanUpdateOne, req *Req) *ent.TestPlanUpdateOne {
 
 type Conds struct {
 	ID        *cruder.Cond
+	EntID     *cruder.Cond
 	CreatedBy *cruder.Cond
 	Executor  *cruder.Cond
 	State     *cruder.Cond
 }
 
+//nolint:gocyclo
 func SetQueryConds(q *ent.TestPlanQuery, conds *Conds) (*ent.TestPlanQuery, error) {
 	if conds.ID != nil {
-		id, ok := conds.ID.Val.(uuid.UUID)
+		id, ok := conds.ID.Val.(uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid id")
 		}
@@ -114,6 +117,18 @@ func SetQueryConds(q *ent.TestPlanQuery, conds *Conds) (*ent.TestPlanQuery, erro
 			q.Where(testplan.ID(id))
 		default:
 			return nil, fmt.Errorf("invalid id field")
+		}
+	}
+	if conds.EntID != nil {
+		id, ok := conds.EntID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntID.Op {
+		case cruder.EQ:
+			q.Where(testplan.EntID(id))
+		default:
+			return nil, fmt.Errorf("invalid entid field")
 		}
 	}
 	if conds.CreatedBy != nil {
@@ -142,13 +157,13 @@ func SetQueryConds(q *ent.TestPlanQuery, conds *Conds) (*ent.TestPlanQuery, erro
 	}
 
 	if conds.State != nil {
-		state, ok := conds.State.Val.(string)
+		state, ok := conds.State.Val.(npool.TestPlanState)
 		if !ok {
 			return nil, fmt.Errorf("invalid state")
 		}
 		switch conds.State.Op {
 		case cruder.EQ:
-			q.Where(testplan.State(state))
+			q.Where(testplan.State(state.String()))
 		default:
 			return nil, fmt.Errorf("invalid deprecated field")
 		}

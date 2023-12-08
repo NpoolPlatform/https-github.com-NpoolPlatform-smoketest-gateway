@@ -45,6 +45,7 @@ func createModule(t *testing.T) {
 	info, err := CreateModule(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.EntID = info.EntID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
@@ -70,7 +71,7 @@ func updateModule(t *testing.T) {
 }
 
 func getModule(t *testing.T) {
-	info, err := GetModule(context.Background(), ret.ID)
+	info, err := GetModule(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.Equal(t, info, &ret)
 	}
@@ -84,7 +85,7 @@ func getModules(t *testing.T) {
 }
 
 func existModule(t *testing.T) {
-	exist, err := ExistModule(context.Background(), ret.ID)
+	exist, err := ExistModule(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.True(t, exist)
 	}
@@ -96,7 +97,7 @@ func deleteModule(t *testing.T) {
 		assert.Equal(t, info, &ret)
 	}
 
-	info, err = GetModule(context.Background(), ret.ID)
+	info, err = GetModule(context.Background(), ret.EntID)
 	assert.Nil(t, err)
 	assert.Nil(t, info)
 }

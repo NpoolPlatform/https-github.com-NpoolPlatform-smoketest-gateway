@@ -11,7 +11,8 @@ import (
 )
 
 type Req struct {
-	ID          *uuid.UUID
+	ID          *uint32
+	EntID       *uuid.UUID
 	TestPlanID  *uuid.UUID
 	TestCaseID  *uuid.UUID
 	Input       *string
@@ -25,8 +26,8 @@ type Req struct {
 }
 
 func CreateSet(c *ent.PlanTestCaseCreate, req *Req) *ent.PlanTestCaseCreate {
-	if req.ID != nil {
-		c.SetID(*req.ID)
+	if req.EntID != nil {
+		c.SetEntID(*req.EntID)
 	}
 	if req.TestPlanID != nil {
 		c.SetTestPlanID(*req.TestPlanID)
@@ -71,6 +72,9 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 	if req.RunDuration != nil {
 		u.SetRunDuration(*req.RunDuration)
 	}
+	if req.TestUserID != nil {
+		u.SetTestUserID(*req.TestUserID)
+	}
 	if req.Result != nil {
 		u.SetResult(req.Result.String())
 	}
@@ -85,6 +89,7 @@ func UpdateSet(u *ent.PlanTestCaseUpdateOne, req *Req) *ent.PlanTestCaseUpdateOn
 
 type Conds struct {
 	ID          *cruder.Cond
+	EntID       *cruder.Cond
 	TestPlanID  *cruder.Cond
 	TestPlanIDs *cruder.Cond
 	TestUserID  *cruder.Cond
@@ -93,7 +98,7 @@ type Conds struct {
 
 func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQuery, error) { //nolint
 	if conds.ID != nil {
-		id, ok := conds.ID.Val.(uuid.UUID)
+		id, ok := conds.ID.Val.(uint32)
 		if !ok {
 			return nil, fmt.Errorf("invalid id")
 		}
@@ -104,7 +109,18 @@ func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQue
 			return nil, fmt.Errorf("invalid id field")
 		}
 	}
-
+	if conds.EntID != nil {
+		id, ok := conds.EntID.Val.(uuid.UUID)
+		if !ok {
+			return nil, fmt.Errorf("invalid entid")
+		}
+		switch conds.EntID.Op {
+		case cruder.EQ:
+			q.Where(plantestcase.EntID(id))
+		default:
+			return nil, fmt.Errorf("invalid entid field")
+		}
+	}
 	if conds.TestPlanID != nil {
 		planID, ok := conds.TestPlanID.Val.(uuid.UUID)
 		if !ok {
@@ -130,13 +146,13 @@ func SetQueryConds(q *ent.PlanTestCaseQuery, conds *Conds) (*ent.PlanTestCaseQue
 		}
 	}
 	if conds.Result != nil {
-		result, ok := conds.Result.Val.(string)
+		result, ok := conds.Result.Val.(npool.TestCaseResult)
 		if !ok {
 			return nil, fmt.Errorf("invalid result")
 		}
 		switch conds.Result.Op {
 		case cruder.EQ:
-			q.Where(plantestcase.Result(result))
+			q.Where(plantestcase.Result(result.String()))
 		default:
 			return nil, fmt.Errorf("invalid result field")
 		}

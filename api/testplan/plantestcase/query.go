@@ -42,7 +42,7 @@ func (s *Server) GetPlanTestCases(ctx context.Context, in *npool.GetPlanTestCase
 func (s *Server) GetPlanTestCase(ctx context.Context, in *npool.GetPlanTestCaseRequest) (*npool.GetPlanTestCaseResponse, error) {
 	handler, err := plantestcase1.NewHandler(
 		ctx,
-		plantestcase1.WithID(&in.ID, true),
+		plantestcase1.WithEntID(&in.EntID, true),
 	)
 	if err != nil {
 		logger.Sugar().Errorw(

@@ -51,13 +51,13 @@ var (
 
 func setupTestCase(t *testing.T) func(*testing.T) {
 	_, err := module1.CreateModule(context.Background(), &modulemwpb.ModuleReq{
-		ID:   &testCase.ModuleID,
-		Name: &testCase.ModuleID,
+		EntID: &testCase.ModuleID,
+		Name:  &testCase.ModuleID,
 	})
 	assert.Nil(t, err)
 
-	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
-		ID:            &ret.TestCaseID,
+	info1, err := testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		EntID:         &ret.TestCaseID,
 		Name:          &testCase.Name,
 		ApiID:         &testCase.ApiID,
 		ModuleID:      &testCase.ModuleID,
@@ -66,8 +66,8 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 	})
 	assert.Nil(t, err)
 
-	_, err = testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
-		ID:            &ret.CondTestCaseID,
+	info2, err := testcase1.CreateTestCase(context.Background(), &testcasemwpb.TestCaseReq{
+		EntID:         &ret.CondTestCaseID,
 		Name:          &testCase.Name,
 		ApiID:         &testCase.ApiID,
 		ModuleID:      &testCase.ModuleID,
@@ -77,8 +77,8 @@ func setupTestCase(t *testing.T) func(*testing.T) {
 	assert.Nil(t, err)
 
 	return func(*testing.T) {
-		_, _ = testcase1.DeleteTestCase(context.Background(), ret.CondTestCaseID)
-		_, _ = testcase1.DeleteTestCase(context.Background(), ret.TestCaseID)
+		_, _ = testcase1.DeleteTestCase(context.Background(), info2.ID)
+		_, _ = testcase1.DeleteTestCase(context.Background(), info1.ID)
 	}
 }
 
@@ -96,6 +96,7 @@ func createCond(t *testing.T) {
 	info, err := CreateCond(context.Background(), req)
 	if assert.Nil(t, err) {
 		ret.ID = info.ID
+		ret.EntID = info.EntID
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info, &ret)
@@ -125,7 +126,7 @@ func updateCond(t *testing.T) {
 }
 
 func getCond(t *testing.T) {
-	info, err := GetCond(context.Background(), ret.ID)
+	info, err := GetCond(context.Background(), ret.EntID)
 	if assert.Nil(t, err) {
 		assert.Equal(t, info, &ret)
 	}
@@ -144,7 +145,7 @@ func deleteCond(t *testing.T) {
 		assert.Equal(t, info, &ret)
 	}
 
-	info, err = GetCond(context.Background(), ret.ID)
+	info, err = GetCond(context.Background(), ret.EntID)
 	assert.NotNil(t, err)
 	assert.Nil(t, info)
 }

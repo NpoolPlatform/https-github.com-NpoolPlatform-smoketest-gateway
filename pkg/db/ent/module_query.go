@@ -14,7 +14,6 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/module"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db/ent/predicate"
-	"github.com/google/uuid"
 )
 
 // ModuleQuery is the builder for querying Module entities.
@@ -87,8 +86,8 @@ func (mq *ModuleQuery) FirstX(ctx context.Context) *Module {
 
 // FirstID returns the first Module ID from the query.
 // Returns a *NotFoundError when no Module ID was found.
-func (mq *ModuleQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (mq *ModuleQuery) FirstID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = mq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -100,7 +99,7 @@ func (mq *ModuleQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (mq *ModuleQuery) FirstIDX(ctx context.Context) uuid.UUID {
+func (mq *ModuleQuery) FirstIDX(ctx context.Context) uint32 {
 	id, err := mq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -138,8 +137,8 @@ func (mq *ModuleQuery) OnlyX(ctx context.Context) *Module {
 // OnlyID is like Only, but returns the only Module ID in the query.
 // Returns a *NotSingularError when more than one Module ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (mq *ModuleQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
-	var ids []uuid.UUID
+func (mq *ModuleQuery) OnlyID(ctx context.Context) (id uint32, err error) {
+	var ids []uint32
 	if ids, err = mq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -155,7 +154,7 @@ func (mq *ModuleQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (mq *ModuleQuery) OnlyIDX(ctx context.Context) uuid.UUID {
+func (mq *ModuleQuery) OnlyIDX(ctx context.Context) uint32 {
 	id, err := mq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -181,8 +180,8 @@ func (mq *ModuleQuery) AllX(ctx context.Context) []*Module {
 }
 
 // IDs executes the query and returns a list of Module IDs.
-func (mq *ModuleQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
+func (mq *ModuleQuery) IDs(ctx context.Context) ([]uint32, error) {
+	var ids []uint32
 	if err := mq.Select(module.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -190,7 +189,7 @@ func (mq *ModuleQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (mq *ModuleQuery) IDsX(ctx context.Context) []uuid.UUID {
+func (mq *ModuleQuery) IDsX(ctx context.Context) []uint32 {
 	ids, err := mq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -377,7 +376,7 @@ func (mq *ModuleQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   module.Table,
 			Columns: module.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
+				Type:   field.TypeUint32,
 				Column: module.FieldID,
 			},
 		},

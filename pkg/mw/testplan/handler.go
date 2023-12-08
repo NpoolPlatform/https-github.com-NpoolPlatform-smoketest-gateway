@@ -13,7 +13,8 @@ import (
 )
 
 type Handler struct {
-	ID          *uuid.UUID
+	ID          *uint32
+	EntID       *uuid.UUID
 	Name        *string
 	State       *npool.TestPlanState
 	CreatedBy   *uuid.UUID
@@ -39,11 +40,24 @@ func NewHandler(ctx context.Context, options ...func(context.Context, *Handler) 
 	return handler, nil
 }
 
-func WithID(id *string, must bool) func(context.Context, *Handler) error {
+func WithID(u *uint32, must bool) func(context.Context, *Handler) error {
+	return func(ctx context.Context, h *Handler) error {
+		if u == nil {
+			if must {
+				return fmt.Errorf("invalid id")
+			}
+			return nil
+		}
+		h.ID = u
+		return nil
+	}
+}
+
+func WithEntID(id *string, must bool) func(context.Context, *Handler) error {
 	return func(ctx context.Context, h *Handler) error {
 		if id == nil {
 			if must {
-				return fmt.Errorf("invalid id")
+				return fmt.Errorf("invalid entid")
 			}
 			return nil
 		}
@@ -51,7 +65,7 @@ func WithID(id *string, must bool) func(context.Context, *Handler) error {
 		if err != nil {
 			return err
 		}
-		h.ID = &_id
+		h.EntID = &_id
 		return nil
 	}
 }
@@ -201,15 +215,27 @@ func WithConds(conds *npool.Conds) func(context.Context, *Handler) error {
 		}
 
 		if conds.ID != nil {
-			id, err := uuid.Parse(conds.GetID().GetValue())
+			h.Conds.ID = &cruder.Cond{Op: conds.GetID().GetOp(), Val: conds.GetID().GetValue()}
+		}
+		if conds.EntID != nil {
+			id, err := uuid.Parse(conds.GetEntID().GetValue())
 			if err != nil {
 				return err
 			}
-			h.Conds.ID = &cruder.Cond{Op: conds.ID.Op, Val: id}
+			h.Conds.EntID = &cruder.Cond{Op: conds.GetEntID().GetOp(), Val: id}
 		}
 
 		if conds.State != nil {
-			h.Conds.State = &cruder.Cond{Op: conds.State.Op, Val: conds.State}
+			switch conds.GetState().GetValue() {
+			case uint32(npool.TestPlanState_WaitStart):
+			case uint32(npool.TestPlanState_InProgress):
+			case uint32(npool.TestPlanState_Finished):
+			case uint32(npool.TestPlanState_Overdue):
+			default:
+				return fmt.Errorf("invalid testplanstate")
+			}
+			_state := conds.GetState().GetValue()
+			h.Conds.State = &cruder.Cond{Op: conds.GetState().GetOp(), Val: npool.TestPlanState(_state)}
 		}
 		return nil
 	}
