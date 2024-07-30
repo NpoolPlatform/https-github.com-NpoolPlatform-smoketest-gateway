@@ -5,7 +5,6 @@ import (
 
 	"github.com/NpoolPlatform/smoketest-middleware/api"
 	"github.com/NpoolPlatform/smoketest-middleware/pkg/db"
-	"github.com/NpoolPlatform/smoketest-middleware/pkg/migrator"
 
 	action "github.com/NpoolPlatform/go-service-framework/pkg/action"
 
@@ -34,9 +33,6 @@ var runCmd = &cli.Command{
 }
 
 func run(ctx context.Context) error {
-	if err := migrator.Migrate(ctx); err != nil {
-		return err
-	}
 	if err := db.Init(); err != nil {
 		return err
 	}
